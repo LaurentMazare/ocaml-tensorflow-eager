@@ -1,0 +1,30 @@
+opam-version: "1.2"
+name:         "tf"
+bug-reports:  "https://github.com/LaurentMazare/ocaml-tf/issues"
+homepage:     "https://github.com/LaurentMazare/ocaml-tf"
+dev-repo:     "git+https://github.com/LaurentMazare/ocaml-tf.git"
+maintainer:   "Laurent Mazare <lmazare@gmail.com>"
+authors:      [ "Laurent Mazare" ]
+
+version: "dev"
+
+build: [["jbuilder" "build" "--only-packages" "tf" "--root" "." "-j" jobs "@install"]]
+install: []
+remove:  []
+
+depends: [
+  "base"
+  "stdio"
+  "ctypes" {>= "0.5"}
+  "ctypes-foreign"
+  "ocamlfind" {build}
+  "jbuilder" {build}
+]
+
+depopts: [
+]
+
+conflicts: [
+]
+
+available: [ ocaml-version >= "4.04" ]
