@@ -6,3 +6,4 @@
 *.cm*
 *.png
 _build
+tf.install
