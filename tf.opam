@@ -27,4 +27,4 @@ depopts: [
 conflicts: [
 ]
 
-available: [ ocaml-version >= "4.04" ]
+available: [ ocaml-version >= "4.05" ]

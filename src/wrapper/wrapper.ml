@@ -139,7 +139,7 @@ module Tensor = struct
     Hashtbl.add live_tensors id (`tensor packed_tensor);
     let num_dims = Tensor.num_dims tensor in
     let start =
-      bigarray_start genarray (Tensor.to_bigarray tensor)
+      bigarray_start genarray tensor
       |> to_voidp
     in
     if force_full_major
@@ -164,7 +164,7 @@ module Tensor = struct
       let data = tf_tensordata c_tensor |> from_voidp (typ_of_bigarray_kind kind) in
       let data = bigarray_of_ptr genarray dims kind data in
       Gc.finalise (fun _data -> tf_deletetensor c_tensor) data;
-      Tensor.P (Tensor.of_bigarray data ~scalar:(num_dims = 0))
+      Tensor.P data
     in
     match tf_tensortype c_tensor |> int_to_data_type with
     | TF_FLOAT -> apply_kind Bigarray.float32

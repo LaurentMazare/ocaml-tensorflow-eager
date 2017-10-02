@@ -1,16 +1,10 @@
 type float32_elt = Bigarray.float32_elt
 type float64_elt = Bigarray.float64_elt
 
-type ('a, 'b) t
+type ('a, 'b) t = ('a, 'b, Bigarray.c_layout) Bigarray.Genarray.t
 
 type p = P : (_, _) t -> p
 
-val of_bigarray
-  :  ('a, 'b, Bigarray.c_layout) Bigarray.Genarray.t
-  -> scalar:bool
-  -> ('a, 'b) t
-
-val to_bigarray : ('a, 'b) t -> ('a, 'b, Bigarray.c_layout) Bigarray.Genarray.t
 val print : p -> unit
 
 val to_elt_list : ('a, 'b) t -> 'a list
