@@ -262,7 +262,7 @@ module Status = struct
     | TF_DATA_LOSS
     | Unknown of int
 
-  (* CAUTION: this has to stay in sync with [tensor_c_api.h], maybe we should generate
+  (* CAUTION: this has to stay in sync with [c_api.h], maybe we should generate
      some stubs to assert this at compile time. *)
   let code_of_int = function
     | 0  -> TF_OK
