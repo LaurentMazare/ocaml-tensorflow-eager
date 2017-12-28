@@ -4,7 +4,7 @@ module Op_type = Tf_core.Operation.Type
 exception Not_supported of string
 
 let ops_file = "src/gen_ops/ops.pb"
-let output_file = "src/ops/ops_generated"
+let output_file = "src/ops/generated"
 let do_not_generate_these_ops =
   Set.of_list (module String)
     [ "Const"
@@ -326,7 +326,6 @@ let gen_mli ops =
       then p "  -> %s:%s Type.t" (type_variable ~idx) (Type.to_string output_type.type_));
     List.iter op.attributes ~f:(fun attribute ->
       Attribute.mli attribute p);
-    p "  -> ?control_inputs:Node.p list";
     List.iter op.inputs ~f:(fun input ->
       let maybe_list = if Option.is_some input.number_attr then " list" else "" in
       p "  -> %s t%s" (Type.to_string input.type_) maybe_list);
@@ -340,11 +339,13 @@ let gen_mli ops =
     p "";
   in
   p "%s" automatically_generated_file;
-  p "open Node";
   p "";
-  p "module Op_names : sig";
-  List.iter ops ~f:(fun op -> p "  val %s : Op_name.t" (Op.caml_name op));
-  p "end";
+  p "open Tf_core";
+  p "";
+  p "type _ t = Eager.Tensor_handle.t";
+  p "module Dim = Operation.Dim";
+  p "module Type = Operation.Type";
+  p "module Status = Wrapper.Status";
   p "";
   List.iter ops ~f:handle_one_op;
   Out_channel.close out_channel
@@ -352,13 +353,11 @@ let gen_mli ops =
 let handle_one_op (op : Op.t) out_channel =
   let p s = p out_channel s in
   p "let %s" (Op.caml_name op);
-  p "    ?(name = \"%s\")" op.name;
   List.iteri op.output_types ~f:(fun idx output_type ->
     if needs_variable_for_output_type op output_type.type_
     then p "    ~%s" (type_variable ~idx));
   List.iter op.attributes ~f:(fun attribute ->
     Attribute.ml_def attribute p);
-  p "    ?(control_inputs = [])";
   List.iter op.inputs ~f:(fun input ->
     let name = Input.caml_name input in
     let maybe_list = if Option.is_some input.number_attr then " list" else "" in
@@ -383,63 +382,16 @@ let handle_one_op (op : Op.t) out_channel =
       Printf.sprintf " \"%s\", Type (P %s) " type_name type_string)
     |> String.concat ~sep:"; "
   in
-  p "  let attributes = [%s] in" type_attr;
   List.iter op.attributes ~f:(fun attribute ->
     p "  let attributes =";
     p "    %s" (Attribute.ml_apply attribute "attributes");
     p "  in";
   );
-  p "  let name = Name.of_string name in";
-  p "  let op_name = Op_names.%s in" (Op.caml_name op);
-  let inputs =
-    List.map op.inputs ~f:(fun input ->
-      if Option.is_none input.number_attr
-      then Printf.sprintf "(`single (P %s))" (Input.caml_name input)
-      else Printf.sprintf "(`multi (List.map ~f:(fun n -> P n) %s))" (Input.caml_name input)
-    )
-    |> String.concat ~sep:"; "
-    |> Printf.sprintf "[ %s ]"
-  in
-  p "  let inputs = %s in" inputs;
-  let multiple_outputs = 1 < List.length op.output_types in
-  begin
-    match op.output_types with
-    | [ { number_attr = Some number_attr; _ } as output_type ] ->
-      let output_type_string = output_type_string op output_type.type_ ~idx:0 in
-      let number_attr =
-        List.find_exn op.attributes ~f:(fun attr -> String.(=) attr.name number_attr)
-      in
-      let number_value =
-        match number_attr.match_input_length with
-        | Some input -> Printf.sprintf "(List.length %s)" input.name
-        | None -> number_attr.name
-      in
-      p "  let node =";
-      p "    Node.create";
-      p "      ~name";
-      p "      ~op_name";
-      p "      ~output_type:%s" output_type_string;
-      p "      ~inputs";
-      p "      ~control_inputs";
-      p "      ~attributes";
-      p "      ~output_idx:None";
-      p "  in";
-      p "  List.init %s ~f:(fun output_idx ->" number_value;
-      p "    set_output_idx node (Some output_idx))";
-    | output_types ->
-      List.iteri output_types ~f:(fun idx output_type ->
-        let output_type_string = output_type_string op output_type.type_ ~idx in
-        if 0 < idx then p "  ,";
-        p "  Node.create";
-        p "    ~name";
-        p "    ~op_name";
-        p "    ~output_type:%s" output_type_string;
-        p "    ~inputs";
-        p "    ~control_inputs";
-        p "    ~attributes";
-        p "    ~output_idx:%s" (if multiple_outputs then Printf.sprintf "(Some %d)" idx else "None");
-      );
-  end;
+  p "  let op = Eager.Op.create context \"%s\" |> Status.ok_exn in" op.name;
+  List.iter op.inputs ~f:(fun input ->
+    p "  Eager.Op.add_input op %s |> Status.ok_exn;" (Input.caml_name input));
+  p "  Eager.Op.set_attr_type op (%s);" type_attr;
+  p "  Eager.execute op |> Status.ok_exn";
   p ""
 
 let gen_ml ops =
@@ -447,13 +399,11 @@ let gen_ml ops =
   let p s = p out_channel s in
   p "%s" automatically_generated_file;
   p "open Base";
-  p "open Tensorflow_core.Operation";
-  p "open Node";
+  p "open Tf_core";
   p "";
-  p "module Op_names = struct";
-  List.iter ops ~f:(fun op ->
-    p "  let %s = Op_name.of_string \"%s\"" (Op.caml_name op) op.name);
-  p "end";
+  p "type _ t = Eager.Tensor_handle.t";
+  p "module Dim = Operation.Dim";
+  p "module Type = Operation.Type";
   p "";
   List.iter ops ~f:(fun op -> handle_one_op op out_channel);
   Out_channel.close out_channel

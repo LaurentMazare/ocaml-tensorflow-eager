@@ -52,6 +52,10 @@ module Tensor_handle = struct
   let dims t =
     let num_dims = Tfe_tensor_handle.tfe_tensorhandlenumdims t in
     List.init num_dims (fun i -> Tfe_tensor_handle.tfe_tensorhandledim t i)
+
+  let data_type t =
+    Tfe_tensor_handle.tfe_tensorhandledatatype t
+    |> Wrapper.int_to_data_type
 end
 
 module Op = struct

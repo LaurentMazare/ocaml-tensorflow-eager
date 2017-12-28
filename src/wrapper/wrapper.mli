@@ -19,6 +19,7 @@ type data_type =
   | Unknown of int
 
 val data_type_to_int : data_type -> int
+val int_to_data_type : int -> data_type
 
 module Session_options : sig
   type t
