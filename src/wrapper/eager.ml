@@ -48,6 +48,10 @@ module Tensor_handle = struct
     match Status.code status with
     | TF_OK -> Status.Ok (Wrapper.Tensor.tensor_of_c_tensor tensor)
     | _ -> Status.Error status
+
+  let dims t =
+    let num_dims = Tfe_tensor_handle.tfe_tensorhandlenumdims t in
+    List.init num_dims (fun i -> Tfe_tensor_handle.tfe_tensorhandledim t i)
 end
 
 module Op = struct

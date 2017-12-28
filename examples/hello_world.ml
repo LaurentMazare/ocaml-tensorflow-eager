@@ -1,6 +1,12 @@
 open Tf_core
 module Status = Wrapper.Status
 
+let print_dims tensor_handle =
+  let dims = Eager.Tensor_handle.dims tensor_handle in
+  Printf.printf "Dims %d" (List.length dims);
+  List.iter (Printf.printf "%d ") dims;
+  Printf.printf "\n"
+
 let () =
   let context = Eager.Context.create () |> Status.ok_exn in
   let op = Eager.Op.create context "Add" |> Status.ok_exn in
@@ -17,13 +23,14 @@ let () =
   let output_value =
     match output_handles with
     | [ output_handle ] ->
+      print_dims output_handle;
       let output_tensor = Eager.Tensor_handle.resolve output_handle |> Status.ok_exn in
       let output_tensor =
         match Tensor.float32 output_tensor with
         | Some tensor -> tensor
         | None -> assert false
       in
-      Tensor.get output_tensor [|0|]
+      Tensor.get output_tensor [||]
     | [] | _::_::_ -> assert false
   in
   Printf.printf "Hello World %f!\n" output_value

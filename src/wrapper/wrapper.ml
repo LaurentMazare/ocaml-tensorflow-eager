@@ -155,11 +155,6 @@ module Tensor = struct
   let tensor_of_c_tensor c_tensor =
     let num_dims = tf_numdims c_tensor in
     let dims = Array.init num_dims (fun i -> tf_dim c_tensor i) in
-    let dims = (* Scalar hack: use a 1d bigarray as 0d bigarray are not supported. *)
-      if Array.length dims = 0
-      then [| 1 |]
-      else dims
-    in
     let apply_kind kind =
       let data = tf_tensordata c_tensor |> from_voidp (typ_of_bigarray_kind kind) in
       let data = bigarray_of_ptr genarray dims kind data in
