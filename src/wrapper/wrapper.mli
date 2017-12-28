@@ -18,6 +18,8 @@ type data_type =
   | TF_UINT16
   | Unknown of int
 
+val data_type_to_int : data_type -> int
+
 module Session_options : sig
   type t
 
@@ -215,4 +217,9 @@ module Session : sig
     -> ?targets:Graph.operation list
     -> t
     -> Tensor.p list Status.result
+end
+
+module Tensor : sig
+  val c_tensor_of_tensor: Tensor.p -> (unit, [`C]) Ctypes.pointer
+  val tensor_of_c_tensor: Tf_bindings.C(Tf_generated).Tf_tensor.t -> Tensor.p
 end

@@ -1,0 +1,7 @@
+(jbuild_version 1)
+
+(executables
+ ((names (hello_world))
+  (libraries (tf_core))))
+
+

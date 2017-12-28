@@ -1,3 +1,5 @@
+open Ctypes
+
 module C = Tf_bindings.C(Tf_generated)
 open C
 
@@ -30,12 +32,22 @@ module Tensor_handle = struct
     let status = Status.create () in
     let status_ptr = Status.to_ptr status in
     let tensor_handle =
-      Tfe_tensor_handle.tfe_newtensorhandle tensor status_ptr
+      Tfe_tensor_handle.tfe_newtensorhandle
+        (Wrapper.Tensor.c_tensor_of_tensor tensor)
+        status_ptr
     in
     Gc.finalise
       (fun tensor_handle -> Tfe_tensor_handle.tfe_deletetensorhandle tensor_handle)
       tensor_handle;
     Status.result_or_error status tensor_handle
+
+  let resolve t =
+    let status = Status.create () in
+    let status_ptr = Status.to_ptr status in
+    let tensor = Tfe_tensor_handle.tfe_tensorhandleresolve t status_ptr in
+    match Status.code status with
+    | TF_OK -> Status.Ok (Wrapper.Tensor.tensor_of_c_tensor tensor)
+    | _ -> Status.Error status
 end
 
 module Op = struct
@@ -49,4 +61,22 @@ module Op = struct
       (fun op -> Tfe_op.tfe_deleteop op)
       op;
     Status.result_or_error status op
+
+  let set_attr_type t name data_type =
+    Tfe_op.tfe_opsetattrtype t name (Wrapper.data_type_to_int data_type)
+
+  let add_input t tensor_handle =
+    let status = Status.create () in
+    let status_ptr = Status.to_ptr status in
+    Tfe_op.tfe_opaddinput t tensor_handle status_ptr;
+    Status.result_or_error status ()
 end
+
+let execute op ~output_len =
+  let status = Status.create () in
+  let status_ptr = Status.to_ptr status in
+  let output_handles = CArray.make Tfe_tensor_handle.t output_len in
+  let output_len = allocate int output_len in
+  Tfe_op.tfe_execute op (CArray.start output_handles) output_len status_ptr;
+  let output_handles = CArray.to_list output_handles in
+  Status.result_or_error status output_handles
