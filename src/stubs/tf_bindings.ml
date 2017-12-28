@@ -302,4 +302,115 @@ module C(F: Cstubs.FOREIGN) = struct
         @-> Tf_status.t
         @-> returning void)
   end
+
+  module Tfe_context = struct
+    type t = unit ptr
+    let t : t typ = ptr void
+
+    let tfe_newcontext =
+      foreign "TFE_NewContext"
+        (Tf_sessionoptions.t @-> Tf_status.t @-> returning t)
+
+    let tfe_deletecontext =
+      foreign "TFE_DeleteContext" (t @-> Tf_status.t @-> returning void)
+  end
+
+  module Tfe_tensor_handle = struct
+    type t = unit ptr
+    let t : t typ = ptr void
+
+    let tfe_newtensorhandle =
+      foreign "TFE_NewTensorHandle"
+        (Tf_tensor.t @-> Tf_status.t @-> returning t)
+
+    let tfe_deletetensorhandle =
+      foreign "TFE_DeleteTensorHandle" (t @-> returning void)
+
+    let tfe_tensorhandlenumdims =
+      foreign "TFE_TensorHandleNumDims" (t @-> returning int)
+
+    let tfe_tensorhandledim =
+      foreign "TFE_TensorHandleDim" (t @-> int @-> returning int)
+
+    let tfe_tensorhandleresolve =
+      foreign "TFE_TensorHandleResolve" (t @-> Tf_status.t @-> returning Tf_tensor.t)
+
+    let tfe_tensorhandledatatype =
+      foreign "TFE_TensorHandleDataType" (t @-> returning int)
+  end
+
+  module Tfe_op = struct
+    type t = unit ptr
+    let t : t typ = ptr void
+
+    let tfe_newop =
+      foreign "TFE_NewOp"
+        (Tfe_context.t
+        @-> ptr char
+        @-> Tf_status.t
+        @-> returning t)
+
+    let tfe_deleteop =
+      foreign "TFE_DeleteOp" (t @-> returning void)
+
+    let tfe_opaddinput =
+      foreign "TFE_OpAddInput" (t @-> Tfe_tensor_handle.t @-> Tf_status.t @-> returning void)
+
+    let tfe_opsetattrstring =
+      foreign "TFE_OpSetAttrString"
+        (t @-> ptr char @-> ptr char @-> returning void)
+
+    let tfe_opsetattrint =
+      foreign "TFE_OpSetAttrInt"
+        (t @-> ptr char @-> int64_t @-> returning void)
+
+    let tfe_opsetattrfloat =
+      foreign "TFE_OpSetAttrFloat"
+        (t @-> ptr char @-> float @-> returning void)
+
+    let tfe_opsetattrbool =
+      foreign "TFE_OpSetAttrBool"
+        (t @-> ptr char @-> uchar @-> returning void)
+
+    let tfe_opsetattrtype =
+      foreign "TFE_OpSetAttrType"
+        (t @-> ptr char @-> int @-> returning void)
+
+    let tfe_opsetattrshape =
+      foreign "TFE_OpSetAttrShape"
+        (t @-> ptr char @-> ptr int64_t @-> int @-> Tf_status.t @-> returning void)
+
+    let tfe_opsetattrstringlist =
+      foreign "TFE_OpSetAttrStringList"
+        (t @-> ptr char @-> ptr (ptr char) @-> int @-> returning void)
+
+    let tf_opsetattrintlist =
+      foreign "TFE_OpSetAttrIntList"
+        (t @-> ptr char @-> ptr int64_t @-> int @-> returning void)
+
+    let tf_opsetattrfloatlist =
+      foreign "TFE_OpSetAttrFloatList"
+        (t @-> ptr char @-> ptr float @-> int @-> returning void)
+
+    let tfe_opsetattrboollist =
+      foreign "TFE_OpSetAttrBoolList"
+        (t @-> ptr char @-> ptr uchar @-> int @-> returning void)
+
+    let tfe_opsetattrtypelist =
+      foreign "TFE_OpSetAttrTypeList"
+        (t @-> ptr char @-> ptr int @-> int @-> returning void)
+
+    let tfe_opsetattrshapelist =
+      foreign "TFE_OpSetAttrShapeList"
+        (t @-> ptr char @-> ptr (ptr int64_t) @-> ptr int @-> int @-> Tf_status.t @-> returning void)
+
+
+    let tfe_execute =
+      foreign "TFE_Execute"
+        (t
+        @-> ptr Tfe_tensor_handle.t
+        @-> ptr int
+        @-> Tf_status.t
+        @-> returning void)
+  end
 end

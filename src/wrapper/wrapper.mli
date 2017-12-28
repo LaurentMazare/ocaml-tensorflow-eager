@@ -21,11 +21,14 @@ type data_type =
 module Session_options : sig
   type t
 
+  val to_ptr : t -> (unit, [`C]) Ctypes.pointer
+
   val create : unit -> t
 end
 
 module Status : sig
   type t
+  val to_ptr : t -> (unit, [`C]) Ctypes.pointer
   type code =
     | TF_OK
     | TF_CANCELLED
@@ -46,6 +49,8 @@ module Status : sig
     | TF_DATA_LOSS
     | Unknown of int
 
+  val create : unit -> t
+
   val code : t -> code
 
   val message : t -> string
@@ -55,6 +60,8 @@ module Status : sig
     | Error of t
 
   val ok_exn : 'a result -> 'a
+
+  val result_or_error : t -> 'a -> 'a result
 end
 
 module Graph : sig

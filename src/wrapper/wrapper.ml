@@ -242,6 +242,8 @@ end
 module Status = struct
   include C.Tf_status
 
+  let to_ptr x = x
+
   type code =
     | TF_OK
     | TF_CANCELLED
@@ -574,6 +576,8 @@ end
 
 module Session_options = struct
   include Tf_sessionoptions
+
+  let to_ptr x = x
 
   let create () =
     let session_options = tf_newsessionoptions () in
