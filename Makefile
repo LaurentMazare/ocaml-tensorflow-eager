@@ -1,9 +1,11 @@
 ALL = examples/hello_world.exe
 
+.FORCE:
+
 %.exe: .FORCE
 	jbuilder build --dev $@
 
-src/ops/generated: _build/default/src/gen_ops/gen.exe
+src/ops/generated: src/gen_ops/gen.exe
 	_build/default/src/gen_ops/gen.exe
 
 all:

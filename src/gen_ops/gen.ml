@@ -10,6 +10,11 @@ let do_not_generate_these_ops =
     [ "Const"
     ]
 
+let p out_channel s =
+  Printf.ksprintf (fun line ->
+    Out_channel.output_string out_channel line;
+    Out_channel.output_char out_channel '\n') s
+
 let types_to_string type_ =
   "`" ^ String.uncapitalize (Op_type.to_string type_)
 
@@ -122,27 +127,21 @@ module Attribute = struct
         (caml_name t)
     | Some _ -> ()
 
-  let ml_apply t attribute_var =
+  let ml_apply t out_channel =
+    let p s = p out_channel s in
     let caml_name = caml_name t in
-    let updated_attributes =
-      let caml_name =
-        match t.match_input_length with
-        | None -> caml_name
-        | Some input -> Printf.sprintf "(List.length %s)" (Input.caml_name input)
-      in
-      Printf.sprintf "(\"%s\", %s) :: %s"
-        t.name
-        (constr caml_name t.attr_type)
-        attribute_var
+    let caml_name =
+      match t.match_input_length with
+      | None -> caml_name
+      | Some input -> Printf.sprintf "(List.length %s)" (Input.caml_name input)
     in
     if t.has_default_value && Option.is_none t.match_input_length
-    then
-      Printf.sprintf "match %s with | None -> %s | Some %s -> %s"
-        caml_name
-        attribute_var
-        caml_name
-        updated_attributes
-    else updated_attributes
+    then begin
+      p "  Option.iter %s ~f:(fun %s ->" caml_name caml_name;
+      p "    Eager.Op.set_attr op \"%s\" %s" t.name (constr caml_name t.attr_type);
+      p "  );";
+    end else
+      p "  Eager.Op.set_attr op \"%s\" %s" t.name (constr caml_name t.attr_type)
 end
 
 module Op = struct
@@ -291,7 +290,7 @@ let output_type_string op output_type ~idx =
   | Fixed p -> "Type." ^ Op_type.to_string p
   | Polymorphic (alpha, _) ->
     match same_input_and_output_type op ~alpha with
-    | Some input -> Printf.sprintf "(Node.output_type %s)" (Input.caml_comp_name input)
+    | Some input -> Printf.sprintf "(Eager.Tensor_handle.data_type %s)" (Input.caml_comp_name input)
     | None -> type_variable ~idx
 
 let needs_variable_for_output_type op output_type =
@@ -302,11 +301,6 @@ let needs_variable_for_output_type op output_type =
 
 let automatically_generated_file =
   "(* THIS FILE HAS BEEN AUTOMATICALLY GENERATED, DO NOT EDIT BY HAND! *)"
-
-let p out_channel s =
-  Printf.ksprintf (fun line ->
-    Out_channel.output_string out_channel line;
-    Out_channel.output_char out_channel '\n') s
 
 let escape_comment s =
   String.substr_replace_all s ~pattern:"{|" ~with_:"{ |"
@@ -365,32 +359,19 @@ let handle_one_op (op : Op.t) out_channel =
   if List.is_empty op.inputs
   then p "    ()";
   p "  =";
-  let type_attr =
-    List.filter_mapi op.output_types ~f:(fun idx output_type ->
-      Option.map output_type.name ~f:(fun output_type_name ->
-        output_type_name, output_type_string op output_type.type_ ~idx))
-  in
-  let type_attr =
-    List.fold op.inputs ~init:type_attr ~f:(fun acc (input : Input.t) ->
-      match input.type_name with
-      | None -> acc
-      | Some type_name when List.Assoc.mem ~equal:String.equal acc type_name -> acc
-      | Some type_name ->
-        let name = Input.caml_comp_name input in
-        (type_name, Printf.sprintf "(Node.output_type %s)" name) :: acc)
-    |> List.map ~f:(fun (type_name, type_string) ->
-      Printf.sprintf " \"%s\", Type (P %s) " type_name type_string)
-    |> String.concat ~sep:"; "
-  in
-  List.iter op.attributes ~f:(fun attribute ->
-    p "  let attributes =";
-    p "    %s" (Attribute.ml_apply attribute "attributes");
-    p "  in";
-  );
   p "  let op = Eager.Op.create context \"%s\" |> Status.ok_exn in" op.name;
   List.iter op.inputs ~f:(fun input ->
     p "  Eager.Op.add_input op %s |> Status.ok_exn;" (Input.caml_name input));
-  p "  Eager.Op.set_attr_type op (%s);" type_attr;
+  List.iteri op.output_types ~f:(fun idx output_type ->
+    Option.iter output_type.name ~f:(fun output_type_name ->
+      let output_type_string = output_type_string op output_type.type_ ~idx in
+      p "  Eager.Op.set_attr_type op \"%s\" %s;" output_type_name output_type_string));
+  List.iter op.inputs ~f:(fun (input : Input.t) ->
+    Option.iter input.type_name ~f:(fun type_name ->
+      let name = Input.caml_comp_name input in
+      let type_string = Printf.sprintf "(Eager.Tensor_handle.data_type %s)" name in
+      p "  Eager.Op.set_attr_type op \"%s\" %s" type_name type_string));
+  List.iter op.attributes ~f:(fun attribute -> Attribute.ml_apply attribute out_channel);
   p "  Eager.execute op |> Status.ok_exn";
   p ""
 
