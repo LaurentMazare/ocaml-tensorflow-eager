@@ -363,15 +363,24 @@ let handle_one_op (op : Op.t) out_channel =
     if Option.is_some input.number_attr
     then p "  List.iter %s ~f:(Op.add_input op);" (Input.caml_name input)
     else p "  Op.add_input op %s;" (Input.caml_name input));
+  let attr_names = Hash_set.create (module String) () in
   List.iteri op.output_types ~f:(fun idx output_type ->
     Option.iter output_type.name ~f:(fun output_type_name ->
       let output_type_string = output_type_string op output_type.type_ ~idx in
-      p "  Op.set_attr_data_type op \"%s\" %s;" output_type_name output_type_string));
+      if not (Hash_set.mem attr_names output_type_name)
+      then begin
+        Hash_set.add attr_names output_type_name;
+        p "  Op.set_attr_data_type op \"%s\" %s;" output_type_name output_type_string
+      end));
   List.iter op.inputs ~f:(fun (input : Input.t) ->
     Option.iter input.type_name ~f:(fun type_name ->
       let name = Input.caml_comp_name input in
       let type_string = Printf.sprintf "(Op.tensor_handle_data_type %s)" name in
-      p "  Op.set_attr_data_type op \"%s\" %s;" type_name type_string));
+      if not (Hash_set.mem attr_names type_name)
+      then begin
+        Hash_set.add attr_names type_name;
+        p "  Op.set_attr_data_type op \"%s\" %s;" type_name type_string
+      end));
   List.iter op.attributes ~f:(fun attribute -> Attribute.ml_apply attribute out_channel);
   begin
     match op.output_types with

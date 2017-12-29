@@ -28,7 +28,6 @@ let abs
   let op = Op.create context "Abs" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let accumulatorApplyGradient
@@ -76,7 +75,6 @@ let acos
   let op = Op.create context "Acos" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let acosh
@@ -84,7 +82,6 @@ let acosh
   =
   let op = Op.create context "Acosh" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -96,8 +93,6 @@ let add
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let addManySparseToTensorsMap
@@ -125,7 +120,6 @@ let addN
   =
   let op = Op.create context "AddN" in
   List.iter inputs__ ~f:(Op.add_input op);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn inputs__));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn inputs__));
   Op.set_attr_int op "N" (List.length inputs__);
   Op.execute1 op
@@ -269,13 +263,6 @@ let applyAdadelta
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum_update);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rho);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type epsilon);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -294,10 +281,6 @@ let applyAdagrad
   Op.add_input op lr;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -324,13 +307,6 @@ let applyAdagradDA
   Op.add_input op l2;
   Op.add_input op global_step;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradient_accumulator);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradient_squared_accumulator);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -362,16 +338,6 @@ let applyAdam
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type m);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type v);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type beta1_power);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type beta2_power);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type beta1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type beta2);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type epsilon);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -403,15 +369,6 @@ let applyCenteredRMSProp
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type mg);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ms);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type mom);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rho);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type momentum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type epsilon);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -438,14 +395,6 @@ let applyFtrl
   Op.add_input op l2;
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type linear);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr_power);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -474,15 +423,6 @@ let applyFtrlV2
   Op.add_input op l2_shrinkage;
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type linear);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2_shrinkage);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr_power);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -499,9 +439,6 @@ let applyGradientDescent
   Op.add_input op alpha;
   Op.add_input op delta;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type alpha);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type delta);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -523,11 +460,6 @@ let applyMomentum
   Op.add_input op grad;
   Op.add_input op momentum;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type momentum);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -553,12 +485,6 @@ let applyProximalAdagrad
   Op.add_input op l2;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -579,11 +505,6 @@ let applyProximalGradientDescent
   Op.add_input op l2;
   Op.add_input op delta;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type alpha);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type delta);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -610,14 +531,6 @@ let applyRMSProp
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ms);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type mom);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rho);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type momentum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type epsilon);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -632,7 +545,6 @@ let approximateEqual
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Option.iter tolerance ~f:(fun tolerance ->
     Op.set_attr_float op "tolerance" tolerance
   );
@@ -698,7 +610,6 @@ let asin
   let op = Op.create context "Asin" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let asinh
@@ -706,7 +617,6 @@ let asinh
   =
   let op = Op.create context "Asinh" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -720,8 +630,6 @@ let assign
   Op.add_input op ref;
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Option.iter validate_shape ~f:(fun validate_shape ->
     Op.set_attr_bool op "validate_shape" validate_shape
   );
@@ -739,8 +647,6 @@ let assignAdd
   Op.add_input op ref;
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -755,8 +661,6 @@ let assignSub
   Op.add_input op ref;
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -768,7 +672,6 @@ let atan
   let op = Op.create context "Atan" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let atan2
@@ -779,8 +682,6 @@ let atan2
   Op.add_input op y;
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let atanh
@@ -788,7 +689,6 @@ let atanh
   =
   let op = Op.create context "Atanh" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -847,7 +747,6 @@ let avgPool
   let op = Op.create context "AvgPool" in
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -865,7 +764,6 @@ let avgPool3D
   =
   let op = Op.create context "AvgPool3D" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
@@ -887,7 +785,6 @@ let avgPool3DGrad
   Op.add_input op orig_input_shape;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -907,7 +804,6 @@ let avgPoolGrad
   let op = Op.create context "AvgPoolGrad" in
   Op.add_input op orig_input_shape;
   Op.add_input op grad;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
@@ -986,7 +882,6 @@ let batchCholesky
   let op = Op.create context "BatchCholesky" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let batchCholeskyGrad
@@ -997,8 +892,6 @@ let batchCholeskyGrad
   Op.add_input op l;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.execute1 op
 
 let batchFFT
@@ -1053,8 +946,6 @@ let batchMatMul
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Option.iter adj_x ~f:(fun adj_x ->
     Op.set_attr_bool op "adj_x" adj_x
   );
@@ -1073,7 +964,6 @@ let batchMatrixBandPart
   Op.add_input op num_lower;
   Op.add_input op num_upper;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let batchMatrixDeterminant
@@ -1081,7 +971,6 @@ let batchMatrixDeterminant
   =
   let op = Op.create context "BatchMatrixDeterminant" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -1091,7 +980,6 @@ let batchMatrixDiag
   let op = Op.create context "BatchMatrixDiag" in
   Op.add_input op diagonal;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type diagonal);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type diagonal);
   Op.execute1 op
 
 let batchMatrixDiagPart
@@ -1099,7 +987,6 @@ let batchMatrixDiagPart
   =
   let op = Op.create context "BatchMatrixDiagPart" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -1109,7 +996,6 @@ let batchMatrixInverse
   =
   let op = Op.create context "BatchMatrixInverse" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter adjoint ~f:(fun adjoint ->
     Op.set_attr_bool op "adjoint" adjoint
@@ -1124,8 +1010,6 @@ let batchMatrixSetDiag
   Op.add_input op input;
   Op.add_input op diagonal;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type diagonal);
   Op.execute1 op
 
 let batchMatrixSolve
@@ -1137,8 +1021,6 @@ let batchMatrixSolve
   Op.add_input op matrix;
   Op.add_input op rhs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rhs);
   Option.iter adjoint ~f:(fun adjoint ->
     Op.set_attr_bool op "adjoint" adjoint
   );
@@ -1155,8 +1037,6 @@ let batchMatrixSolveLs
   Op.add_input op rhs;
   Op.add_input op l2_regularizer;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rhs);
   Option.iter fast ~f:(fun fast ->
     Op.set_attr_bool op "fast" fast
   );
@@ -1172,8 +1052,6 @@ let batchMatrixTriangularSolve
   Op.add_input op matrix;
   Op.add_input op rhs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rhs);
   Option.iter lower ~f:(fun lower ->
     Op.set_attr_bool op "lower" lower
   );
@@ -1198,11 +1076,6 @@ let batchNormWithGlobalNormalization
   Op.add_input op beta;
   Op.add_input op gamma;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type m);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type v);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type beta);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gamma);
   Op.set_attr_float op "variance_epsilon" variance_epsilon;
   Op.set_attr_bool op "scale_after_normalization" scale_after_normalization;
   Op.execute1 op
@@ -1223,15 +1096,6 @@ let batchNormWithGlobalNormalizationGrad
   Op.add_input op gamma;
   Op.add_input op backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type m);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type v);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gamma);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type backprop);
   Op.set_attr_float op "variance_epsilon" variance_epsilon;
   Op.set_attr_bool op "scale_after_normalization" scale_after_normalization;
   Op.execute5 op
@@ -1242,7 +1106,6 @@ let batchSelfAdjointEig
   let op = Op.create context "BatchSelfAdjointEig" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let batchSelfAdjointEigV2
@@ -1251,8 +1114,6 @@ let batchSelfAdjointEigV2
   =
   let op = Op.create context "BatchSelfAdjointEigV2" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter compute_v ~f:(fun compute_v ->
     Op.set_attr_bool op "compute_v" compute_v
@@ -1266,9 +1127,6 @@ let batchSvd
   =
   let op = Op.create context "BatchSvd" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter compute_uv ~f:(fun compute_uv ->
     Op.set_attr_bool op "compute_uv" compute_uv
@@ -1287,7 +1145,6 @@ let batchToSpace
   Op.add_input op input;
   Op.add_input op crops;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type crops);
   Op.set_attr_int op "block_size" block_size;
   Op.execute1 op
@@ -1301,7 +1158,6 @@ let batchToSpaceND
   Op.add_input op input;
   Op.add_input op block_shape;
   Op.add_input op crops;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tblock_shape" (Op.tensor_handle_data_type block_shape);
   Op.set_attr_data_type op "Tcrops" (Op.tensor_handle_data_type crops);
@@ -1317,9 +1173,6 @@ let betainc
   Op.add_input op b;
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type b);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let biasAdd
@@ -1331,8 +1184,6 @@ let biasAdd
   Op.add_input op value;
   Op.add_input op bias;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type bias);
   Option.iter data_format ~f:(fun data_format ->
     Op.set_attr_string op "data_format" data_format
   );
@@ -1344,7 +1195,6 @@ let biasAddGrad
   =
   let op = Op.create context "BiasAddGrad" in
   Op.add_input op out_backprop;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Option.iter data_format ~f:(fun data_format ->
     Op.set_attr_string op "data_format" data_format
@@ -1359,8 +1209,6 @@ let biasAddV1
   Op.add_input op value;
   Op.add_input op bias;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type bias);
   Op.execute1 op
 
 let bincount
@@ -1372,7 +1220,6 @@ let bincount
   Op.add_input op arr;
   Op.add_input op size;
   Op.add_input op weights;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type weights);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type weights);
   Op.execute1 op
 
@@ -1394,8 +1241,6 @@ let bitwiseAnd
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let bitwiseOr
@@ -1406,8 +1251,6 @@ let bitwiseOr
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let bitwiseXor
@@ -1418,8 +1261,6 @@ let bitwiseXor
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let broadcastArgs
@@ -1430,8 +1271,6 @@ let broadcastArgs
   Op.add_input op s0;
   Op.add_input op s1;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type s0);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type s0);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type s1);
   Op.execute1 op
 
 let broadcastGradientArgs
@@ -1442,9 +1281,6 @@ let broadcastGradientArgs
   Op.add_input op s0;
   Op.add_input op s1;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type s0);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type s0);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type s0);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type s1);
   Op.execute2 op
 
 let bucketize
@@ -1511,7 +1347,6 @@ let ceil
   let op = Op.create context "Ceil" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let checkNumerics
@@ -1521,7 +1356,6 @@ let checkNumerics
   let op = Op.create context "CheckNumerics" in
   Op.add_input op tensor;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
   Op.set_attr_string op "message" message;
   Op.execute1 op
 
@@ -1530,7 +1364,6 @@ let cholesky
   =
   let op = Op.create context "Cholesky" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -1542,8 +1375,6 @@ let choleskyGrad
   Op.add_input op l;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.execute1 op
 
 let complex
@@ -1556,7 +1387,6 @@ let complex
   Op.add_input op imag;
   Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type real);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type imag);
   Op.execute1 op
 
 let complexAbs
@@ -1596,7 +1426,6 @@ let concat
   Op.add_input op concat_dim;
   List.iter values ~f:(Op.add_input op);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_int op "N" (List.length values);
   Op.execute1 op
 
@@ -1617,7 +1446,6 @@ let concatV2
   let op = Op.create context "ConcatV2" in
   List.iter values ~f:(Op.add_input op);
   Op.add_input op axis;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type axis);
   Op.set_attr_int op "N" (List.length values);
@@ -1645,7 +1473,6 @@ let conj
   let op = Op.create context "Conj" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let controlTrigger
@@ -1666,8 +1493,6 @@ let conv2D
   Op.add_input op input;
   Op.add_input op filter;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
   Op.set_attr_int_list op "strides" strides;
   Option.iter use_cudnn_on_gpu ~f:(fun use_cudnn_on_gpu ->
     Op.set_attr_bool op "use_cudnn_on_gpu" use_cudnn_on_gpu
@@ -1692,8 +1517,6 @@ let conv2DBackpropFilter
   Op.add_input op filter_sizes;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Option.iter use_cudnn_on_gpu ~f:(fun use_cudnn_on_gpu ->
     Op.set_attr_bool op "use_cudnn_on_gpu" use_cudnn_on_gpu
@@ -1718,8 +1541,6 @@ let conv2DBackpropInput
   Op.add_input op filter;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Option.iter use_cudnn_on_gpu ~f:(fun use_cudnn_on_gpu ->
     Op.set_attr_bool op "use_cudnn_on_gpu" use_cudnn_on_gpu
@@ -1741,8 +1562,6 @@ let conv3D
   Op.add_input op input;
   Op.add_input op filter;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
   Option.iter data_format ~f:(fun data_format ->
@@ -1762,9 +1581,6 @@ let conv3DBackpropFilter
   Op.add_input op filter;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
   Op.execute1 op
@@ -1782,8 +1598,6 @@ let conv3DBackpropFilterV2
   Op.add_input op filter_sizes;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
   Option.iter data_format ~f:(fun data_format ->
@@ -1803,9 +1617,6 @@ let conv3DBackpropInput
   Op.add_input op filter;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
   Op.execute1 op
@@ -1823,8 +1634,6 @@ let conv3DBackpropInputV2
   Op.add_input op filter;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
   Option.iter data_format ~f:(fun data_format ->
@@ -1839,7 +1648,6 @@ let copy
   let op = Op.create context "Copy" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter tensor_name ~f:(fun tensor_name ->
     Op.set_attr_string op "tensor_name" tensor_name
   );
@@ -1852,7 +1660,6 @@ let copyHost
   let op = Op.create context "CopyHost" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter tensor_name ~f:(fun tensor_name ->
     Op.set_attr_string op "tensor_name" tensor_name
   );
@@ -1864,7 +1671,6 @@ let cos
   let op = Op.create context "Cos" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let cosh
@@ -1872,7 +1678,6 @@ let cosh
   =
   let op = Op.create context "Cosh" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -1882,7 +1687,6 @@ let countUpTo
   =
   let op = Op.create context "CountUpTo" in
   Op.add_input op ref;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_int op "limit" limit;
   Op.execute1 op
@@ -1954,8 +1758,6 @@ let cross
   Op.add_input op a;
   Op.add_input op b;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type b);
   Op.execute1 op
 
 let cumprod
@@ -1967,7 +1769,6 @@ let cumprod
   let op = Op.create context "Cumprod" in
   Op.add_input op x;
   Op.add_input op axis;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type axis);
   Option.iter exclusive ~f:(fun exclusive ->
@@ -1988,7 +1789,6 @@ let cumsum
   Op.add_input op x;
   Op.add_input op axis;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type axis);
   Option.iter exclusive ~f:(fun exclusive ->
     Op.set_attr_bool op "exclusive" exclusive
@@ -2004,7 +1804,6 @@ let debugGradientIdentity
   let op = Op.create context "DebugGradientIdentity" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let debugIdentity
@@ -2015,7 +1814,6 @@ let debugIdentity
   =
   let op = Op.create context "DebugIdentity" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter device_name ~f:(fun device_name ->
     Op.set_attr_string op "device_name" device_name
@@ -2152,8 +1950,6 @@ let denseToDenseSetOperation
   Op.add_input op set1;
   Op.add_input op set2;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set2);
   Op.set_attr_string op "set_operation" set_operation;
   Option.iter validate_indices ~f:(fun validate_indices ->
     Op.set_attr_bool op "validate_indices" validate_indices
@@ -2174,8 +1970,6 @@ let denseToSparseSetOperation
   Op.add_input op set2_values;
   Op.add_input op set2_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set2_values);
   Op.set_attr_string op "set_operation" set_operation;
   Option.iter validate_indices ~f:(fun validate_indices ->
     Op.set_attr_bool op "validate_indices" validate_indices
@@ -2189,7 +1983,6 @@ let depthToSpace
   =
   let op = Op.create context "DepthToSpace" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int op "block_size" block_size;
   Option.iter data_format ~f:(fun data_format ->
@@ -2208,8 +2001,6 @@ let depthwiseConv2dNative
   Op.add_input op input;
   Op.add_input op filter;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
   Option.iter data_format ~f:(fun data_format ->
@@ -2230,8 +2021,6 @@ let depthwiseConv2dNativeBackpropFilter
   Op.add_input op filter_sizes;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
   Option.iter data_format ~f:(fun data_format ->
@@ -2252,8 +2041,6 @@ let depthwiseConv2dNativeBackpropInput
   Op.add_input op filter;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
   Option.iter data_format ~f:(fun data_format ->
@@ -2293,7 +2080,6 @@ let destroyTemporaryVariable
   let op = Op.create context "DestroyTemporaryVariable" in
   Op.add_input op ref;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_string op "var_name" var_name;
   Op.execute1 op
 
@@ -2303,7 +2089,6 @@ let diag
   let op = Op.create context "Diag" in
   Op.add_input op diagonal;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type diagonal);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type diagonal);
   Op.execute1 op
 
 let diagPart
@@ -2312,7 +2097,6 @@ let diagPart
   let op = Op.create context "DiagPart" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let digamma
@@ -2320,7 +2104,6 @@ let digamma
   =
   let op = Op.create context "Digamma" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -2335,8 +2118,6 @@ let dilation2D
   Op.add_input op input;
   Op.add_input op filter;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_int_list op "rates" rates;
   Op.set_attr_string op "padding" padding;
@@ -2355,9 +2136,6 @@ let dilation2DBackpropFilter
   Op.add_input op filter;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_int_list op "rates" rates;
   Op.set_attr_string op "padding" padding;
@@ -2376,9 +2154,6 @@ let dilation2DBackpropInput
   Op.add_input op filter;
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_int_list op "rates" rates;
   Op.set_attr_string op "padding" padding;
@@ -2392,8 +2167,6 @@ let div
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let drawBoundingBoxes
@@ -2403,7 +2176,6 @@ let drawBoundingBoxes
   let op = Op.create context "DrawBoundingBoxes" in
   Op.add_input op images;
   Op.add_input op boxes;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Op.execute1 op
 
@@ -2416,7 +2188,6 @@ let dynamicPartition
   Op.add_input op data;
   Op.add_input op partitions;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_int op "num_partitions" num_partitions;
   Op.execute op ~output_len:10
 
@@ -2427,7 +2198,6 @@ let dynamicStitch
   let op = Op.create context "DynamicStitch" in
   List.iter indices ~f:(Op.add_input op);
   List.iter data ~f:(Op.add_input op);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn data));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn data));
   Op.set_attr_int op "N" (List.length indices);
   Op.execute1 op
@@ -2449,7 +2219,6 @@ let editDistance
   Op.add_input op truth_values;
   Op.add_input op truth_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type hypothesis_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type truth_values);
   Option.iter normalize ~f:(fun normalize ->
     Op.set_attr_bool op "normalize" normalize
   );
@@ -2461,7 +2230,6 @@ let elu
   let op = Op.create context "Elu" in
   Op.add_input op features;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
 let eluGrad
@@ -2472,8 +2240,6 @@ let eluGrad
   Op.add_input op gradients;
   Op.add_input op outputs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type outputs);
   Op.execute1 op
 
 let encodeBase64
@@ -2517,7 +2283,6 @@ let enter
   let op = Op.create context "Enter" in
   Op.add_input op data;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_string op "frame_name" frame_name;
   Option.iter is_constant ~f:(fun is_constant ->
     Op.set_attr_bool op "is_constant" is_constant
@@ -2535,7 +2300,6 @@ let equal
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let erf
@@ -2543,7 +2307,6 @@ let erf
   =
   let op = Op.create context "Erf" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -2553,7 +2316,6 @@ let erfc
   let op = Op.create context "Erfc" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let exit
@@ -2562,7 +2324,6 @@ let exit
   let op = Op.create context "Exit" in
   Op.add_input op data;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.execute1 op
 
 let exp
@@ -2570,7 +2331,6 @@ let exp
   =
   let op = Op.create context "Exp" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -2582,7 +2342,6 @@ let expandDims
   Op.add_input op input;
   Op.add_input op dim;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tdim" (Op.tensor_handle_data_type dim);
   Op.execute1 op
 
@@ -2591,7 +2350,6 @@ let expm1
   =
   let op = Op.create context "Expm1" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -2627,7 +2385,6 @@ let extractImagePatches
   =
   let op = Op.create context "ExtractImagePatches" in
   Op.add_input op images;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Op.set_attr_int_list op "ksizes" ksizes;
   Op.set_attr_int_list op "strides" strides;
@@ -2831,7 +2588,6 @@ let fill
   Op.add_input op dims;
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.execute1 op
 
 let fixedLengthRecordReader
@@ -2915,7 +2671,6 @@ let floor
   let op = Op.create context "Floor" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let floorDiv
@@ -2926,8 +2681,6 @@ let floorDiv
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let floorMod
@@ -2938,8 +2691,6 @@ let floorMod
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let fractionalAvgPool
@@ -2953,7 +2704,6 @@ let fractionalAvgPool
   =
   let op = Op.create context "FractionalAvgPool" in
   Op.add_input op value;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_float_list op "pooling_ratio" pooling_ratio;
   Option.iter pseudo_random ~f:(fun pseudo_random ->
@@ -2986,7 +2736,6 @@ let fractionalAvgPoolGrad
   Op.add_input op row_pooling_sequence;
   Op.add_input op col_pooling_sequence;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Option.iter overlapping ~f:(fun overlapping ->
     Op.set_attr_bool op "overlapping" overlapping
   );
@@ -3003,7 +2752,6 @@ let fractionalMaxPool
   =
   let op = Op.create context "FractionalMaxPool" in
   Op.add_input op value;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_float_list op "pooling_ratio" pooling_ratio;
   Option.iter pseudo_random ~f:(fun pseudo_random ->
@@ -3038,9 +2786,6 @@ let fractionalMaxPoolGrad
   Op.add_input op row_pooling_sequence;
   Op.add_input op col_pooling_sequence;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_output);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
   Option.iter overlapping ~f:(fun overlapping ->
     Op.set_attr_bool op "overlapping" overlapping
   );
@@ -3063,15 +2808,6 @@ let fusedBatchNorm
   Op.add_input op mean;
   Op.add_input op variance;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type scale);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type offset);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type mean);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type variance);
   Option.iter epsilon ~f:(fun epsilon ->
     Op.set_attr_float op "epsilon" epsilon
   );
@@ -3100,15 +2836,6 @@ let fusedBatchNormGrad
   Op.add_input op reserve_space_1;
   Op.add_input op reserve_space_2;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type scale);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type reserve_space_1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type reserve_space_2);
   Option.iter epsilon ~f:(fun epsilon ->
     Op.set_attr_float op "epsilon" epsilon
   );
@@ -3138,13 +2865,6 @@ let fusedBatchNormGradV2
   Op.add_input op reserve_space_2;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
   Op.set_attr_data_type op "U" (Op.tensor_handle_data_type reserve_space_1);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type reserve_space_1);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type reserve_space_1);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type reserve_space_1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type reserve_space_1);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type reserve_space_2);
   Option.iter epsilon ~f:(fun epsilon ->
     Op.set_attr_float op "epsilon" epsilon
   );
@@ -3174,14 +2894,6 @@ let fusedBatchNormV2
   Op.add_input op variance;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "U" (Op.tensor_handle_data_type scale);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type scale);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type scale);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type scale);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type scale);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type offset);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type mean);
-  Op.set_attr_data_type op "U" (Op.tensor_handle_data_type variance);
   Option.iter epsilon ~f:(fun epsilon ->
     Op.set_attr_float op "epsilon" epsilon
   );
@@ -3206,8 +2918,6 @@ let fusedPadConv2D
   Op.add_input op paddings;
   Op.add_input op filter;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
   Op.set_attr_string op "mode" mode;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -3229,8 +2939,6 @@ let fusedResizeAndPadConv2D
   Op.add_input op paddings;
   Op.add_input op filter;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
   Option.iter resize_align_corners ~f:(fun resize_align_corners ->
     Op.set_attr_bool op "resize_align_corners" resize_align_corners
   );
@@ -3248,7 +2956,6 @@ let gather
   Op.add_input op params;
   Op.add_input op indices;
   Op.set_attr_data_type op "Tparams" (Op.tensor_handle_data_type params);
-  Op.set_attr_data_type op "Tparams" (Op.tensor_handle_data_type params);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
   Option.iter validate_indices ~f:(fun validate_indices ->
     Op.set_attr_bool op "validate_indices" validate_indices
@@ -3263,7 +2970,6 @@ let gatherNd
   Op.add_input op params;
   Op.add_input op indices;
   Op.set_attr_data_type op "Tparams" (Op.tensor_handle_data_type params);
-  Op.set_attr_data_type op "Tparams" (Op.tensor_handle_data_type params);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
   Op.execute1 op
 
@@ -3276,7 +2982,6 @@ let gatherV2
   Op.add_input op params;
   Op.add_input op indices;
   Op.add_input op axis;
-  Op.set_attr_data_type op "Tparams" (Op.tensor_handle_data_type params);
   Op.set_attr_data_type op "Tparams" (Op.tensor_handle_data_type params);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
   Op.set_attr_data_type op "Taxis" (Op.tensor_handle_data_type axis);
@@ -3320,7 +3025,6 @@ let greater
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let greaterEqual
@@ -3331,7 +3035,6 @@ let greaterEqual
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let hSVToRGB
@@ -3339,7 +3042,6 @@ let hSVToRGB
   =
   let op = Op.create context "HSVToRGB" in
   Op.add_input op images;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Op.execute1 op
 
@@ -3425,7 +3127,6 @@ let identity
   let op = Op.create context "Identity" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let identityReader
@@ -3450,8 +3151,6 @@ let igamma
   Op.add_input op a;
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let igammac
@@ -3462,8 +3161,6 @@ let igammac
   Op.add_input op a;
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let imag
@@ -3524,7 +3221,6 @@ let inTopKV2
   Op.add_input op targets;
   Op.add_input op k;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type targets);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type k);
   Op.execute1 op
 
 let initializeTable
@@ -3567,7 +3263,6 @@ let inv
   let op = Op.create context "Inv" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let invGrad
@@ -3578,8 +3273,6 @@ let invGrad
   Op.add_input op y;
   Op.add_input op dy;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dy);
   Op.execute1 op
 
 let invert
@@ -3588,7 +3281,6 @@ let invert
   let op = Op.create context "Invert" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let invertPermutation
@@ -3596,7 +3288,6 @@ let invertPermutation
   =
   let op = Op.create context "InvertPermutation" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -3638,7 +3329,6 @@ let l2Loss
   let op = Op.create context "L2Loss" in
   Op.add_input op t;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
   Op.execute1 op
 
 let lMDBReader
@@ -3664,7 +3354,6 @@ let lRN
   =
   let op = Op.create context "LRN" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter depth_radius ~f:(fun depth_radius ->
     Op.set_attr_int op "depth_radius" depth_radius
@@ -3694,9 +3383,6 @@ let lRNGrad
   Op.add_input op input_image;
   Op.add_input op output_image;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_grads);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_grads);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_image);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type output_image);
   Option.iter depth_radius ~f:(fun depth_radius ->
     Op.set_attr_int op "depth_radius" depth_radius
   );
@@ -3742,7 +3428,6 @@ let less
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let lessEqual
@@ -3753,7 +3438,6 @@ let lessEqual
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let lgamma
@@ -3761,7 +3445,6 @@ let lgamma
   =
   let op = Op.create context "Lgamma" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -3775,8 +3458,6 @@ let linSpace
   Op.add_input op stop;
   Op.add_input op num;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type start);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type start);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type stop);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type num);
   Op.execute1 op
 
@@ -3790,8 +3471,6 @@ let listDiff
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_1));
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute2 op
 
 let loadAndRemapMatrix
@@ -3823,7 +3502,6 @@ let log
   let op = Op.create context "Log" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let log1p
@@ -3831,7 +3509,6 @@ let log1p
   =
   let op = Op.create context "Log1p" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -3841,8 +3518,6 @@ let logMatrixDeterminant
   let op = Op.create context "LogMatrixDeterminant" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute2 op
 
 let logSoftmax
@@ -3850,7 +3525,6 @@ let logSoftmax
   =
   let op = Op.create context "LogSoftmax" in
   Op.add_input op logits;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type logits);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type logits);
   Op.execute1 op
 
@@ -3924,7 +3598,6 @@ let lookupTableFind
   Op.add_input op default_value;
   Op.set_attr_data_type op "Tout" (Op.tensor_handle_data_type default_value);
   Op.set_attr_data_type op "Tin" (Op.tensor_handle_data_type keys);
-  Op.set_attr_data_type op "Tout" (Op.tensor_handle_data_type default_value);
   Op.execute1 op
 
 let lookupTableImport
@@ -4049,8 +3722,6 @@ let matMul
   Op.add_input op a;
   Op.add_input op b;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type b);
   Option.iter transpose_a ~f:(fun transpose_a ->
     Op.set_attr_bool op "transpose_a" transpose_a
   );
@@ -4076,7 +3747,6 @@ let matrixBandPart
   Op.add_input op num_lower;
   Op.add_input op num_upper;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let matrixDeterminant
@@ -4084,7 +3754,6 @@ let matrixDeterminant
   =
   let op = Op.create context "MatrixDeterminant" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -4094,7 +3763,6 @@ let matrixDiag
   let op = Op.create context "MatrixDiag" in
   Op.add_input op diagonal;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type diagonal);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type diagonal);
   Op.execute1 op
 
 let matrixDiagPart
@@ -4102,7 +3770,6 @@ let matrixDiagPart
   =
   let op = Op.create context "MatrixDiagPart" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -4112,7 +3779,6 @@ let matrixInverse
   =
   let op = Op.create context "MatrixInverse" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter adjoint ~f:(fun adjoint ->
     Op.set_attr_bool op "adjoint" adjoint
@@ -4127,8 +3793,6 @@ let matrixSetDiag
   Op.add_input op input;
   Op.add_input op diagonal;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type diagonal);
   Op.execute1 op
 
 let matrixSolve
@@ -4140,8 +3804,6 @@ let matrixSolve
   Op.add_input op matrix;
   Op.add_input op rhs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rhs);
   Option.iter adjoint ~f:(fun adjoint ->
     Op.set_attr_bool op "adjoint" adjoint
   );
@@ -4158,8 +3820,6 @@ let matrixSolveLs
   Op.add_input op rhs;
   Op.add_input op l2_regularizer;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rhs);
   Option.iter fast ~f:(fun fast ->
     Op.set_attr_bool op "fast" fast
   );
@@ -4175,8 +3835,6 @@ let matrixTriangularSolve
   Op.add_input op matrix;
   Op.add_input op rhs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rhs);
   Option.iter lower ~f:(fun lower ->
     Op.set_attr_bool op "lower" lower
   );
@@ -4194,7 +3852,6 @@ let max
   Op.add_input op input;
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
   Option.iter keep_dims ~f:(fun keep_dims ->
     Op.set_attr_bool op "keep_dims" keep_dims
@@ -4210,7 +3867,6 @@ let maxPool
   =
   let op = Op.create context "MaxPool" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
@@ -4229,7 +3885,6 @@ let maxPool3D
   =
   let op = Op.create context "MaxPool3D" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
@@ -4254,8 +3909,6 @@ let maxPool3DGrad
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "TInput" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "TInput" (Op.tensor_handle_data_type orig_output);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -4278,9 +3931,6 @@ let maxPool3DGradGrad
   Op.add_input op orig_output;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_output);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -4303,9 +3953,6 @@ let maxPoolGrad
   Op.add_input op orig_output;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_output);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -4328,9 +3975,6 @@ let maxPoolGradGrad
   Op.add_input op orig_output;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_output);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -4355,9 +3999,6 @@ let maxPoolGradGradV2
   Op.add_input op ksize;
   Op.add_input op strides;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_output);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_string op "padding" padding;
   Option.iter data_format ~f:(fun data_format ->
     Op.set_attr_string op "data_format" data_format
@@ -4377,8 +4018,6 @@ let maxPoolGradGradWithArgmax
   Op.add_input op grad;
   Op.add_input op argmax;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Targmax" (Op.tensor_handle_data_type argmax);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
@@ -4401,9 +4040,6 @@ let maxPoolGradV2
   Op.add_input op ksize;
   Op.add_input op strides;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_output);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_string op "padding" padding;
   Option.iter data_format ~f:(fun data_format ->
     Op.set_attr_string op "data_format" data_format
@@ -4423,8 +4059,6 @@ let maxPoolGradWithArgmax
   Op.add_input op grad;
   Op.add_input op argmax;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Targmax" (Op.tensor_handle_data_type argmax);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
@@ -4443,7 +4077,6 @@ let maxPoolV2
   Op.add_input op ksize;
   Op.add_input op strides;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_string op "padding" padding;
   Option.iter data_format ~f:(fun data_format ->
     Op.set_attr_string op "data_format" data_format
@@ -4461,7 +4094,6 @@ let maxPoolWithArgmax
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Targmax" Operation.Type.(to_data_type (P type_1));
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -4475,8 +4107,6 @@ let maximum
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let mean
@@ -4487,7 +4117,6 @@ let mean
   let op = Op.create context "Mean" in
   Op.add_input op input;
   Op.add_input op reduction_indices;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
   Option.iter keep_dims ~f:(fun keep_dims ->
@@ -4500,7 +4129,6 @@ let merge
   =
   let op = Op.create context "Merge" in
   List.iter inputs__ ~f:(Op.add_input op);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn inputs__));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn inputs__));
   Op.set_attr_int op "N" (List.length inputs__);
   Op.execute2 op
@@ -4560,7 +4188,6 @@ let min
   Op.add_input op input;
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
   Option.iter keep_dims ~f:(fun keep_dims ->
     Op.set_attr_bool op "keep_dims" keep_dims
@@ -4575,8 +4202,6 @@ let minimum
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let mirrorPad
@@ -4587,7 +4212,6 @@ let mirrorPad
   let op = Op.create context "MirrorPad" in
   Op.add_input op input;
   Op.add_input op paddings;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tpaddings" (Op.tensor_handle_data_type paddings);
   Op.set_attr_string op "mode" mode;
@@ -4602,7 +4226,6 @@ let mirrorPadGrad
   Op.add_input op input;
   Op.add_input op paddings;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tpaddings" (Op.tensor_handle_data_type paddings);
   Op.set_attr_string op "mode" mode;
   Op.execute1 op
@@ -4615,8 +4238,6 @@ let mod_
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let mul
@@ -4627,8 +4248,6 @@ let mul
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let multinomial
@@ -4727,7 +4346,6 @@ let neg
   let op = Op.create context "Neg" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let negTrain
@@ -4754,7 +4372,6 @@ let nextIteration
   =
   let op = Op.create context "NextIteration" in
   Op.add_input op data;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.execute1 op
 
@@ -4800,7 +4417,6 @@ let notEqual
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let oneHot
@@ -4817,8 +4433,6 @@ let oneHot
   Op.add_input op off_value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type on_value);
   Op.set_attr_data_type op "TI" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type on_value);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type off_value);
   Option.iter axis ~f:(fun axis ->
     Op.set_attr_int op "axis" axis
   );
@@ -4829,7 +4443,6 @@ let onesLike
   =
   let op = Op.create context "OnesLike" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -4912,7 +4525,6 @@ let pack
   let op = Op.create context "Pack" in
   List.iter values ~f:(Op.add_input op);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_int op "N" (List.length values);
   Option.iter axis ~f:(fun axis ->
     Op.set_attr_int op "axis" axis
@@ -4927,7 +4539,6 @@ let pad
   Op.add_input op input;
   Op.add_input op paddings;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tpaddings" (Op.tensor_handle_data_type paddings);
   Op.execute1 op
 
@@ -4941,9 +4552,7 @@ let padV2
   Op.add_input op paddings;
   Op.add_input op constant_values;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tpaddings" (Op.tensor_handle_data_type paddings);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type constant_values);
   Op.execute1 op
 
 let paddingFIFOQueue
@@ -4977,7 +4586,6 @@ let parallelConcat
   let op = Op.create context "ParallelConcat" in
   List.iter values ~f:(Op.add_input op);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_int op "N" (List.length values);
   Op.set_attr_shape op "shape" shape;
   Op.execute1 op
@@ -4989,7 +4597,6 @@ let parallelDynamicStitch
   let op = Op.create context "ParallelDynamicStitch" in
   List.iter indices ~f:(Op.add_input op);
   List.iter data ~f:(Op.add_input op);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn data));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn data));
   Op.set_attr_int op "N" (List.length indices);
   Op.execute1 op
@@ -5011,10 +4618,6 @@ let parameterizedTruncatedNormal
   Op.add_input op maxvals;
   Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type means);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
-  Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type means);
-  Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type stdevs);
-  Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type minvals);
-  Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type maxvals);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
   );
@@ -5061,7 +4664,6 @@ let placeholderWithDefault
   let op = Op.create context "PlaceholderWithDefault" in
   Op.add_input op input;
   Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type input);
   Op.set_attr_shape op "shape" shape;
   Op.execute1 op
 
@@ -5073,8 +4675,6 @@ let polygamma
   Op.add_input op a;
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let pow
@@ -5085,8 +4685,6 @@ let pow
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let preventGradient
@@ -5095,7 +4693,6 @@ let preventGradient
   =
   let op = Op.create context "PreventGradient" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter message ~f:(fun message ->
     Op.set_attr_string op "message" message
@@ -5135,7 +4732,6 @@ let prod
   Op.add_input op input;
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
   Option.iter keep_dims ~f:(fun keep_dims ->
     Op.set_attr_bool op "keep_dims" keep_dims
@@ -5148,8 +4744,6 @@ let qr
   =
   let op = Op.create context "Qr" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter full_matrices ~f:(fun full_matrices ->
     Op.set_attr_bool op "full_matrices" full_matrices
@@ -5166,7 +4760,6 @@ let quantizeAndDequantize
   =
   let op = Op.create context "QuantizeAndDequantize" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter signed_input ~f:(fun signed_input ->
     Op.set_attr_bool op "signed_input" signed_input
@@ -5198,9 +4791,6 @@ let quantizeAndDequantizeV2
   Op.add_input op input_min;
   Op.add_input op input_max;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_min);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_max);
   Option.iter signed_input ~f:(fun signed_input ->
     Op.set_attr_bool op "signed_input" signed_input
   );
@@ -5226,9 +4816,6 @@ let quantizeAndDequantizeV3
   Op.add_input op input_max;
   Op.add_input op num_bits;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_min);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_max);
   Option.iter signed_input ~f:(fun signed_input ->
     Op.set_attr_bool op "signed_input" signed_input
   );
@@ -5302,7 +4889,6 @@ let quantizedAvgPool
   Op.add_input op min_input;
   Op.add_input op max_input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -5346,10 +4932,6 @@ let quantizedBatchNormWithGlobalNormalization
   Op.add_input op gamma_max;
   Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
   Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type m);
-  Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type v);
-  Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type beta);
-  Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type gamma);
   Op.set_attr_float op "variance_epsilon" variance_epsilon;
   Op.set_attr_bool op "scale_after_normalization" scale_after_normalization;
   Op.execute3 op
@@ -5386,7 +4968,6 @@ let quantizedConcat
   List.iter values ~f:(Op.add_input op);
   List.iter input_mins ~f:(Op.add_input op);
   List.iter input_maxes ~f:(Op.add_input op);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_int op "N" (List.length values);
   Op.execute3 op
@@ -5430,7 +5011,6 @@ let quantizedInstanceNorm
   Op.add_input op x;
   Op.add_input op x_min;
   Op.add_input op x_max;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Option.iter output_range_given ~f:(fun output_range_given ->
     Op.set_attr_bool op "output_range_given" output_range_given
@@ -5490,7 +5070,6 @@ let quantizedMaxPool
   Op.add_input op input;
   Op.add_input op min_input;
   Op.add_input op max_input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
@@ -5574,7 +5153,6 @@ let quantizedReshape
   Op.add_input op input_min;
   Op.add_input op input_max;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
   Op.set_attr_data_type op "Tshape" (Op.tensor_handle_data_type shape);
   Op.execute3 op
 
@@ -5590,7 +5168,6 @@ let quantizedResizeBilinear
   Op.add_input op size;
   Op.add_input op min;
   Op.add_input op max;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Option.iter align_corners ~f:(fun align_corners ->
     Op.set_attr_bool op "align_corners" align_corners
@@ -5655,7 +5232,6 @@ let rGBToHSV
   let op = Op.create context "RGBToHSV" in
   Op.add_input op images;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Op.execute1 op
 
 let randomCrop
@@ -5667,7 +5243,6 @@ let randomCrop
   let op = Op.create context "RandomCrop" in
   Op.add_input op image;
   Op.add_input op size;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
@@ -5688,7 +5263,6 @@ let randomGamma
   Op.add_input op alpha;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type alpha);
   Op.set_attr_data_type op "S" (Op.tensor_handle_data_type shape);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type alpha);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
   );
@@ -5708,7 +5282,6 @@ let randomPoisson
   Op.add_input op rate;
   Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type rate);
   Op.set_attr_data_type op "S" (Op.tensor_handle_data_type shape);
-  Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type rate);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
   );
@@ -5745,7 +5318,6 @@ let randomShuffle
   =
   let op = Op.create context "RandomShuffle" in
   Op.add_input op value;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
@@ -5840,8 +5412,6 @@ let randomUniformInt
   Op.add_input op maxval;
   Op.set_attr_data_type op "Tout" (Op.tensor_handle_data_type minval);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
-  Op.set_attr_data_type op "Tout" (Op.tensor_handle_data_type minval);
-  Op.set_attr_data_type op "Tout" (Op.tensor_handle_data_type maxval);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
   );
@@ -5860,9 +5430,6 @@ let range
   Op.add_input op limit;
   Op.add_input op delta;
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type start);
-  Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type start);
-  Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type limit);
-  Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type delta);
   Op.execute1 op
 
 let rank
@@ -5955,8 +5522,6 @@ let realDiv
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let reciprocal
@@ -5964,7 +5529,6 @@ let reciprocal
   =
   let op = Op.create context "Reciprocal" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -5976,8 +5540,6 @@ let reciprocalGrad
   Op.add_input op y;
   Op.add_input op dy;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dy);
   Op.execute1 op
 
 let recordInput
@@ -6034,7 +5596,6 @@ let refEnter
   let op = Op.create context "RefEnter" in
   Op.add_input op data;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_string op "frame_name" frame_name;
   Option.iter is_constant ~f:(fun is_constant ->
     Op.set_attr_bool op "is_constant" is_constant
@@ -6050,7 +5611,6 @@ let refExit
   let op = Op.create context "RefExit" in
   Op.add_input op data;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.execute1 op
 
 let refIdentity
@@ -6059,7 +5619,6 @@ let refIdentity
   let op = Op.create context "RefIdentity" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let refMerge
@@ -6067,7 +5626,6 @@ let refMerge
   =
   let op = Op.create context "RefMerge" in
   List.iter inputs__ ~f:(Op.add_input op);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn inputs__));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn inputs__));
   Op.set_attr_int op "N" (List.length inputs__);
   Op.execute2 op
@@ -6078,7 +5636,6 @@ let refNextIteration
   let op = Op.create context "RefNextIteration" in
   Op.add_input op data;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.execute1 op
 
 let refSelect
@@ -6088,7 +5645,6 @@ let refSelect
   let op = Op.create context "RefSelect" in
   Op.add_input op index;
   List.iter inputs__ ~f:(Op.add_input op);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn inputs__));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn inputs__));
   Op.set_attr_int op "N" (List.length inputs__);
   Op.execute1 op
@@ -6101,8 +5657,6 @@ let refSwitch
   Op.add_input op data;
   Op.add_input op pred;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.execute2 op
 
 let relu
@@ -6111,7 +5665,6 @@ let relu
   let op = Op.create context "Relu" in
   Op.add_input op features;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
 let relu6
@@ -6119,7 +5672,6 @@ let relu6
   =
   let op = Op.create context "Relu6" in
   Op.add_input op features;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
@@ -6131,8 +5683,6 @@ let relu6Grad
   Op.add_input op gradients;
   Op.add_input op features;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
 let reluGrad
@@ -6143,8 +5693,6 @@ let reluGrad
   Op.add_input op gradients;
   Op.add_input op features;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
 let requantizationRange
@@ -6184,7 +5732,6 @@ let reshape
   let op = Op.create context "Reshape" in
   Op.add_input op tensor;
   Op.add_input op shape;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
   Op.set_attr_data_type op "Tshape" (Op.tensor_handle_data_type shape);
   Op.execute1 op
@@ -6226,7 +5773,6 @@ let resizeBicubicGrad
   Op.add_input op grads;
   Op.add_input op original_image;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type original_image);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type original_image);
   Option.iter align_corners ~f:(fun align_corners ->
     Op.set_attr_bool op "align_corners" align_corners
   );
@@ -6255,7 +5801,6 @@ let resizeBilinearGrad
   Op.add_input op grads;
   Op.add_input op original_image;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type original_image);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type original_image);
   Option.iter align_corners ~f:(fun align_corners ->
     Op.set_attr_bool op "align_corners" align_corners
   );
@@ -6270,7 +5815,6 @@ let resizeNearestNeighbor
   Op.add_input op images;
   Op.add_input op size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
   Option.iter align_corners ~f:(fun align_corners ->
     Op.set_attr_bool op "align_corners" align_corners
   );
@@ -6284,7 +5828,6 @@ let resizeNearestNeighborGrad
   let op = Op.create context "ResizeNearestNeighborGrad" in
   Op.add_input op grads;
   Op.add_input op size;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grads);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grads);
   Option.iter align_corners ~f:(fun align_corners ->
     Op.set_attr_bool op "align_corners" align_corners
@@ -6331,7 +5874,6 @@ let reverse
   Op.add_input op tensor;
   Op.add_input op dims;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
   Op.execute1 op
 
 let reverseSequence
@@ -6343,7 +5885,6 @@ let reverseSequence
   let op = Op.create context "ReverseSequence" in
   Op.add_input op input;
   Op.add_input op seq_lengths;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tlen" (Op.tensor_handle_data_type seq_lengths);
   Op.set_attr_int op "seq_dim" seq_dim;
@@ -6360,7 +5901,6 @@ let reverseV2
   Op.add_input op tensor;
   Op.add_input op axis;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type axis);
   Op.execute1 op
 
@@ -6370,7 +5910,6 @@ let rint
   let op = Op.create context "Rint" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let round
@@ -6379,7 +5918,6 @@ let round
   let op = Op.create context "Round" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let rsqrt
@@ -6387,7 +5925,6 @@ let rsqrt
   =
   let op = Op.create context "Rsqrt" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -6399,8 +5936,6 @@ let rsqrtGrad
   Op.add_input op y;
   Op.add_input op dy;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dy);
   Op.execute1 op
 
 let sampleDistortedBoundingBox
@@ -6417,8 +5952,6 @@ let sampleDistortedBoundingBox
   let op = Op.create context "SampleDistortedBoundingBox" in
   Op.add_input op image_size;
   Op.add_input op bounding_boxes;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image_size);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image_size);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image_size);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
@@ -6458,8 +5991,6 @@ let sampleDistortedBoundingBoxV2
   Op.add_input op image_size;
   Op.add_input op bounding_boxes;
   Op.add_input op min_object_covered;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image_size);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image_size);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image_size);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
@@ -6502,9 +6033,7 @@ let scatterAdd
   Op.add_input op indices;
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -6521,9 +6050,7 @@ let scatterDiv
   Op.add_input op indices;
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -6540,9 +6067,7 @@ let scatterMul
   Op.add_input op indices;
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -6559,8 +6084,6 @@ let scatterNd
   Op.add_input op shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
-  Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type shape);
   Op.execute1 op
 
 let scatterNdAdd
@@ -6574,9 +6097,7 @@ let scatterNdAdd
   Op.add_input op indices;
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -6592,9 +6113,7 @@ let scatterNdNonAliasingAdd
   Op.add_input op indices;
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Op.execute1 op
 
 let scatterNdSub
@@ -6608,9 +6127,7 @@ let scatterNdSub
   Op.add_input op indices;
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -6627,9 +6144,7 @@ let scatterNdUpdate
   Op.add_input op indices;
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -6646,9 +6161,7 @@ let scatterSub
   Op.add_input op indices;
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -6665,9 +6178,7 @@ let scatterUpdate
   Op.add_input op indices;
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type updates);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -6700,7 +6211,6 @@ let segmentMax
   Op.add_input op data;
   Op.add_input op segment_ids;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type segment_ids);
   Op.execute1 op
 
@@ -6711,7 +6221,6 @@ let segmentMean
   let op = Op.create context "SegmentMean" in
   Op.add_input op data;
   Op.add_input op segment_ids;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type segment_ids);
   Op.execute1 op
@@ -6724,7 +6233,6 @@ let segmentMin
   Op.add_input op data;
   Op.add_input op segment_ids;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type segment_ids);
   Op.execute1 op
 
@@ -6736,7 +6244,6 @@ let segmentProd
   Op.add_input op data;
   Op.add_input op segment_ids;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type segment_ids);
   Op.execute1 op
 
@@ -6747,7 +6254,6 @@ let segmentSum
   let op = Op.create context "SegmentSum" in
   Op.add_input op data;
   Op.add_input op segment_ids;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type segment_ids);
   Op.execute1 op
@@ -6762,8 +6268,6 @@ let select
   Op.add_input op t;
   Op.add_input op e;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type t);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type e);
   Op.execute1 op
 
 let selfAdjointEig
@@ -6771,7 +6275,6 @@ let selfAdjointEig
   =
   let op = Op.create context "SelfAdjointEig" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -6781,8 +6284,6 @@ let selfAdjointEigV2
   =
   let op = Op.create context "SelfAdjointEigV2" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter compute_v ~f:(fun compute_v ->
     Op.set_attr_bool op "compute_v" compute_v
@@ -6795,7 +6296,6 @@ let selu
   let op = Op.create context "Selu" in
   Op.add_input op features;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
 let seluGrad
@@ -6806,8 +6306,6 @@ let seluGrad
   Op.add_input op gradients;
   Op.add_input op outputs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type outputs);
   Op.execute1 op
 
 let serializeManySparse
@@ -6905,7 +6403,6 @@ let sigmoid
   let op = Op.create context "Sigmoid" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let sigmoidGrad
@@ -6916,8 +6413,6 @@ let sigmoidGrad
   Op.add_input op y;
   Op.add_input op dy;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dy);
   Op.execute1 op
 
 let sign
@@ -6925,7 +6420,6 @@ let sign
   =
   let op = Op.create context "Sign" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -6935,7 +6429,6 @@ let sin
   let op = Op.create context "Sin" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let sinh
@@ -6943,7 +6436,6 @@ let sinh
   =
   let op = Op.create context "Sinh" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -6989,9 +6481,7 @@ let slice
   Op.add_input op begin__;
   Op.add_input op size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type begin__);
-  Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type size);
   Op.execute1 op
 
 let softmax
@@ -6999,7 +6489,6 @@ let softmax
   =
   let op = Op.create context "Softmax" in
   Op.add_input op logits;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type logits);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type logits);
   Op.execute1 op
 
@@ -7011,9 +6500,6 @@ let softmaxCrossEntropyWithLogits
   Op.add_input op features;
   Op.add_input op labels;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type labels);
   Op.execute2 op
 
 let softplus
@@ -7021,7 +6507,6 @@ let softplus
   =
   let op = Op.create context "Softplus" in
   Op.add_input op features;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
@@ -7033,8 +6518,6 @@ let softplusGrad
   Op.add_input op gradients;
   Op.add_input op features;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
 let softsign
@@ -7042,7 +6525,6 @@ let softsign
   =
   let op = Op.create context "Softsign" in
   Op.add_input op features;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
@@ -7054,8 +6536,6 @@ let softsignGrad
   Op.add_input op gradients;
   Op.add_input op features;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradients);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.execute1 op
 
 let spaceToBatch
@@ -7066,7 +6546,6 @@ let spaceToBatch
   let op = Op.create context "SpaceToBatch" in
   Op.add_input op input;
   Op.add_input op paddings;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tpaddings" (Op.tensor_handle_data_type paddings);
   Op.set_attr_int op "block_size" block_size;
@@ -7082,7 +6561,6 @@ let spaceToBatchND
   Op.add_input op block_shape;
   Op.add_input op paddings;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tblock_shape" (Op.tensor_handle_data_type block_shape);
   Op.set_attr_data_type op "Tpaddings" (Op.tensor_handle_data_type paddings);
   Op.execute1 op
@@ -7094,7 +6572,6 @@ let spaceToDepth
   =
   let op = Op.create context "SpaceToDepth" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int op "block_size" block_size;
   Option.iter data_format ~f:(fun data_format ->
@@ -7149,8 +6626,6 @@ let sparseAdd
   Op.add_input op b_shape;
   Op.add_input op thresh;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type b_values);
   Op.set_attr_data_type op "Treal" (Op.tensor_handle_data_type thresh);
   Op.execute3 op
 
@@ -7165,8 +6640,6 @@ let sparseAddGrad
   Op.add_input op a_indices;
   Op.add_input op b_indices;
   Op.add_input op sum_indices;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type backprop_val_grad);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type backprop_val_grad);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type backprop_val_grad);
   Op.execute2 op
 
@@ -7191,13 +6664,6 @@ let sparseApplyAdadelta
   Op.add_input op grad;
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum_update);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rho);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type epsilon);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
@@ -7219,10 +6685,6 @@ let sparseApplyAdagrad
   Op.add_input op grad;
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
@@ -7252,14 +6714,7 @@ let sparseApplyAdagradDA
   Op.add_input op l2;
   Op.add_input op global_step;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradient_accumulator);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type gradient_squared_accumulator);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -7290,15 +6745,6 @@ let sparseApplyCenteredRMSProp
   Op.add_input op grad;
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type mg);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ms);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type mom);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rho);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type momentum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type epsilon);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
@@ -7328,15 +6774,7 @@ let sparseApplyFtrl
   Op.add_input op l2;
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type linear);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr_power);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -7367,16 +6805,7 @@ let sparseApplyFtrlV2
   Op.add_input op l2_shrinkage;
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type linear);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2_shrinkage);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr_power);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -7400,12 +6829,7 @@ let sparseApplyMomentum
   Op.add_input op indices;
   Op.add_input op momentum;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type momentum);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
   );
@@ -7433,12 +6857,6 @@ let sparseApplyProximalAdagrad
   Op.add_input op grad;
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type accum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
@@ -7462,11 +6880,6 @@ let sparseApplyProximalGradientDescent
   Op.add_input op grad;
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type alpha);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l1);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l2);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
@@ -7496,14 +6909,6 @@ let sparseApplyRMSProp
   Op.add_input op grad;
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ms);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type mom);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type rho);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type momentum);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type epsilon);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
   Option.iter use_locking ~f:(fun use_locking ->
     Op.set_attr_bool op "use_locking" use_locking
@@ -7520,7 +6925,6 @@ let sparseConcat
   List.iter indices ~f:(Op.add_input op);
   List.iter values ~f:(Op.add_input op);
   List.iter shapes ~f:(Op.add_input op);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_int op "concat_dim" concat_dim;
   Op.set_attr_int op "N" (List.length indices);
@@ -7554,8 +6958,6 @@ let sparseDenseCwiseAdd
   Op.add_input op sp_shape;
   Op.add_input op dense;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sp_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sp_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dense);
   Op.execute1 op
 
 let sparseDenseCwiseDiv
@@ -7570,8 +6972,6 @@ let sparseDenseCwiseDiv
   Op.add_input op sp_shape;
   Op.add_input op dense;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sp_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sp_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dense);
   Op.execute1 op
 
 let sparseDenseCwiseMul
@@ -7586,8 +6986,6 @@ let sparseDenseCwiseMul
   Op.add_input op sp_shape;
   Op.add_input op dense;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sp_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sp_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dense);
   Op.execute1 op
 
 let sparseFillEmptyRows
@@ -7602,8 +7000,6 @@ let sparseFillEmptyRows
   Op.add_input op dense_shape;
   Op.add_input op default_value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type default_value);
   Op.execute4 op
 
 let sparseFillEmptyRowsGrad
@@ -7613,8 +7009,6 @@ let sparseFillEmptyRowsGrad
   let op = Op.create context "SparseFillEmptyRowsGrad" in
   Op.add_input op reverse_index_map;
   Op.add_input op grad_values;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad_values);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad_values);
   Op.execute2 op
 
@@ -7658,7 +7052,6 @@ let sparseReduceMax
   Op.add_input op input_shape;
   Op.add_input op reduction_axes;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
   Option.iter keep_dims ~f:(fun keep_dims ->
     Op.set_attr_bool op "keep_dims" keep_dims
   );
@@ -7676,7 +7069,6 @@ let sparseReduceMaxSparse
   Op.add_input op input_values;
   Op.add_input op input_shape;
   Op.add_input op reduction_axes;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
   Option.iter keep_dims ~f:(fun keep_dims ->
     Op.set_attr_bool op "keep_dims" keep_dims
@@ -7696,7 +7088,6 @@ let sparseReduceSum
   Op.add_input op input_shape;
   Op.add_input op reduction_axes;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
   Option.iter keep_dims ~f:(fun keep_dims ->
     Op.set_attr_bool op "keep_dims" keep_dims
   );
@@ -7715,7 +7106,6 @@ let sparseReduceSumSparse
   Op.add_input op input_shape;
   Op.add_input op reduction_axes;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
   Option.iter keep_dims ~f:(fun keep_dims ->
     Op.set_attr_bool op "keep_dims" keep_dims
   );
@@ -7730,7 +7120,6 @@ let sparseReorder
   Op.add_input op input_indices;
   Op.add_input op input_values;
   Op.add_input op input_shape;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
   Op.execute2 op
 
@@ -7755,7 +7144,6 @@ let sparseSegmentMean
   Op.add_input op indices;
   Op.add_input op segment_ids;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type indices);
   Op.execute1 op
 
@@ -7771,7 +7159,6 @@ let sparseSegmentMeanGrad
   Op.add_input op segment_ids;
   Op.add_input op output_dim0;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type indices);
   Op.execute1 op
 
@@ -7784,7 +7171,6 @@ let sparseSegmentSqrtN
   Op.add_input op data;
   Op.add_input op indices;
   Op.add_input op segment_ids;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type indices);
   Op.execute1 op
@@ -7801,7 +7187,6 @@ let sparseSegmentSqrtNGrad
   Op.add_input op segment_ids;
   Op.add_input op output_dim0;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type indices);
   Op.execute1 op
 
@@ -7814,7 +7199,6 @@ let sparseSegmentSum
   Op.add_input op data;
   Op.add_input op indices;
   Op.add_input op segment_ids;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type indices);
   Op.execute1 op
@@ -7833,7 +7217,6 @@ let sparseSlice
   Op.add_input op start;
   Op.add_input op size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type values);
   Op.execute3 op
 
 let sparseSoftmax
@@ -7846,7 +7229,6 @@ let sparseSoftmax
   Op.add_input op sp_values;
   Op.add_input op sp_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sp_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sp_values);
   Op.execute1 op
 
 let sparseSoftmaxCrossEntropyWithLogits
@@ -7856,8 +7238,6 @@ let sparseSoftmaxCrossEntropyWithLogits
   let op = Op.create context "SparseSoftmaxCrossEntropyWithLogits" in
   Op.add_input op features;
   Op.add_input op labels;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type features);
   Op.set_attr_data_type op "Tlabels" (Op.tensor_handle_data_type labels);
   Op.execute2 op
@@ -7878,8 +7258,6 @@ let sparseSparseMaximum
   Op.add_input op b_values;
   Op.add_input op b_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type b_values);
   Op.execute2 op
 
 let sparseSparseMinimum
@@ -7898,8 +7276,6 @@ let sparseSparseMinimum
   Op.add_input op b_values;
   Op.add_input op b_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type b_values);
   Op.execute2 op
 
 let sparseTensorDenseAdd
@@ -7915,9 +7291,6 @@ let sparseTensorDenseAdd
   Op.add_input op b;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type a_indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
-  Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type a_shape);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type b);
   Op.execute1 op
 
 let sparseTensorDenseMatMul
@@ -7935,8 +7308,6 @@ let sparseTensorDenseMatMul
   Op.add_input op b;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type a_indices);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type b);
   Option.iter adjoint_a ~f:(fun adjoint_a ->
     Op.set_attr_bool op "adjoint_a" adjoint_a
   );
@@ -7959,9 +7330,6 @@ let sparseToDense
   Op.add_input op default_value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sparse_values);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type sparse_indices);
-  Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type output_shape);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sparse_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type default_value);
   Option.iter validate_indices ~f:(fun validate_indices ->
     Op.set_attr_bool op "validate_indices" validate_indices
   );
@@ -7985,8 +7353,6 @@ let sparseToSparseSetOperation
   Op.add_input op set2_values;
   Op.add_input op set2_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set1_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set1_values);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set2_values);
   Op.set_attr_string op "set_operation" set_operation;
   Option.iter validate_indices ~f:(fun validate_indices ->
     Op.set_attr_bool op "validate_indices" validate_indices
@@ -8002,7 +7368,6 @@ let split
   Op.add_input op split_dim;
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_int op "num_split" num_split;
   Op.execute op ~output_len:10
 
@@ -8017,7 +7382,6 @@ let splitV
   Op.add_input op size_splits;
   Op.add_input op split_dim;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_data_type op "Tlen" (Op.tensor_handle_data_type size_splits);
   Op.set_attr_int op "num_split" num_split;
   Op.execute op ~output_len:10
@@ -8027,7 +7391,6 @@ let sqrt
   =
   let op = Op.create context "Sqrt" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -8039,8 +7402,6 @@ let sqrtGrad
   Op.add_input op y;
   Op.add_input op dy;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dy);
   Op.execute1 op
 
 let square
@@ -8048,7 +7409,6 @@ let square
   =
   let op = Op.create context "Square" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -8060,8 +7420,6 @@ let squaredDifference
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let squeeze
@@ -8070,7 +7428,6 @@ let squeeze
   =
   let op = Op.create context "Squeeze" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter squeeze_dims ~f:(fun squeeze_dims ->
     Op.set_attr_int_list op "squeeze_dims" squeeze_dims
@@ -8111,7 +7468,6 @@ let stackPush
   let op = Op.create context "StackPush" in
   Op.add_input op handle;
   Op.add_input op elem;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type elem);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type elem);
   Option.iter swap_memory ~f:(fun swap_memory ->
     Op.set_attr_bool op "swap_memory" swap_memory
@@ -8208,7 +7564,6 @@ let stopGradient
   let op = Op.create context "StopGradient" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let stridedSlice
@@ -8228,10 +7583,7 @@ let stridedSlice
   Op.add_input op end__;
   Op.add_input op strides;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type begin__);
-  Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type end__);
-  Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type strides);
   Option.iter begin_mask ~f:(fun begin_mask ->
     Op.set_attr_int op "begin_mask" begin_mask
   );
@@ -8268,11 +7620,7 @@ let stridedSliceAssign
   Op.add_input op strides;
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type begin__);
-  Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type end__);
-  Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type strides);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Option.iter begin_mask ~f:(fun begin_mask ->
     Op.set_attr_int op "begin_mask" begin_mask
   );
@@ -8310,10 +7658,6 @@ let stridedSliceGrad
   Op.add_input op dy;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dy);
   Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type shape);
-  Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type begin__);
-  Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type end__);
-  Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type strides);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dy);
   Option.iter begin_mask ~f:(fun begin_mask ->
     Op.set_attr_int op "begin_mask" begin_mask
   );
@@ -8402,8 +7746,6 @@ let sub
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let substr
@@ -8416,7 +7758,6 @@ let substr
   Op.add_input op pos;
   Op.add_input op len;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type pos);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type len);
   Op.execute1 op
 
 let sum
@@ -8427,7 +7768,6 @@ let sum
   let op = Op.create context "Sum" in
   Op.add_input op input;
   Op.add_input op reduction_indices;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
   Option.iter keep_dims ~f:(fun keep_dims ->
@@ -8442,9 +7782,6 @@ let svd
   =
   let op = Op.create context "Svd" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter compute_uv ~f:(fun compute_uv ->
     Op.set_attr_bool op "compute_uv" compute_uv
@@ -8461,8 +7798,6 @@ let switch
   let op = Op.create context "Switch" in
   Op.add_input op data;
   Op.add_input op pred;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.execute2 op
 
@@ -8507,7 +7842,6 @@ let tan
   let op = Op.create context "Tan" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let tanh
@@ -8515,7 +7849,6 @@ let tanh
   =
   let op = Op.create context "Tanh" in
   Op.add_input op x;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -8527,8 +7860,6 @@ let tanhGrad
   Op.add_input op y;
   Op.add_input op dy;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dy);
   Op.execute1 op
 
 let temporaryVariable
@@ -8923,7 +8254,6 @@ let tile
   Op.add_input op input;
   Op.add_input op multiples;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tmultiples" (Op.tensor_handle_data_type multiples);
   Op.execute1 op
 
@@ -8935,7 +8265,6 @@ let tileGrad
   Op.add_input op input;
   Op.add_input op multiples;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let topK
@@ -8945,7 +8274,6 @@ let topK
   =
   let op = Op.create context "TopK" in
   Op.add_input op input;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int op "k" k;
   Option.iter sorted ~f:(fun sorted ->
@@ -8962,7 +8290,6 @@ let topKV2
   Op.add_input op input;
   Op.add_input op k;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Option.iter sorted ~f:(fun sorted ->
     Op.set_attr_bool op "sorted" sorted
   );
@@ -8976,7 +8303,6 @@ let transpose
   Op.add_input op x;
   Op.add_input op perm;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "Tperm" (Op.tensor_handle_data_type perm);
   Op.execute1 op
 
@@ -8988,8 +8314,6 @@ let truncateDiv
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let truncateMod
@@ -9000,8 +8324,6 @@ let truncateMod
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
 let truncatedNormal
@@ -9053,20 +8375,16 @@ let unique
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_1));
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute2 op
 
 let uniqueWithCounts
     ~type_1
-    ~type_2
     (x : 't t)
   =
   let op = Op.create context "UniqueWithCounts" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_1));
-  Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_2));
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute3 op
 
 let unpack
@@ -9076,7 +8394,6 @@ let unpack
   =
   let op = Op.create context "Unpack" in
   Op.add_input op value;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_int op "num" num;
   Option.iter axis ~f:(fun axis ->
@@ -9094,7 +8411,6 @@ let unsortedSegmentMax
   Op.add_input op segment_ids;
   Op.add_input op num_segments;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type segment_ids);
   Op.execute1 op
 
@@ -9107,7 +8423,6 @@ let unsortedSegmentSum
   Op.add_input op data;
   Op.add_input op segment_ids;
   Op.add_input op num_segments;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type segment_ids);
   Op.execute1 op
@@ -9184,7 +8499,6 @@ let zerosLike
   let op = Op.create context "ZerosLike" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
 let zeta
@@ -9195,7 +8509,5 @@ let zeta
   Op.add_input op x;
   Op.add_input op q;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type q);
   Op.execute1 op
 

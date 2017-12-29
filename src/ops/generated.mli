@@ -8782,7 +8782,6 @@ count ==> [2, 1, 3, 1, 2]
 ``` *)
 val uniqueWithCounts:
   type_1:([< `int32 | `int64 ] as 'out_idx) Type.t ->
-  type_2:([< `int32 | `int64 ] as 'out_idx) Type.t ->
   't t ->
     't t * ([< `int32 | `int64 ] as 'out_idx) t * ([< `int32 | `int64 ] as 'out_idx) t
 
