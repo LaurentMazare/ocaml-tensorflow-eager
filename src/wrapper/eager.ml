@@ -77,6 +77,11 @@ module Op = struct
     Tfe_op.tfe_opsetattrstring t name value
 
   let set_attr_bool t name value =
+    let value =
+      if value
+      then Unsigned.UChar.one
+      else Unsigned.UChar.zero
+    in
     Tfe_op.tfe_opsetattrbool t name value
 
   let set_attr_int t name value =

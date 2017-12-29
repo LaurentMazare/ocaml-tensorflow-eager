@@ -241,14 +241,9 @@ module Op = struct
           })
       in
       let output_types =
-        let output_types =
-          List.map op.output_arg ~f:(fun output_arg ->
-            let name, type_ = read_type types output_arg in
-            { name; type_; number_attr = output_arg.number_attr })
-        in
-        match output_types with
-        | [] -> [ { name = None; type_ = Type.Fixed (P Unit); number_attr = None } ]
-        | output_types -> output_types
+        List.map op.output_arg ~f:(fun output_arg ->
+          let name, type_ = read_type types output_arg in
+          { name; type_; number_attr = output_arg.number_attr })
       in
       let has_output_list =
         List.exists output_types ~f:(fun output_type ->
@@ -307,6 +302,16 @@ let escape_comment s =
   |> String.substr_replace_all ~pattern:"|}" ~with_:"| }"
   |> String.tr ~target:'"' ~replacement:'\''
 
+let output_type_str (op : Op.t) =
+  match op.output_types with
+  | [] -> "unit"
+  | output_types ->
+    List.map op.output_types ~f:(fun output_type ->
+      Printf.sprintf "%s t%s"
+        (Type.to_string output_type.type_)
+        (if Option.is_some output_type.number_attr then " list" else "")
+    ) |> String.concat ~sep:" * "
+
 let gen_mli ops =
   let out_channel = Out_channel.create (Printf.sprintf "%s.mli" output_file) in
   let p s = p out_channel s in
@@ -325,11 +330,7 @@ let gen_mli ops =
       p "  -> %s t%s" (Type.to_string input.type_) maybe_list);
     if List.is_empty op.inputs
     then p "  -> unit";
-    p "  -> %s" (List.map op.output_types ~f:(fun output_type ->
-      Printf.sprintf "%s t%s"
-        (Type.to_string output_type.type_)
-        (if Option.is_some output_type.number_attr then " list" else "")
-      ) |> String.concat ~sep:" * ");
+    p "  -> %s" (output_type_str op);
     p "";
   in
   p "%s" automatically_generated_file;
@@ -345,7 +346,7 @@ let gen_mli ops =
 
 let handle_one_op (op : Op.t) out_channel =
   let p s = p out_channel s in
-  p "let %s" (Op.caml_name op);
+  p "let %s ?(name:_)" (Op.caml_name op);
   List.iteri op.output_types ~f:(fun idx output_type ->
     if needs_variable_for_output_type op output_type.type_
     then p "    ~%s" (type_variable ~idx));
@@ -373,7 +374,7 @@ let handle_one_op (op : Op.t) out_channel =
       let type_string = Printf.sprintf "(Eager.Tensor_handle.data_type %s)" name in
       p "  Op.set_attr_type op \"%s\" %s;" type_name type_string));
   List.iter op.attributes ~f:(fun attribute -> Attribute.ml_apply attribute out_channel);
-  p "  Op.execute op";
+  p "  Op.execute%d op" (List.length op.output_types);
   p ""
 
 let gen_ml ops =
