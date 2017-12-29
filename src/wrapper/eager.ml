@@ -41,6 +41,9 @@ module Tensor_handle = struct
       tensor_handle;
     Status.result_or_error status tensor_handle
 
+  let create_exn tensor =
+    create tensor |> Status.ok_exn
+
   let resolve t =
     let status = Status.create () in
     let status_ptr = Status.to_ptr status in
@@ -48,6 +51,9 @@ module Tensor_handle = struct
     match Status.code status with
     | TF_OK -> Status.Ok (Wrapper.Tensor.tensor_of_c_tensor tensor)
     | _ -> Status.Error status
+
+  let resolve_exn t =
+    resolve t |> Status.ok_exn
 
   let dims t =
     let num_dims = Tfe_tensor_handle.tfe_tensorhandlenumdims t in
