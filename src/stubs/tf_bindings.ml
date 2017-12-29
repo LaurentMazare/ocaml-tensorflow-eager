@@ -384,11 +384,11 @@ module C(F: Cstubs.FOREIGN) = struct
       foreign "TFE_OpSetAttrStringList"
         (t @-> string @-> ptr string @-> int @-> returning void)
 
-    let tf_opsetattrintlist =
+    let tfe_opsetattrintlist =
       foreign "TFE_OpSetAttrIntList"
         (t @-> string @-> ptr int64_t @-> int @-> returning void)
 
-    let tf_opsetattrfloatlist =
+    let tfe_opsetattrfloatlist =
       foreign "TFE_OpSetAttrFloatList"
         (t @-> string @-> ptr float @-> int @-> returning void)
 
