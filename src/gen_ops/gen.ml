@@ -127,14 +127,15 @@ module Attribute = struct
         (caml_name t)
     | Some _ -> ()
 
+  let caml_eval_name t =
+    let caml_name = caml_name t in
+    match t.match_input_length with
+    | None -> caml_name
+    | Some input -> Printf.sprintf "(List.length %s)" (Input.caml_name input)
+
   let ml_apply t out_channel =
     let p s = p out_channel s in
-    let caml_name = caml_name t in
-    let caml_name =
-      match t.match_input_length with
-      | None -> caml_name
-      | Some input -> Printf.sprintf "(List.length %s)" (Input.caml_name input)
-    in
+    let caml_name = caml_eval_name t in
     if t.has_default_value && Option.is_none t.match_input_length
     then begin
       p "  Option.iter %s ~f:(fun %s ->" caml_name caml_name;
@@ -384,9 +385,11 @@ let handle_one_op (op : Op.t) out_channel =
   List.iter op.attributes ~f:(fun attribute -> Attribute.ml_apply attribute out_channel);
   begin
     match op.output_types with
-    | [ { number_attr = Some _; _ } ] ->
-      (* TODO: use the proper number of values here. *)
-      p "  Op.execute op ~output_len:10"
+    | [ { number_attr = Some attr; _ } ] ->
+      let attr =
+        List.find_exn op.attributes ~f:(fun attribute -> String.(=) attribute.name attr)
+      in
+      p "  Op.execute op ~output_len:%s" (Attribute.caml_eval_name attr)
     | _ -> p "  Op.execute%d op" (List.length op.output_types)
   end;
   p ""

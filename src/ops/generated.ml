@@ -1437,7 +1437,7 @@ let concatOffset
   Op.add_input op concat_dim;
   List.iter shape ~f:(Op.add_input op);
   Op.set_attr_int op "N" (List.length shape);
-  Op.execute op ~output_len:10
+  Op.execute op ~output_len:(List.length shape)
 
 let concatV2
     (values : 't t list)
@@ -2189,7 +2189,7 @@ let dynamicPartition
   Op.add_input op partitions;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_int op "num_partitions" num_partitions;
-  Op.execute op ~output_len:10
+  Op.execute op ~output_len:num_partitions
 
 let dynamicStitch
     (indices : [ `int32 ] t list)
@@ -6375,7 +6375,7 @@ let shapeN
   Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn input));
   Op.set_attr_int op "N" (List.length input);
-  Op.execute op ~output_len:10
+  Op.execute op ~output_len:(List.length input)
 
 let shardedFilename
     (basename : [ `string ] t)
@@ -7369,7 +7369,7 @@ let split
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_int op "num_split" num_split;
-  Op.execute op ~output_len:10
+  Op.execute op ~output_len:num_split
 
 let splitV
     ~num_split
@@ -7384,7 +7384,7 @@ let splitV
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_data_type op "Tlen" (Op.tensor_handle_data_type size_splits);
   Op.set_attr_int op "num_split" num_split;
-  Op.execute op ~output_len:10
+  Op.execute op ~output_len:num_split
 
 let sqrt
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -8399,7 +8399,7 @@ let unpack
   Option.iter axis ~f:(fun axis ->
     Op.set_attr_int op "axis" axis
   );
-  Op.execute op ~output_len:10
+  Op.execute op ~output_len:num
 
 let unsortedSegmentMax
     (data : ([< `float | `double | `int32 | `int64 ] as 't) t)
