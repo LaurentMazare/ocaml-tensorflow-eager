@@ -1,0 +1,6 @@
+(jbuild_version 1)
+
+(library
+ ((name tf_ops)
+  (public_name tf.ops)
+  (libraries (base tf_core))))

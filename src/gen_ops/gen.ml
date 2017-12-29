@@ -51,7 +51,7 @@ module Input = struct
 
   let caml_comp_name t =
     let name = caml_name t in
-    if Option.equal String.equal t.number_attr None then name
+    if Option.is_none t.number_attr then name
     else Printf.sprintf "(List.hd_exn %s)" name
 end
 
@@ -78,13 +78,13 @@ module Attribute = struct
 
   let caml_type = function
     | String -> "string"
-    | Shape -> "Dim.t list"
+    | Shape -> "int list"
     | Int -> "int"
     | Float -> "float"
     | Bool -> "bool"
     | List `float -> "float list"
     | List `int -> "int list"
-    | List `shape -> "Dim.t list list"
+    | List `shape -> "int list list"
     | List `type_ -> "Type.p list"
 
   let of_dtype = function
@@ -113,7 +113,7 @@ module Attribute = struct
   let mli t (p : ('a, unit, string, unit) format4 -> 'a) =
     match t.match_input_length with
     | None ->
-      p "  -> %s%s:%s"
+      p "  %s%s:%s ->"
         (if t.has_default_value then "?" else "")
         (caml_name t)
         (caml_type t.attr_type)
@@ -285,8 +285,8 @@ let output_type_string op output_type ~idx =
   | Fixed p -> "Type." ^ Op_type.to_string p
   | Polymorphic (alpha, _) ->
     match same_input_and_output_type op ~alpha with
-    | Some input -> Printf.sprintf "(Eager.Tensor_handle.data_type %s)" (Input.caml_comp_name input)
-    | None -> type_variable ~idx
+    | Some input -> Printf.sprintf "(Op.tensor_handle_data_type %s)" (Input.caml_comp_name input)
+    | None -> Printf.sprintf "Operation.Type.(to_data_type (P %s))" (type_variable ~idx)
 
 let needs_variable_for_output_type op output_type =
   match (output_type : Type.t) with
@@ -318,26 +318,25 @@ let gen_mli ops =
   let handle_one_op (op : Op.t) =
     Option.iter op.summary ~f:(fun summary -> p "(* %s *)" (escape_comment summary));
     Option.iter op.description ~f:(fun description -> p "(* %s *)" (escape_comment description));
-    p "val %s" (Op.caml_name op);
-    p "  :  ?name:string";
+    p "val %s:" (Op.caml_name op);
     List.iteri op.output_types ~f:(fun idx output_type ->
       if needs_variable_for_output_type op output_type.type_
-      then p "  -> %s:%s Type.t" (type_variable ~idx) (Type.to_string output_type.type_));
+      then p "  %s:%s Type.t ->" (type_variable ~idx) (Type.to_string output_type.type_));
     List.iter op.attributes ~f:(fun attribute ->
       Attribute.mli attribute p);
     List.iter op.inputs ~f:(fun input ->
       let maybe_list = if Option.is_some input.number_attr then " list" else "" in
-      p "  -> %s t%s" (Type.to_string input.type_) maybe_list);
+      p "  %s t%s ->" (Type.to_string input.type_) maybe_list);
     if List.is_empty op.inputs
-    then p "  -> unit";
-    p "  -> %s" (output_type_str op);
+    then p "  unit ->";
+    p "    %s" (output_type_str op);
     p "";
   in
   p "%s" automatically_generated_file;
   p "";
   p "open Tf_core";
   p "";
-  p "type _ t = Eager.Tensor_handle.t";
+  p "type _ t = Op.tensor_handle";
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
   p "";
@@ -346,7 +345,7 @@ let gen_mli ops =
 
 let handle_one_op (op : Op.t) out_channel =
   let p s = p out_channel s in
-  p "let %s ?(name:_)" (Op.caml_name op);
+  p "let %s" (Op.caml_name op);
   List.iteri op.output_types ~f:(fun idx output_type ->
     if needs_variable_for_output_type op output_type.type_
     then p "    ~%s" (type_variable ~idx));
@@ -367,14 +366,20 @@ let handle_one_op (op : Op.t) out_channel =
   List.iteri op.output_types ~f:(fun idx output_type ->
     Option.iter output_type.name ~f:(fun output_type_name ->
       let output_type_string = output_type_string op output_type.type_ ~idx in
-      p "  Op.set_attr_type op \"%s\" %s;" output_type_name output_type_string));
+      p "  Op.set_attr_data_type op \"%s\" %s;" output_type_name output_type_string));
   List.iter op.inputs ~f:(fun (input : Input.t) ->
     Option.iter input.type_name ~f:(fun type_name ->
       let name = Input.caml_comp_name input in
-      let type_string = Printf.sprintf "(Eager.Tensor_handle.data_type %s)" name in
-      p "  Op.set_attr_type op \"%s\" %s;" type_name type_string));
+      let type_string = Printf.sprintf "(Op.tensor_handle_data_type %s)" name in
+      p "  Op.set_attr_data_type op \"%s\" %s;" type_name type_string));
   List.iter op.attributes ~f:(fun attribute -> Attribute.ml_apply attribute out_channel);
-  p "  Op.execute%d op" (List.length op.output_types);
+  begin
+    match op.output_types with
+    | [ { number_attr = Some _; _ } ] ->
+      (* TODO: use the proper number of values here. *)
+      p "  Op.execute op ~output_len:10"
+    | _ -> p "  Op.execute%d op" (List.length op.output_types)
+  end;
   p ""
 
 let gen_ml ops =
@@ -384,7 +389,7 @@ let gen_ml ops =
   p "open Base";
   p "open Tf_core";
   p "";
-  p "type _ t = Eager.Tensor_handle.t";
+  p "type _ t = Op.tensor_handle";
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
   p "";
