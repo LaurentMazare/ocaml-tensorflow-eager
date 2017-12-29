@@ -53,7 +53,7 @@ aggregated more than num_required gradients, it returns the average of
 the accumulated gradients.  Also automatically increments the recorded
 global_step in the accumulator by 1, and resets the aggregate to 0. *)
 val accumulatorTakeGradient:
-  type_:([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) Type.t ->
   [ `string ] t ->
   [ `int32 ] t ->
     ([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) t
@@ -231,7 +231,7 @@ tf.angle(input) ==> [2.0132, 1.056]
 Equivalent to np.angle.
 @end_compatibility *)
 val angle:
-  type_:([< `float | `double ] as 'tout) Type.t ->
+  type_tout:([< `float | `double ] as 'tout) Type.t ->
   ([< `complex64 ] as 't) t ->
     ([< `float | `double ] as 'tout) t
 
@@ -459,7 +459,7 @@ val approximateEqual:
 (* Returns the index with the largest value across dimensions of a tensor. *)
 (* Note that in case of ties the identity of the return value is not guaranteed. *)
 val argMax:
-  type_:([< `int32 | `int64 ] as 'output_type) Type.t ->
+  type_output_type:([< `int32 | `int64 ] as 'output_type) Type.t ->
   ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
     ([< `int32 | `int64 ] as 'output_type) t
@@ -467,7 +467,7 @@ val argMax:
 (* Returns the index with the smallest value across dimensions of a tensor. *)
 (* Note that in case of ties the identity of the return value is not guaranteed. *)
 val argMin:
-  type_:([< `int32 | `int64 ] as 'output_type) Type.t ->
+  type_output_type:([< `int32 | `int64 ] as 'output_type) Type.t ->
   ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
     ([< `int32 | `int64 ] as 'output_type) t
@@ -954,7 +954,7 @@ dimension be equal to sizeof(`type`)/sizeof(`T`). The shape then goes from
 *NOTE*: Bitcast is implemented as a low-level cast, so machines with different
 endian orderings will give different results. *)
 val bitcast:
-  type_:([< `float | `double | `int64 | `int32 | `complex64 ] as 'type__) Type.t ->
+  type_type__:([< `float | `double | `int64 | `int32 | `complex64 ] as 'type__) Type.t ->
   ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
     ([< `float | `double | `int64 | `int32 | `complex64 ] as 'type__) t
 
@@ -1044,7 +1044,7 @@ val cTCLoss:
 
 (* Cast x of type SrcT to y of DstT. *)
 val cast:
-  type_:'dstT Type.t ->
+  type_dstT:'dstT Type.t ->
   'srcT t ->
     'dstT t
 
@@ -1103,7 +1103,7 @@ For example:
 tf.complex(real, imag) ==> [[2.25 + 4.75j], [3.25 + 5.75j]]
 ``` *)
 val complex:
-  type_:([< `complex64 ] as 'tout) Type.t ->
+  type_tout:([< `complex64 ] as 'tout) Type.t ->
   ([< `float | `double ] as 't) t ->
   ([< `float | `double ] as 't) t ->
     ([< `complex64 ] as 'tout) t
@@ -1114,7 +1114,7 @@ val complex:
 elements in `x` must be complex numbers of the form \\(a + bj\\). The absolute
 value is computed as \\( \sqrt{a^2 + b^2}\\). *)
 val complexAbs:
-  type_:([< `float | `double ] as 'tout) Type.t ->
+  type_tout:([< `float | `double ] as 'tout) Type.t ->
   ([< `complex64 ] as 't) t ->
     ([< `float | `double ] as 'tout) t
 
@@ -1373,7 +1373,7 @@ val cropAndResizeGradBoxes:
 
 (* Computes the gradient of the crop_and_resize op wrt the input image tensor. *)
 val cropAndResizeGradImage:
-  type_:([< `float | `double ] as 't) Type.t ->
+  type_t:([< `float | `double ] as 't) Type.t ->
   ?method_:string ->
   [ `float ] t ->
   [ `float ] t ->
@@ -1534,14 +1534,14 @@ of color channels.
 This op also supports decoding JPEGs and non-animated GIFs since the interface
 is the same, though it is cleaner to use `tf.image.decode_image`. *)
 val decodePng:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   ?channels:int ->
   [ `string ] t ->
     'dtype t
 
 (* Reinterpret the bytes of a string as a vector of numbers. *)
 val decodeRaw:
-  type_:([< `float | `double | `int32 | `int64 ] as 'out_type) Type.t ->
+  type_out_type:([< `float | `double | `int32 | `int64 ] as 'out_type) Type.t ->
   ?little_endian:bool ->
   [ `string ] t ->
     ([< `float | `double | `int32 | `int64 ] as 'out_type) t
@@ -1879,7 +1879,7 @@ then the final deserialized `SparseTensor` will be:
     values = [1, 2, 3, 4, 5]
     shape = [2 50] *)
 val deserializeManySparse:
-  type_1:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   [ `string ] t ->
     [ `int64 ] t * 'dtype t * [ `int64 ] t
 
@@ -2335,7 +2335,7 @@ val extractImagePatches:
 (* Extract the shape information of a JPEG-encoded image. *)
 (* This op only parses the image header, so it is much faster than DecodeJpeg. *)
 val extractJpegShape:
-  type_:([< `int32 | `int64 ] as 'output_type) Type.t ->
+  type_output_type:([< `int32 | `int64 ] as 'output_type) Type.t ->
   [ `string ] t ->
     ([< `int32 | `int64 ] as 'output_type) t
 
@@ -2921,7 +2921,7 @@ val getSessionHandle:
 
 (* Get the value of the tensor specified by its handle. *)
 val getSessionTensor:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   [ `string ] t ->
     'dtype t
 
@@ -3117,7 +3117,7 @@ For example:
 tf.imag(input) ==> [4.75, 5.75]
 ``` *)
 val imag:
-  type_:([< `float | `double ] as 'tout) Type.t ->
+  type_tout:([< `float | `double ] as 'tout) Type.t ->
   ([< `complex64 ] as 't) t ->
     ([< `float | `double ] as 'tout) t
 
@@ -3164,7 +3164,7 @@ val imageSummary:
 (* Returns immutable tensor from memory region. *)
 (* The current implementation memmaps the tensor from a file. *)
 val immutableConst:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   shape:int list ->
   memory_region_name:string ->
   unit ->
@@ -3436,7 +3436,7 @@ out ==> [2, 4, 6]
 idx ==> [1, 3, 5]
 ``` *)
 val listDiff:
-  type_1:([< `int32 | `int64 ] as 'out_idx) Type.t ->
+  type_out_idx:([< `int32 | `int64 ] as 'out_idx) Type.t ->
   't t ->
   't t ->
     't t * ([< `int32 | `int64 ] as 'out_idx) t
@@ -3564,8 +3564,8 @@ val logicalOr:
 
 (* Outputs all keys and values in the table. *)
 val lookupTableExport:
-  type_:'tkeys Type.t ->
-  type_1:'tvalues Type.t ->
+  type_tkeys:'tkeys Type.t ->
+  type_tvalues:'tvalues Type.t ->
   [ `string ] t ->
     'tkeys t * 'tvalues t
 
@@ -4028,7 +4028,7 @@ even if padding is involved and the mathematically correct answer is outside
 (either negative or too large).  This is a bug, but fixing it is difficult to do
 in a safe backwards compatible way, especially due to flattening. *)
 val maxPoolWithArgmax:
-  type_1:([< `int32 | `int64 ] as 'targmax) Type.t ->
+  type_targmax:([< `int32 | `int64 ] as 'targmax) Type.t ->
   ksize:int list ->
   strides:int list ->
   padding:string ->
@@ -4668,7 +4668,7 @@ val parameterizedTruncatedNormal:
 
 (* Transforms a serialized tensorflow.TensorProto proto into a Tensor. *)
 val parseTensor:
-  type_:'out_type Type.t ->
+  type_out_type:'out_type Type.t ->
   [ `string ] t ->
     'out_type t
 
@@ -4677,7 +4677,7 @@ val parseTensor:
 intended as a way to represent a value that will always be fed, and to
 provide attrs that enable the fed value to be checked at runtime. *)
 val placeholder:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   ?shape:int list ->
   unit ->
     'dtype t
@@ -4687,7 +4687,7 @@ val placeholder:
 intended as a way to represent a value that will always be fed, and to
 provide attrs that enable the fed value to be checked at runtime. *)
 val placeholderV2:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   shape:int list ->
   unit ->
     'dtype t
@@ -4884,7 +4884,7 @@ input values that only uses a small fraction of the possible range. By feeding
 that output into this operator, we can reduce it from 32 bits down to 8 with
 minimal loss of accuracy. *)
 val quantizeDownAndShrinkRange:
-  type_:'out_type Type.t ->
+  type_out_type:'out_type Type.t ->
   'tinput t ->
   [ `float ] t ->
   [ `float ] t ->
@@ -4982,7 +4982,7 @@ buffers from being created. Otherwise, you can end up with buffers where all the
 quantized values map to the same float value, which causes problems for
 operations that have to perform further calculations on them. *)
 val quantizeV2:
-  type_:'t Type.t ->
+  type_t:'t Type.t ->
   ?mode:string ->
   [ `float ] t ->
   [ `float ] t ->
@@ -4991,7 +4991,7 @@ val quantizeV2:
 
 (* Returns x + y element-wise, working on quantized buffers. *)
 val quantizedAdd:
-  type_:'toutput Type.t ->
+  type_toutput:'toutput Type.t ->
   't1 t ->
   't2 t ->
   [ `float ] t ->
@@ -5014,7 +5014,7 @@ val quantizedAvgPool:
 (* This op is deprecated and will be removed in the future. Prefer
 `tf.nn.batch_normalization`. *)
 val quantizedBatchNormWithGlobalNormalization:
-  type_:'out_type Type.t ->
+  type_out_type:'out_type Type.t ->
   variance_epsilon:float ->
   scale_after_normalization:bool ->
   'tinput t ->
@@ -5037,7 +5037,7 @@ val quantizedBatchNormWithGlobalNormalization:
 (* Adds Tensor 'bias' to Tensor 'input' for Quantized types. *)
 (* Broadcasts the values of bias on dimensions 0..N-2 of 'input'. *)
 val quantizedBiasAdd:
-  type_:'out_type Type.t ->
+  type_out_type:'out_type Type.t ->
   't1 t ->
   't2 t ->
   [ `float ] t ->
@@ -5060,7 +5060,7 @@ number of the associated minimum, and the highest represents the maximum.
 This means that you can only interpret the quantized output in the same way, by
 taking the returned minimum and maximum values into account. *)
 val quantizedConv2D:
-  type_:'out_type Type.t ->
+  type_out_type:'out_type Type.t ->
   strides:int list ->
   padding:string ->
   'tinput t ->
@@ -5089,7 +5089,7 @@ val quantizedInstanceNorm:
 outer dimension of `b` (after being transposed if `transposed_b` is
 non-zero). *)
 val quantizedMatMul:
-  type_:'toutput Type.t ->
+  type_toutput:'toutput Type.t ->
   ?transpose_a:bool ->
   ?transpose_b:bool ->
   't1 t ->
@@ -5112,7 +5112,7 @@ val quantizedMaxPool:
 
 (* Returns x * y element-wise, working on quantized buffers. *)
 val quantizedMul:
-  type_:'toutput Type.t ->
+  type_toutput:'toutput Type.t ->
   't1 t ->
   't2 t ->
   [ `float ] t ->
@@ -5123,7 +5123,7 @@ val quantizedMul:
 
 (* Computes Quantized Rectified Linear: `max(features, 0)` *)
 val quantizedRelu:
-  type_:'out_type Type.t ->
+  type_out_type:'out_type Type.t ->
   'tinput t ->
   [ `float ] t ->
   [ `float ] t ->
@@ -5131,7 +5131,7 @@ val quantizedRelu:
 
 (* Computes Quantized Rectified Linear 6: `min(max(features, 0), 6)` *)
 val quantizedRelu6:
-  type_:'out_type Type.t ->
+  type_out_type:'out_type Type.t ->
   'tinput t ->
   [ `float ] t ->
   [ `float ] t ->
@@ -5139,7 +5139,7 @@ val quantizedRelu6:
 
 (* Computes Quantized Rectified Linear X: `min(max(features, 0), max_value)` *)
 val quantizedReluX:
-  type_:'out_type Type.t ->
+  type_out_type:'out_type Type.t ->
   'tinput t ->
   [ `float ] t ->
   [ `float ] t ->
@@ -5303,7 +5303,7 @@ random variables.
 See Donald E. Knuth (1969). Seminumerical Algorithms. The Art of Computer
 Programming, Volume 2. Addison Wesley *)
 val randomPoissonV2:
-  type_:([< `float | `double | `int32 | `int64 ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double | `int32 | `int64 ] as 'dtype) Type.t ->
   ?seed:int ->
   ?seed2:int ->
   ([< `int32 | `int64 ] as 's) t ->
@@ -5342,7 +5342,7 @@ val randomShuffleQueue:
 (* Outputs random values from a normal distribution. *)
 (* The generated values will have mean 0 and standard deviation 1. *)
 val randomStandardNormal:
-  type_:([< `float | `double ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double ] as 'dtype) Type.t ->
   ?seed:int ->
   ?seed2:int ->
   ([< `int32 | `int64 ] as 't) t ->
@@ -5352,7 +5352,7 @@ val randomStandardNormal:
 (* The generated values follow a uniform distribution in the range `[0, 1)`. The
 lower bound 0 is included in the range, while the upper bound 1 is excluded. *)
 val randomUniform:
-  type_:([< `float | `double ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double ] as 'dtype) Type.t ->
   ?seed:int ->
   ?seed2:int ->
   ([< `int32 | `int64 ] as 't) t ->
@@ -5480,7 +5480,7 @@ For example:
 tf.real(input) ==> [-2.25, 3.25]
 ``` *)
 val real:
-  type_:([< `float | `double ] as 'tout) Type.t ->
+  type_tout:([< `float | `double ] as 'tout) Type.t ->
   ([< `complex64 ] as 't) t ->
     ([< `float | `double ] as 'tout) t
 
@@ -5641,7 +5641,7 @@ interpretation of the 'input' data. For example, if input_min is -1.0f and
 input_max is 1.0f, and we are dealing with quint16 quantized data, then a 0
 value in the 16-bit data should be interpreted as -1.0f, and a 65535 means 1.0f. *)
 val requantize:
-  type_:'out_type Type.t ->
+  type_out_type:'out_type Type.t ->
   'tinput t ->
   [ `float ] t ->
   [ `float ] t ->
@@ -5786,7 +5786,7 @@ order.
 
 See also `RestoreSlice`. *)
 val restore:
-  type_:'dt Type.t ->
+  type_dt:'dt Type.t ->
   ?preferred_shard:int ->
   [ `string ] t ->
   [ `string ] t ->
@@ -5800,7 +5800,7 @@ larger tensor and the slice that the restored tensor covers.
 The `shape_and_slice` input has the same format as the
 elements of the `shapes_and_slices` input of the `SaveSlices` op. *)
 val restoreSlice:
-  type_:'dt Type.t ->
+  type_dt:'dt Type.t ->
   ?preferred_shard:int ->
   [ `string ] t ->
   [ `string ] t ->
@@ -6749,14 +6749,14 @@ For example:
 shape(t) ==> [2, 2, 3]
 ``` *)
 val shape:
-  type_:([< `int32 | `int64 ] as 'out_type) Type.t ->
+  type_out_type:([< `int32 | `int64 ] as 'out_type) Type.t ->
   't t ->
     ([< `int32 | `int64 ] as 'out_type) t
 
 (* Returns shape of tensors. *)
 (* This operation returns N 1-D integer tensors representing shape of `input[i]s`. *)
 val shapeN:
-  type_:([< `int32 | `int64 ] as 'out_type) Type.t ->
+  type_out_type:([< `int32 | `int64 ] as 'out_type) Type.t ->
   't t list ->
     ([< `int32 | `int64 ] as 'out_type) t list
 
@@ -6817,7 +6817,7 @@ For example:
 size(t) ==> 12
 ``` *)
 val size:
-  type_:([< `int32 | `int64 ] as 'out_type) Type.t ->
+  type_out_type:([< `int32 | `int64 ] as 'out_type) Type.t ->
   't t ->
     ([< `int32 | `int64 ] as 'out_type) t
 
@@ -7020,7 +7020,7 @@ average of the accumulated gradients.  Also automatically increments
 the recorded global_step in the accumulator by 1, and resets the
 aggregate to 0. *)
 val sparseAccumulatorTakeGradient:
-  type_1:([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) Type.t ->
   [ `string ] t ->
   [ `int32 ] t ->
     [ `int64 ] t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) t * [ `int64 ] t
@@ -7876,7 +7876,7 @@ val stackClose:
 
 (* Deprecated, use StackPopV2. *)
 val stackPop:
-  type_:'elem_type Type.t ->
+  type_elem_type:'elem_type Type.t ->
   [ `string ] t ->
     'elem_type t
 
@@ -7912,7 +7912,7 @@ val stageSize:
 
 The outputs are a deterministic function of `shape` and `seed`. *)
 val statelessRandomNormal:
-  type_:([< `float | `double ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double ] as 'dtype) Type.t ->
   ([< `int32 | `int64 ] as 't) t ->
   [ `int64 ] t ->
     ([< `float | `double ] as 'dtype) t
@@ -7923,7 +7923,7 @@ lower bound 0 is included in the range, while the upper bound 1 is excluded.
 
 The outputs are a deterministic function of `shape` and `seed`. *)
 val statelessRandomUniform:
-  type_:([< `float | `double ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double ] as 'dtype) Type.t ->
   ([< `int32 | `int64 ] as 't) t ->
   [ `int64 ] t ->
     ([< `float | `double ] as 'dtype) t
@@ -7935,7 +7935,7 @@ deviations from the mean are dropped and re-picked.
 
 The outputs are a deterministic function of `shape` and `seed`. *)
 val statelessTruncatedNormal:
-  type_:([< `float | `double ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double ] as 'dtype) Type.t ->
   ([< `int32 | `int64 ] as 't) t ->
   [ `int64 ] t ->
     ([< `float | `double ] as 'dtype) t
@@ -8187,7 +8187,7 @@ val stringToHashBucketStrong:
 (* (Note that int32 overflow results in an error while float overflow
 results in a rounded value.) *)
 val stringToNumber:
-  type_:([< `float | `double | `int32 | `int64 ] as 'out_type) Type.t ->
+  type_out_type:([< `float | `double | `int32 | `int64 ] as 'out_type) Type.t ->
   [ `string ] t ->
     ([< `float | `double | `int32 | `int64 ] as 'out_type) t
 
@@ -8376,7 +8376,7 @@ then the final `SparseTensor` will be:
     shape = [2 50]
 ``` *)
 val takeManySparseFromTensorsMap:
-  type_1:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   ?container:string ->
   ?shared_name:string ->
   [ `int64 ] t ->
@@ -8416,7 +8416,7 @@ Outputs a ref to the tensor state so it may be read or modified.
       var = state_ops.assign_add(var, [[6.0, 7.0]])
       final = state_ops._destroy_temporary_variable(var, var_name=var_name) *)
 val temporaryVariable:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   shape:int list ->
   ?var_name:string ->
   unit ->
@@ -8440,7 +8440,7 @@ val tensorArrayCloseV2:
     unit
 
 val tensorArrayConcat:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   ?element_shape_except0:int list ->
   [ `string ] t ->
   [ `float ] t ->
@@ -8448,14 +8448,14 @@ val tensorArrayConcat:
 
 (* Deprecated. Use TensorArrayConcatV3 *)
 val tensorArrayConcatV2:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   ?element_shape_except0:int list ->
   [ `string ] t ->
   [ `float ] t ->
     'dtype t * [ `int64 ] t
 
 val tensorArrayGather:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   ?element_shape:int list ->
   [ `string ] t ->
   [ `int32 ] t ->
@@ -8464,7 +8464,7 @@ val tensorArrayGather:
 
 (* Deprecated. Use TensorArrayGatherV3 *)
 val tensorArrayGatherV2:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   ?element_shape:int list ->
   [ `string ] t ->
   [ `int32 ] t ->
@@ -8485,14 +8485,14 @@ val tensorArrayGradV2:
     [ `string ] t
 
 val tensorArrayPack:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   ?element_shape:int list ->
   [ `string ] t ->
   [ `float ] t ->
     'dtype t
 
 val tensorArrayRead:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   [ `string ] t ->
   [ `int32 ] t ->
   [ `float ] t ->
@@ -8500,7 +8500,7 @@ val tensorArrayRead:
 
 (* Deprecated. Use TensorArrayReadV3 *)
 val tensorArrayReadV2:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   [ `string ] t ->
   [ `int32 ] t ->
   [ `float ] t ->
@@ -8715,7 +8715,7 @@ val truncateMod:
 deviation 1, except that values whose magnitude is more than 2 standard
 deviations from the mean are dropped and re-picked. *)
 val truncatedNormal:
-  type_:([< `float | `double ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double ] as 'dtype) Type.t ->
   ?seed:int ->
   ?seed2:int ->
   ([< `int32 | `int64 ] as 't) t ->
@@ -8758,7 +8758,7 @@ y ==> [1, 2, 4, 7, 8]
 idx ==> [0, 0, 1, 2, 2, 2, 3, 4, 4]
 ``` *)
 val unique:
-  type_1:([< `int32 | `int64 ] as 'out_idx) Type.t ->
+  type_out_idx:([< `int32 | `int64 ] as 'out_idx) Type.t ->
   't t ->
     't t * ([< `int32 | `int64 ] as 'out_idx) t
 
@@ -8781,7 +8781,7 @@ idx ==> [0, 0, 1, 2, 2, 2, 3, 4, 4]
 count ==> [2, 1, 3, 1, 2]
 ``` *)
 val uniqueWithCounts:
-  type_1:([< `int32 | `int64 ] as 'out_idx) Type.t ->
+  type_out_idx:([< `int32 | `int64 ] as 'out_idx) Type.t ->
   't t ->
     't t * ([< `int32 | `int64 ] as 'out_idx) t * ([< `int32 | `int64 ] as 'out_idx) t
 
@@ -8852,7 +8852,7 @@ val unsortedSegmentSum:
 
 (* Use VariableV2 instead. *)
 val variable:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   shape:int list ->
   ?container:string ->
   ?shared_name:string ->
@@ -8864,7 +8864,7 @@ val variable:
 TODO(zhifengc/mrry): Adds a pointer to a more detail document
 about sharing states in tensorflow. *)
 val variableV2:
-  type_:'dtype Type.t ->
+  type_dtype:'dtype Type.t ->
   shape:int list ->
   ?container:string ->
   ?shared_name:string ->

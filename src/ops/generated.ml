@@ -59,14 +59,14 @@ let accumulatorSetGlobalStep
   Op.execute0 op
 
 let accumulatorTakeGradient
-    ~type_
+    ~type_dtype
     (handle : [ `string ] t)
     (num_required : [ `int32 ] t)
   =
   let op = Op.create context "AccumulatorTakeGradient" in
   Op.add_input op handle;
   Op.add_input op num_required;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.execute1 op
 
 let acos
@@ -221,12 +221,12 @@ let allCandidateSampler
   Op.execute3 op
 
 let angle
-    ~type_
+    ~type_tout
     (input : ([< `complex64 ] as 't) t)
   =
   let op = Op.create context "Angle" in
   Op.add_input op input;
-  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_tout));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -551,27 +551,27 @@ let approximateEqual
   Op.execute1 op
 
 let argMax
-    ~type_
+    ~type_output_type
     (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
     (dimension : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "ArgMax" in
   Op.add_input op input;
   Op.add_input op dimension;
-  Op.set_attr_data_type op "output_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "output_type" Operation.Type.(to_data_type (P type_output_type));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type dimension);
   Op.execute1 op
 
 let argMin
-    ~type_
+    ~type_output_type
     (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
     (dimension : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "ArgMin" in
   Op.add_input op input;
   Op.add_input op dimension;
-  Op.set_attr_data_type op "output_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "output_type" Operation.Type.(to_data_type (P type_output_type));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type dimension);
   Op.execute1 op
@@ -1224,12 +1224,12 @@ let bincount
   Op.execute1 op
 
 let bitcast
-    ~type_
+    ~type_type__
     (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
   =
   let op = Op.create context "Bitcast" in
   Op.add_input op input;
-  Op.set_attr_data_type op "type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "type" Operation.Type.(to_data_type (P type_type__));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -1332,12 +1332,12 @@ let cTCLoss
   Op.execute2 op
 
 let cast
-    ~type_
+    ~type_dstT
     (x : 'srcT t)
   =
   let op = Op.create context "Cast" in
   Op.add_input op x;
-  Op.set_attr_data_type op "DstT" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "DstT" Operation.Type.(to_data_type (P type_dstT));
   Op.set_attr_data_type op "SrcT" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -1378,24 +1378,24 @@ let choleskyGrad
   Op.execute1 op
 
 let complex
-    ~type_
+    ~type_tout
     (real : ([< `float | `double ] as 't) t)
     (imag : ([< `float | `double ] as 't) t)
   =
   let op = Op.create context "Complex" in
   Op.add_input op real;
   Op.add_input op imag;
-  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_tout));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type real);
   Op.execute1 op
 
 let complexAbs
-    ~type_
+    ~type_tout
     (x : ([< `complex64 ] as 't) t)
   =
   let op = Op.create context "ComplexAbs" in
   Op.add_input op x;
-  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_tout));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.execute1 op
 
@@ -1732,7 +1732,7 @@ let cropAndResizeGradBoxes
   Op.execute1 op
 
 let cropAndResizeGradImage
-    ~type_
+    ~type_t
     ?method_
     (grads : [ `float ] t)
     (boxes : [ `float ] t)
@@ -1744,7 +1744,7 @@ let cropAndResizeGradImage
   Op.add_input op boxes;
   Op.add_input op box_ind;
   Op.add_input op image_size;
-  Op.set_attr_data_type op "T" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "T" Operation.Type.(to_data_type (P type_t));
   Option.iter method_ ~f:(fun method_ ->
     Op.set_attr_string op "method" method_
   );
@@ -1893,26 +1893,26 @@ let decodeJSONExample
   Op.execute1 op
 
 let decodePng
-    ~type_
+    ~type_dtype
     ?channels
     (contents : [ `string ] t)
   =
   let op = Op.create context "DecodePng" in
   Op.add_input op contents;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Option.iter channels ~f:(fun channels ->
     Op.set_attr_int op "channels" channels
   );
   Op.execute1 op
 
 let decodeRaw
-    ~type_
+    ~type_out_type
     ?little_endian
     (bytes : [ `string ] t)
   =
   let op = Op.create context "DecodeRaw" in
   Op.add_input op bytes;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Option.iter little_endian ~f:(fun little_endian ->
     Op.set_attr_bool op "little_endian" little_endian
   );
@@ -2065,12 +2065,12 @@ let dequantize
   Op.execute1 op
 
 let deserializeManySparse
-    ~type_1
+    ~type_dtype
     (serialized_sparse : [ `string ] t)
   =
   let op = Op.create context "DeserializeManySparse" in
   Op.add_input op serialized_sparse;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_1));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.execute3 op
 
 let destroyTemporaryVariable
@@ -2393,12 +2393,12 @@ let extractImagePatches
   Op.execute1 op
 
 let extractJpegShape
-    ~type_
+    ~type_output_type
     (contents : [ `string ] t)
   =
   let op = Op.create context "ExtractJpegShape" in
   Op.add_input op contents;
-  Op.set_attr_data_type op "output_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "output_type" Operation.Type.(to_data_type (P type_output_type));
   Op.execute1 op
 
 let fFT
@@ -3009,12 +3009,12 @@ let getSessionHandle
   Op.execute1 op
 
 let getSessionTensor
-    ~type_
+    ~type_dtype
     (handle : [ `string ] t)
   =
   let op = Op.create context "GetSessionTensor" in
   Op.add_input op handle;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.execute1 op
 
 let greater
@@ -3164,12 +3164,12 @@ let igammac
   Op.execute1 op
 
 let imag
-    ~type_
+    ~type_tout
     (input : ([< `complex64 ] as 't) t)
   =
   let op = Op.create context "Imag" in
   Op.add_input op input;
-  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_tout));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -3188,13 +3188,13 @@ let imageSummary
   Op.execute1 op
 
 let immutableConst
-    ~type_
+    ~type_dtype
     ~shape
     ~memory_region_name
     ()
   =
   let op = Op.create context "ImmutableConst" in
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_shape op "shape" shape;
   Op.set_attr_string op "memory_region_name" memory_region_name;
   Op.execute1 op
@@ -3462,7 +3462,7 @@ let linSpace
   Op.execute1 op
 
 let listDiff
-    ~type_1
+    ~type_out_idx
     (x : 't t)
     (y : 't t)
   =
@@ -3470,7 +3470,7 @@ let listDiff
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_1));
+  Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_out_idx));
   Op.execute2 op
 
 let loadAndRemapMatrix
@@ -3577,14 +3577,14 @@ let logicalOr
   Op.execute1 op
 
 let lookupTableExport
-    ~type_
-    ~type_1
+    ~type_tkeys
+    ~type_tvalues
     (table_handle : [ `string ] t)
   =
   let op = Op.create context "LookupTableExport" in
   Op.add_input op table_handle;
-  Op.set_attr_data_type op "Tkeys" Operation.Type.(to_data_type (P type_));
-  Op.set_attr_data_type op "Tvalues" Operation.Type.(to_data_type (P type_1));
+  Op.set_attr_data_type op "Tkeys" Operation.Type.(to_data_type (P type_tkeys));
+  Op.set_attr_data_type op "Tvalues" Operation.Type.(to_data_type (P type_tvalues));
   Op.execute2 op
 
 let lookupTableFind
@@ -4084,7 +4084,7 @@ let maxPoolV2
   Op.execute1 op
 
 let maxPoolWithArgmax
-    ~type_1
+    ~type_targmax
     ~ksize
     ~strides
     ~padding
@@ -4093,7 +4093,7 @@ let maxPoolWithArgmax
   let op = Op.create context "MaxPoolWithArgmax" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Op.set_attr_data_type op "Targmax" Operation.Type.(to_data_type (P type_1));
+  Op.set_attr_data_type op "Targmax" Operation.Type.(to_data_type (P type_targmax));
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
@@ -4627,33 +4627,33 @@ let parameterizedTruncatedNormal
   Op.execute1 op
 
 let parseTensor
-    ~type_
+    ~type_out_type
     (serialized : [ `string ] t)
   =
   let op = Op.create context "ParseTensor" in
   Op.add_input op serialized;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.execute1 op
 
 let placeholder
-    ~type_
+    ~type_dtype
     ?shape
     ()
   =
   let op = Op.create context "Placeholder" in
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Option.iter shape ~f:(fun shape ->
     Op.set_attr_shape op "shape" shape
   );
   Op.execute1 op
 
 let placeholderV2
-    ~type_
+    ~type_dtype
     ~shape
     ()
   =
   let op = Op.create context "PlaceholderV2" in
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_shape op "shape" shape;
   Op.execute1 op
 
@@ -4825,7 +4825,7 @@ let quantizeAndDequantizeV3
   Op.execute1 op
 
 let quantizeDownAndShrinkRange
-    ~type_
+    ~type_out_type
     (input : 'tinput t)
     (input_min : [ `float ] t)
     (input_max : [ `float ] t)
@@ -4834,12 +4834,12 @@ let quantizeDownAndShrinkRange
   Op.add_input op input;
   Op.add_input op input_min;
   Op.add_input op input_max;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type input);
   Op.execute3 op
 
 let quantizeV2
-    ~type_
+    ~type_t
     ?mode
     (input : [ `float ] t)
     (min_range : [ `float ] t)
@@ -4849,14 +4849,14 @@ let quantizeV2
   Op.add_input op input;
   Op.add_input op min_range;
   Op.add_input op max_range;
-  Op.set_attr_data_type op "T" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "T" Operation.Type.(to_data_type (P type_t));
   Option.iter mode ~f:(fun mode ->
     Op.set_attr_string op "mode" mode
   );
   Op.execute3 op
 
 let quantizedAdd
-    ~type_
+    ~type_toutput
     (x : 't1 t)
     (y : 't2 t)
     (min_x : [ `float ] t)
@@ -4871,7 +4871,7 @@ let quantizedAdd
   Op.add_input op max_x;
   Op.add_input op min_y;
   Op.add_input op max_y;
-  Op.set_attr_data_type op "Toutput" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "Toutput" Operation.Type.(to_data_type (P type_toutput));
   Op.set_attr_data_type op "T1" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T2" (Op.tensor_handle_data_type y);
   Op.execute3 op
@@ -4895,7 +4895,7 @@ let quantizedAvgPool
   Op.execute3 op
 
 let quantizedBatchNormWithGlobalNormalization
-    ~type_
+    ~type_out_type
     ~variance_epsilon
     ~scale_after_normalization
     (t : 'tinput t)
@@ -4930,14 +4930,14 @@ let quantizedBatchNormWithGlobalNormalization
   Op.add_input op gamma;
   Op.add_input op gamma_min;
   Op.add_input op gamma_max;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type t);
   Op.set_attr_float op "variance_epsilon" variance_epsilon;
   Op.set_attr_bool op "scale_after_normalization" scale_after_normalization;
   Op.execute3 op
 
 let quantizedBiasAdd
-    ~type_
+    ~type_out_type
     (input : 't1 t)
     (bias : 't2 t)
     (min_input : [ `float ] t)
@@ -4952,7 +4952,7 @@ let quantizedBiasAdd
   Op.add_input op max_input;
   Op.add_input op min_bias;
   Op.add_input op max_bias;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "T1" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "T2" (Op.tensor_handle_data_type bias);
   Op.execute3 op
@@ -4973,7 +4973,7 @@ let quantizedConcat
   Op.execute3 op
 
 let quantizedConv2D
-    ~type_
+    ~type_out_type
     ~strides
     ~padding
     (input : 'tinput t)
@@ -4990,7 +4990,7 @@ let quantizedConv2D
   Op.add_input op max_input;
   Op.add_input op min_filter;
   Op.add_input op max_filter;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tfilter" (Op.tensor_handle_data_type filter);
   Op.set_attr_int_list op "strides" strides;
@@ -5030,7 +5030,7 @@ let quantizedInstanceNorm
   Op.execute3 op
 
 let quantizedMatMul
-    ~type_
+    ~type_toutput
     ?transpose_a
     ?transpose_b
     (a : 't1 t)
@@ -5047,7 +5047,7 @@ let quantizedMatMul
   Op.add_input op max_a;
   Op.add_input op min_b;
   Op.add_input op max_b;
-  Op.set_attr_data_type op "Toutput" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "Toutput" Operation.Type.(to_data_type (P type_toutput));
   Op.set_attr_data_type op "T1" (Op.tensor_handle_data_type a);
   Op.set_attr_data_type op "T2" (Op.tensor_handle_data_type b);
   Option.iter transpose_a ~f:(fun transpose_a ->
@@ -5077,7 +5077,7 @@ let quantizedMaxPool
   Op.execute3 op
 
 let quantizedMul
-    ~type_
+    ~type_toutput
     (x : 't1 t)
     (y : 't2 t)
     (min_x : [ `float ] t)
@@ -5092,13 +5092,13 @@ let quantizedMul
   Op.add_input op max_x;
   Op.add_input op min_y;
   Op.add_input op max_y;
-  Op.set_attr_data_type op "Toutput" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "Toutput" Operation.Type.(to_data_type (P type_toutput));
   Op.set_attr_data_type op "T1" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "T2" (Op.tensor_handle_data_type y);
   Op.execute3 op
 
 let quantizedRelu
-    ~type_
+    ~type_out_type
     (features : 'tinput t)
     (min_features : [ `float ] t)
     (max_features : [ `float ] t)
@@ -5107,12 +5107,12 @@ let quantizedRelu
   Op.add_input op features;
   Op.add_input op min_features;
   Op.add_input op max_features;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type features);
   Op.execute3 op
 
 let quantizedRelu6
-    ~type_
+    ~type_out_type
     (features : 'tinput t)
     (min_features : [ `float ] t)
     (max_features : [ `float ] t)
@@ -5121,12 +5121,12 @@ let quantizedRelu6
   Op.add_input op features;
   Op.add_input op min_features;
   Op.add_input op max_features;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type features);
   Op.execute3 op
 
 let quantizedReluX
-    ~type_
+    ~type_out_type
     (features : 'tinput t)
     (max_value : [ `float ] t)
     (min_features : [ `float ] t)
@@ -5137,7 +5137,7 @@ let quantizedReluX
   Op.add_input op max_value;
   Op.add_input op min_features;
   Op.add_input op max_features;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type features);
   Op.execute3 op
 
@@ -5291,7 +5291,7 @@ let randomPoisson
   Op.execute1 op
 
 let randomPoissonV2
-    ~type_
+    ~type_dtype
     ?seed
     ?seed2
     (shape : ([< `int32 | `int64 ] as 's) t)
@@ -5300,7 +5300,7 @@ let randomPoissonV2
   let op = Op.create context "RandomPoissonV2" in
   Op.add_input op shape;
   Op.add_input op rate;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "S" (Op.tensor_handle_data_type shape);
   Op.set_attr_data_type op "R" (Op.tensor_handle_data_type rate);
   Option.iter seed ~f:(fun seed ->
@@ -5364,14 +5364,14 @@ let randomShuffleQueue
   Op.execute1 op
 
 let randomStandardNormal
-    ~type_
+    ~type_dtype
     ?seed
     ?seed2
     (shape : ([< `int32 | `int64 ] as 't) t)
   =
   let op = Op.create context "RandomStandardNormal" in
   Op.add_input op shape;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
@@ -5382,14 +5382,14 @@ let randomStandardNormal
   Op.execute1 op
 
 let randomUniform
-    ~type_
+    ~type_dtype
     ?seed
     ?seed2
     (shape : ([< `int32 | `int64 ] as 't) t)
   =
   let op = Op.create context "RandomUniform" in
   Op.add_input op shape;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
@@ -5505,12 +5505,12 @@ let readerSerializeState
   Op.execute1 op
 
 let real
-    ~type_
+    ~type_tout
     (input : ([< `complex64 ] as 't) t)
   =
   let op = Op.create context "Real" in
   Op.add_input op input;
-  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "Tout" Operation.Type.(to_data_type (P type_tout));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -5708,7 +5708,7 @@ let requantizationRange
   Op.execute2 op
 
 let requantize
-    ~type_
+    ~type_out_type
     (input : 'tinput t)
     (input_min : [ `float ] t)
     (input_max : [ `float ] t)
@@ -5721,7 +5721,7 @@ let requantize
   Op.add_input op input_max;
   Op.add_input op requested_output_min;
   Op.add_input op requested_output_max;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "Tinput" (Op.tensor_handle_data_type input);
   Op.execute3 op
 
@@ -5835,7 +5835,7 @@ let resizeNearestNeighborGrad
   Op.execute1 op
 
 let restore
-    ~type_
+    ~type_dt
     ?preferred_shard
     (file_pattern : [ `string ] t)
     (tensor_name : [ `string ] t)
@@ -5843,14 +5843,14 @@ let restore
   let op = Op.create context "Restore" in
   Op.add_input op file_pattern;
   Op.add_input op tensor_name;
-  Op.set_attr_data_type op "dt" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dt" Operation.Type.(to_data_type (P type_dt));
   Option.iter preferred_shard ~f:(fun preferred_shard ->
     Op.set_attr_int op "preferred_shard" preferred_shard
   );
   Op.execute1 op
 
 let restoreSlice
-    ~type_
+    ~type_dt
     ?preferred_shard
     (file_pattern : [ `string ] t)
     (tensor_name : [ `string ] t)
@@ -5860,7 +5860,7 @@ let restoreSlice
   Op.add_input op file_pattern;
   Op.add_input op tensor_name;
   Op.add_input op shape_and_slice;
-  Op.set_attr_data_type op "dt" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dt" Operation.Type.(to_data_type (P type_dt));
   Option.iter preferred_shard ~f:(fun preferred_shard ->
     Op.set_attr_int op "preferred_shard" preferred_shard
   );
@@ -6357,22 +6357,22 @@ let setSize
   Op.execute1 op
 
 let shape
-    ~type_
+    ~type_out_type
     (input : 't t)
   =
   let op = Op.create context "Shape" in
   Op.add_input op input;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let shapeN
-    ~type_
+    ~type_out_type
     (input : 't t list)
   =
   let op = Op.create context "ShapeN" in
   List.iter input ~f:(Op.add_input op);
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn input));
   Op.set_attr_int op "N" (List.length input);
   Op.execute op ~output_len:(List.length input)
@@ -6440,12 +6440,12 @@ let sinh
   Op.execute1 op
 
 let size
-    ~type_
+    ~type_out_type
     (input : 't t)
   =
   let op = Op.create context "Size" in
   Op.add_input op input;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
@@ -6598,14 +6598,14 @@ let sparseAccumulatorApplyGradient
   Op.execute0 op
 
 let sparseAccumulatorTakeGradient
-    ~type_1
+    ~type_dtype
     (handle : [ `string ] t)
     (num_required : [ `int32 ] t)
   =
   let op = Op.create context "SparseAccumulatorTakeGradient" in
   Op.add_input op handle;
   Op.add_input op num_required;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_1));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.execute3 op
 
 let sparseAdd
@@ -7452,12 +7452,12 @@ let stackClose
   Op.execute0 op
 
 let stackPop
-    ~type_
+    ~type_elem_type
     (handle : [ `string ] t)
   =
   let op = Op.create context "StackPop" in
   Op.add_input op handle;
-  Op.set_attr_data_type op "elem_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "elem_type" Operation.Type.(to_data_type (P type_elem_type));
   Op.execute1 op
 
 let stackPush
@@ -7523,38 +7523,38 @@ let stageSize
   Op.execute1 op
 
 let statelessRandomNormal
-    ~type_
+    ~type_dtype
     (shape : ([< `int32 | `int64 ] as 't) t)
     (seed : [ `int64 ] t)
   =
   let op = Op.create context "StatelessRandomNormal" in
   Op.add_input op shape;
   Op.add_input op seed;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
   Op.execute1 op
 
 let statelessRandomUniform
-    ~type_
+    ~type_dtype
     (shape : ([< `int32 | `int64 ] as 't) t)
     (seed : [ `int64 ] t)
   =
   let op = Op.create context "StatelessRandomUniform" in
   Op.add_input op shape;
   Op.add_input op seed;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
   Op.execute1 op
 
 let statelessTruncatedNormal
-    ~type_
+    ~type_dtype
     (shape : ([< `int32 | `int64 ] as 't) t)
     (seed : [ `int64 ] t)
   =
   let op = Op.create context "StatelessTruncatedNormal" in
   Op.add_input op shape;
   Op.add_input op seed;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
   Op.execute1 op
 
@@ -7730,12 +7730,12 @@ let stringToHashBucketStrong
   Op.execute1 op
 
 let stringToNumber
-    ~type_
+    ~type_out_type
     (string_tensor : [ `string ] t)
   =
   let op = Op.create context "StringToNumber" in
   Op.add_input op string_tensor;
-  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
   Op.execute1 op
 
 let sub
@@ -7820,14 +7820,14 @@ let tFRecordReader
   Op.execute1 op
 
 let takeManySparseFromTensorsMap
-    ~type_1
+    ~type_dtype
     ?container
     ?shared_name
     (sparse_handles : [ `int64 ] t)
   =
   let op = Op.create context "TakeManySparseFromTensorsMap" in
   Op.add_input op sparse_handles;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_1));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Option.iter container ~f:(fun container ->
     Op.set_attr_string op "container" container
   );
@@ -7863,13 +7863,13 @@ let tanhGrad
   Op.execute1 op
 
 let temporaryVariable
-    ~type_
+    ~type_dtype
     ~shape
     ?var_name
     ()
   =
   let op = Op.create context "TemporaryVariable" in
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_shape op "shape" shape;
   Option.iter var_name ~f:(fun var_name ->
     Op.set_attr_string op "var_name" var_name
@@ -7914,7 +7914,7 @@ let tensorArrayCloseV2
   Op.execute0 op
 
 let tensorArrayConcat
-    ~type_
+    ~type_dtype
     ?element_shape_except0
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
@@ -7922,14 +7922,14 @@ let tensorArrayConcat
   let op = Op.create context "TensorArrayConcat" in
   Op.add_input op handle;
   Op.add_input op flow_in;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Option.iter element_shape_except0 ~f:(fun element_shape_except0 ->
     Op.set_attr_shape op "element_shape_except0" element_shape_except0
   );
   Op.execute2 op
 
 let tensorArrayConcatV2
-    ~type_
+    ~type_dtype
     ?element_shape_except0
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
@@ -7937,14 +7937,14 @@ let tensorArrayConcatV2
   let op = Op.create context "TensorArrayConcatV2" in
   Op.add_input op handle;
   Op.add_input op flow_in;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Option.iter element_shape_except0 ~f:(fun element_shape_except0 ->
     Op.set_attr_shape op "element_shape_except0" element_shape_except0
   );
   Op.execute2 op
 
 let tensorArrayGather
-    ~type_
+    ~type_dtype
     ?element_shape
     (handle : [ `string ] t)
     (indices : [ `int32 ] t)
@@ -7954,14 +7954,14 @@ let tensorArrayGather
   Op.add_input op handle;
   Op.add_input op indices;
   Op.add_input op flow_in;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Option.iter element_shape ~f:(fun element_shape ->
     Op.set_attr_shape op "element_shape" element_shape
   );
   Op.execute1 op
 
 let tensorArrayGatherV2
-    ~type_
+    ~type_dtype
     ?element_shape
     (handle : [ `string ] t)
     (indices : [ `int32 ] t)
@@ -7971,7 +7971,7 @@ let tensorArrayGatherV2
   Op.add_input op handle;
   Op.add_input op indices;
   Op.add_input op flow_in;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Option.iter element_shape ~f:(fun element_shape ->
     Op.set_attr_shape op "element_shape" element_shape
   );
@@ -8000,7 +8000,7 @@ let tensorArrayGradV2
   Op.execute1 op
 
 let tensorArrayPack
-    ~type_
+    ~type_dtype
     ?element_shape
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
@@ -8008,14 +8008,14 @@ let tensorArrayPack
   let op = Op.create context "TensorArrayPack" in
   Op.add_input op handle;
   Op.add_input op flow_in;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Option.iter element_shape ~f:(fun element_shape ->
     Op.set_attr_shape op "element_shape" element_shape
   );
   Op.execute1 op
 
 let tensorArrayRead
-    ~type_
+    ~type_dtype
     (handle : [ `string ] t)
     (index : [ `int32 ] t)
     (flow_in : [ `float ] t)
@@ -8024,11 +8024,11 @@ let tensorArrayRead
   Op.add_input op handle;
   Op.add_input op index;
   Op.add_input op flow_in;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.execute1 op
 
 let tensorArrayReadV2
-    ~type_
+    ~type_dtype
     (handle : [ `string ] t)
     (index : [ `int32 ] t)
     (flow_in : [ `float ] t)
@@ -8037,7 +8037,7 @@ let tensorArrayReadV2
   Op.add_input op handle;
   Op.add_input op index;
   Op.add_input op flow_in;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.execute1 op
 
 let tensorArrayScatter
@@ -8327,14 +8327,14 @@ let truncateMod
   Op.execute1 op
 
 let truncatedNormal
-    ~type_
+    ~type_dtype
     ?seed
     ?seed2
     (shape : ([< `int32 | `int64 ] as 't) t)
   =
   let op = Op.create context "TruncatedNormal" in
   Op.add_input op shape;
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
   Option.iter seed ~f:(fun seed ->
     Op.set_attr_int op "seed" seed
@@ -8368,23 +8368,23 @@ let uniformCandidateSampler
   Op.execute3 op
 
 let unique
-    ~type_1
+    ~type_out_idx
     (x : 't t)
   =
   let op = Op.create context "Unique" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_1));
+  Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_out_idx));
   Op.execute2 op
 
 let uniqueWithCounts
-    ~type_1
+    ~type_out_idx
     (x : 't t)
   =
   let op = Op.create context "UniqueWithCounts" in
   Op.add_input op x;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_1));
+  Op.set_attr_data_type op "out_idx" Operation.Type.(to_data_type (P type_out_idx));
   Op.execute3 op
 
 let unpack
@@ -8428,14 +8428,14 @@ let unsortedSegmentSum
   Op.execute1 op
 
 let variable
-    ~type_
+    ~type_dtype
     ~shape
     ?container
     ?shared_name
     ()
   =
   let op = Op.create context "Variable" in
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_shape op "shape" shape;
   Option.iter container ~f:(fun container ->
     Op.set_attr_string op "container" container
@@ -8446,14 +8446,14 @@ let variable
   Op.execute1 op
 
 let variableV2
-    ~type_
+    ~type_dtype
     ~shape
     ?container
     ?shared_name
     ()
   =
   let op = Op.create context "VariableV2" in
-  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_));
+  Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_shape op "shape" shape;
   Option.iter container ~f:(fun container ->
     Op.set_attr_string op "container" container

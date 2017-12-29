@@ -276,24 +276,24 @@ let same_input_and_output_type (op : Op.t) ~alpha =
     | Polymorphic (alpha', _) when String.(=) alpha alpha' -> Some input
     | _ -> None)
 
-let type_variable ~idx =
-  if idx = 0
-  then "type_"
-  else Printf.sprintf "type_%d" idx
+let type_variable ~alpha =
+  Printf.sprintf "type_%s" (String.filter alpha ~f:(Char.(<>) '\''))
 
-let output_type_string op output_type ~idx =
+let output_type_string op output_type =
   match (output_type : Type.t) with
   | Fixed p -> "Type." ^ Op_type.to_string p
   | Polymorphic (alpha, _) ->
     match same_input_and_output_type op ~alpha with
     | Some input -> Printf.sprintf "(Op.tensor_handle_data_type %s)" (Input.caml_comp_name input)
-    | None -> Printf.sprintf "Operation.Type.(to_data_type (P %s))" (type_variable ~idx)
+    | None -> Printf.sprintf "Operation.Type.(to_data_type (P %s))" (type_variable ~alpha)
 
 let needs_variable_for_output_type op output_type =
   match (output_type : Type.t) with
-  | Fixed _ -> false
+  | Fixed _ -> None
   | Polymorphic (alpha, _) ->
-    same_input_and_output_type op ~alpha |> Option.is_none
+    if same_input_and_output_type op ~alpha |> Option.is_none
+    then Some (alpha, output_type)
+    else None
 
 let automatically_generated_file =
   "(* THIS FILE HAS BEEN AUTOMATICALLY GENERATED, DO NOT EDIT BY HAND! *)"
@@ -320,9 +320,13 @@ let gen_mli ops =
     Option.iter op.summary ~f:(fun summary -> p "(* %s *)" (escape_comment summary));
     Option.iter op.description ~f:(fun description -> p "(* %s *)" (escape_comment description));
     p "val %s:" (Op.caml_name op);
-    List.iteri op.output_types ~f:(fun idx output_type ->
-      if needs_variable_for_output_type op output_type.type_
-      then p "  %s:%s Type.t ->" (type_variable ~idx) (Type.to_string output_type.type_));
+    let alphas =
+      List.filter_map op.output_types ~f:(fun output_type ->
+        needs_variable_for_output_type op output_type.type_)
+      |> List.dedup_and_sort
+    in
+    List.iter alphas ~f:(fun (alpha, output_type) ->
+      p "  %s:%s Type.t ->" (type_variable ~alpha) (Type.to_string output_type));
     List.iter op.attributes ~f:(fun attribute ->
       Attribute.mli attribute p);
     List.iter op.inputs ~f:(fun input ->
@@ -347,9 +351,13 @@ let gen_mli ops =
 let handle_one_op (op : Op.t) out_channel =
   let p s = p out_channel s in
   p "let %s" (Op.caml_name op);
-  List.iteri op.output_types ~f:(fun idx output_type ->
-    if needs_variable_for_output_type op output_type.type_
-    then p "    ~%s" (type_variable ~idx));
+  let alphas =
+    List.filter_map op.output_types ~f:(fun output_type ->
+      needs_variable_for_output_type op output_type.type_)
+    |> List.dedup_and_sort
+  in
+  List.iter alphas ~f:(fun (alpha, _output_type) ->
+    p "    ~%s" (type_variable ~alpha));
   List.iter op.attributes ~f:(fun attribute ->
     Attribute.ml_def attribute p);
   List.iter op.inputs ~f:(fun input ->
@@ -365,9 +373,9 @@ let handle_one_op (op : Op.t) out_channel =
     then p "  List.iter %s ~f:(Op.add_input op);" (Input.caml_name input)
     else p "  Op.add_input op %s;" (Input.caml_name input));
   let attr_names = Hash_set.create (module String) () in
-  List.iteri op.output_types ~f:(fun idx output_type ->
+  List.iter op.output_types ~f:(fun output_type ->
     Option.iter output_type.name ~f:(fun output_type_name ->
-      let output_type_string = output_type_string op output_type.type_ ~idx in
+      let output_type_string = output_type_string op output_type.type_ in
       if not (Hash_set.mem attr_names output_type_name)
       then begin
         Hash_set.add attr_names output_type_name;
