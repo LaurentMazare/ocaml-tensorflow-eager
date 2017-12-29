@@ -99,16 +99,16 @@ module Attribute = struct
     | "list(type)" -> Some (List `type_)
     | _str -> None
 
-  let constr caml_name = function
-    | String -> "String " ^ caml_name
-    | Shape -> "Shape " ^ caml_name
-    | Int -> "Int " ^ caml_name
-    | Float -> "Float " ^ caml_name
-    | Bool -> "Bool " ^ caml_name
-    | List `float -> "List (Float " ^ caml_name ^ ")"
-    | List `int -> "List (Int " ^ caml_name ^ ")"
-    | List `shape -> "List (Shape " ^ caml_name ^ ")"
-    | List `type_ -> "List (Type " ^ caml_name ^ ")"
+  let setter = function
+    | String -> "set_attr_string"
+    | Shape -> "set_attr_shape"
+    | Int -> "set_attr_int"
+    | Float -> "set_attr_float"
+    | Bool -> "set_attr_bool"
+    | List `float -> "set_attr_float_list"
+    | List `int -> "set_attr_int_list"
+    | List `shape -> "set_attr_shape_list"
+    | List `type_ -> "set_attr_type_list"
 
   let mli t (p : ('a, unit, string, unit) format4 -> 'a) =
     match t.match_input_length with
@@ -138,10 +138,10 @@ module Attribute = struct
     if t.has_default_value && Option.is_none t.match_input_length
     then begin
       p "  Option.iter %s ~f:(fun %s ->" caml_name caml_name;
-      p "    Eager.Op.set_attr op \"%s\" %s" t.name (constr caml_name t.attr_type);
+      p "    Op.%s op \"%s\" %s" (setter t.attr_type) t.name caml_name;
       p "  );";
     end else
-      p "  Eager.Op.set_attr op \"%s\" %s" t.name (constr caml_name t.attr_type)
+      p "  Op.%s op \"%s\" %s;" (setter t.attr_type) t.name caml_name
 end
 
 module Op = struct
@@ -339,7 +339,6 @@ let gen_mli ops =
   p "type _ t = Eager.Tensor_handle.t";
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
-  p "module Status = Wrapper.Status";
   p "";
   List.iter ops ~f:handle_one_op;
   Out_channel.close out_channel
@@ -359,20 +358,22 @@ let handle_one_op (op : Op.t) out_channel =
   if List.is_empty op.inputs
   then p "    ()";
   p "  =";
-  p "  let op = Eager.Op.create context \"%s\" |> Status.ok_exn in" op.name;
+  p "  let op = Op.create context \"%s\" in" op.name;
   List.iter op.inputs ~f:(fun input ->
-    p "  Eager.Op.add_input op %s |> Status.ok_exn;" (Input.caml_name input));
+    if Option.is_some input.number_attr
+    then p "  List.iter %s ~f:(Op.add_input op);" (Input.caml_name input)
+    else p "  Op.add_input op %s;" (Input.caml_name input));
   List.iteri op.output_types ~f:(fun idx output_type ->
     Option.iter output_type.name ~f:(fun output_type_name ->
       let output_type_string = output_type_string op output_type.type_ ~idx in
-      p "  Eager.Op.set_attr_type op \"%s\" %s;" output_type_name output_type_string));
+      p "  Op.set_attr_type op \"%s\" %s;" output_type_name output_type_string));
   List.iter op.inputs ~f:(fun (input : Input.t) ->
     Option.iter input.type_name ~f:(fun type_name ->
       let name = Input.caml_comp_name input in
       let type_string = Printf.sprintf "(Eager.Tensor_handle.data_type %s)" name in
-      p "  Eager.Op.set_attr_type op \"%s\" %s" type_name type_string));
+      p "  Op.set_attr_type op \"%s\" %s;" type_name type_string));
   List.iter op.attributes ~f:(fun attribute -> Attribute.ml_apply attribute out_channel);
-  p "  Eager.execute op |> Status.ok_exn";
+  p "  Op.execute op";
   p ""
 
 let gen_ml ops =
@@ -385,6 +386,8 @@ let gen_ml ops =
   p "type _ t = Eager.Tensor_handle.t";
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
+  p "";
+  p "let context = Op.default_context ()";
   p "";
   List.iter ops ~f:(fun op -> handle_one_op op out_channel);
   Out_channel.close out_channel

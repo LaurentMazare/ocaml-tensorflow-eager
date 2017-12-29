@@ -73,6 +73,18 @@ module Op = struct
   let set_attr_type t name data_type =
     Tfe_op.tfe_opsetattrtype t name (Wrapper.data_type_to_int data_type)
 
+  let set_attr_string t name value =
+    Tfe_op.tfe_opsetattrstring t name value
+
+  let set_attr_bool t name value =
+    Tfe_op.tfe_opsetattrbool t name value
+
+  let set_attr_int t name value =
+    Tfe_op.tfe_opsetattrint t name value
+
+  let set_attr_float t name value =
+    Tfe_op.tfe_opsetattrfloat t name value
+
   let add_input t tensor_handle =
     let status = Status.create () in
     let status_ptr = Status.to_ptr status in
