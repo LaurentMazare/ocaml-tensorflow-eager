@@ -109,8 +109,8 @@ val addManySparseToTensorsMap:
 
 (* Add all input tensors element wise. *)
 val addN:
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t list ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `complex64 | `variant ] as 't) t list ->
+    ([< `float | `double | `int64 | `int32 | `complex64 | `variant ] as 't) t
 
 (* Add a `SparseTensor` to a `SparseTensorsMap` return its handle. *)
 (* A `SparseTensor` is represented by three tensors: `sparse_indices`,
@@ -714,6 +714,14 @@ val batchCholeskyGrad:
   ([< `float | `double ] as 't) t ->
     ([< `float | `double ] as 't) t
 
+(* Creates a dataset that batches `batch_size` elements from `input_dataset`. *)
+val batchDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
+
 val batchFFT:
   [ `complex64 ] t ->
     [ `complex64 ] t
@@ -1042,6 +1050,18 @@ val cTCLoss:
   [ `int32 ] t ->
     [ `float ] t * [ `float ] t
 
+(* Creates a dataset that caches elements from `input_dataset`. *)
+(* A CacheDataset will iterate over the input_dataset, and store tensors. If the
+cache already exists, the cache will be used. If the cache is inappropriate
+(e.g. cannot be opened, contains tensors of the wrong shape / size), an error
+will the returned when used. *)
+val cacheDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+  [ `string ] t ->
+    [ `variant ] t
+
 (* Cast x of type SrcT to y of DstT. *)
 val cast:
   type_dstT:'dstT Type.t ->
@@ -1159,6 +1179,14 @@ val concatV2:
   ([< `int32 | `int64 ] as 'tidx) t ->
     't t
 
+(* Creates a dataset that concatenates `input_dataset` with `another_dataset`. *)
+val concatenateDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+  [ `variant ] t ->
+    [ `variant ] t
+
 (* A conditional accumulator for aggregating gradients. *)
 (* The accumulator accepts gradients marked with local_step greater or
 equal to the most recent global_step known to the accumulator. The
@@ -1188,8 +1216,8 @@ For example:
 tf.conj(input) ==> [-2.25 - 4.75j, 3.25 - 5.75j]
 ``` *)
 val conj:
-  ([< `complex64 ] as 't) t ->
-    ([< `complex64 ] as 't) t
+  ([< `complex64 | `variant ] as 't) t ->
+    ([< `complex64 | `variant ] as 't) t
 
 (* Does nothing. Serves as a control trigger for scheduling. *)
 (* Only useful as a placeholder for control edges. *)
@@ -1586,6 +1614,15 @@ val denseToDenseSetOperation:
   ([< `int32 | `int64 | `string ] as 't) t ->
   ([< `int32 | `int64 | `string ] as 't) t ->
     [ `int64 ] t * ([< `int32 | `int64 | `string ] as 't) t * [ `int64 ] t
+
+(* Creates a dataset that yields a SparseTensor for each element of the input. *)
+val denseToSparseBatchDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+  [ `int64 ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
 
 (* Applies set operation along last dimension of `Tensor` and `SparseTensor`. *)
 (* See SetOperationOp::SetOperationFromContext for values of `set_operation`.
@@ -2370,6 +2407,16 @@ val fIFOQueue:
   unit ->
     [ `string ] t
 
+(* A queue that produces elements in first-in first-out order. *)
+val fIFOQueueV2:
+  component_types:Type.p list ->
+  ?shapes:int list list ->
+  ?capacity:int ->
+  ?container:string ->
+  ?shared_name:string ->
+  unit ->
+    [ `resource ] t
+
 (* Output a fact about factorials. *)
 val fact:
   unit ->
@@ -2460,6 +2507,11 @@ val fakeQuantWithMinMaxVarsPerChannelGradient:
   [ `float ] t ->
     [ `float ] t * [ `float ] t * [ `float ] t
 
+(* Deprecated. Do not use. *)
+val fakeQueue:
+  [ `resource ] t ->
+    [ `string ] t
+
 (* Creates a tensor filled with a scalar value. *)
 (* This operation creates a tensor of shape `dims` and fills it with `value`.
 
@@ -2475,6 +2527,15 @@ val fill:
   't t ->
     't t
 
+(* Creates a dataset that emits the records from one or more binary files. *)
+val fixedLengthRecordDataset:
+  [ `string ] t ->
+  [ `int64 ] t ->
+  [ `int64 ] t ->
+  [ `int64 ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
+
 (* A Reader that outputs fixed-length records from a file. *)
 val fixedLengthRecordReader:
   ?header_bytes:int ->
@@ -2485,6 +2546,18 @@ val fixedLengthRecordReader:
   ?shared_name:string ->
   unit ->
     [ `string ] t
+
+(* A Reader that outputs fixed-length records from a file. *)
+val fixedLengthRecordReaderV2:
+  ?header_bytes:int ->
+  record_bytes:int ->
+  ?footer_bytes:int ->
+  ?hop_bytes:int ->
+  ?container:string ->
+  ?shared_name:string ->
+  ?encoding:string ->
+  unit ->
+    [ `resource ] t
 
 (* Generates labels for candidate sampling with a learned unigram distribution. *)
 (* A unigram sampler could use a fixed unigram distribution read from a
@@ -2919,6 +2992,11 @@ val getSessionHandle:
   't t ->
     [ `string ] t
 
+(* Store the input tensor in the state of the current session. *)
+val getSessionHandleV2:
+  't t ->
+    [ `resource ] t
+
 (* Get the value of the tensor specified by its handle. *)
 val getSessionTensor:
   type_dtype:'dtype Type.t ->
@@ -2961,6 +3039,17 @@ val hashTable:
   ?use_node_name_sharing:bool ->
   unit ->
     [ `string ] t
+
+(* Creates a non-initialized hash table. *)
+(* This op creates a hash table, specifying the type of its keys and values.
+Before using the table you will have to initialize it.  After initialization the
+table will be immutable. *)
+val hashTableV2:
+  ?container:string ->
+  ?shared_name:string ->
+  ?use_node_name_sharing:bool ->
+  unit ->
+    [ `resource ] t
 
 (* Outputs a `Summary` protocol buffer with a histogram. *)
 (* The generated
@@ -3067,6 +3156,15 @@ val identityReader:
   unit ->
     [ `string ] t
 
+(* A Reader that outputs the queued work as both the key and value. *)
+(* To use, enqueue strings in a Queue.  ReaderRead will take the front
+work string and output (work, work). *)
+val identityReaderV2:
+  ?container:string ->
+  ?shared_name:string ->
+  unit ->
+    [ `resource ] t
+
 (* Compute the lower regularized incomplete Gamma function `Q(a, x)`. *)
 (* The lower regularized incomplete Gamma function is defined as:
 
@@ -3103,6 +3201,13 @@ val igammac:
   ([< `float | `double ] as 't) t ->
   ([< `float | `double ] as 't) t ->
     ([< `float | `double ] as 't) t
+
+(* Creates a dataset that contains the elements of `input_dataset` ignoring errors. *)
+val ignoreErrorsDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+    [ `variant ] t
 
 (* Returns the imaginary part of a complex number. *)
 (* Given a tensor `input` of complex numbers, this operation returns a tensor of
@@ -3239,6 +3344,33 @@ val initializeTableFromTextFile:
   [ `string ] t ->
     unit
 
+(* Initializes a table from a text file. *)
+(* It inserts one key-value pair into the table for each line of the file.
+The key and value is extracted from the whole line content, elements from the
+split line based on `delimiter` or the line number (starting from zero).
+Where to extract the key and value from a line is specified by `key_index` and
+`value_index`.
+
+- A value of -1 means use the line number(starting from zero), expects `int64`.
+- A value of -2 means use the whole line content, expects `string`.
+- A value >= 0 means use the index (starting at zero) of the split line based
+  on `delimiter`. *)
+val initializeTableFromTextFileV2:
+  key_index:int ->
+  value_index:int ->
+  ?vocab_size:int ->
+  ?delimiter:string ->
+  [ `resource ] t ->
+  [ `string ] t ->
+    unit
+
+(* Table initializer that takes two tensors for keys and values respectively. *)
+val initializeTableV2:
+  [ `resource ] t ->
+  'tkey t ->
+  'tval t ->
+    unit
+
 (* Computes the reciprocal of x element-wise. *)
 (* I.e., \\(y = 1 / x\\). *)
 val inv:
@@ -3309,6 +3441,27 @@ val isNan:
 val isVariableInitialized:
   'dtype t ->
     [ `bool ] t
+
+(* A container for an iterator resource. *)
+val iterator:
+  shared_name:string ->
+  container:string ->
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  unit ->
+    [ `resource ] t
+
+(* Converts the given string representing a handle to an iterator to a resource. *)
+val iteratorFromStringHandle:
+  ?output_types:Type.p list ->
+  ?output_shapes:int list list ->
+  [ `string ] t ->
+    [ `resource ] t
+
+(* Converts the given `resource_handle` representing an iterator to a string. *)
+val iteratorToStringHandle:
+  [ `resource ] t ->
+    [ `string ] t
 
 (* L2 Loss. *)
 (* Computes half the L2 norm of a tensor without the `sqrt`:
@@ -3569,6 +3722,13 @@ val lookupTableExport:
   [ `string ] t ->
     'tkeys t * 'tvalues t
 
+(* Outputs all keys and values in the table. *)
+val lookupTableExportV2:
+  type_tkeys:'tkeys Type.t ->
+  type_tvalues:'tvalues Type.t ->
+  [ `resource ] t ->
+    'tkeys t * 'tvalues t
+
 (* Looks up keys in a table, outputs the corresponding values. *)
 (* The tensor `keys` must of the same type as the keys of the table.
 The output `values` is of the type of the table values.
@@ -3577,6 +3737,18 @@ The scalar `default_value` is the value output for keys not present in the
 table. It must also be of the same type as the table values. *)
 val lookupTableFind:
   [ `string ] t ->
+  'tin t ->
+  'tout t ->
+    'tout t
+
+(* Looks up keys in a table, outputs the corresponding values. *)
+(* The tensor `keys` must of the same type as the keys of the table.
+The output `values` is of the type of the table values.
+
+The scalar `default_value` is the value output for keys not present in the
+table. It must also be of the same type as the table values. *)
+val lookupTableFindV2:
+  [ `resource ] t ->
   'tin t ->
   'tout t ->
     'tout t
@@ -3590,6 +3762,15 @@ val lookupTableImport:
   'tout t ->
     unit
 
+(* Replaces the contents of the table with the specified keys and values. *)
+(* The tensor `keys` must be of the same type as the keys of the table.
+The tensor `values` must be of the type of the table values. *)
+val lookupTableImportV2:
+  [ `resource ] t ->
+  'tin t ->
+  'tout t ->
+    unit
+
 (* Updates the table to associates keys with values. *)
 (* The tensor `keys` must be of the same type as the keys of the table.
 The tensor `values` must be of the type of the table values. *)
@@ -3599,9 +3780,23 @@ val lookupTableInsert:
   'tout t ->
     unit
 
+(* Updates the table to associates keys with values. *)
+(* The tensor `keys` must be of the same type as the keys of the table.
+The tensor `values` must be of the type of the table values. *)
+val lookupTableInsertV2:
+  [ `resource ] t ->
+  'tin t ->
+  'tout t ->
+    unit
+
 (* Computes the number of elements in the given table. *)
 val lookupTableSize:
   [ `string ] t ->
+    [ `int64 ] t
+
+(* Computes the number of elements in the given table. *)
+val lookupTableSizeV2:
+  [ `resource ] t ->
     [ `int64 ] t
 
 (* Forwards the input to the output. *)
@@ -3610,6 +3805,14 @@ val lookupTableSize:
 val loopCond:
   [ `bool ] t ->
     [ `bool ] t
+
+(* Makes a new iterator from the given `dataset` and stores it in `iterator`. *)
+(* This operation may be executed multiple times. Each execution will reset the
+iterator in `iterator` to the first element of `dataset`. *)
+val makeIterator:
+  [ `variant ] t ->
+  [ `resource ] t ->
+    unit
 
 (* Op removes all elements in the underlying container. *)
 val mapClear:
@@ -4227,6 +4430,23 @@ val mutableDenseHashTable:
   'key_dtype t ->
     [ `string ] t
 
+(* Creates an empty hash table that uses tensors as the backing store. *)
+(* It uses 'open addressing' with quadratic reprobing to resolve
+collisions.
+
+This op creates a mutable hash table, specifying the type of its keys and
+values. Each value must be a scalar. Data can be inserted into the table using
+the insert operations. It does not support the initialization operation. *)
+val mutableDenseHashTableV2:
+  ?container:string ->
+  ?shared_name:string ->
+  ?use_node_name_sharing:bool ->
+  ?value_shape:int list ->
+  ?initial_num_buckets:int ->
+  ?max_load_factor:float ->
+  'key_dtype t ->
+    [ `resource ] t
+
 (* Creates an empty hash table. *)
 (* This op creates a mutable hash table, specifying the type of its keys and
 values. Each value must be a scalar. Data can be inserted into the table using
@@ -4249,6 +4469,29 @@ val mutableHashTableOfTensors:
   ?value_shape:int list ->
   unit ->
     [ `string ] t
+
+(* Creates an empty hash table. *)
+(* This op creates a mutable hash table, specifying the type of its keys and
+values. Each value must be a vector. Data can be inserted into the table using
+the insert operations. It does not support the initialization operation. *)
+val mutableHashTableOfTensorsV2:
+  ?container:string ->
+  ?shared_name:string ->
+  ?use_node_name_sharing:bool ->
+  ?value_shape:int list ->
+  unit ->
+    [ `resource ] t
+
+(* Creates an empty hash table. *)
+(* This op creates a mutable hash table, specifying the type of its keys and
+values. Each value must be a scalar. Data can be inserted into the table using
+the insert operations. It does not support the initialization operation. *)
+val mutableHashTableV2:
+  ?container:string ->
+  ?shared_name:string ->
+  ?use_node_name_sharing:bool ->
+  unit ->
+    [ `resource ] t
 
 (* Computes numerical negative value element-wise. *)
 (* I.e., \\(y = -x\\). *)
@@ -4432,6 +4675,32 @@ val oneHot:
   't t ->
     't t
 
+(* Makes a 'one-shot' iterator that can be iterated only once. *)
+(* A one-shot iterator bundles the logic for defining the dataset and
+the state of the iterator in a single op, which allows simple input
+pipelines to be defined without an additional initialization
+('MakeIterator') step.
+
+One-shot iterators have the following limitations:
+
+* They do not support parameterization: all logic for creating the underlying
+  dataset must be bundled in the `dataset_factory` function.
+* They are not resettable. Once a one-shot iterator reaches the end of its
+  underlying dataset, subsequent 'IteratorGetNext' operations on that
+  iterator will always produce an `OutOfRange` error.
+
+For greater flexibility, use 'Iterator' and 'MakeIterator' to define
+an iterator using an arbitrary subgraph, which may capture tensors
+(including fed values) as parameters, and which may be reset multiple
+times by rerunning 'MakeIterator'. *)
+val oneShotIterator:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  ?container:string ->
+  ?shared_name:string ->
+  unit ->
+    [ `resource ] t
+
 (* Returns a tensor of ones with the same shape and type as x. *)
 val onesLike:
   ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
@@ -4563,6 +4832,19 @@ val paddingFIFOQueue:
   ?shared_name:string ->
   unit ->
     [ `string ] t
+
+(* A queue that produces elements in first-in first-out order. *)
+(* Variable-size shapes are allowed by setting the corresponding shape dimensions
+to 0 in the shape attr.  In this case DequeueMany will pad up to the maximum
+size of any given element in the minibatch.  See below for details. *)
+val paddingFIFOQueueV2:
+  component_types:Type.p list ->
+  ?shapes:int list list ->
+  ?capacity:int ->
+  ?container:string ->
+  ?shared_name:string ->
+  unit ->
+    [ `resource ] t
 
 (* Concatenates a list of `N` tensors along the first dimension. *)
 (* The input tensors are all required to have size 1 in the first dimension.
@@ -4724,6 +5006,14 @@ val pow:
   ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
     ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t
 
+(* Creates a dataset that asynchronously prefetches elements from `input_dataset`. *)
+val prefetchDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
+
 (* An identity op that triggers an error if a gradient is requested. *)
 (* When executed in a graph, this op outputs its input tensor as-is.
 
@@ -4751,6 +5041,21 @@ val priorityQueue:
   ?shared_name:string ->
   unit ->
     [ `string ] t
+
+(* A queue that produces elements sorted by the first component value. *)
+(* Note that the PriorityQueue requires the first component of any element
+to be a scalar int64, in addition to the other elements declared by
+component_types.  Therefore calls to Enqueue and EnqueueMany (resp. Dequeue
+and DequeueMany) on a PriorityQueue will all require (resp. output) one extra
+entry in their input (resp. output) lists. *)
+val priorityQueueV2:
+  ?component_types:Type.p list ->
+  shapes:int list list ->
+  ?capacity:int ->
+  ?container:string ->
+  ?shared_name:string ->
+  unit ->
+    [ `resource ] t
 
 (* Computes the product of elements across dimensions of a tensor. *)
 (* Reduces `input` along the dimensions given in `reduction_indices`. Unless
@@ -5176,6 +5481,17 @@ val queueClose:
   [ `string ] t ->
     unit
 
+(* Closes the given queue. *)
+(* This operation signals that no more elements will be enqueued in the
+given queue. Subsequent Enqueue(Many) operations will fail.
+Subsequent Dequeue(Many) operations will continue to succeed if
+sufficient elements remain in the queue. Subsequent Dequeue(Many)
+operations that would block will fail immediately. *)
+val queueCloseV2:
+  ?cancel_pending_enqueues:bool ->
+  [ `resource ] t ->
+    unit
+
 (* Returns true if queue is closed. *)
 (* This operation returns true if the queue is closed and false if the queue
 is open. *)
@@ -5183,9 +5499,21 @@ val queueIsClosed:
   [ `string ] t ->
     [ `bool ] t
 
+(* Returns true if queue is closed. *)
+(* This operation returns true if the queue is closed and false if the queue
+is open. *)
+val queueIsClosedV2:
+  [ `resource ] t ->
+    [ `bool ] t
+
 (* Computes the number of elements in the given queue. *)
 val queueSize:
   [ `string ] t ->
+    [ `int32 ] t
+
+(* Computes the number of elements in the given queue. *)
+val queueSizeV2:
+  [ `resource ] t ->
     [ `int32 ] t
 
 (* Real-valued fast Fourier transform. *)
@@ -5339,6 +5667,19 @@ val randomShuffleQueue:
   unit ->
     [ `string ] t
 
+(* A queue that randomizes the order of elements. *)
+val randomShuffleQueueV2:
+  component_types:Type.p list ->
+  ?shapes:int list list ->
+  ?capacity:int ->
+  ?min_after_dequeue:int ->
+  ?seed:int ->
+  ?seed2:int ->
+  ?container:string ->
+  ?shared_name:string ->
+  unit ->
+    [ `resource ] t
+
 (* Outputs random values from a normal distribution. *)
 (* The generated values will have mean 0 and standard deviation 1. *)
 val randomStandardNormal:
@@ -5392,6 +5733,15 @@ val range:
   ([< `float | `double | `int32 | `int64 ] as 'tidx) t ->
     ([< `float | `double | `int32 | `int64 ] as 'tidx) t
 
+(* Creates a dataset with a range of values. Corresponds to python's xrange. *)
+val rangeDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `int64 ] t ->
+  [ `int64 ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
+
 (* Returns the rank of a tensor. *)
 (* This operation returns an integer representing the rank of `input`.
 
@@ -5422,9 +5772,21 @@ val readerNumRecordsProduced:
   [ `string ] t ->
     [ `int64 ] t
 
+(* Returns the number of records this Reader has produced. *)
+(* This is the same as the number of ReaderRead executions that have
+succeeded. *)
+val readerNumRecordsProducedV2:
+  [ `resource ] t ->
+    [ `int64 ] t
+
 (* Returns the number of work units this Reader has finished processing. *)
 val readerNumWorkUnitsCompleted:
   [ `string ] t ->
+    [ `int64 ] t
+
+(* Returns the number of work units this Reader has finished processing. *)
+val readerNumWorkUnitsCompletedV2:
+  [ `resource ] t ->
     [ `int64 ] t
 
 (* Returns the next record (key, value pair) produced by a Reader. *)
@@ -5447,9 +5809,34 @@ val readerReadUpTo:
   [ `int64 ] t ->
     [ `string ] t * [ `string ] t
 
+(* Returns up to `num_records` (key, value) pairs produced by a Reader. *)
+(* Will dequeue from the input queue if necessary (e.g. when the
+Reader needs to start reading from a new file since it has finished
+with the previous file).
+It may return less than `num_records` even before the last batch. *)
+val readerReadUpToV2:
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `int64 ] t ->
+    [ `string ] t * [ `string ] t
+
+(* Returns the next record (key, value pair) produced by a Reader. *)
+(* Will dequeue from the input queue if necessary (e.g. when the
+Reader needs to start reading from a new file since it has finished
+with the previous file). *)
+val readerReadV2:
+  [ `resource ] t ->
+  [ `resource ] t ->
+    [ `string ] t * [ `string ] t
+
 (* Restore a Reader to its initial clean state. *)
 val readerReset:
   [ `string ] t ->
+    unit
+
+(* Restore a Reader to its initial clean state. *)
+val readerResetV2:
+  [ `resource ] t ->
     unit
 
 (* Restore a reader to a previously saved state. *)
@@ -5460,11 +5847,26 @@ val readerRestoreState:
   [ `string ] t ->
     unit
 
+(* Restore a reader to a previously saved state. *)
+(* Not all Readers support being restored, so this can produce an
+Unimplemented error. *)
+val readerRestoreStateV2:
+  [ `resource ] t ->
+  [ `string ] t ->
+    unit
+
 (* Produce a string tensor that encodes the state of a Reader. *)
 (* Not all Readers support being serialized, so this can produce an
 Unimplemented error. *)
 val readerSerializeState:
   [ `string ] t ->
+    [ `string ] t
+
+(* Produce a string tensor that encodes the state of a Reader. *)
+(* Not all Readers support being serialized, so this can produce an
+Unimplemented error. *)
+val readerSerializeStateV2:
+  [ `resource ] t ->
     [ `string ] t
 
 (* Returns the real part of a complex number. *)
@@ -5623,6 +6025,14 @@ val reluGrad:
   ([< `float | `double | `int32 | `int64 ] as 't) t ->
     ([< `float | `double | `int32 | `int64 ] as 't) t
 
+(* Creates a dataset that emits the outputs of `input_dataset` `count` times. *)
+val repeatDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
+
 (* Given a quantized tensor described by (input, input_min, input_max), outputs a *)
 (* range that covers the actual values present in that tensor.  This op is
 typically used to produce the requested_output_min and requested_output_max for
@@ -5768,6 +6178,416 @@ val resizeNearestNeighborGrad:
   [ `int32 ] t ->
     ([< `int32 | `float | `double ] as 't) t
 
+(* Update '*var' according to the adadelta scheme. *)
+(* accum = rho() * accum + (1 - rho()) * grad.square();
+update = (update_accum + epsilon).sqrt() * (accum + epsilon()).rsqrt() * grad;
+update_accum = rho() * update_accum + (1 - rho()) * update.square();
+var -= update; *)
+val resourceApplyAdadelta:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' according to the adagrad scheme. *)
+(* accum += grad * grad
+var -= lr * grad * (1 / sqrt(accum)) *)
+val resourceApplyAdagrad:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' according to the proximal adagrad scheme. *)
+val resourceApplyAdagradDA:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  [ `int64 ] t ->
+    unit
+
+(* Update '*var' according to the Adam algorithm. *)
+(* lr_t <- learning_rate * sqrt(1 - beta2^t) / (1 - beta1^t)
+m_t <- beta1 * m_{t-1} + (1 - beta1) * g_t
+v_t <- beta2 * v_{t-1} + (1 - beta2) * g_t * g_t
+variable <- variable - lr_t * m_t / (sqrt(v_t) + epsilon) *)
+val resourceApplyAdam:
+  ?use_locking:bool ->
+  ?use_nesterov:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' according to the centered RMSProp algorithm. *)
+(* The centered RMSProp algorithm uses an estimate of the centered second moment
+(i.e., the variance) for normalization, as opposed to regular RMSProp, which
+uses the (uncentered) second moment. This often helps with training, but is
+slightly more expensive in terms of computation and memory.
+
+Note that in dense implementation of this algorithm, mg, ms, and mom will
+update even if the grad is zero, but in this sparse implementation, mg, ms,
+and mom will not update in iterations during which the grad is zero.
+
+mean_square = decay * mean_square + (1-decay) * gradient ** 2
+mean_grad = decay * mean_grad + (1-decay) * gradient
+
+Delta = learning_rate * gradient / sqrt(mean_square + epsilon - mean_grad ** 2)
+
+mg <- rho * mg_{t-1} + (1-rho) * grad
+ms <- rho * ms_{t-1} + (1-rho) * grad * grad
+mom <- momentum * mom_{t-1} + lr * grad / sqrt(ms - mg * mg + epsilon)
+var <- var - mom *)
+val resourceApplyCenteredRMSProp:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' according to the Ftrl-proximal scheme. *)
+(* accum_new = accum + grad * grad
+linear += grad - (accum_new^(-lr_power) - accum^(-lr_power)) / lr * var
+quadratic = 1.0 / (accum_new^(lr_power) * lr) + 2 * l2
+var = (sign(linear) * l1 - linear) / quadratic if |linear| > l1 else 0.0
+accum = accum_new *)
+val resourceApplyFtrl:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' according to the Ftrl-proximal scheme. *)
+(* grad_with_shrinkage = grad + 2 * l2_shrinkage * var
+accum_new = accum + grad_with_shrinkage * grad_with_shrinkage
+linear += grad_with_shrinkage +
+    (accum_new^(-lr_power) - accum^(-lr_power)) / lr * var
+quadratic = 1.0 / (accum_new^(lr_power) * lr) + 2 * l2
+var = (sign(linear) * l1 - linear) / quadratic if |linear| > l1 else 0.0
+accum = accum_new *)
+val resourceApplyFtrlV2:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' by subtracting 'alpha' * 'delta' from it. *)
+val resourceApplyGradientDescent:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' according to the momentum scheme. Set use_nesterov = True if you *)
+(* want to use Nesterov momentum.
+
+accum = accum * momentum + grad
+var -= lr * accum *)
+val resourceApplyMomentum:
+  ?use_locking:bool ->
+  ?use_nesterov:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' and '*accum' according to FOBOS with Adagrad learning rate. *)
+(* accum += grad * grad
+prox_v = var - lr * grad * (1 / sqrt(accum))
+var = sign(prox_v)/(1+lr*l2) * max{ |prox_v|-lr*l1,0} *)
+val resourceApplyProximalAdagrad:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' as FOBOS algorithm with fixed learning rate. *)
+(* prox_v = var - alpha * delta
+var = sign(prox_v)/(1+alpha*l2) * max{ |prox_v|-alpha*l1,0} *)
+val resourceApplyProximalGradientDescent:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update '*var' according to the RMSProp algorithm. *)
+(* Note that in dense implementation of this algorithm, ms and mom will
+update even if the grad is zero, but in this sparse implementation, ms
+and mom will not update in iterations during which the grad is zero.
+
+mean_square = decay * mean_square + (1-decay) * gradient ** 2
+Delta = learning_rate * gradient / sqrt(mean_square + epsilon)
+
+ms <- rho * ms_{t-1} + (1-rho) * grad * grad
+mom <- momentum * mom_{t-1} + lr * grad / sqrt(ms + epsilon)
+var <- var - mom *)
+val resourceApplyRMSProp:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* var: Should be from a Variable(). *)
+val resourceSparseApplyAdadelta:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+    unit
+
+(* Update relevant entries in '*var' and '*accum' according to the adagrad scheme. *)
+(* That is for rows we have grad for, we update var and accum as follows:
+accum += grad * grad
+var -= lr * grad * (1 / sqrt(accum)) *)
+val resourceSparseApplyAdagrad:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+    unit
+
+(* Update entries in '*var' and '*accum' according to the proximal adagrad scheme. *)
+val resourceSparseApplyAdagradDA:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  [ `int64 ] t ->
+    unit
+
+(* Update '*var' according to the centered RMSProp algorithm. *)
+(* The centered RMSProp algorithm uses an estimate of the centered second moment
+(i.e., the variance) for normalization, as opposed to regular RMSProp, which
+uses the (uncentered) second moment. This often helps with training, but is
+slightly more expensive in terms of computation and memory.
+
+Note that in dense implementation of this algorithm, mg, ms, and mom will
+update even if the grad is zero, but in this sparse implementation, mg, ms,
+and mom will not update in iterations during which the grad is zero.
+
+mean_square = decay * mean_square + (1-decay) * gradient ** 2
+mean_grad = decay * mean_grad + (1-decay) * gradient
+Delta = learning_rate * gradient / sqrt(mean_square + epsilon - mean_grad ** 2)
+
+ms <- rho * ms_{t-1} + (1-rho) * grad * grad
+mom <- momentum * mom_{t-1} + lr * grad / sqrt(ms + epsilon)
+var <- var - mom *)
+val resourceSparseApplyCenteredRMSProp:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+    unit
+
+(* Update relevant entries in '*var' according to the Ftrl-proximal scheme. *)
+(* That is for rows we have grad for, we update var, accum and linear as follows:
+accum_new = accum + grad * grad
+linear += grad + (accum_new^(-lr_power) - accum^(-lr_power)) / lr * var
+quadratic = 1.0 / (accum_new^(lr_power) * lr) + 2 * l2
+var = (sign(linear) * l1 - linear) / quadratic if |linear| > l1 else 0.0
+accum = accum_new *)
+val resourceSparseApplyFtrl:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update relevant entries in '*var' according to the Ftrl-proximal scheme. *)
+(* That is for rows we have grad for, we update var, accum and linear as follows:
+grad_with_shrinkage = grad + 2 * l2_shrinkage * var
+accum_new = accum + grad_with_shrinkage * grad_with_shrinkage
+linear += grad_with_shrinkage +
+    (accum_new^(-lr_power) - accum^(-lr_power)) / lr * var
+quadratic = 1.0 / (accum_new^(lr_power) * lr) + 2 * l2
+var = (sign(linear) * l1 - linear) / quadratic if |linear| > l1 else 0.0
+accum = accum_new *)
+val resourceSparseApplyFtrlV2:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Update relevant entries in '*var' and '*accum' according to the momentum scheme. *)
+(* Set use_nesterov = True if you want to use Nesterov momentum.
+
+That is for rows we have grad for, we update var and accum as follows:
+
+accum = accum * momentum + grad
+var -= lr * accum *)
+val resourceSparseApplyMomentum:
+  ?use_locking:bool ->
+  ?use_nesterov:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+    unit
+
+(* Sparse update entries in '*var' and '*accum' according to FOBOS algorithm. *)
+(* That is for rows we have grad for, we update var and accum as follows:
+accum += grad * grad
+prox_v = var
+prox_v -= lr * grad * (1 / sqrt(accum))
+var = sign(prox_v)/(1+lr*l2) * max{ |prox_v|-lr*l1,0} *)
+val resourceSparseApplyProximalAdagrad:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+    unit
+
+(* Sparse update '*var' as FOBOS algorithm with fixed learning rate. *)
+(* That is for rows we have grad for, we update var as follows:
+prox_v = var - alpha * grad
+var = sign(prox_v)/(1+alpha*l2) * max{ |prox_v|-alpha*l1,0} *)
+val resourceSparseApplyProximalGradientDescent:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+    unit
+
+(* Update '*var' according to the RMSProp algorithm. *)
+(* Note that in dense implementation of this algorithm, ms and mom will
+update even if the grad is zero, but in this sparse implementation, ms
+and mom will not update in iterations during which the grad is zero.
+
+mean_square = decay * mean_square + (1-decay) * gradient ** 2
+Delta = learning_rate * gradient / sqrt(mean_square + epsilon)
+
+ms <- rho * ms_{t-1} + (1-rho) * grad * grad
+mom <- momentum * mom_{t-1} + lr * grad / sqrt(ms + epsilon)
+var <- var - mom *)
+val resourceSparseApplyRMSProp:
+  ?use_locking:bool ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  [ `resource ] t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `int32 | `int64 ] as 'tindices) t ->
+    unit
+
+(* Assign `value` to the sliced l-value reference of `ref`. *)
+(* The values of `value` are assigned to the positions in the variable
+`ref` that are selected by the slice parameters. The slice parameters
+`begin, `end`, `strides`, etc. work exactly as in `StridedSlice`.
+
+NOTE this op currently does not support broadcasting and so `value`'s
+shape must be exactly the shape produced by the slice of `ref`. *)
+val resourceStridedSliceAssign:
+  ?begin_mask:int ->
+  ?end_mask:int ->
+  ?ellipsis_mask:int ->
+  ?new_axis_mask:int ->
+  ?shrink_axis_mask:int ->
+  [ `resource ] t ->
+  ([< `int32 | `int64 ] as 'index) t ->
+  ([< `int32 | `int64 ] as 'index) t ->
+  ([< `int32 | `int64 ] as 'index) t ->
+  't t ->
+    unit
+
 (* Restores a tensor from checkpoint files. *)
 (* Reads a tensor stored in one or several files. If there are several files (for
 instance because a tensor was saved as slices), `file_pattern` may contain
@@ -5791,6 +6611,12 @@ val restore:
   [ `string ] t ->
   [ `string ] t ->
     'dt t
+
+(* Restores the state of the `iterator` from the checkpoint saved at `path` using 'SaveIterator'. *)
+val restoreIterator:
+  [ `resource ] t ->
+  [ `string ] t ->
+    unit
 
 (* Restores a tensor from checkpoint files. *)
 (* This is like `Restore` except that restored tensor can be listed as filling
@@ -6107,6 +6933,13 @@ val sampleDistortedBoundingBoxV2:
   [ `float ] t ->
   [ `float ] t ->
     ([< `int32 | `int64 ] as 't) t * ([< `int32 | `int64 ] as 't) t * [ `float ] t
+
+(* Saves the state of the `iterator` at `path`. *)
+(* This state can be restored using 'RestoreIterator'. *)
+val saveIterator:
+  [ `resource ] t ->
+  [ `string ] t ->
+    unit
 
 (* Outputs a `Summary` protocol buffer with scalar values. *)
 (* The input `tags` and `values` must have the same shape.  The generated summary
@@ -6774,6 +7607,17 @@ val shardedFilespec:
   [ `int32 ] t ->
     [ `string ] t
 
+(* Creates a dataset that shuffles elements from `input_dataset` pseudorandomly. *)
+val shuffleDataset:
+  ?reshuffle_each_iteration:bool ->
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+  [ `int64 ] t ->
+  [ `int64 ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
+
 (* Computes sigmoid of `x` element-wise. *)
 (* Specifically, `y = 1 / (1 + exp(-x))`. *)
 val sigmoid:
@@ -6820,6 +7664,14 @@ val size:
   type_out_type:([< `int32 | `int64 ] as 'out_type) Type.t ->
   't t ->
     ([< `int32 | `int64 ] as 'out_type) t
+
+(* Creates a dataset that skips `count` elements from the `input_dataset`. *)
+val skipDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
 
 (* Parses a text file and creates a batch of examples. *)
 val skipgram:
@@ -7733,6 +8585,13 @@ val sparseTensorDenseMatMul:
   't t ->
     't t
 
+(* Creates a dataset that splits a SparseTensor into elements row-wise. *)
+val sparseTensorSliceDataset:
+  [ `int64 ] t ->
+  'tvalues t ->
+  [ `int64 ] t ->
+    [ `variant ] t
+
 (* Converts a sparse representation into a dense tensor. *)
 (* Builds an array `dense` with shape `output_shape` such that
 
@@ -7811,6 +8670,15 @@ val splitV:
   [ `int32 ] t ->
     't t list
 
+(* Creates a dataset that executes a SQL query and emits rows of the result set. *)
+val sqlDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `string ] t ->
+  [ `string ] t ->
+  [ `string ] t ->
+    [ `variant ] t
+
 (* Computes square root of x element-wise. *)
 (* I.e., \\(y = \sqrt{x} = x^{1/2}\\). *)
 val sqrt:
@@ -7874,10 +8742,21 @@ val stackClose:
   [ `string ] t ->
     unit
 
+(* Delete the stack from its resource container. *)
+val stackCloseV2:
+  [ `resource ] t ->
+    unit
+
 (* Deprecated, use StackPopV2. *)
 val stackPop:
   type_elem_type:'elem_type Type.t ->
   [ `string ] t ->
+    'elem_type t
+
+(* Pop the element at the top of the stack. *)
+val stackPopV2:
+  type_elem_type:'elem_type Type.t ->
+  [ `resource ] t ->
     'elem_type t
 
 (* Deprecated, use StackPushV2. *)
@@ -7886,6 +8765,19 @@ val stackPush:
   [ `string ] t ->
   't t ->
     't t
+
+(* Push an element onto the stack. *)
+val stackPushV2:
+  ?swap_memory:bool ->
+  [ `resource ] t ->
+  't t ->
+    't t
+
+(* A stack that produces elements in first-in last-out order. *)
+val stackV2:
+  ?stack_name:string ->
+  [ `int32 ] t ->
+    [ `resource ] t
 
 (* Op removes all elements in the underlying container. *)
 val stageClear:
@@ -8318,6 +9210,13 @@ val switch:
   [ `bool ] t ->
     't t * 't t
 
+(* Creates a dataset that emits the records from one or more TFRecord files. *)
+val tFRecordDataset:
+  [ `string ] t ->
+  [ `string ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
+
 (* A Reader that outputs the records from a TensorFlow Records file. *)
 val tFRecordReader:
   ?container:string ->
@@ -8325,6 +9224,22 @@ val tFRecordReader:
   ?compression_type:string ->
   unit ->
     [ `string ] t
+
+(* A Reader that outputs the records from a TensorFlow Records file. *)
+val tFRecordReaderV2:
+  ?container:string ->
+  ?shared_name:string ->
+  ?compression_type:string ->
+  unit ->
+    [ `resource ] t
+
+(* Creates a dataset that contains `count` elements from the `input_dataset`. *)
+val takeDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
 
 (* Read `SparseTensors` from a `SparseTensorsMap` and concatenate them. *)
 (* The input `sparse_handles` must be an `int64` matrix of shape `[N, 1]` where
@@ -8439,6 +9354,13 @@ val tensorArrayCloseV2:
   [ `string ] t ->
     unit
 
+(* Delete the TensorArray from its resource container. *)
+(* This enables the user to close and release the resource in the middle
+of a step/run. *)
+val tensorArrayCloseV3:
+  [ `resource ] t ->
+    unit
+
 val tensorArrayConcat:
   type_dtype:'dtype Type.t ->
   ?element_shape_except0:int list ->
@@ -8451,6 +9373,25 @@ val tensorArrayConcatV2:
   type_dtype:'dtype Type.t ->
   ?element_shape_except0:int list ->
   [ `string ] t ->
+  [ `float ] t ->
+    'dtype t * [ `int64 ] t
+
+(* Concat the elements from the TensorArray into value `value`. *)
+(* Takes `T` elements of shapes
+
+  ```
+  (n0 x d0 x d1 x ...), (n1 x d0 x d1 x ...), ..., (n(T-1) x d0 x d1 x ...)
+  ```
+
+and concatenates them into a Tensor of shape:
+
+  ```(n0 + n1 + ... + n(T-1) x d0 x d1 x ...)```
+
+All elements must have the same shape (excepting the first dimension). *)
+val tensorArrayConcatV3:
+  type_dtype:'dtype Type.t ->
+  ?element_shape_except0:int list ->
+  [ `resource ] t ->
   [ `float ] t ->
     'dtype t * [ `int64 ] t
 
@@ -8471,6 +9412,16 @@ val tensorArrayGatherV2:
   [ `float ] t ->
     'dtype t
 
+(* Gather specific elements from the TensorArray into output `value`. *)
+(* All elements selected by `indices` must have the same shape. *)
+val tensorArrayGatherV3:
+  type_dtype:'dtype Type.t ->
+  ?element_shape:int list ->
+  [ `resource ] t ->
+  [ `int32 ] t ->
+  [ `float ] t ->
+    'dtype t
+
 val tensorArrayGrad:
   source:string ->
   [ `string ] t ->
@@ -8483,6 +9434,49 @@ val tensorArrayGradV2:
   [ `string ] t ->
   [ `float ] t ->
     [ `string ] t
+
+(* Creates a TensorArray for storing the gradients of values in the given handle. *)
+(* If the given TensorArray gradient already exists, returns a reference to it.
+
+Locks the size of the original TensorArray by disabling its dynamic size flag.
+
+**A note about the input flow_in:**
+
+The handle flow_in forces the execution of the gradient lookup to occur
+only after certain other operations have occurred.  For example, when
+the forward TensorArray is dynamically sized, writes to this TensorArray
+may resize the object.  The gradient TensorArray is statically sized based
+on the size of the forward TensorArray when this operation executes.
+Furthermore, the size of the forward TensorArray is frozen by this call.
+As a result, the flow is used to ensure that the call to generate the gradient
+TensorArray only happens after all writes are executed.
+
+In the case of dynamically sized TensorArrays, gradient computation should
+only be performed on read operations that have themselves been chained via
+flow to occur only after all writes have executed. That way the final size
+of the forward TensorArray is known when this operation is called.
+
+**A note about the source attribute:**
+
+TensorArray gradient calls use an accumulator TensorArray object.  If
+multiple gradients are calculated and run in the same session, the multiple
+gradient nodes may accidentally flow through the same accumulator TensorArray.
+This double counts and generally breaks the TensorArray gradient flow.
+
+The solution is to identify which gradient call this particular
+TensorArray gradient is being called in.  This is performed by identifying
+a unique string (e.g. 'gradients', 'gradients_1', ...) from the input
+gradient Tensor's name.  This string is used as a suffix when creating
+the TensorArray gradient object here (the attribute `source`).
+
+The attribute `source` is added as a suffix to the forward TensorArray's
+name when performing the creation / lookup, so that each separate gradient
+calculation gets its own TensorArray accumulator. *)
+val tensorArrayGradV3:
+  source:string ->
+  [ `resource ] t ->
+  [ `float ] t ->
+    [ `resource ] t * [ `float ] t
 
 val tensorArrayPack:
   type_dtype:'dtype Type.t ->
@@ -8506,6 +9500,14 @@ val tensorArrayReadV2:
   [ `float ] t ->
     'dtype t
 
+(* Read an element from the TensorArray into output `value`. *)
+val tensorArrayReadV3:
+  type_dtype:'dtype Type.t ->
+  [ `resource ] t ->
+  [ `int32 ] t ->
+  [ `float ] t ->
+    'dtype t
+
 val tensorArrayScatter:
   [ `string ] t ->
   [ `int32 ] t ->
@@ -8516,6 +9518,15 @@ val tensorArrayScatter:
 (* Deprecated. Use TensorArrayScatterV3 *)
 val tensorArrayScatterV2:
   [ `string ] t ->
+  [ `int32 ] t ->
+  't t ->
+  [ `float ] t ->
+    [ `float ] t
+
+(* Scatter the data from the input value into specific TensorArray elements. *)
+(* `indices` must be a vector, its length must match the first dim of `value`. *)
+val tensorArrayScatterV3:
+  [ `resource ] t ->
   [ `int32 ] t ->
   't t ->
   [ `float ] t ->
@@ -8532,6 +9543,12 @@ val tensorArraySizeV2:
   [ `float ] t ->
     [ `int32 ] t
 
+(* Get the current size of the TensorArray. *)
+val tensorArraySizeV3:
+  [ `resource ] t ->
+  [ `float ] t ->
+    [ `int32 ] t
+
 val tensorArraySplit:
   [ `string ] t ->
   't t ->
@@ -8542,6 +9559,31 @@ val tensorArraySplit:
 (* Deprecated. Use TensorArraySplitV3 *)
 val tensorArraySplitV2:
   [ `string ] t ->
+  't t ->
+  [ `int64 ] t ->
+  [ `float ] t ->
+    [ `float ] t
+
+(* Split the data from the input value into TensorArray elements. *)
+(* Assuming that `lengths` takes on values
+
+  ```(n0, n1, ..., n(T-1))```
+
+and that `value` has shape
+
+  ```(n0 + n1 + ... + n(T-1) x d0 x d1 x ...)```,
+
+this splits values into a TensorArray with T tensors.
+
+TensorArray index t will be the subtensor of values with starting position
+
+  ```(n0 + n1 + ... + n(t-1), 0, 0, ...)```
+
+and having size
+
+  ```nt x d0 x d1 x ...``` *)
+val tensorArraySplitV3:
+  [ `resource ] t ->
   't t ->
   [ `int64 ] t ->
   [ `float ] t ->
@@ -8562,6 +9604,16 @@ val tensorArrayV2:
   [ `int32 ] t ->
     [ `string ] t
 
+(* An array of Tensors of given size. *)
+(* Write data via Write and read via Read or Pack. *)
+val tensorArrayV3:
+  ?element_shape:int list ->
+  ?dynamic_size:bool ->
+  ?clear_after_read:bool ->
+  ?tensor_array_name:string ->
+  [ `int32 ] t ->
+    [ `resource ] t * [ `float ] t
+
 val tensorArrayWrite:
   [ `string ] t ->
   [ `int32 ] t ->
@@ -8572,6 +9624,14 @@ val tensorArrayWrite:
 (* Deprecated. Use TensorArrayGradV3 *)
 val tensorArrayWriteV2:
   [ `string ] t ->
+  [ `int32 ] t ->
+  't t ->
+  [ `float ] t ->
+    [ `float ] t
+
+(* Push an element onto the tensor_array. *)
+val tensorArrayWriteV3:
+  [ `resource ] t ->
   [ `int32 ] t ->
   't t ->
   [ `float ] t ->
@@ -8594,6 +9654,13 @@ val tensorSummaryV2:
   [ `string ] t ->
     [ `string ] t
 
+(* Creates a dataset that emits the lines of one or more text files. *)
+val textLineDataset:
+  [ `string ] t ->
+  [ `string ] t ->
+  [ `int64 ] t ->
+    [ `variant ] t
+
 (* A Reader that outputs the lines of a file delimited by '\n'. *)
 val textLineReader:
   ?skip_header_lines:int ->
@@ -8601,6 +9668,14 @@ val textLineReader:
   ?shared_name:string ->
   unit ->
     [ `string ] t
+
+(* A Reader that outputs the lines of a file delimited by '\n'. *)
+val textLineReaderV2:
+  ?skip_header_lines:int ->
+  ?container:string ->
+  ?shared_name:string ->
+  unit ->
+    [ `resource ] t
 
 (* Generates labels for candidate sampling with a learned unigram distribution. *)
 (* See explanations of candidate sampling and the data formats at
@@ -8916,6 +9991,15 @@ val wholeFileReader:
   unit ->
     [ `string ] t
 
+(* A Reader that outputs the entire contents of a file as a value. *)
+(* To use, enqueue filenames in a Queue.  The output of ReaderRead will
+be a filename (key) and the contents of that file (value). *)
+val wholeFileReaderV2:
+  ?container:string ->
+  ?shared_name:string ->
+  unit ->
+    [ `resource ] t
+
 (* Writes contents to the file at input filename. Creates file and recursively *)
 (* creates directory if not existing. *)
 val writeFile:
@@ -8937,4 +10021,11 @@ val zeta:
   ([< `float | `double ] as 't) t ->
   ([< `float | `double ] as 't) t ->
     ([< `float | `double ] as 't) t
+
+(* Creates a dataset that zips together `input_datasets`. *)
+val zipDataset:
+  output_types:Type.p list ->
+  output_shapes:int list list ->
+  [ `variant ] t list ->
+    [ `variant ] t
 

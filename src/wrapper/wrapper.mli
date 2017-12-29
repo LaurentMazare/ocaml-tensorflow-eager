@@ -16,6 +16,8 @@ type data_type =
   | TF_QINT16
   | TF_QUINT16
   | TF_UINT16
+  | TF_RESOURCE
+  | TF_VARIANT
   | Unknown of int
 
 val data_type_to_int : data_type -> int

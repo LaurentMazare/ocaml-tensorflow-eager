@@ -9,6 +9,8 @@ module Type = struct
     | Complex64 : [ `complex64 ] t
     | Bool : [ `bool ] t
     | String : [ `string ] t
+    | Resource : [ `resource ] t
+    | Variant : [ `variant ] t
 
   type p = P : _ t -> p
 
@@ -21,6 +23,8 @@ module Type = struct
     | P Complex64 -> `dt_complex64
     | P Bool -> `dt_bool
     | P String -> `dt_string
+    | P Resource -> `dt_resource
+    | P Variant -> `dt_variant
 
   let of_dt_type = function
     | `dt_float -> Some (P Float)
@@ -30,6 +34,8 @@ module Type = struct
     | `dt_complex64 -> Some (P Complex64)
     | `dt_bool -> Some (P Bool)
     | `dt_string -> Some (P String)
+    | `dt_resource -> Some (P Resource)
+    | `dt_variant -> Some (P Variant)
     | _ -> None
 
   let to_data_type = function
@@ -41,6 +47,8 @@ module Type = struct
     | P Complex64 -> TF_COMPLEX
     | P Bool -> TF_BOOL
     | P String -> TF_STRING
+    | P Resource -> TF_RESOURCE
+    | P Variant -> TF_VARIANT
 
   let to_string = function
     | P Unit -> "Unit"
@@ -51,6 +59,8 @@ module Type = struct
     | P Complex64 -> "Complex64"
     | P Bool -> "Bool"
     | P String -> "String"
+    | P Resource -> "Resource"
+    | P Variant -> "Variant"
 end
 
 (* This is used for float/double/string, maybe we should introduce another GADT

@@ -8,6 +8,8 @@ module Type : sig
     | Complex64 : [ `complex64 ] t
     | Bool : [ `bool ] t
     | String : [ `string ] t
+    | Resource : [ `resource ] t
+    | Variant : [ `variant ] t
 
   type p = P : _ t -> p
 
@@ -21,6 +23,8 @@ module Type : sig
        | `dt_int32
        | `dt_int64
        | `dt_string
+       | `dt_resource
+       | `dt_variant
        ]
     -> p option
 
@@ -33,6 +37,8 @@ module Type : sig
        | `dt_int32
        | `dt_int64
        | `dt_string
+       | `dt_resource
+       | `dt_variant
        ]
 
   val to_data_type : p -> Wrapper.data_type

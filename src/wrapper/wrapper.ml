@@ -23,6 +23,8 @@ type data_type =
   | TF_QINT16
   | TF_QUINT16
   | TF_UINT16
+  | TF_RESOURCE
+  | TF_VARIANT
   | Unknown of int
 
 let data_type_to_int = function
@@ -43,6 +45,8 @@ let data_type_to_int = function
   | TF_QINT16 -> 15
   | TF_QUINT16 -> 16
   | TF_UINT16 -> 17
+  | TF_RESOURCE -> 20
+  | TF_VARIANT -> 21
   | Unknown n -> n
 
 let int_to_data_type = function
@@ -63,6 +67,8 @@ let int_to_data_type = function
   | 15 -> TF_QINT16
   | 16 -> TF_QUINT16
   | 17 -> TF_UINT16
+  | 20 -> TF_RESOURCE
+  | 21 -> TF_VARIANT
   | n -> Unknown n
 
 module Tensor = struct
@@ -77,6 +83,8 @@ module Tensor = struct
     | TF_UINT8
     | TF_INT8 -> 1
     | TF_INT64 -> 8
+    | TF_RESOURCE
+    | TF_VARIANT
     | TF_STRING
     | TF_COMPLEX
     | TF_QINT8
