@@ -82,6 +82,29 @@ module Tensor_handle = struct
 
   let of_string string = of_strings [ string ] ~shape:[]
   let of_string_exn string = of_strings_exn [ string ] ~shape:[]
+
+  let scalar_f32 float =
+    let tensor = Tensor.create0 Bigarray.float32 in
+    Tensor.set tensor [||] float;
+    create (Tensor.P tensor)
+
+  let scalar_f32_exn float = scalar_f32 float |> Status.ok_exn
+
+  let scalar_f64 float =
+    let tensor = Tensor.create0 Bigarray.float64 in
+    Tensor.set tensor [||] float;
+    create (Tensor.P tensor)
+
+  let scalar_f64_exn float = scalar_f64 float |> Status.ok_exn
+
+  let resolve_scalar_float_exn t =
+    let output_tensor = resolve_exn t in
+    match Tensor.float32 output_tensor with
+    | Some tensor -> Tensor.get tensor [||]
+    | None ->
+      match Tensor.float64 output_tensor with
+      | Some tensor -> Tensor.get tensor [||]
+      | None -> failwith "not a float32/float64 tensor"
 end
 
 module Op = struct
