@@ -91,3 +91,5 @@ let execute7 t =
   | _ -> assert false
 
 let tensor_handle_data_type = Eager.Tensor_handle.data_type
+
+type binary = tensor_handle -> tensor_handle -> tensor_handle

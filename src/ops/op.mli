@@ -36,3 +36,5 @@ val execute6 : t -> tensor_handle * tensor_handle * tensor_handle * tensor_handl
 val execute7 : t -> tensor_handle * tensor_handle * tensor_handle * tensor_handle * tensor_handle * tensor_handle * tensor_handle
 
 val tensor_handle_data_type : tensor_handle -> Wrapper.data_type
+
+type binary = tensor_handle -> tensor_handle -> tensor_handle

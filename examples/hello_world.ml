@@ -1,4 +1,5 @@
 open Tf_core
+module Ops = Tf_ops.Ops
 
 let print_dims tensor_handle =
   let dims = Eager.Tensor_handle.dims tensor_handle in
@@ -12,10 +13,10 @@ let () =
     Tensor.set tensor [||] 21.;
     Eager.Tensor_handle.create_exn (Tensor.P tensor)
   in
-  let sum = Tf_ops.Generated.add twenty_one twenty_one in
-  print_dims sum;
+  let forty_two = Ops.(twenty_one + twenty_one) in
+  print_dims forty_two;
   let output_value =
-    let output_tensor = Eager.Tensor_handle.resolve_exn sum in
+    let output_tensor = Eager.Tensor_handle.resolve_exn forty_two in
     let output_tensor =
       match Tensor.float32 output_tensor with
       | Some tensor -> tensor
