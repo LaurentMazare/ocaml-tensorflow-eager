@@ -341,7 +341,7 @@ let gen_mli ops =
   p "";
   p "open Tf_core";
   p "";
-  p "type _ t = Op.tensor_handle";
+  p "type 'a t = 'a Op.tensor_handle";
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
   p "";
@@ -409,7 +409,7 @@ let gen_ml ops =
   p "open Base";
   p "open Tf_core";
   p "";
-  p "type _ t = Op.tensor_handle";
+  p "type 'a t = 'a Op.tensor_handle";
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
   p "";

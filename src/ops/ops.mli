@@ -1,10 +1,9 @@
 include module type of Generated
 
-(* TODO: use some typed tensor handles. *)
-val (+) : Op.binary
-val ( * ) : Op.binary
-val (-) : Op.binary
-val (/) : Op.binary
+val (+) : [< `float | `double | `int32 | `int64 ] Op.binary
+val ( * ) : [< `float | `double | `int32 | `int64 ] Op.binary
+val (-) : [< `float | `double | `int32 | `int64 ] Op.binary
+val (/) : [< `float | `double | `int32 | `int64 ] Op.binary
 
 module Const : sig
   val float : float -> [ `float ] t

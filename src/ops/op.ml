@@ -2,7 +2,7 @@ open Base
 open Tf_core
 
 type t = Eager.Op.t
-type tensor_handle = Eager.Tensor_handle.t
+type 'a tensor_handle = 'a Eager.Tensor_handle.t
 type context = Eager.Context.t
 
 let default_context () =
@@ -46,49 +46,17 @@ let add_input t tensor_handle =
   |> Wrapper.Status.ok_exn
 
 let execute t ~output_len =
-  Eager.execute t ~output_len
-  |> Wrapper.Status.ok_exn
+  Eager.execute_exn t ~output_len
 
-let execute0 t =
-  match execute t ~output_len:0 with
-  | [] -> ()
-  | _ -> assert false
-
-let execute1 t =
-  match execute t ~output_len:1 with
-  | [handle] -> handle
-  | _ -> assert false
-
-let execute2 t =
-  match execute t ~output_len:2 with
-  | [handle1; handle2] -> handle1, handle2
-  | _ -> assert false
-
-let execute3 t =
-  match execute t ~output_len:3 with
-  | [handle1; handle2; handle3] -> handle1, handle2, handle3
-  | _ -> assert false
-
-let execute4 t =
-  match execute t ~output_len:4 with
-  | [handle1; handle2; handle3; handle4] -> handle1, handle2, handle3, handle4
-  | _ -> assert false
-
-let execute5 t =
-  match execute t ~output_len:5 with
-  | [h1; h2; h3; h4; h5] -> h1, h2, h3, h4, h5
-  | _ -> assert false
-
-let execute6 t =
-  match execute t ~output_len:6 with
-  | [h1; h2; h3; h4; h5; h6] -> h1, h2, h3, h4, h5, h6
-  | _ -> assert false
-
-let execute7 t =
-  match execute t ~output_len:7 with
-  | [h1; h2; h3; h4; h5; h6; h7] -> h1, h2, h3, h4, h5, h6, h7
-  | _ -> assert false
+let execute0 = Eager.execute0_exn
+let execute1 = Eager.execute1_exn
+let execute2 = Eager.execute2_exn
+let execute3 = Eager.execute3_exn
+let execute4 = Eager.execute4_exn
+let execute5 = Eager.execute5_exn
+let execute6 = Eager.execute6_exn
+let execute7 = Eager.execute7_exn
 
 let tensor_handle_data_type = Eager.Tensor_handle.data_type
 
-type binary = tensor_handle -> tensor_handle -> tensor_handle
+type 'a binary = 'a tensor_handle -> 'a tensor_handle -> 'a tensor_handle

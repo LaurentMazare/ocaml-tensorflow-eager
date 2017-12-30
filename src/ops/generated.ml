@@ -2,7 +2,7 @@
 open Base
 open Tf_core
 
-type _ t = Op.tensor_handle
+type 'a t = 'a Op.tensor_handle
 module Dim = Operation.Dim
 module Type = Operation.Type
 

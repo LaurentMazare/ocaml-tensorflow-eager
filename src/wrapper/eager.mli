@@ -10,19 +10,19 @@ module Context : sig
 end
 
 module Tensor_handle : sig
-  type t
+  type _ t
 
-  val create : Tensor.p -> t Status.result
+  val create : Tensor.p -> _ t Status.result
 
-  val create_exn : Tensor.p -> t
+  val create_exn : Tensor.p -> _ t
 
-  val resolve : t -> Tensor.p Status.result
+  val resolve : _ t -> Tensor.p Status.result
 
-  val resolve_exn : t -> Tensor.p
+  val resolve_exn : _ t -> Tensor.p
 
-  val dims : t -> int list
+  val dims : _ t -> int list
 
-  val data_type : t -> Wrapper.data_type
+  val data_type : _ t -> Wrapper.data_type
 end
 
 module Op : sig
@@ -30,7 +30,7 @@ module Op : sig
 
   val create : Context.t -> string -> t Status.result
 
-  val add_input : t -> Tensor_handle.t -> unit Status.result
+  val add_input : t -> _ Tensor_handle.t -> unit Status.result
 
   val set_attr_type : t -> string -> Wrapper.data_type -> unit
   val set_attr_type_list : t -> string -> Wrapper.data_type list -> unit
@@ -44,4 +44,14 @@ module Op : sig
   val set_attr_shape_list : t -> string -> int list list -> unit Status.result
 end
 
-val execute : Op.t -> output_len:int -> Tensor_handle.t list Status.result
+val execute : Op.t -> output_len:int -> _ Tensor_handle.t list Status.result
+val execute_exn : Op.t -> output_len:int -> _ Tensor_handle.t list
+
+val execute0_exn : Op.t -> unit
+val execute1_exn : Op.t -> _ Tensor_handle.t
+val execute2_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t
+val execute3_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
+val execute4_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
+val execute5_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
+val execute6_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
+val execute7_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
