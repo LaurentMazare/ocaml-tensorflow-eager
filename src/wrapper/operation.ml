@@ -4,6 +4,8 @@ module Type = struct
     | Unit : [ `unit ] t
     | Float : [ `float ] t
     | Double : [ `double ] t
+    | UInt8 : [ `uInt8 ] t
+    | UInt16 : [ `uInt16 ] t
     | Int32 : [ `int32 ] t
     | Int64 : [ `int64 ] t
     | Complex64 : [ `complex64 ] t
@@ -18,6 +20,8 @@ module Type = struct
     | P Unit -> assert false
     | P Float -> `dt_float
     | P Double -> `dt_double
+    | P UInt8 -> `dt_uint8
+    | P UInt16 -> `dt_uint16
     | P Int32 -> `dt_int32
     | P Int64 -> `dt_int64
     | P Complex64 -> `dt_complex64
@@ -29,6 +33,8 @@ module Type = struct
   let of_dt_type = function
     | `dt_float -> Some (P Float)
     | `dt_double -> Some (P Double)
+    | `dt_uint8 -> Some (P UInt8)
+    | `dt_uint16 -> Some (P UInt16)
     | `dt_int32 -> Some (P Int32)
     | `dt_int64 -> Some (P Int64)
     | `dt_complex64 -> Some (P Complex64)
@@ -42,6 +48,8 @@ module Type = struct
     | P Unit -> assert false
     | P Float -> Wrapper.TF_FLOAT
     | P Double -> TF_DOUBLE
+    | P UInt8 -> TF_UINT8
+    | P UInt16 -> TF_UINT16
     | P Int32 -> TF_INT32
     | P Int64 -> TF_INT64
     | P Complex64 -> TF_COMPLEX
@@ -54,6 +62,8 @@ module Type = struct
     | P Unit -> "Unit"
     | P Float -> "Float"
     | P Double -> "Double"
+    | P UInt8 -> "UInt8"
+    | P UInt16 -> "UInt16"
     | P Int32 -> "Int32"
     | P Int64 -> "Int64"
     | P Complex64 -> "Complex64"

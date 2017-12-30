@@ -33,7 +33,7 @@ let abs
 let accumulatorApplyGradient
     (handle : [ `string ] t)
     (local_step : [ `int64 ] t)
-    (gradient : ([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) t)
+    (gradient : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
   =
   let op = Op.create context "AccumulatorApplyGradient" in
   Op.add_input op handle;
@@ -86,8 +86,8 @@ let acosh
   Op.execute1 op
 
 let add
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 | `string ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `complex64 | `string ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string ] as 't) t)
   =
   let op = Op.create context "Add" in
   Op.add_input op x;
@@ -116,7 +116,7 @@ let addManySparseToTensorsMap
   Op.execute1 op
 
 let addN
-    (inputs__ : ([< `float | `double | `int64 | `int32 | `complex64 | `variant ] as 't) t list)
+    (inputs__ : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 | `variant ] as 't) t list)
   =
   let op = Op.create context "AddN" in
   List.iter inputs__ ~f:(Op.add_input op);
@@ -145,7 +145,7 @@ let addSparseToTensorsMap
   Op.execute1 op
 
 let adjustContrast
-    (images : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (contrast_factor : [ `float ] t)
     (min_value : [ `float ] t)
     (max_value : [ `float ] t)
@@ -246,13 +246,13 @@ let any
 
 let applyAdadelta
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum_update : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum_update : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyAdadelta" in
   Op.add_input op var;
@@ -270,10 +270,10 @@ let applyAdadelta
 
 let applyAdagrad
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyAdagrad" in
   Op.add_input op var;
@@ -288,13 +288,13 @@ let applyAdagrad
 
 let applyAdagradDA
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (gradient_accumulator : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (gradient_squared_accumulator : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (gradient_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (gradient_squared_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
   let op = Op.create context "ApplyAdagradDA" in
@@ -315,16 +315,16 @@ let applyAdagradDA
 let applyAdam
     ?use_locking
     ?use_nesterov
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (m : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (v : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (beta1_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (beta2_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (beta1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (beta2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (v : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta1_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta2_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyAdam" in
   Op.add_input op var;
@@ -348,15 +348,15 @@ let applyAdam
 
 let applyCenteredRMSProp
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (mg : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (ms : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (mom : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (mg : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyCenteredRMSProp" in
   Op.add_input op var;
@@ -376,14 +376,14 @@ let applyCenteredRMSProp
 
 let applyFtrl
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (linear : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyFtrl" in
   Op.add_input op var;
@@ -402,15 +402,15 @@ let applyFtrl
 
 let applyFtrlV2
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (linear : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyFtrlV2" in
   Op.add_input op var;
@@ -430,9 +430,9 @@ let applyFtrlV2
 
 let applyGradientDescent
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (delta : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyGradientDescent" in
   Op.add_input op var;
@@ -447,11 +447,11 @@ let applyGradientDescent
 let applyMomentum
     ?use_locking
     ?use_nesterov
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyMomentum" in
   Op.add_input op var;
@@ -470,12 +470,12 @@ let applyMomentum
 
 let applyProximalAdagrad
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyProximalAdagrad" in
   Op.add_input op var;
@@ -492,11 +492,11 @@ let applyProximalAdagrad
 
 let applyProximalGradientDescent
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (delta : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyProximalGradientDescent" in
   Op.add_input op var;
@@ -512,14 +512,14 @@ let applyProximalGradientDescent
 
 let applyRMSProp
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (ms : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (mom : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApplyRMSProp" in
   Op.add_input op var;
@@ -538,8 +538,8 @@ let applyRMSProp
 
 let approximateEqual
     ?tolerance
-    (x : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (y : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (y : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ApproximateEqual" in
   Op.add_input op x;
@@ -552,7 +552,7 @@ let approximateEqual
 
 let argMax
     ~type_output_type
-    (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (dimension : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "ArgMax" in
@@ -565,7 +565,7 @@ let argMax
 
 let argMin
     ~type_output_type
-    (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (dimension : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "ArgMin" in
@@ -640,8 +640,8 @@ let assign
 
 let assignAdd
     ?use_locking
-    (ref : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (value : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "AssignAdd" in
   Op.add_input op ref;
@@ -654,8 +654,8 @@ let assignAdd
 
 let assignSub
     ?use_locking
-    (ref : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (value : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "AssignSub" in
   Op.add_input op ref;
@@ -1076,11 +1076,11 @@ let batchMatrixTriangularSolve
 let batchNormWithGlobalNormalization
     ~variance_epsilon
     ~scale_after_normalization
-    (t : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (m : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (v : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (beta : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (gamma : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (t : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (v : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (gamma : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "BatchNormWithGlobalNormalization" in
   Op.add_input op t;
@@ -1096,11 +1096,11 @@ let batchNormWithGlobalNormalization
 let batchNormWithGlobalNormalizationGrad
     ~variance_epsilon
     ~scale_after_normalization
-    (t : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (m : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (v : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (gamma : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (backprop : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (t : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (v : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (gamma : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (backprop : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "BatchNormWithGlobalNormalizationGrad" in
   Op.add_input op t;
@@ -1190,8 +1190,8 @@ let betainc
 
 let biasAdd
     ?data_format
-    (value : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (bias : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (bias : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "BiasAdd" in
   Op.add_input op value;
@@ -1204,7 +1204,7 @@ let biasAdd
 
 let biasAddGrad
     ?data_format
-    (out_backprop : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (out_backprop : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "BiasAddGrad" in
   Op.add_input op out_backprop;
@@ -1215,8 +1215,8 @@ let biasAddGrad
   Op.execute1 op
 
 let biasAddV1
-    (value : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (bias : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (bias : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "BiasAddV1" in
   Op.add_input op value;
@@ -1238,7 +1238,7 @@ let bincount
 
 let bitcast
     ~type_type__
-    (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "Bitcast" in
   Op.add_input op input;
@@ -1247,8 +1247,8 @@ let bitcast
   Op.execute1 op
 
 let bitwiseAnd
-    (x : ([< `int32 | `int64 ] as 't) t)
-    (y : ([< `int32 | `int64 ] as 't) t)
+    (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (y : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "BitwiseAnd" in
   Op.add_input op x;
@@ -1257,8 +1257,8 @@ let bitwiseAnd
   Op.execute1 op
 
 let bitwiseOr
-    (x : ([< `int32 | `int64 ] as 't) t)
-    (y : ([< `int32 | `int64 ] as 't) t)
+    (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (y : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "BitwiseOr" in
   Op.add_input op x;
@@ -1267,8 +1267,8 @@ let bitwiseOr
   Op.execute1 op
 
 let bitwiseXor
-    (x : ([< `int32 | `int64 ] as 't) t)
-    (y : ([< `int32 | `int64 ] as 't) t)
+    (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (y : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "BitwiseXor" in
   Op.add_input op x;
@@ -1401,6 +1401,16 @@ let choleskyGrad
   Op.add_input op l;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type l);
+  Op.execute1 op
+
+let compareAndBitpack
+    (input : ([< `bool | `float | `double | `int32 | `int64 ] as 't) t)
+    (threshold : ([< `bool | `float | `double | `int32 | `int64 ] as 't) t)
+  =
+  let op = Op.create context "CompareAndBitpack" in
+  Op.add_input op input;
+  Op.add_input op threshold;
+  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.execute1 op
 
 let complex
@@ -1733,7 +1743,7 @@ let countUpTo
 let cropAndResize
     ?method_
     ?extrapolation_value
-    (image : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (image : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (boxes : [ `float ] t)
     (box_ind : [ `int32 ] t)
     (crop_size : [ `int32 ] t)
@@ -1755,7 +1765,7 @@ let cropAndResize
 let cropAndResizeGradBoxes
     ?method_
     (grads : [ `float ] t)
-    (image : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (image : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (boxes : [ `float ] t)
     (box_ind : [ `int32 ] t)
   =
@@ -1790,8 +1800,8 @@ let cropAndResizeGradImage
   Op.execute1 op
 
 let cross
-    (a : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (b : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (a : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (b : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Cross" in
   Op.add_input op a;
@@ -1802,7 +1812,7 @@ let cross
 let cumprod
     ?exclusive
     ?reverse
-    (x : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "Cumprod" in
@@ -1821,7 +1831,7 @@ let cumprod
 let cumsum
     ?exclusive
     ?reverse
-    (x : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "Cumsum" in
@@ -1917,6 +1927,39 @@ let debugNumericSummary
   );
   Op.execute1 op
 
+let decodeAndCropJpeg
+    ?channels
+    ?ratio
+    ?fancy_upscaling
+    ?try_recover_truncated
+    ?acceptable_fraction
+    ?dct_method
+    (contents : [ `string ] t)
+    (crop_window : [ `int32 ] t)
+  =
+  let op = Op.create context "DecodeAndCropJpeg" in
+  Op.add_input op contents;
+  Op.add_input op crop_window;
+  Option.iter channels ~f:(fun channels ->
+    Op.set_attr_int op "channels" channels
+  );
+  Option.iter ratio ~f:(fun ratio ->
+    Op.set_attr_int op "ratio" ratio
+  );
+  Option.iter fancy_upscaling ~f:(fun fancy_upscaling ->
+    Op.set_attr_bool op "fancy_upscaling" fancy_upscaling
+  );
+  Option.iter try_recover_truncated ~f:(fun try_recover_truncated ->
+    Op.set_attr_bool op "try_recover_truncated" try_recover_truncated
+  );
+  Option.iter acceptable_fraction ~f:(fun acceptable_fraction ->
+    Op.set_attr_float op "acceptable_fraction" acceptable_fraction
+  );
+  Option.iter dct_method ~f:(fun dct_method ->
+    Op.set_attr_string op "dct_method" dct_method
+  );
+  Op.execute1 op
+
 let decodeBase64
     (input : [ `string ] t)
   =
@@ -1924,11 +1967,60 @@ let decodeBase64
   Op.add_input op input;
   Op.execute1 op
 
+let decodeBmp
+    ?channels
+    (contents : [ `string ] t)
+  =
+  let op = Op.create context "DecodeBmp" in
+  Op.add_input op contents;
+  Option.iter channels ~f:(fun channels ->
+    Op.set_attr_int op "channels" channels
+  );
+  Op.execute1 op
+
+let decodeGif
+    (contents : [ `string ] t)
+  =
+  let op = Op.create context "DecodeGif" in
+  Op.add_input op contents;
+  Op.execute1 op
+
 let decodeJSONExample
     (json_examples : [ `string ] t)
   =
   let op = Op.create context "DecodeJSONExample" in
   Op.add_input op json_examples;
+  Op.execute1 op
+
+let decodeJpeg
+    ?channels
+    ?ratio
+    ?fancy_upscaling
+    ?try_recover_truncated
+    ?acceptable_fraction
+    ?dct_method
+    (contents : [ `string ] t)
+  =
+  let op = Op.create context "DecodeJpeg" in
+  Op.add_input op contents;
+  Option.iter channels ~f:(fun channels ->
+    Op.set_attr_int op "channels" channels
+  );
+  Option.iter ratio ~f:(fun ratio ->
+    Op.set_attr_int op "ratio" ratio
+  );
+  Option.iter fancy_upscaling ~f:(fun fancy_upscaling ->
+    Op.set_attr_bool op "fancy_upscaling" fancy_upscaling
+  );
+  Option.iter try_recover_truncated ~f:(fun try_recover_truncated ->
+    Op.set_attr_bool op "try_recover_truncated" try_recover_truncated
+  );
+  Option.iter acceptable_fraction ~f:(fun acceptable_fraction ->
+    Op.set_attr_float op "acceptable_fraction" acceptable_fraction
+  );
+  Option.iter dct_method ~f:(fun dct_method ->
+    Op.set_attr_string op "dct_method" dct_method
+  );
   Op.execute1 op
 
 let decodePng
@@ -1982,8 +2074,8 @@ let deleteSessionTensor
 let denseToDenseSetOperation
     ~set_operation
     ?validate_indices
-    (set1 : ([< `int32 | `int64 | `string ] as 't) t)
-    (set2 : ([< `int32 | `int64 | `string ] as 't) t)
+    (set1 : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
+    (set2 : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
   =
   let op = Op.create context "DenseToDenseSetOperation" in
   Op.add_input op set1;
@@ -2013,9 +2105,9 @@ let denseToSparseBatchDataset
 let denseToSparseSetOperation
     ~set_operation
     ?validate_indices
-    (set1 : ([< `int32 | `int64 | `string ] as 't) t)
+    (set1 : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set2_indices : [ `int64 ] t)
-    (set2_values : ([< `int32 | `int64 | `string ] as 't) t)
+    (set2_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set2_shape : [ `int64 ] t)
   =
   let op = Op.create context "DenseToSparseSetOperation" in
@@ -2165,8 +2257,8 @@ let dilation2D
     ~strides
     ~rates
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (filter : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (filter : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Dilation2D" in
   Op.add_input op input;
@@ -2181,9 +2273,9 @@ let dilation2DBackpropFilter
     ~strides
     ~rates
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (filter : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (out_backprop : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (filter : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (out_backprop : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Dilation2DBackpropFilter" in
   Op.add_input op input;
@@ -2199,9 +2291,9 @@ let dilation2DBackpropInput
     ~strides
     ~rates
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (filter : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (out_backprop : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (filter : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (out_backprop : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Dilation2DBackpropInput" in
   Op.add_input op input;
@@ -2214,8 +2306,8 @@ let dilation2DBackpropInput
   Op.execute1 op
 
 let div
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
   let op = Op.create context "Div" in
   Op.add_input op x;
@@ -2307,9 +2399,52 @@ let encodeBase64
   );
   Op.execute1 op
 
+let encodeJpeg
+    ?format
+    ?quality
+    ?progressive
+    ?optimize_size
+    ?chroma_downsampling
+    ?density_unit
+    ?x_density
+    ?y_density
+    ?xmp_metadata
+    (image : [ `uInt8 ] t)
+  =
+  let op = Op.create context "EncodeJpeg" in
+  Op.add_input op image;
+  Option.iter format ~f:(fun format ->
+    Op.set_attr_string op "format" format
+  );
+  Option.iter quality ~f:(fun quality ->
+    Op.set_attr_int op "quality" quality
+  );
+  Option.iter progressive ~f:(fun progressive ->
+    Op.set_attr_bool op "progressive" progressive
+  );
+  Option.iter optimize_size ~f:(fun optimize_size ->
+    Op.set_attr_bool op "optimize_size" optimize_size
+  );
+  Option.iter chroma_downsampling ~f:(fun chroma_downsampling ->
+    Op.set_attr_bool op "chroma_downsampling" chroma_downsampling
+  );
+  Option.iter density_unit ~f:(fun density_unit ->
+    Op.set_attr_string op "density_unit" density_unit
+  );
+  Option.iter x_density ~f:(fun x_density ->
+    Op.set_attr_int op "x_density" x_density
+  );
+  Option.iter y_density ~f:(fun y_density ->
+    Op.set_attr_int op "y_density" y_density
+  );
+  Option.iter xmp_metadata ~f:(fun xmp_metadata ->
+    Op.set_attr_string op "xmp_metadata" xmp_metadata
+  );
+  Op.execute1 op
+
 let encodePng
     ?compression
-    (image : 't t)
+    (image : ([< `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "EncodePng" in
   Op.add_input op image;
@@ -2347,8 +2482,8 @@ let enter
   Op.execute1 op
 
 let equal
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
   =
   let op = Op.create context "Equal" in
   Op.add_input op x;
@@ -2435,7 +2570,7 @@ let extractImagePatches
     ~strides
     ~rates
     ~padding
-    (images : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (images : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "ExtractImagePatches" in
   Op.add_input op images;
@@ -2806,8 +2941,8 @@ let floor
   Op.execute1 op
 
 let floorDiv
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
   let op = Op.create context "FloorDiv" in
   Op.add_input op x;
@@ -3158,8 +3293,8 @@ let getSessionTensor
   Op.execute1 op
 
 let greater
-    (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Greater" in
   Op.add_input op x;
@@ -3168,8 +3303,8 @@ let greater
   Op.execute1 op
 
 let greaterEqual
-    (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "GreaterEqual" in
   Op.add_input op x;
@@ -3223,7 +3358,7 @@ let hashTableV2
 
 let histogramSummary
     (tag : [ `string ] t)
-    (values : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "HistogramSummary" in
   Op.add_input op tag;
@@ -3359,7 +3494,7 @@ let imag
 let imageSummary
     ?max_images
     (tag : [ `string ] t)
-    (tensor : ([< `float | `double ] as 't) t)
+    (tensor : ([< `uInt8 | `float | `double ] as 't) t)
   =
   let op = Op.create context "ImageSummary" in
   Op.add_input op tag;
@@ -3493,7 +3628,7 @@ let invGrad
   Op.execute1 op
 
 let invert
-    (x : ([< `int32 | `int64 ] as 't) t)
+    (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Invert" in
   Op.add_input op x;
@@ -3674,8 +3809,8 @@ let learnedUnigramCandidateSampler
   Op.execute3 op
 
 let less
-    (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Less" in
   Op.add_input op x;
@@ -3684,8 +3819,8 @@ let less
   Op.execute1 op
 
 let lessEqual
-    (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "LessEqual" in
   Op.add_input op x;
@@ -4164,7 +4299,7 @@ let matrixTriangularSolve
 
 let max
     ?keep_dims
-    (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "Max" in
@@ -4182,7 +4317,7 @@ let maxPool
     ~strides
     ~padding
     ?data_format
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "MaxPool" in
   Op.add_input op input;
@@ -4263,9 +4398,9 @@ let maxPoolGrad
     ~strides
     ~padding
     ?data_format
-    (orig_input : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (orig_output : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "MaxPoolGrad" in
   Op.add_input op orig_input;
@@ -4285,9 +4420,9 @@ let maxPoolGradGrad
     ~strides
     ~padding
     ?data_format
-    (orig_input : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (orig_output : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "MaxPoolGradGrad" in
   Op.add_input op orig_input;
@@ -4305,9 +4440,9 @@ let maxPoolGradGrad
 let maxPoolGradGradV2
     ~padding
     ?data_format
-    (orig_input : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (orig_output : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (ksize : [ `int32 ] t)
     (strides : [ `int32 ] t)
   =
@@ -4328,8 +4463,8 @@ let maxPoolGradGradWithArgmax
     ~ksize
     ~strides
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (argmax : ([< `int32 | `int64 ] as 'targmax) t)
   =
   let op = Op.create context "MaxPoolGradGradWithArgmax" in
@@ -4346,9 +4481,9 @@ let maxPoolGradGradWithArgmax
 let maxPoolGradV2
     ~padding
     ?data_format
-    (orig_input : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (orig_output : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (ksize : [ `int32 ] t)
     (strides : [ `int32 ] t)
   =
@@ -4369,8 +4504,8 @@ let maxPoolGradWithArgmax
     ~ksize
     ~strides
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (argmax : ([< `int32 | `int64 ] as 'targmax) t)
   =
   let op = Op.create context "MaxPoolGradWithArgmax" in
@@ -4387,7 +4522,7 @@ let maxPoolGradWithArgmax
 let maxPoolV2
     ~padding
     ?data_format
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (ksize : [ `int32 ] t)
     (strides : [ `int32 ] t)
   =
@@ -4407,7 +4542,7 @@ let maxPoolWithArgmax
     ~ksize
     ~strides
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "MaxPoolWithArgmax" in
   Op.add_input op input;
@@ -4430,7 +4565,7 @@ let maximum
 
 let mean
     ?keep_dims
-    (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "Mean" in
@@ -4500,7 +4635,7 @@ let mfcc
 
 let min
     ?keep_dims
-    (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "Min" in
@@ -4560,8 +4695,8 @@ let mod_
   Op.execute1 op
 
 let mul
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
   let op = Op.create context "Mul" in
   Op.add_input op x;
@@ -4572,7 +4707,7 @@ let mul
 let multinomial
     ?seed
     ?seed2
-    (logits : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (logits : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (num_samples : [ `int32 ] t)
   =
   let op = Op.create context "Multinomial" in
@@ -4801,8 +4936,8 @@ let nonMaxSuppressionV2
   Op.execute1 op
 
 let notEqual
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
   =
   let op = Op.create context "NotEqual" in
   Op.add_input op x;
@@ -4812,7 +4947,7 @@ let notEqual
 
 let oneHot
     ?axis
-    (indices : ([< `int32 | `int64 ] as 'tI) t)
+    (indices : ([< `uInt8 | `int32 | `int64 ] as 'tI) t)
     (depth : [ `int32 ] t)
     (on_value : 't t)
     (off_value : 't t)
@@ -5110,6 +5245,14 @@ let polygamma
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
   Op.execute1 op
 
+let populationCount
+    (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+  =
+  let op = Op.create context "PopulationCount" in
+  Op.add_input op x;
+  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
+  Op.execute1 op
+
 let pow
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -5195,7 +5338,7 @@ let priorityQueueV2
 
 let prod
     ?keep_dims
-    (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "Prod" in
@@ -5732,7 +5875,7 @@ let rGBToHSV
 let randomCrop
     ?seed
     ?seed2
-    (image : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (image : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int64 ] t)
   =
   let op = Op.create context "RandomCrop" in
@@ -6118,8 +6261,8 @@ let real
   Op.execute1 op
 
 let realDiv
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
   let op = Op.create context "RealDiv" in
   Op.add_input op x;
@@ -6263,7 +6406,7 @@ let refSwitch
   Op.execute2 op
 
 let relu
-    (features : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Relu" in
   Op.add_input op features;
@@ -6271,7 +6414,7 @@ let relu
   Op.execute1 op
 
 let relu6
-    (features : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Relu6" in
   Op.add_input op features;
@@ -6279,8 +6422,8 @@ let relu6
   Op.execute1 op
 
 let relu6Grad
-    (gradients : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (features : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Relu6Grad" in
   Op.add_input op gradients;
@@ -6289,8 +6432,8 @@ let relu6Grad
   Op.execute1 op
 
 let reluGrad
-    (gradients : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (features : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "ReluGrad" in
   Op.add_input op gradients;
@@ -6354,7 +6497,7 @@ let reshape
 
 let resizeArea
     ?align_corners
-    (images : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
   let op = Op.create context "ResizeArea" in
@@ -6368,7 +6511,7 @@ let resizeArea
 
 let resizeBicubic
     ?align_corners
-    (images : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
   let op = Op.create context "ResizeBicubic" in
@@ -6396,7 +6539,7 @@ let resizeBicubicGrad
 
 let resizeBilinear
     ?align_corners
-    (images : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
   let op = Op.create context "ResizeBilinear" in
@@ -6424,7 +6567,7 @@ let resizeBilinearGrad
 
 let resizeNearestNeighbor
     ?align_corners
-    (images : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
   let op = Op.create context "ResizeNearestNeighbor" in
@@ -6438,7 +6581,7 @@ let resizeNearestNeighbor
 
 let resizeNearestNeighborGrad
     ?align_corners
-    (grads : ([< `int32 | `float | `double ] as 't) t)
+    (grads : ([< `uInt8 | `int32 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
   let op = Op.create context "ResizeNearestNeighborGrad" in
@@ -6455,10 +6598,10 @@ let resourceApplyAdadelta
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (accum_update : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyAdadelta" in
   Op.add_input op var;
@@ -6478,8 +6621,8 @@ let resourceApplyAdagrad
     ?use_locking
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyAdagrad" in
   Op.add_input op var;
@@ -6497,10 +6640,10 @@ let resourceApplyAdagradDA
     (var : [ `resource ] t)
     (gradient_accumulator : [ `resource ] t)
     (gradient_squared_accumulator : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
   let op = Op.create context "ResourceApplyAdagradDA" in
@@ -6524,13 +6667,13 @@ let resourceApplyAdam
     (var : [ `resource ] t)
     (m : [ `resource ] t)
     (v : [ `resource ] t)
-    (beta1_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (beta2_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (beta1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (beta2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (beta1_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta2_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyAdam" in
   Op.add_input op var;
@@ -6558,11 +6701,11 @@ let resourceApplyCenteredRMSProp
     (mg : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyCenteredRMSProp" in
   Op.add_input op var;
@@ -6585,11 +6728,11 @@ let resourceApplyFtrl
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyFtrl" in
   Op.add_input op var;
@@ -6611,12 +6754,12 @@ let resourceApplyFtrlV2
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyFtrlV2" in
   Op.add_input op var;
@@ -6637,8 +6780,8 @@ let resourceApplyFtrlV2
 let resourceApplyGradientDescent
     ?use_locking
     (var : [ `resource ] t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (delta : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyGradientDescent" in
   Op.add_input op var;
@@ -6655,9 +6798,9 @@ let resourceApplyMomentum
     ?use_nesterov
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyMomentum" in
   Op.add_input op var;
@@ -6678,10 +6821,10 @@ let resourceApplyProximalAdagrad
     ?use_locking
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyProximalAdagrad" in
   Op.add_input op var;
@@ -6699,10 +6842,10 @@ let resourceApplyProximalAdagrad
 let resourceApplyProximalGradientDescent
     ?use_locking
     (var : [ `resource ] t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (delta : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyProximalGradientDescent" in
   Op.add_input op var;
@@ -6721,11 +6864,11 @@ let resourceApplyRMSProp
     (var : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceApplyRMSProp" in
   Op.add_input op var;
@@ -6747,10 +6890,10 @@ let resourceSparseApplyAdadelta
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (accum_update : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "ResourceSparseApplyAdadelta" in
@@ -6773,8 +6916,8 @@ let resourceSparseApplyAdagrad
     ?use_locking
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "ResourceSparseApplyAdagrad" in
@@ -6795,11 +6938,11 @@ let resourceSparseApplyAdagradDA
     (var : [ `resource ] t)
     (gradient_accumulator : [ `resource ] t)
     (gradient_squared_accumulator : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
   let op = Op.create context "ResourceSparseApplyAdagradDA" in
@@ -6825,11 +6968,11 @@ let resourceSparseApplyCenteredRMSProp
     (mg : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "ResourceSparseApplyCenteredRMSProp" in
@@ -6855,12 +6998,12 @@ let resourceSparseApplyFtrl
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceSparseApplyFtrl" in
   Op.add_input op var;
@@ -6884,13 +7027,13 @@ let resourceSparseApplyFtrlV2
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceSparseApplyFtrlV2" in
   Op.add_input op var;
@@ -6915,10 +7058,10 @@ let resourceSparseApplyMomentum
     ?use_nesterov
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ResourceSparseApplyMomentum" in
   Op.add_input op var;
@@ -6941,10 +7084,10 @@ let resourceSparseApplyProximalAdagrad
     ?use_locking
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "ResourceSparseApplyProximalAdagrad" in
@@ -6965,10 +7108,10 @@ let resourceSparseApplyProximalAdagrad
 let resourceSparseApplyProximalGradientDescent
     ?use_locking
     (var : [ `resource ] t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "ResourceSparseApplyProximalGradientDescent" in
@@ -6990,11 +7133,11 @@ let resourceSparseApplyRMSProp
     (var : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "ResourceSparseApplyRMSProp" in
@@ -7093,7 +7236,7 @@ let restoreSlice
   Op.execute1 op
 
 let reverse
-    (tensor : ([< `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t)
+    (tensor : ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t)
     (dims : [ `bool ] t)
   =
   let op = Op.create context "Reverse" in
@@ -7120,7 +7263,7 @@ let reverseSequence
   Op.execute1 op
 
 let reverseV2
-    (tensor : ([< `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t)
+    (tensor : ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "ReverseV2" in
@@ -7172,7 +7315,7 @@ let sampleDistortedBoundingBox
     ?area_range
     ?max_attempts
     ?use_image_if_no_bounding_boxes
-    (image_size : ([< `int32 | `int64 ] as 't) t)
+    (image_size : ([< `uInt8 | `int32 | `int64 ] as 't) t)
     (bounding_boxes : [ `float ] t)
   =
   let op = Op.create context "SampleDistortedBoundingBox" in
@@ -7209,7 +7352,7 @@ let sampleDistortedBoundingBoxV2
     ?area_range
     ?max_attempts
     ?use_image_if_no_bounding_boxes
-    (image_size : ([< `int32 | `int64 ] as 't) t)
+    (image_size : ([< `uInt8 | `int32 | `int64 ] as 't) t)
     (bounding_boxes : [ `float ] t)
     (min_object_covered : [ `float ] t)
   =
@@ -7249,7 +7392,7 @@ let saveIterator
 
 let scalarSummary
     (tags : [ `string ] t)
-    (values : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "ScalarSummary" in
   Op.add_input op tags;
@@ -7259,9 +7402,9 @@ let scalarSummary
 
 let scatterAdd
     ?use_locking
-    (ref : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ScatterAdd" in
   Op.add_input op ref;
@@ -7276,9 +7419,9 @@ let scatterAdd
 
 let scatterDiv
     ?use_locking
-    (ref : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ScatterDiv" in
   Op.add_input op ref;
@@ -7293,9 +7436,9 @@ let scatterDiv
 
 let scatterMul
     ?use_locking
-    (ref : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ScatterMul" in
   Op.add_input op ref;
@@ -7323,9 +7466,9 @@ let scatterNd
 
 let scatterNdAdd
     ?use_locking
-    (ref : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ScatterNdAdd" in
   Op.add_input op ref;
@@ -7339,9 +7482,9 @@ let scatterNdAdd
   Op.execute1 op
 
 let scatterNdNonAliasingAdd
-    (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ScatterNdNonAliasingAdd" in
   Op.add_input op input;
@@ -7353,9 +7496,9 @@ let scatterNdNonAliasingAdd
 
 let scatterNdSub
     ?use_locking
-    (ref : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ScatterNdSub" in
   Op.add_input op ref;
@@ -7387,9 +7530,9 @@ let scatterNdUpdate
 
 let scatterSub
     ?use_locking
-    (ref : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "ScatterSub" in
   Op.add_input op ref;
@@ -7439,7 +7582,7 @@ let sdcaShrinkL1
   Op.execute0 op
 
 let segmentMax
-    (data : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SegmentMax" in
@@ -7450,7 +7593,7 @@ let segmentMax
   Op.execute1 op
 
 let segmentMean
-    (data : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SegmentMean" in
@@ -7461,7 +7604,7 @@ let segmentMean
   Op.execute1 op
 
 let segmentMin
-    (data : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SegmentMin" in
@@ -7472,7 +7615,7 @@ let segmentMin
   Op.execute1 op
 
 let segmentProd
-    (data : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SegmentProd" in
@@ -7483,7 +7626,7 @@ let segmentProd
   Op.execute1 op
 
 let segmentSum
-    (data : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SegmentSum" in
@@ -7578,7 +7721,7 @@ let serializeTensor
 let setSize
     ?validate_indices
     (set_indices : [ `int64 ] t)
-    (set_values : ([< `int32 | `int64 | `string ] as 't) t)
+    (set_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set_shape : [ `int64 ] t)
   =
   let op = Op.create context "SetSize" in
@@ -7772,7 +7915,7 @@ let softmaxCrossEntropyWithLogits
   Op.execute2 op
 
 let softplus
-    (features : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Softplus" in
   Op.add_input op features;
@@ -7780,8 +7923,8 @@ let softplus
   Op.execute1 op
 
 let softplusGrad
-    (gradients : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (features : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "SoftplusGrad" in
   Op.add_input op gradients;
@@ -7790,7 +7933,7 @@ let softplusGrad
   Op.execute1 op
 
 let softsign
-    (features : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "Softsign" in
   Op.add_input op features;
@@ -7798,8 +7941,8 @@ let softsign
   Op.execute1 op
 
 let softsignGrad
-    (gradients : ([< `float | `double | `int32 | `int64 ] as 't) t)
-    (features : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "SoftsignGrad" in
   Op.add_input op gradients;
@@ -7853,7 +7996,7 @@ let sparseAccumulatorApplyGradient
     (handle : [ `string ] t)
     (local_step : [ `int64 ] t)
     (gradient_indices : [ `int64 ] t)
-    (gradient_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) t)
+    (gradient_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
     (gradient_shape : [ `int64 ] t)
   =
   let op = Op.create context "SparseAccumulatorApplyGradient" in
@@ -7879,12 +8022,12 @@ let sparseAccumulatorTakeGradient
 
 let sparseAdd
     (a_indices : [ `int64 ] t)
-    (a_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (a_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (a_shape : [ `int64 ] t)
     (b_indices : [ `int64 ] t)
-    (b_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (b_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (b_shape : [ `int64 ] t)
-    (thresh : ([< `float | `double | `int32 | `int64 ] as 'treal) t)
+    (thresh : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 'treal) t)
   =
   let op = Op.create context "SparseAdd" in
   Op.add_input op a_indices;
@@ -7899,7 +8042,7 @@ let sparseAdd
   Op.execute3 op
 
 let sparseAddGrad
-    (backprop_val_grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (backprop_val_grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (a_indices : [ `int64 ] t)
     (b_indices : [ `int64 ] t)
     (sum_indices : [ `int64 ] t)
@@ -7914,13 +8057,13 @@ let sparseAddGrad
 
 let sparseApplyAdadelta
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum_update : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum_update : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SparseApplyAdadelta" in
@@ -7941,10 +8084,10 @@ let sparseApplyAdadelta
 
 let sparseApplyAdagrad
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SparseApplyAdagrad" in
@@ -7962,14 +8105,14 @@ let sparseApplyAdagrad
 
 let sparseApplyAdagradDA
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (gradient_accumulator : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (gradient_squared_accumulator : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (gradient_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (gradient_squared_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
   let op = Op.create context "SparseApplyAdagradDA" in
@@ -7991,15 +8134,15 @@ let sparseApplyAdagradDA
 
 let sparseApplyCenteredRMSProp
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (mg : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (ms : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (mom : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (mg : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SparseApplyCenteredRMSProp" in
@@ -8022,15 +8165,15 @@ let sparseApplyCenteredRMSProp
 
 let sparseApplyFtrl
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (linear : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "SparseApplyFtrl" in
   Op.add_input op var;
@@ -8051,16 +8194,16 @@ let sparseApplyFtrl
 
 let sparseApplyFtrlV2
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (linear : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "SparseApplyFtrlV2" in
   Op.add_input op var;
@@ -8083,12 +8226,12 @@ let sparseApplyFtrlV2
 let sparseApplyMomentum
     ?use_locking
     ?use_nesterov
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "SparseApplyMomentum" in
   Op.add_input op var;
@@ -8109,12 +8252,12 @@ let sparseApplyMomentum
 
 let sparseApplyProximalAdagrad
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SparseApplyProximalAdagrad" in
@@ -8134,11 +8277,11 @@ let sparseApplyProximalAdagrad
 
 let sparseApplyProximalGradientDescent
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SparseApplyProximalGradientDescent" in
@@ -8157,14 +8300,14 @@ let sparseApplyProximalGradientDescent
 
 let sparseApplyRMSProp
     ?use_locking
-    (var : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (ms : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (mom : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let op = Op.create context "SparseApplyRMSProp" in
@@ -8217,9 +8360,9 @@ let sparseConditionalAccumulator
 
 let sparseDenseCwiseAdd
     (sp_indices : [ `int64 ] t)
-    (sp_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (sp_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (sp_shape : [ `int64 ] t)
-    (dense : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (dense : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "SparseDenseCwiseAdd" in
   Op.add_input op sp_indices;
@@ -8231,9 +8374,9 @@ let sparseDenseCwiseAdd
 
 let sparseDenseCwiseDiv
     (sp_indices : [ `int64 ] t)
-    (sp_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (sp_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (sp_shape : [ `int64 ] t)
-    (dense : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (dense : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "SparseDenseCwiseDiv" in
   Op.add_input op sp_indices;
@@ -8245,9 +8388,9 @@ let sparseDenseCwiseDiv
 
 let sparseDenseCwiseMul
     (sp_indices : [ `int64 ] t)
-    (sp_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (sp_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (sp_shape : [ `int64 ] t)
-    (dense : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (dense : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "SparseDenseCwiseMul" in
   Op.add_input op sp_indices;
@@ -8311,7 +8454,7 @@ let sparseMatMul
 let sparseReduceMax
     ?keep_dims
     (input_indices : [ `int64 ] t)
-    (input_values : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
@@ -8329,7 +8472,7 @@ let sparseReduceMax
 let sparseReduceMaxSparse
     ?keep_dims
     (input_indices : [ `int64 ] t)
-    (input_values : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
@@ -8347,7 +8490,7 @@ let sparseReduceMaxSparse
 let sparseReduceSum
     ?keep_dims
     (input_indices : [ `int64 ] t)
-    (input_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
@@ -8365,7 +8508,7 @@ let sparseReduceSum
 let sparseReduceSumSparse
     ?keep_dims
     (input_indices : [ `int64 ] t)
-    (input_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
@@ -8460,7 +8603,7 @@ let sparseSegmentSqrtNGrad
   Op.execute1 op
 
 let sparseSegmentSum
-    (data : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tidx) t)
     (segment_ids : [ `int32 ] t)
   =
@@ -8513,10 +8656,10 @@ let sparseSoftmaxCrossEntropyWithLogits
 
 let sparseSparseMaximum
     (a_indices : [ `int64 ] t)
-    (a_values : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (a_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (a_shape : [ `int64 ] t)
     (b_indices : [ `int64 ] t)
-    (b_values : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (b_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (b_shape : [ `int64 ] t)
   =
   let op = Op.create context "SparseSparseMaximum" in
@@ -8531,10 +8674,10 @@ let sparseSparseMaximum
 
 let sparseSparseMinimum
     (a_indices : [ `int64 ] t)
-    (a_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (a_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (a_shape : [ `int64 ] t)
     (b_indices : [ `int64 ] t)
-    (b_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (b_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (b_shape : [ `int64 ] t)
   =
   let op = Op.create context "SparseSparseMinimum" in
@@ -8549,9 +8692,9 @@ let sparseSparseMinimum
 
 let sparseTensorDenseAdd
     (a_indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (a_values : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (a_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (a_shape : ([< `int32 | `int64 ] as 'tindices) t)
-    (b : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (b : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "SparseTensorDenseAdd" in
   Op.add_input op a_indices;
@@ -8620,10 +8763,10 @@ let sparseToSparseSetOperation
     ~set_operation
     ?validate_indices
     (set1_indices : [ `int64 ] t)
-    (set1_values : ([< `int32 | `int64 | `string ] as 't) t)
+    (set1_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set1_shape : [ `int64 ] t)
     (set2_indices : [ `int64 ] t)
-    (set2_values : ([< `int32 | `int64 | `string ] as 't) t)
+    (set2_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set2_shape : [ `int64 ] t)
   =
   let op = Op.create context "SparseToSparseSetOperation" in
@@ -9076,8 +9219,8 @@ let stringToNumber
   Op.execute1 op
 
 let sub
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
   let op = Op.create context "Sub" in
   Op.add_input op x;
@@ -9099,7 +9242,7 @@ let substr
 
 let sum
     ?keep_dims
-    (input : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let op = Op.create context "Sum" in
@@ -9815,7 +9958,7 @@ let tileGrad
 let topK
     ~k
     ?sorted
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "TopK" in
   Op.add_input op input;
@@ -9828,7 +9971,7 @@ let topK
 
 let topKV2
     ?sorted
-    (input : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (k : [ `int32 ] t)
   =
   let op = Op.create context "TopKV2" in
@@ -9852,8 +9995,8 @@ let transpose
   Op.execute1 op
 
 let truncateDiv
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
   let op = Op.create context "TruncateDiv" in
   Op.add_input op x;
@@ -9947,7 +10090,7 @@ let unpack
   Op.execute op ~output_len:num
 
 let unsortedSegmentMax
-    (data : ([< `float | `double | `int32 | `int64 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
     (num_segments : [ `int32 ] t)
   =
@@ -9960,7 +10103,7 @@ let unsortedSegmentMax
   Op.execute1 op
 
 let unsortedSegmentSum
-    (data : ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t)
+    (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
     (num_segments : [ `int32 ] t)
   =

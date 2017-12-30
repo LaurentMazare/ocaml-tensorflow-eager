@@ -3,6 +3,8 @@ module Type : sig
     | Unit : [ `unit ] t
     | Float : [ `float ] t
     | Double : [ `double ] t
+    | UInt8 : [ `uInt8 ] t
+    | UInt16 : [ `uInt16 ] t
     | Int32 : [ `int32 ] t
     | Int64 : [ `int64 ] t
     | Complex64 : [ `complex64 ] t
@@ -20,6 +22,8 @@ module Type : sig
        | `dt_complex64
        | `dt_double
        | `dt_float
+       | `dt_uint8
+       | `dt_uint16
        | `dt_int32
        | `dt_int64
        | `dt_string
@@ -34,6 +38,8 @@ module Type : sig
        | `dt_complex64
        | `dt_double
        | `dt_float
+       | `dt_uint8
+       | `dt_uint16
        | `dt_int32
        | `dt_int64
        | `dt_string

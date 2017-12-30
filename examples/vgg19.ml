@@ -18,7 +18,8 @@ let max_pool th =
 
 let read_image filename =
   Tensor_handle.of_string_exn filename
-  |> Ops.decodePng ~type_dtype:Type.Float
+  |> Ops.decodePng ~type_dtype:Type.UInt8 ~channels:3
+  |> Ops.cast ~type_dstT:Type.Float
 
 let reshape th ~shape =
   let tensor = Tensor.create Int32 [| List.length shape |] in

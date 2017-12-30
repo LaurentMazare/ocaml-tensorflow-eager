@@ -30,7 +30,7 @@ val abs:
 val accumulatorApplyGradient:
   [ `string ] t ->
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t ->
     unit
 
 (* Returns the number of gradients aggregated in the given accumulators. *)
@@ -53,10 +53,10 @@ aggregated more than num_required gradients, it returns the average of
 the accumulated gradients.  Also automatically increments the recorded
 global_step in the accumulator by 1, and resets the aggregate to 0. *)
 val accumulatorTakeGradient:
-  type_dtype:([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) Type.t ->
   [ `string ] t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t
 
 (* Computes acos of x element-wise. *)
 val acos:
@@ -72,9 +72,9 @@ val acosh:
 (* *NOTE*: `Add` supports broadcasting. `AddN` does not. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val add:
-  ([< `float | `double | `int32 | `int64 | `complex64 | `string ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 | `complex64 | `string ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 | `complex64 | `string ] as 't) t
+  ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string ] as 't) t ->
+  ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string ] as 't) t ->
+    ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string ] as 't) t
 
 (* Add an `N`-minibatch `SparseTensor` to a `SparseTensorsMap`, return `N` handles. *)
 (* A `SparseTensor` of rank `R` is represented by three tensors: `sparse_indices`,
@@ -109,8 +109,8 @@ val addManySparseToTensorsMap:
 
 (* Add all input tensors element wise. *)
 val addN:
-  ([< `float | `double | `int64 | `int32 | `complex64 | `variant ] as 't) t list ->
-    ([< `float | `double | `int64 | `int32 | `complex64 | `variant ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 | `variant ] as 't) t list ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 | `variant ] as 't) t
 
 (* Add a `SparseTensor` to a `SparseTensorsMap` return its handle. *)
 (* A `SparseTensor` is represented by three tensors: `sparse_indices`,
@@ -137,7 +137,7 @@ val addSparseToTensorsMap:
 
 (* Deprecated. Disallowed in GraphDef version >= 2. *)
 val adjustContrast:
-  ([< `int32 | `int64 | `float | `double ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t ->
   [ `float ] t ->
   [ `float ] t ->
   [ `float ] t ->
@@ -253,38 +253,38 @@ update_accum = rho() * update_accum + (1 - rho()) * update.square();
 var -= update; *)
 val applyAdadelta:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the adagrad scheme. *)
 (* accum += grad * grad
 var -= lr * grad * (1 / sqrt(accum)) *)
 val applyAdagrad:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the proximal adagrad scheme. *)
 val applyAdagradDA:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the Adam algorithm. *)
 (* lr_t <- learning_rate * sqrt(1 - beta2^t) / (1 - beta1^t)
@@ -294,17 +294,17 @@ variable <- variable - lr_t * m_t / (sqrt(v_t) + epsilon) *)
 val applyAdam:
   ?use_locking:bool ->
   ?use_nesterov:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the centered RMSProp algorithm. *)
 (* The centered RMSProp algorithm uses an estimate of the centered second moment
@@ -327,16 +327,16 @@ mom <- momentum * mom_{t-1} + lr * grad / sqrt(ms - mg * mg + epsilon)
 var <- var - mom *)
 val applyCenteredRMSProp:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the Ftrl-proximal scheme. *)
 (* accum_new = accum + grad * grad
@@ -346,15 +346,15 @@ var = (sign(linear) * l1 - linear) / quadratic if |linear| > l1 else 0.0
 accum = accum_new *)
 val applyFtrl:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the Ftrl-proximal scheme. *)
 (* grad_with_shrinkage = grad + 2 * l2_shrinkage * var
@@ -366,24 +366,24 @@ var = (sign(linear) * l1 - linear) / quadratic if |linear| > l1 else 0.0
 accum = accum_new *)
 val applyFtrlV2:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' by subtracting 'alpha' * 'delta' from it. *)
 val applyGradientDescent:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the momentum scheme. Set use_nesterov = True if you *)
 (* want to use Nesterov momentum.
@@ -393,12 +393,12 @@ var -= lr * accum *)
 val applyMomentum:
   ?use_locking:bool ->
   ?use_nesterov:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' and '*accum' according to FOBOS with Adagrad learning rate. *)
 (* accum += grad * grad
@@ -406,25 +406,25 @@ prox_v = var - lr * grad * (1 / sqrt(accum))
 var = sign(prox_v)/(1+lr*l2) * max{ |prox_v|-lr*l1,0} *)
 val applyProximalAdagrad:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' as FOBOS algorithm with fixed learning rate. *)
 (* prox_v = var - alpha * delta
 var = sign(prox_v)/(1+alpha*l2) * max{ |prox_v|-alpha*l1,0} *)
 val applyProximalGradientDescent:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the RMSProp algorithm. *)
 (* Note that in dense implementation of this algorithm, ms and mom will
@@ -439,28 +439,28 @@ mom <- momentum * mom_{t-1} + lr * grad / sqrt(ms + epsilon)
 var <- var - mom *)
 val applyRMSProp:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Returns the truth value of abs(x-y) < tolerance element-wise. *)
 val approximateEqual:
   ?tolerance:float ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     [ `bool ] t
 
 (* Returns the index with the largest value across dimensions of a tensor. *)
 (* Note that in case of ties the identity of the return value is not guaranteed. *)
 val argMax:
   type_output_type:([< `int32 | `int64 ] as 'output_type) Type.t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
     ([< `int32 | `int64 ] as 'output_type) t
 
@@ -468,7 +468,7 @@ val argMax:
 (* Note that in case of ties the identity of the return value is not guaranteed. *)
 val argMin:
   type_output_type:([< `int32 | `int64 ] as 'output_type) Type.t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
     ([< `int32 | `int64 ] as 'output_type) t
 
@@ -508,18 +508,18 @@ val assign:
 This makes it easier to chain operations that need to use the reset value. *)
 val assignAdd:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update 'ref' by subtracting 'value' from it. *)
 (* This operation outputs 'ref' after the update is done.
 This makes it easier to chain operations that need to use the reset value. *)
 val assignSub:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Computes atan of x element-wise. *)
 val atan:
@@ -825,24 +825,24 @@ val batchMatrixTriangularSolve:
 val batchNormWithGlobalNormalization:
   variance_epsilon:float ->
   scale_after_normalization:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Gradients for batch normalization. *)
 (* This op is deprecated. See `tf.nn.batch_normalization`. *)
 val batchNormWithGlobalNormalizationGrad:
   variance_epsilon:float ->
   scale_after_normalization:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 val batchSelfAdjointEig:
   ([< `double | `float ] as 't) t ->
@@ -911,9 +911,9 @@ val betainc:
 Broadcasting is supported, so `value` may have any number of dimensions. *)
 val biasAdd:
   ?data_format:string ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* The backward operation for 'BiasAdd' on the 'bias' tensor. *)
 (* It accumulates all the values from out_backprop into the feature dimension.
@@ -921,8 +921,8 @@ For NHWC data format, the feature dimension is the last. For NCHW data format,
 the feature dimension is the third-to-last. *)
 val biasAddGrad:
   ?data_format:string ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Adds `bias` to `value`. *)
 (* This is a deprecated version of BiasAdd and will be soon removed.
@@ -930,9 +930,9 @@ val biasAddGrad:
 This is a special case of `tf.add` where `bias` is restricted to be 1-D.
 Broadcasting is supported, so `value` may have any number of dimensions. *)
 val biasAddV1:
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Counts the number of occurrences of each value in an integer array. *)
 (* Outputs a vector with length `size` and the same dtype as `weights`. If
@@ -962,33 +962,33 @@ dimension be equal to sizeof(`type`)/sizeof(`T`). The shape then goes from
 *NOTE*: Bitcast is implemented as a low-level cast, so machines with different
 endian orderings will give different results. *)
 val bitcast:
-  type_type__:([< `float | `double | `int64 | `int32 | `complex64 ] as 'type__) Type.t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 'type__) t
+  type_type__:([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'type__) Type.t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'type__) t
 
 (* Elementwise computes the bitwise AND of `x` and `y`. *)
 (* The result will have those bits set, that are set in both `x` and `y`. The
 computation is performed on the underlying representations of `x` and `y`. *)
 val bitwiseAnd:
-  ([< `int32 | `int64 ] as 't) t ->
-  ([< `int32 | `int64 ] as 't) t ->
-    ([< `int32 | `int64 ] as 't) t
+  ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Elementwise computes the bitwise OR of `x` and `y`. *)
 (* The result will have those bits set, that are set in `x`, `y` or both. The
 computation is performed on the underlying representations of `x` and `y`. *)
 val bitwiseOr:
-  ([< `int32 | `int64 ] as 't) t ->
-  ([< `int32 | `int64 ] as 't) t ->
-    ([< `int32 | `int64 ] as 't) t
+  ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Elementwise computes the bitwise XOR of `x` and `y`. *)
 (* The result will have those bits set, that are different in `x` and `y`. The
 computation is performed on the underlying representations of `x` and `y`. *)
 val bitwiseXor:
-  ([< `int32 | `int64 ] as 't) t ->
-  ([< `int32 | `int64 ] as 't) t ->
-    ([< `int32 | `int64 ] as 't) t
+  ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Return the shape of s0 op s1 with broadcast. *)
 (* Given `s0` and `s1`, tensors that represent shapes, compute `r0`, the
@@ -1106,6 +1106,35 @@ val choleskyGrad:
   ([< `float | `double ] as 't) t ->
   ([< `float | `double ] as 't) t ->
     ([< `float | `double ] as 't) t
+
+(* Compare values of `input` to `threshold` and pack resulting bits into a `uint8`. *)
+(* Each comparison returns a boolean `true` (if `input_value > threshold`)
+or and `false` otherwise.
+
+This operation is useful for Locality-Sensitive-Hashing (LSH) and other
+algorithms that use hashing approximations of cosine and `L2` distances;
+codes can be generated from an input via:
+
+```python
+codebook_size = 50
+codebook_bits = codebook_size * 32
+codebook = tf.get_variable('codebook', [x.shape[-1].value, codebook_bits],
+                           dtype=x.dtype,
+                           initializer=tf.orthogonal_initializer())
+codes = compare_and_threshold(tf.matmul(x, codebook), threshold=0.)
+codes = tf.bitcast(codes, tf.int32)  # go from uint8 to int32
+# now codes has shape x.shape[:-1] + [codebook_size]
+```
+
+**NOTE**: Currently, the innermost dimension of the tensor must be divisible
+by 8.
+
+Given an `input` shaped `[s0, s1, ..., s_n]`, the output is
+a `uint8` tensor shaped `[s0, s1, ..., s_n / 8]`. *)
+val compareAndBitpack:
+  ([< `bool | `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `bool | `float | `double | `int32 | `int64 ] as 't) t ->
+    [ `uInt8 ] t
 
 (* Converts two real numbers to a complex number. *)
 (* Given a tensor `real` representing the real part of a complex number, and a
@@ -1384,7 +1413,7 @@ result is a 4-D tensor `[num_boxes, crop_height, crop_width, depth]`. *)
 val cropAndResize:
   ?method_:string ->
   ?extrapolation_value:float ->
-  ([< `int32 | `int64 | `float | `double ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t ->
   [ `float ] t ->
   [ `int32 ] t ->
   [ `int32 ] t ->
@@ -1394,7 +1423,7 @@ val cropAndResize:
 val cropAndResizeGradBoxes:
   ?method_:string ->
   [ `float ] t ->
-  ([< `int32 | `int64 | `float | `double ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t ->
   [ `float ] t ->
   [ `int32 ] t ->
     [ `float ] t
@@ -1414,9 +1443,9 @@ val cropAndResizeGradImage:
 or any shape where the innermost dimension is 3. In the latter case, each pair
 of corresponding 3-element vectors is cross-multiplied independently. *)
 val cross:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Compute the cumulative product of the tensor `x` along `axis`. *)
 (* By default, this op performs an inclusive cumprod, which means that the first
@@ -1450,9 +1479,9 @@ tf.cumprod([a, b, c], exclusive=True, reverse=True)  # => [b * c, c, 1]
 val cumprod:
   ?exclusive:bool ->
   ?reverse:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Compute the cumulative sum of the tensor `x` along `axis`. *)
 (* By default, this op performs an inclusive cumsum, which means that the first
@@ -1486,9 +1515,9 @@ tf.cumsum([a, b, c], exclusive=True, reverse=True)  # => [b + c, c, 0]
 val cumsum:
   ?exclusive:bool ->
   ?reverse:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Identity op for gradient debugging. *)
 (* This op is hidden from public in Python. It is used by TensorFlow Debugger to
@@ -1527,12 +1556,69 @@ val debugNumericSummary:
   't t ->
     [ `double ] t
 
+(* Decode and Crop a JPEG-encoded image to a uint8 tensor. *)
+(* The attr `channels` indicates the desired number of color channels for the
+decoded image.
+
+Accepted values are:
+
+*   0: Use the number of channels in the JPEG-encoded image.
+*   1: output a grayscale image.
+*   3: output an RGB image.
+
+If needed, the JPEG-encoded image is transformed to match the requested number
+of color channels.
+
+The attr `ratio` allows downscaling the image by an integer factor during
+decoding.  Allowed values are: 1, 2, 4, and 8.  This is much faster than
+downscaling the image later.
+
+
+It is equivalent to a combination of decode and crop, but much faster by only
+decoding partial jpeg image. *)
+val decodeAndCropJpeg:
+  ?channels:int ->
+  ?ratio:int ->
+  ?fancy_upscaling:bool ->
+  ?try_recover_truncated:bool ->
+  ?acceptable_fraction:float ->
+  ?dct_method:string ->
+  [ `string ] t ->
+  [ `int32 ] t ->
+    [ `uInt8 ] t
+
 (* Decode web-safe base64-encoded strings. *)
 (* Input may or may not have padding at the end. See EncodeBase64 for padding.
 Web-safe means that input must use - and _ instead of + and /. *)
 val decodeBase64:
   [ `string ] t ->
     [ `string ] t
+
+(* Decode the first frame of a BMP-encoded image to a uint8 tensor. *)
+(* The attr `channels` indicates the desired number of color channels for the
+decoded image.
+
+Accepted values are:
+
+*   0: Use the number of channels in the BMP-encoded image.
+*   3: output an RGB image.
+*   4: output an RGBA image. *)
+val decodeBmp:
+  ?channels:int ->
+  [ `string ] t ->
+    [ `uInt8 ] t
+
+(* Decode the first frame of a GIF-encoded image to a uint8 tensor. *)
+(* GIF with frame or transparency compression are not supported
+convert animated GIF from compressed to uncompressed by:
+
+    convert $src.gif -coalesce $dst.gif
+
+This op also supports decoding JPEGs and PNGs, though it is cleaner to use
+`tf.image.decode_image`. *)
+val decodeGif:
+  [ `string ] t ->
+    [ `uInt8 ] t
 
 (* Convert JSON-encoded Example records to binary protocol buffer strings. *)
 (* This op translates a tensor containing Example records, encoded using
@@ -1544,6 +1630,36 @@ Example-parsing ops. *)
 val decodeJSONExample:
   [ `string ] t ->
     [ `string ] t
+
+(* Decode a JPEG-encoded image to a uint8 tensor. *)
+(* The attr `channels` indicates the desired number of color channels for the
+decoded image.
+
+Accepted values are:
+
+*   0: Use the number of channels in the JPEG-encoded image.
+*   1: output a grayscale image.
+*   3: output an RGB image.
+
+If needed, the JPEG-encoded image is transformed to match the requested number
+of color channels.
+
+The attr `ratio` allows downscaling the image by an integer factor during
+decoding.  Allowed values are: 1, 2, 4, and 8.  This is much faster than
+downscaling the image later.
+
+
+This op also supports decoding PNGs and non-animated GIFs since the interface is
+the same, though it is cleaner to use `tf.image.decode_image`. *)
+val decodeJpeg:
+  ?channels:int ->
+  ?ratio:int ->
+  ?fancy_upscaling:bool ->
+  ?try_recover_truncated:bool ->
+  ?acceptable_fraction:float ->
+  ?dct_method:string ->
+  [ `string ] t ->
+    [ `uInt8 ] t
 
 (* Decode a PNG-encoded image to a uint8 or uint16 tensor. *)
 (* The attr `channels` indicates the desired number of color channels for the
@@ -1562,17 +1678,17 @@ of color channels.
 This op also supports decoding JPEGs and non-animated GIFs since the interface
 is the same, though it is cleaner to use `tf.image.decode_image`. *)
 val decodePng:
-  type_dtype:'dtype Type.t ->
+  type_dtype:([< `uInt8 | `uInt16 ] as 'dtype) Type.t ->
   ?channels:int ->
   [ `string ] t ->
-    'dtype t
+    ([< `uInt8 | `uInt16 ] as 'dtype) t
 
 (* Reinterpret the bytes of a string as a vector of numbers. *)
 val decodeRaw:
-  type_out_type:([< `float | `double | `int32 | `int64 ] as 'out_type) Type.t ->
+  type_out_type:([< `float | `double | `int32 | `uInt16 | `uInt8 | `int64 ] as 'out_type) Type.t ->
   ?little_endian:bool ->
   [ `string ] t ->
-    ([< `float | `double | `int32 | `int64 ] as 'out_type) t
+    ([< `float | `double | `int32 | `uInt16 | `uInt8 | `int64 ] as 'out_type) t
 
 (* Decode a 16-bit PCM WAV file to a float tensor. *)
 (* The -32768 to 32767 signed 16-bit values will be scaled to -1.0 to 1.0 in float.
@@ -1611,9 +1727,9 @@ dimension contains the result of `set_operation` applied to the corresponding
 val denseToDenseSetOperation:
   set_operation:string ->
   ?validate_indices:bool ->
-  ([< `int32 | `int64 | `string ] as 't) t ->
-  ([< `int32 | `int64 | `string ] as 't) t ->
-    [ `int64 ] t * ([< `int32 | `int64 | `string ] as 't) t * [ `int64 ] t
+  ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t ->
+  ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t ->
+    [ `int64 ] t * ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t * [ `int64 ] t
 
 (* Creates a dataset that yields a SparseTensor for each element of the input. *)
 val denseToSparseBatchDataset:
@@ -1643,11 +1759,11 @@ dimension contains the result of `set_operation` applied to the corresponding
 val denseToSparseSetOperation:
   set_operation:string ->
   ?validate_indices:bool ->
-  ([< `int32 | `int64 | `string ] as 't) t ->
+  ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t ->
   [ `int64 ] t ->
-  ([< `int32 | `int64 | `string ] as 't) t ->
+  ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t ->
   [ `int64 ] t ->
-    [ `int64 ] t * ([< `int32 | `int64 | `string ] as 't) t * [ `int64 ] t
+    [ `int64 ] t * ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t * [ `int64 ] t
 
 (* DepthToSpace for tensors of type T. *)
 (* Rearranges data from depth into blocks of spatial data.
@@ -2012,37 +2128,37 @@ val dilation2D:
   strides:int list ->
   rates:int list ->
   padding:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes the gradient of morphological 2-D dilation with respect to the filter. *)
 val dilation2DBackpropFilter:
   strides:int list ->
   rates:int list ->
   padding:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes the gradient of morphological 2-D dilation with respect to the input. *)
 val dilation2DBackpropInput:
   strides:int list ->
   rates:int list ->
   padding:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Returns x / y element-wise. *)
 (* *NOTE*: `Div` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val div:
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+    ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t
 
 (* Draw bounding boxes on a batch of images. *)
 (* Outputs a copy of `images` but draws on top of the pixels zero or more bounding
@@ -2215,6 +2331,36 @@ val encodeBase64:
   [ `string ] t ->
     [ `string ] t
 
+(* JPEG-encode an image. *)
+(* `image` is a 3-D uint8 Tensor of shape `[height, width, channels]`.
+
+The attr `format` can be used to override the color format of the encoded
+output.  Values can be:
+
+*   `''`: Use a default format based on the number of channels in the image.
+*   `grayscale`: Output a grayscale JPEG image.  The `channels` dimension
+    of `image` must be 1.
+*   `rgb`: Output an RGB JPEG image. The `channels` dimension
+    of `image` must be 3.
+
+If `format` is not specified or is the empty string, a default format is picked
+in function of the number of channels in `image`:
+
+*   1: Output a grayscale image.
+*   3: Output an RGB image. *)
+val encodeJpeg:
+  ?format:string ->
+  ?quality:int ->
+  ?progressive:bool ->
+  ?optimize_size:bool ->
+  ?chroma_downsampling:bool ->
+  ?density_unit:string ->
+  ?x_density:int ->
+  ?y_density:int ->
+  ?xmp_metadata:string ->
+  [ `uInt8 ] t ->
+    [ `string ] t
+
 (* PNG-encode an image. *)
 (* `image` is a 3-D uint8 or uint16 Tensor of shape `[height, width, channels]`
 where `channels` is:
@@ -2229,7 +2375,7 @@ default or a value from 0 to 9.  9 is the highest compression level, generating
 the smallest output, but is slower. *)
 val encodePng:
   ?compression:int ->
-  't t ->
+  ([< `uInt8 | `uInt16 ] as 't) t ->
     [ `string ] t
 
 (* Encode audio data using the WAV file format. *)
@@ -2262,8 +2408,8 @@ val enter:
 (* *NOTE*: `Equal` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val equal:
-  ([< `float | `double | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t ->
+  ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t ->
+  ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t ->
     [ `bool ] t
 
 (* Computes the Gauss error function of `x` element-wise. *)
@@ -2366,8 +2512,8 @@ val extractImagePatches:
   strides:int list ->
   rates:int list ->
   padding:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Extract the shape information of a JPEG-encoded image. *)
 (* This op only parses the image header, so it is much faster than DecodeJpeg. *)
@@ -2599,9 +2745,9 @@ val floor:
 (* *NOTE*: `FloorDiv` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val floorDiv:
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+    ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t
 
 (* Returns element-wise remainder of division. When `x < 0` xor `y < 0` is *)
 (* true, this follows Python semantics in that the result here is consistent
@@ -3007,16 +3153,16 @@ val getSessionTensor:
 (* *NOTE*: `Greater` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val greater:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
     [ `bool ] t
 
 (* Returns the truth value of (x >= y) element-wise. *)
 (* *NOTE*: `GreaterEqual` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val greaterEqual:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
     [ `bool ] t
 
 (* Convert one or more images from HSV to RGB. *)
@@ -3059,7 +3205,7 @@ has one summary value containing a histogram for `values`.
 This op reports an `InvalidArgument` error if any value is not finite. *)
 val histogramSummary:
   [ `string ] t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
     [ `string ] t
 
 (* Inverse fast Fourier transform. *)
@@ -3263,7 +3409,7 @@ red. *)
 val imageSummary:
   ?max_images:int ->
   [ `string ] t ->
-  ([< `float | `double ] as 't) t ->
+  ([< `uInt8 | `float | `double ] as 't) t ->
     [ `string ] t
 
 (* Returns immutable tensor from memory region. *)
@@ -3389,8 +3535,8 @@ val invGrad:
 (* The result will have exactly those bits set, that are not set in `x`. The
 computation is performed on the underlying representation of x. *)
 val invert:
-  ([< `int32 | `int64 ] as 't) t ->
-    ([< `int32 | `int64 ] as 't) t
+  ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes the inverse permutation of a tensor. *)
 (* This operation computes the inverse of an index permutation. It takes a 1-D
@@ -3533,16 +3679,16 @@ val learnedUnigramCandidateSampler:
 (* *NOTE*: `Less` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val less:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
     [ `bool ] t
 
 (* Returns the truth value of (x <= y) element-wise. *)
 (* *NOTE*: `LessEqual` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val lessEqual:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
     [ `bool ] t
 
 (* Computes the log of the absolute value of `Gamma(x)` element-wise. *)
@@ -4104,9 +4250,9 @@ val matrixTriangularSolve:
 retained with length 1. *)
 val max:
   ?keep_dims:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Performs max pooling on the input. *)
 val maxPool:
@@ -4114,8 +4260,8 @@ val maxPool:
   strides:int list ->
   padding:string ->
   ?data_format:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Performs 3D max pooling on the input. *)
 val maxPool3D:
@@ -4154,10 +4300,10 @@ val maxPoolGrad:
   strides:int list ->
   padding:string ->
   ?data_format:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes second-order gradients of the maxpooling function. *)
 val maxPoolGradGrad:
@@ -4165,61 +4311,61 @@ val maxPoolGradGrad:
   strides:int list ->
   padding:string ->
   ?data_format:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes second-order gradients of the maxpooling function. *)
 val maxPoolGradGradV2:
   padding:string ->
   ?data_format:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   [ `int32 ] t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes second-order gradients of the maxpooling function. *)
 val maxPoolGradGradWithArgmax:
   ksize:int list ->
   strides:int list ->
   padding:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   ([< `int32 | `int64 ] as 'targmax) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes gradients of the maxpooling function. *)
 val maxPoolGradV2:
   padding:string ->
   ?data_format:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   [ `int32 ] t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes gradients of the maxpooling function. *)
 val maxPoolGradWithArgmax:
   ksize:int list ->
   strides:int list ->
   padding:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   ([< `int32 | `int64 ] as 'targmax) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Performs max pooling on the input. *)
 val maxPoolV2:
   padding:string ->
   ?data_format:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   [ `int32 ] t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Performs max pooling on the input and outputs both max values and indices. *)
 (* The indices in `argmax` are flattened, so that a maximum value at position
@@ -4235,8 +4381,8 @@ val maxPoolWithArgmax:
   ksize:int list ->
   strides:int list ->
   padding:string ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t * ([< `int32 | `int64 ] as 'targmax) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t * ([< `int32 | `int64 ] as 'targmax) t
 
 (* Returns the max of x and y (i.e. x > y ? x : y) element-wise. *)
 (* *NOTE*: `Maximum` supports broadcasting. More about broadcasting
@@ -4253,9 +4399,9 @@ val maximum:
 retained with length 1. *)
 val mean:
   ?keep_dims:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Forwards the value of an available tensor from `inputs` to `output`. *)
 (* `Merge` waits for at least one of the tensors in `inputs` to become available.
@@ -4317,9 +4463,9 @@ val mfcc:
 retained with length 1. *)
 val min:
   ?keep_dims:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Returns the min of x and y (i.e. x < y ? x : y) element-wise. *)
 (* *NOTE*: `Minimum` supports broadcasting. More about broadcasting
@@ -4401,15 +4547,15 @@ val mod_:
 (* *NOTE*: `Mul` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val mul:
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+    ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t
 
 (* Draws samples from a multinomial distribution. *)
 val multinomial:
   ?seed:int ->
   ?seed2:int ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   [ `int32 ] t ->
     [ `int64 ] t
 
@@ -4574,8 +4720,8 @@ val nonMaxSuppressionV2:
 (* *NOTE*: `NotEqual` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val notEqual:
-  ([< `float | `double | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t ->
+  ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t ->
+  ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t ->
     [ `bool ] t
 
 (* Returns a one-hot tensor. *)
@@ -4669,7 +4815,7 @@ Then output is `[2 x 2 x 3]`:
       ]``` *)
 val oneHot:
   ?axis:int ->
-  ([< `int32 | `int64 ] as 'tI) t ->
+  ([< `uInt8 | `int32 | `int64 ] as 'tI) t ->
   [ `int32 ] t ->
   't t ->
   't t ->
@@ -4992,6 +5138,17 @@ val polygamma:
   ([< `float | `double ] as 't) t ->
     ([< `float | `double ] as 't) t
 
+(* Computes element-wise population count (a.k.a. popcount, bitsum, bitcount). *)
+(* For each entry in `x`, calculates the number of `1` (on) bits in the binary
+representation of that entry.
+
+**NOTE**: It is more efficient to first `tf.bitcast` your tensors into
+`int32` or `int64` and perform the bitcount on the result, than to feed in
+8- or 16-bit inputs and then aggregate the resulting counts. *)
+val populationCount:
+  ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    [ `uInt8 ] t
+
 (* Computes the power of one value to another. *)
 (* Given a tensor `x` and a tensor `y`, this operation computes \\(x^y\\) for
 corresponding elements in `x` and `y`. For example:
@@ -5064,9 +5221,9 @@ val priorityQueueV2:
 retained with length 1. *)
 val prod:
   ?keep_dims:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Computes the QR decompositions of one or more matrices. *)
 (* Computes the QR decomposition of each inner matrix in `tensor` such that
@@ -5588,9 +5745,9 @@ area will fit inside the original image. *)
 val randomCrop:
   ?seed:int ->
   ?seed2:int ->
-  ([< `int32 | `int64 | `float | `double ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t ->
   [ `int64 ] t ->
-    ([< `int32 | `int64 | `float | `double ] as 't) t
+    ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t
 
 (* Outputs random values from the Gamma distribution(s) described by alpha. *)
 (* This op uses the algorithm by Marsaglia et al. to acquire samples via
@@ -5892,9 +6049,9 @@ val real:
 *NOTE*: `Div` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val realDiv:
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+    ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t
 
 (* Computes the reciprocal of x element-wise. *)
 (* I.e., \\(y = 1 / x\\). *)
@@ -6005,25 +6162,25 @@ val refSwitch:
 
 (* Computes rectified linear: `max(features, 0)`. *)
 val relu:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes rectified linear 6: `min(max(features, 0), 6)`. *)
 val relu6:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes rectified linear 6 gradients for a Relu6 operation. *)
 val relu6Grad:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes rectified linear gradients for a Relu operation. *)
 val reluGrad:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Creates a dataset that emits the outputs of `input_dataset` `count` times. *)
 val repeatDataset:
@@ -6130,7 +6287,7 @@ input pixel's contribution to the average is weighted by the fraction of its
 area that intersects the footprint.  This is the same as OpenCV's INTER_AREA. *)
 val resizeArea:
   ?align_corners:bool ->
-  ([< `int32 | `int64 | `float | `double ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t ->
   [ `int32 ] t ->
     [ `float ] t
 
@@ -6138,7 +6295,7 @@ val resizeArea:
 (* Input images can be of different types but output images are always float. *)
 val resizeBicubic:
   ?align_corners:bool ->
-  ([< `int32 | `int64 | `float | `double ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t ->
   [ `int32 ] t ->
     [ `float ] t
 
@@ -6153,7 +6310,7 @@ val resizeBicubicGrad:
 (* Input images can be of different types but output images are always float. *)
 val resizeBilinear:
   ?align_corners:bool ->
-  ([< `int32 | `int64 | `float | `double ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t ->
   [ `int32 ] t ->
     [ `float ] t
 
@@ -6167,16 +6324,16 @@ val resizeBilinearGrad:
 (* Resize `images` to `size` using nearest neighbor interpolation. *)
 val resizeNearestNeighbor:
   ?align_corners:bool ->
-  ([< `int32 | `int64 | `float | `double ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t ->
   [ `int32 ] t ->
-    ([< `int32 | `int64 | `float | `double ] as 't) t
+    ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t
 
 (* Computes the gradient of nearest neighbor interpolation. *)
 val resizeNearestNeighborGrad:
   ?align_corners:bool ->
-  ([< `int32 | `float | `double ] as 't) t ->
+  ([< `uInt8 | `int32 | `float | `double ] as 't) t ->
   [ `int32 ] t ->
-    ([< `int32 | `float | `double ] as 't) t
+    ([< `uInt8 | `int32 | `float | `double ] as 't) t
 
 (* Update '*var' according to the adadelta scheme. *)
 (* accum = rho() * accum + (1 - rho()) * grad.square();
@@ -6188,10 +6345,10 @@ val resourceApplyAdadelta:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' according to the adagrad scheme. *)
@@ -6201,8 +6358,8 @@ val resourceApplyAdagrad:
   ?use_locking:bool ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' according to the proximal adagrad scheme. *)
@@ -6211,10 +6368,10 @@ val resourceApplyAdagradDA:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
     unit
 
@@ -6229,13 +6386,13 @@ val resourceApplyAdam:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' according to the centered RMSProp algorithm. *)
@@ -6263,11 +6420,11 @@ val resourceApplyCenteredRMSProp:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' according to the Ftrl-proximal scheme. *)
@@ -6281,11 +6438,11 @@ val resourceApplyFtrl:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' according to the Ftrl-proximal scheme. *)
@@ -6301,20 +6458,20 @@ val resourceApplyFtrlV2:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' by subtracting 'alpha' * 'delta' from it. *)
 val resourceApplyGradientDescent:
   ?use_locking:bool ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' according to the momentum scheme. Set use_nesterov = True if you *)
@@ -6327,9 +6484,9 @@ val resourceApplyMomentum:
   ?use_nesterov:bool ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' and '*accum' according to FOBOS with Adagrad learning rate. *)
@@ -6340,10 +6497,10 @@ val resourceApplyProximalAdagrad:
   ?use_locking:bool ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' as FOBOS algorithm with fixed learning rate. *)
@@ -6352,10 +6509,10 @@ var = sign(prox_v)/(1+alpha*l2) * max{ |prox_v|-alpha*l1,0} *)
 val resourceApplyProximalGradientDescent:
   ?use_locking:bool ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update '*var' according to the RMSProp algorithm. *)
@@ -6374,11 +6531,11 @@ val resourceApplyRMSProp:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* var: Should be from a Variable(). *)
@@ -6387,10 +6544,10 @@ val resourceSparseApplyAdadelta:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
     unit
 
@@ -6402,8 +6559,8 @@ val resourceSparseApplyAdagrad:
   ?use_locking:bool ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
     unit
 
@@ -6413,11 +6570,11 @@ val resourceSparseApplyAdagradDA:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
     unit
 
@@ -6444,11 +6601,11 @@ val resourceSparseApplyCenteredRMSProp:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
     unit
 
@@ -6464,12 +6621,12 @@ val resourceSparseApplyFtrl:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update relevant entries in '*var' according to the Ftrl-proximal scheme. *)
@@ -6486,13 +6643,13 @@ val resourceSparseApplyFtrlV2:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Update relevant entries in '*var' and '*accum' according to the momentum scheme. *)
@@ -6507,10 +6664,10 @@ val resourceSparseApplyMomentum:
   ?use_nesterov:bool ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
     unit
 
 (* Sparse update entries in '*var' and '*accum' according to FOBOS algorithm. *)
@@ -6523,10 +6680,10 @@ val resourceSparseApplyProximalAdagrad:
   ?use_locking:bool ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
     unit
 
@@ -6537,10 +6694,10 @@ var = sign(prox_v)/(1+alpha*l2) * max{ |prox_v|-alpha*l1,0} *)
 val resourceSparseApplyProximalGradientDescent:
   ?use_locking:bool ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
     unit
 
@@ -6560,11 +6717,11 @@ val resourceSparseApplyRMSProp:
   [ `resource ] t ->
   [ `resource ] t ->
   [ `resource ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
     unit
 
@@ -6679,9 +6836,9 @@ reverse(t, dims) ==> [[[[8, 9, 10, 11],
                         [12, 13, 14, 15]]]]
 ``` *)
 val reverse:
-  ([< `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t ->
+  ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t ->
   [ `bool ] t ->
-    ([< `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t
+    ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t
 
 (* Reverses variable length slices. *)
 (* This op first slices `input` along the dimension `batch_dim`, and for each
@@ -6793,9 +6950,9 @@ reverse(t, dims) ==> [[[[8, 9, 10, 11],
                         [12, 13, 14, 15]]]]
 ``` *)
 val reverseV2:
-  ([< `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t ->
+  ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
-    ([< `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t
+    ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t
 
 (* Returns element-wise integer closest to x. *)
 (* If the result is midway between two representable values,
@@ -6879,9 +7036,9 @@ val sampleDistortedBoundingBox:
   ?area_range:float list ->
   ?max_attempts:int ->
   ?use_image_if_no_bounding_boxes:bool ->
-  ([< `int32 | `int64 ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 ] as 't) t ->
   [ `float ] t ->
-    ([< `int32 | `int64 ] as 't) t * ([< `int32 | `int64 ] as 't) t * [ `float ] t
+    ([< `uInt8 | `int32 | `int64 ] as 't) t * ([< `uInt8 | `int32 | `int64 ] as 't) t * [ `float ] t
 
 (* Generate a single randomly distorted bounding box for an image. *)
 (* Bounding box annotations are often supplied in addition to ground-truth labels
@@ -6929,10 +7086,10 @@ val sampleDistortedBoundingBoxV2:
   ?area_range:float list ->
   ?max_attempts:int ->
   ?use_image_if_no_bounding_boxes:bool ->
-  ([< `int32 | `int64 ] as 't) t ->
+  ([< `uInt8 | `int32 | `int64 ] as 't) t ->
   [ `float ] t ->
   [ `float ] t ->
-    ([< `int32 | `int64 ] as 't) t * ([< `int32 | `int64 ] as 't) t * [ `float ] t
+    ([< `uInt8 | `int32 | `int64 ] as 't) t * ([< `uInt8 | `int32 | `int64 ] as 't) t * [ `float ] t
 
 (* Saves the state of the `iterator` at `path`. *)
 (* This state can be restored using 'RestoreIterator'. *)
@@ -6946,7 +7103,7 @@ val saveIterator:
 has a summary value for each tag-value pair in `tags` and `values`. *)
 val scalarSummary:
   [ `string ] t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
     [ `string ] t
 
 (* Adds sparse updates to a variable reference. *)
@@ -6974,10 +7131,10 @@ Requires `updates.shape = indices.shape + ref.shape[1:]`.
 </div> *)
 val scatterAdd:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Divides a variable reference by sparse updates. *)
 (* This operation computes
@@ -7002,10 +7159,10 @@ the same location, their contributions divide.
 Requires `updates.shape = indices.shape + ref.shape[1:]`. *)
 val scatterDiv:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Multiplies sparse updates into a variable reference. *)
 (* This operation computes
@@ -7030,10 +7187,10 @@ the same location, their contributions multiply.
 Requires `updates.shape = indices.shape + ref.shape[1:]`. *)
 val scatterMul:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Scatter `updates` into a new (initially zero) tensor according to `indices`. *)
 (* Creates a new tensor by applying sparse `updates` to individual
@@ -7149,10 +7306,10 @@ See @{tf.scatter_nd} for more details about how to make updates to
 slices. *)
 val scatterNdAdd:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Applies sparse addition to `input` using individual values or slices *)
 (* from `updates` according to indices `indices`.  The updates are non-aliasing:
@@ -7191,10 +7348,10 @@ The resulting value `output` would look like this:
 
 See @{tf.scatter_nd} for more details about how to make updates to slices. *)
 val scatterNdNonAliasingAdd:
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Applies sparse subtraction between `updates` and individual values or slices *)
 (* within a given variable according to `indices`.
@@ -7232,10 +7389,10 @@ See @{tf.scatter_nd} for more details about how to make updates to
 slices. *)
 val scatterNdSub:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Applies sparse `updates` to individual values or slices within a given *)
 (* variable according to `indices`.
@@ -7305,10 +7462,10 @@ Requires `updates.shape = indices.shape + ref.shape[1:]`.
 </div> *)
 val scatterSub:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Applies sparse updates to a variable reference. *)
 (* This operation computes
@@ -7369,9 +7526,9 @@ If the max is empty for a given segment ID `i`, `output[i] = 0`.
 <img style='width:100%' src='https://www.tensorflow.org/images/SegmentMax.png' alt>
 </div> *)
 val segmentMax:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes the mean along segments of a tensor. *)
 (* Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
@@ -7388,9 +7545,9 @@ If the mean is empty for a given segment ID `i`, `output[i] = 0`.
 <img style='width:100%' src='https://www.tensorflow.org/images/SegmentMean.png' alt>
 </div> *)
 val segmentMean:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes the minimum along segments of a tensor. *)
 (* Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
@@ -7406,9 +7563,9 @@ If the min is empty for a given segment ID `i`, `output[i] = 0`.
 <img style='width:100%' src='https://www.tensorflow.org/images/SegmentMin.png' alt>
 </div> *)
 val segmentMin:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes the product along segments of a tensor. *)
 (* Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
@@ -7424,9 +7581,9 @@ If the product is empty for a given segment ID `i`, `output[i] = 1`.
 <img style='width:100%' src='https://www.tensorflow.org/images/SegmentProd.png' alt>
 </div> *)
 val segmentProd:
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Computes the sum along segments of a tensor. *)
 (* Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
@@ -7442,9 +7599,9 @@ If the sum is empty for a given segment ID `i`, `output[i] = 0`.
 <img style='width:100%' src='https://www.tensorflow.org/images/SegmentSum.png' alt>
 </div> *)
 val segmentSum:
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Selects elements from `t` or `e`, depending on `condition`. *)
 (* The `t`, and `e` tensors must all have the same shape, and the
@@ -7568,7 +7725,7 @@ indices. *)
 val setSize:
   ?validate_indices:bool ->
   [ `int64 ] t ->
-  ([< `int32 | `int64 | `string ] as 't) t ->
+  ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t ->
   [ `int64 ] t ->
     [ `int32 ] t
 
@@ -7713,25 +7870,25 @@ val softmaxCrossEntropyWithLogits:
 
 (* Computes softplus: `log(exp(features) + 1)`. *)
 val softplus:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes softplus gradients for a softplus operation. *)
 val softplusGrad:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes softsign: `features / (abs(features) + 1)`. *)
 val softsign:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes softsign gradients for a softsign operation. *)
 val softsignGrad:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* SpaceToBatch for 4-D tensors of type T. *)
 (* This is a legacy version of the more general SpaceToBatchND.
@@ -7860,7 +8017,7 @@ val sparseAccumulatorApplyGradient:
   [ `string ] t ->
   [ `int64 ] t ->
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t ->
   [ `int64 ] t ->
     unit
 
@@ -7872,10 +8029,10 @@ average of the accumulated gradients.  Also automatically increments
 the recorded global_step in the accumulator by 1, and resets the
 aggregate to 0. *)
 val sparseAccumulatorTakeGradient:
-  type_dtype:([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) Type.t ->
+  type_dtype:([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) Type.t ->
   [ `string ] t ->
   [ `int32 ] t ->
-    [ `int64 ] t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 'dtype) t * [ `int64 ] t
+    [ `int64 ] t * ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t * [ `int64 ] t
 
 (* Adds two `SparseTensor` objects to produce another `SparseTensor`. *)
 (* The input `SparseTensor` objects' indices are assumed ordered in standard
@@ -7893,13 +8050,13 @@ only for a positive value.
 In the following shapes, `nnz` is the count after taking `thresh` into account. *)
 val sparseAdd:
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
-  ([< `float | `double | `int32 | `int64 ] as 'treal) t ->
-    [ `int64 ] t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t * [ `int64 ] t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 'treal) t ->
+    [ `int64 ] t * ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t * [ `int64 ] t
 
 (* The gradient operator for the SparseAdd op. *)
 (* The SparseAdd op calculates A + B, where A, B, and the sum are all represented
@@ -7907,24 +8064,24 @@ as `SparseTensor` objects.  This op takes in the upstream gradient w.r.t.
 non-empty values of the sum, and outputs the gradients w.r.t. the non-empty
 values of A and B. *)
 val sparseAddGrad:
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
   [ `int64 ] t ->
   [ `int64 ] t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t * ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* var: Should be from a Variable(). *)
 val sparseApplyAdadelta:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update relevant entries in '*var' and '*accum' according to the adagrad scheme. *)
 (* That is for rows we have grad for, we update var and accum as follows:
@@ -7932,26 +8089,26 @@ accum += grad * grad
 var -= lr * grad * (1 / sqrt(accum)) *)
 val sparseApplyAdagrad:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update entries in '*var' and '*accum' according to the proximal adagrad scheme. *)
 val sparseApplyAdagradDA:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the centered RMSProp algorithm. *)
 (* The centered RMSProp algorithm uses an estimate of the centered second moment
@@ -7972,17 +8129,17 @@ mom <- momentum * mom_{t-1} + lr * grad / sqrt(ms + epsilon)
 var <- var - mom *)
 val sparseApplyCenteredRMSProp:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update relevant entries in '*var' according to the Ftrl-proximal scheme. *)
 (* That is for rows we have grad for, we update var, accum and linear as follows:
@@ -7993,16 +8150,16 @@ var = (sign(linear) * l1 - linear) / quadratic if |linear| > l1 else 0.0
 accum = accum_new *)
 val sparseApplyFtrl:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update relevant entries in '*var' according to the Ftrl-proximal scheme. *)
 (* That is for rows we have grad for, we update var, accum and linear as follows:
@@ -8015,17 +8172,17 @@ var = (sign(linear) * l1 - linear) / quadratic if |linear| > l1 else 0.0
 accum = accum_new *)
 val sparseApplyFtrlV2:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update relevant entries in '*var' and '*accum' according to the momentum scheme. *)
 (* Set use_nesterov = True if you want to use Nesterov momentum.
@@ -8037,13 +8194,13 @@ var -= lr * accum *)
 val sparseApplyMomentum:
   ?use_locking:bool ->
   ?use_nesterov:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Sparse update entries in '*var' and '*accum' according to FOBOS algorithm. *)
 (* That is for rows we have grad for, we update var and accum as follows:
@@ -8053,14 +8210,14 @@ prox_v -= lr * grad * (1 / sqrt(accum))
 var = sign(prox_v)/(1+lr*l2) * max{ |prox_v|-lr*l1,0} *)
 val sparseApplyProximalAdagrad:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Sparse update '*var' as FOBOS algorithm with fixed learning rate. *)
 (* That is for rows we have grad for, we update var as follows:
@@ -8068,13 +8225,13 @@ prox_v = var - alpha * grad
 var = sign(prox_v)/(1+alpha*l2) * max{ |prox_v|-alpha*l1,0} *)
 val sparseApplyProximalGradientDescent:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Update '*var' according to the RMSProp algorithm. *)
 (* Note that in dense implementation of this algorithm, ms and mom will
@@ -8089,16 +8246,16 @@ mom <- momentum * mom_{t-1} + lr * grad / sqrt(ms + epsilon)
 var <- var - mom *)
 val sparseApplyRMSProp:
   ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Concatenates a list of `SparseTensor` along the specified dimension. *)
 (* Concatenation is with respect to the dense versions of these sparse tensors.
@@ -8174,20 +8331,20 @@ indices and shape, but possibly with different non-zero values.  The output of
 this Op is the resultant non-zero values. *)
 val sparseDenseCwiseAdd:
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Component-wise divides a SparseTensor by a dense Tensor. *)
 (* *Limitation*: this Op only broadcasts the dense side to the sparse side, but not
 the other direction. *)
 val sparseDenseCwiseDiv:
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Component-wise multiplies a SparseTensor by a dense Tensor. *)
 (* The output locations corresponding to the implicitly zero elements in the sparse
@@ -8198,10 +8355,10 @@ contents of the dense tensor (even if it's +/-INF and that INF*0 == NaN).
 the other direction. *)
 val sparseDenseCwiseMul:
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Fills empty rows in the input 2-D `SparseTensor` with a default value. *)
 (* The input `SparseTensor` is represented via the tuple of inputs
@@ -8294,10 +8451,10 @@ which are interpreted according to the indexing rules in Python. *)
 val sparseReduceMax:
   ?keep_dims:bool ->
   [ `int64 ] t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   [ `int64 ] t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes the max of elements across dimensions of a SparseTensor. *)
 (* This Op takes a SparseTensor and is the sparse counterpart to
@@ -8315,10 +8472,10 @@ which are interpreted according to the indexing rules in Python. *)
 val sparseReduceMaxSparse:
   ?keep_dims:bool ->
   [ `int64 ] t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   [ `int64 ] t ->
   [ `int32 ] t ->
-    [ `int64 ] t * ([< `float | `double | `int32 | `int64 ] as 't) t * [ `int64 ] t
+    [ `int64 ] t * ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t * [ `int64 ] t
 
 (* Computes the sum of elements across dimensions of a SparseTensor. *)
 (* This Op takes a SparseTensor and is the sparse counterpart to
@@ -8336,10 +8493,10 @@ which are interpreted according to the indexing rules in Python. *)
 val sparseReduceSum:
   ?keep_dims:bool ->
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Computes the sum of elements across dimensions of a SparseTensor. *)
 (* This Op takes a SparseTensor and is the sparse counterpart to
@@ -8357,10 +8514,10 @@ which are interpreted according to the indexing rules in Python. *)
 val sparseReduceSumSparse:
   ?keep_dims:bool ->
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
   [ `int32 ] t ->
-    [ `int64 ] t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t * [ `int64 ] t
+    [ `int64 ] t * ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t * [ `int64 ] t
 
 (* Reorders a SparseTensor into the canonical, row-major ordering. *)
 (* Note that by convention, all sparse ops preserve the canonical ordering along
@@ -8472,10 +8629,10 @@ tf.sparse_segment_sum(c, tf.constant([0, 1, 2]), tf.constant([0, 0, 1]))
 tf.segment_sum(c, tf.constant([0, 0, 1]))
 ``` *)
 val sparseSegmentSum:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Slice a `SparseTensor` based on the `start` and `size`. *)
 (* For example, if the input is
@@ -8539,32 +8696,32 @@ val sparseSoftmaxCrossEntropyWithLogits:
 (* Assumes the two SparseTensors have the same shape, i.e., no broadcasting. *)
 val sparseSparseMaximum:
   [ `int64 ] t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   [ `int64 ] t ->
   [ `int64 ] t ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   [ `int64 ] t ->
-    [ `int64 ] t * ([< `float | `double | `int32 | `int64 ] as 't) t
+    [ `int64 ] t * ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Returns the element-wise min of two SparseTensors. *)
 (* Assumes the two SparseTensors have the same shape, i.e., no broadcasting. *)
 val sparseSparseMinimum:
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
   [ `int64 ] t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   [ `int64 ] t ->
-    [ `int64 ] t * ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    [ `int64 ] t * ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Adds up a `SparseTensor` and a dense `Tensor`, producing a dense `Tensor`. *)
 (* This Op does not require `a_indices` be sorted in standard lexicographic order. *)
 val sparseTensorDenseAdd:
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Multiply SparseTensor (of rank 2) 'A' by dense matrix 'B'. *)
 (* No validity checking is performed on the indices of A.  However, the following
@@ -8648,12 +8805,12 @@ val sparseToSparseSetOperation:
   set_operation:string ->
   ?validate_indices:bool ->
   [ `int64 ] t ->
-  ([< `int32 | `int64 | `string ] as 't) t ->
+  ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t ->
   [ `int64 ] t ->
   [ `int64 ] t ->
-  ([< `int32 | `int64 | `string ] as 't) t ->
+  ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t ->
   [ `int64 ] t ->
-    [ `int64 ] t * ([< `int32 | `int64 | `string ] as 't) t * [ `int64 ] t
+    [ `int64 ] t * ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t * [ `int64 ] t
 
 (* Splits a tensor into `num_split` tensors along one dimension. *)
 val split:
@@ -9087,9 +9244,9 @@ val stringToNumber:
 (* *NOTE*: `Sub` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val sub:
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+    ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t
 
 (* Return substrings from `Tensor` of strings. *)
 (* For each string in the input `Tensor`, creates a substring starting at index
@@ -9178,9 +9335,9 @@ val substr:
 retained with length 1. *)
 val sum:
   ?keep_dims:bool ->
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tidx) t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Computes the singular value decompositions of one or more matrices. *)
 (* Computes the SVD of each inner matrix in `input` such that
@@ -9733,8 +9890,8 @@ If `k` varies dynamically, use `TopKV2` below. *)
 val topK:
   k:int ->
   ?sorted:bool ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t * [ `int32 ] t
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t * [ `int32 ] t
 
 (* Finds values and indices of the `k` largest elements for the last dimension. *)
 (* If the input is a vector (rank-1), finds the `k` largest entries in the vector
@@ -9749,9 +9906,9 @@ row (resp. vector along the last dimension).  Thus,
 If two elements are equal, the lower-index element appears first. *)
 val topKV2:
   ?sorted:bool ->
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t * [ `int32 ] t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t * [ `int32 ] t
 
 (* Shuffle dimensions of x according to a permutation. *)
 (* The output `y` has the same rank as `x`. The shapes of `x` and `y` satisfy:
@@ -9770,9 +9927,9 @@ Python Semantics.
 *NOTE*: `TruncateDiv` supports broadcasting. More about broadcasting
 [here](http://docs.scipy.org/doc/numpy/user/basics.broadcasting.html) *)
 val truncateDiv:
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+  ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t ->
+    ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t
 
 (* Returns element-wise remainder of division. This emulates C semantics in that *)
 (* the result here is consistent with a truncating divide. E.g. `truncate(x / y) *
@@ -9897,10 +10054,10 @@ If the maximum is empty for a given segment ID `i`, it outputs the smallest poss
 <img style='width:100%' src='https://www.tensorflow.org/images/UnsortedSegmentMax.png' alt>
 </div> *)
 val unsortedSegmentMax:
-  ([< `float | `double | `int32 | `int64 ] as 't) t ->
+  ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int32 | `int64 ] as 't) t
+    ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t
 
 (* Computes the sum along segments of a tensor. *)
 (* Read @{$math_ops#segmentation$the section on segmentation} for an explanation of
@@ -9920,10 +10077,10 @@ If the sum is empty for a given segment ID `i`, `output[i] = 0`.
 <img style='width:100%' src='https://www.tensorflow.org/images/UnsortedSegmentSum.png' alt>
 </div> *)
 val unsortedSegmentSum:
-  ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t ->
+  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
   ([< `int32 | `int64 ] as 'tindices) t ->
   [ `int32 ] t ->
-    ([< `float | `double | `int64 | `int32 | `complex64 ] as 't) t
+    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Use VariableV2 instead. *)
 val variable:
