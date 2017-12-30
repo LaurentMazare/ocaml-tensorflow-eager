@@ -62,6 +62,26 @@ module Tensor_handle = struct
   let data_type t =
     Tfe_tensor_handle.tfe_tensorhandledatatype t
     |> Wrapper.int_to_data_type
+
+  let of_strings strings ~shape =
+    let status = Status.create () in
+    let status_ptr = Status.to_ptr status in
+    let tensor_handle =
+      Tfe_tensor_handle.tfe_newtensorhandle
+        (Wrapper.Tensor.c_tensor_of_strings strings ~shape)
+        status_ptr
+    in
+    Gc.finalise
+      (fun tensor_handle -> Tfe_tensor_handle.tfe_deletetensorhandle tensor_handle)
+      tensor_handle;
+    Status.result_or_error status tensor_handle
+
+  let of_strings_exn strings ~shape =
+    of_strings strings ~shape
+    |> Status.ok_exn
+
+  let of_string string = of_strings [ string ] ~shape:[]
+  let of_string_exn string = of_strings_exn [ string ] ~shape:[]
 end
 
 module Op = struct

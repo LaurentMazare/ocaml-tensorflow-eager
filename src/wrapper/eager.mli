@@ -12,6 +12,7 @@ end
 module Tensor_handle : sig
   type _ t
 
+  (* TODO: better shadow type handling when converting to/from a tensor. *)
   val create : Tensor.p -> _ t Status.result
 
   val create_exn : Tensor.p -> _ t
@@ -23,6 +24,12 @@ module Tensor_handle : sig
   val dims : _ t -> int list
 
   val data_type : _ t -> Wrapper.data_type
+
+  val of_strings : string list -> shape:int list -> [ `string ] t Status.result
+  val of_strings_exn : string list -> shape:int list -> [ `string ] t
+
+  val of_string : string -> [ `string ] t Status.result
+  val of_string_exn : string -> [ `string ] t
 end
 
 module Op : sig
