@@ -1,3 +1,5 @@
+module C : module type of Tf_bindings.C(Tf_generated)
+
 type data_type =
   | TF_FLOAT
   | TF_DOUBLE
@@ -223,6 +225,7 @@ module Session : sig
 end
 
 module Tensor : sig
-  val c_tensor_of_tensor: Tensor.p -> (unit, [`C]) Ctypes.pointer
-  val tensor_of_c_tensor: Tf_bindings.C(Tf_generated).Tf_tensor.t -> Tensor.p
+  val c_tensor_of_tensor : Tensor.p -> (unit, [`C]) Ctypes.pointer
+  val tensor_of_c_tensor : C.Tf_tensor.t -> Tensor.p
+  val c_tensor_of_strings : string list -> shape : int list -> C.Tf_tensor.t
 end

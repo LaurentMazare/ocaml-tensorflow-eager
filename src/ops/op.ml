@@ -38,7 +38,6 @@ let set_attr_shape t name value =
   |> Wrapper.Status.ok_exn
 
 let set_attr_shape_list t name values =
-  let values = List.map values ~f:(List.map ~f:Int64.of_int) in
   Eager.Op.set_attr_shape_list t name values
   |> Wrapper.Status.ok_exn
 

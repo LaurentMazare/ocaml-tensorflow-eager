@@ -111,7 +111,11 @@ module Op = struct
     let num_values = List.length values in
     let dims = List.map List.length values in
     let dims = CArray.(of_list int dims |> start) in
-    let values = List.map (fun l -> CArray.(of_list int64_t l |> start)) values in
+    let values =
+      List.map (fun l ->
+        let l = List.map Int64.of_int l in
+        CArray.(of_list int64_t l |> start)) values
+    in
     let values = CArray.(of_list (ptr int64_t) values |> start) in
     Tfe_op.tfe_opsetattrshapelist t name values dims num_values status_ptr;
     Status.result_or_error status ()
