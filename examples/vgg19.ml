@@ -8,19 +8,17 @@ module Type = Tf_core.Operation.Type
 
 let img_dim = 224
 
-let idx = ref 0
-let var shape =
-  Int.incr idx;
-  Ops.variableV2 ()
-    ~container:"test-container"
-    ~shared_name:(P.sprintf "test-shared-name%d" (!idx))
-    ~type_dtype:Type.Float
-    ~shape
-  |> Ops.zerosLike
+let ckpt_file = Tensor_handle.of_string_exn "vgg19.ckpt"
 
-let conv2d th ~in_channels ~out_channels =
-  let w = var [ 3; 3; in_channels; out_channels ] in
-  let b = var [ out_channels ] in
+let restore ~name ~shape:_ =
+  Ops.restore ckpt_file (Tensor_handle.of_string_exn name)
+    ~preferred_shard:0
+    ~type_dt:Type.Float
+
+let conv2d th ~in_channels ~out_channels ~name =
+  let prefix = P.sprintf "%s/%s_" name name in
+  let w = restore ~name:(prefix ^ "filters") ~shape:[ 3; 3; in_channels; out_channels ] in
+  let b = restore ~name:(prefix ^ "biases") ~shape:[ out_channels ] in
   let conv2d =
     Ops.conv2D th w
       ~use_cudnn_on_gpu:false
@@ -51,35 +49,37 @@ let const_int32 int_list =
 
 let reshape th ~shape = Ops.reshape th (const_int32 shape)
 
-let dense out_dims th =
+let dense ~name out_dims th =
   let in_dims = Tensor_handle.dims th |> List.last_exn in
-  let w = var [ in_dims; out_dims ] in
-  let b = var [ out_dims ] in
+  let prefix = P.sprintf "%s/%s_" name name in
+  let w = restore ~name:(prefix ^ "weights") ~shape:[ in_dims; out_dims ] in
+  let b = restore ~name:(prefix ^ "biases") ~shape:[ out_dims ] in
   Ops.(matMul ~transpose_b:false ~transpose_a:false th w + b)
 
 let vgg19 filename =
-  let block iter ~out_channels th =
+  let block iter ~block_idx ~out_channels th =
     let in_channels = Tensor_handle.dims th |> List.last_exn in
     List.init iter ~f:Fn.id
     |> List.fold ~init:th ~f:(fun acc idx ->
         let in_channels = if idx = 0 then in_channels else out_channels in
         conv2d acc ~in_channels ~out_channels
+          ~name:(P.sprintf "conv%d_%d" block_idx (idx+1))
         |> Ops.relu)
     |> max_pool
   in
   read_image filename
   |> reshape ~shape:[1; img_dim; img_dim; 3]
-  |> block 2 ~out_channels:64
-  |> block 2 ~out_channels:128
-  |> block 4 ~out_channels:256
-  |> block 4 ~out_channels:512
-  |> block 4 ~out_channels:512
+  |> block 2 ~block_idx:1 ~out_channels:64
+  |> block 2 ~block_idx:2 ~out_channels:128
+  |> block 4 ~block_idx:3 ~out_channels:256
+  |> block 4 ~block_idx:4 ~out_channels:512
+  |> block 4 ~block_idx:5 ~out_channels:512
   |> reshape ~shape:[1; -1]
-  |> dense 4096
+  |> dense ~name:"fc6" 4096
   |> Ops.relu
-  |> dense 4096
+  |> dense ~name:"fc7" 4096
   |> Ops.relu
-  |> dense 1000
+  |> dense ~name:"fc8" 1000
   |> Ops.softmax
 
 let () =
