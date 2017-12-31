@@ -9,17 +9,13 @@ module Type = Operation.Type
 let context = Op.default_context ()
 
 let abort
-    ?error_msg
-    ?exit_without_error
+    ?(error_msg="")
+    ?(exit_without_error=false)
     ()
   =
   let op = Op.create context "Abort" in
-  Option.iter error_msg ~f:(fun error_msg ->
-    Op.set_attr_string op "error_msg" error_msg
-  );
-  Option.iter exit_without_error ~f:(fun exit_without_error ->
-    Op.set_attr_bool op "exit_without_error" exit_without_error
-  );
+  Op.set_attr_string op "error_msg" error_msg;
+  Op.set_attr_bool op "exit_without_error" exit_without_error;
   Op.execute0 op
 
 let abs
@@ -96,8 +92,8 @@ let add
   Op.execute1 op
 
 let addManySparseToTensorsMap
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     (sparse_indices : [ `int64 ] t)
     (sparse_values : 't t)
     (sparse_shape : [ `int64 ] t)
@@ -107,12 +103,8 @@ let addManySparseToTensorsMap
   Op.add_input op sparse_values;
   Op.add_input op sparse_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sparse_values);
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let addN
@@ -125,8 +117,8 @@ let addN
   Op.execute1 op
 
 let addSparseToTensorsMap
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     (sparse_indices : [ `int64 ] t)
     (sparse_values : 't t)
     (sparse_shape : [ `int64 ] t)
@@ -136,12 +128,8 @@ let addSparseToTensorsMap
   Op.add_input op sparse_values;
   Op.add_input op sparse_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sparse_values);
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let adjustContrast
@@ -186,7 +174,7 @@ let adjustSaturation
   Op.execute1 op
 
 let all
-    ?keep_dims
+    ?(keep_dims=false)
     (input : [ `bool ] t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
@@ -194,17 +182,15 @@ let all
   Op.add_input op input;
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute1 op
 
 let allCandidateSampler
     ~num_true
     ~num_sampled
     ~unique
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
   let op = Op.create context "AllCandidateSampler" in
@@ -212,12 +198,8 @@ let allCandidateSampler
   Op.set_attr_int op "num_true" num_true;
   Op.set_attr_int op "num_sampled" num_sampled;
   Op.set_attr_bool op "unique" unique;
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute3 op
 
 let angle
@@ -231,7 +213,7 @@ let angle
   Op.execute1 op
 
 let any
-    ?keep_dims
+    ?(keep_dims=false)
     (input : [ `bool ] t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
@@ -239,13 +221,11 @@ let any
   Op.add_input op input;
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute1 op
 
 let applyAdadelta
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum_update : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -263,13 +243,11 @@ let applyAdadelta
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let applyAdagrad
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -281,13 +259,11 @@ let applyAdagrad
   Op.add_input op lr;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let applyAdagradDA
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (gradient_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (gradient_squared_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -307,14 +283,12 @@ let applyAdagradDA
   Op.add_input op l2;
   Op.add_input op global_step;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let applyAdam
-    ?use_locking
-    ?use_nesterov
+    ?(use_locking=false)
+    ?(use_nesterov=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (v : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -338,16 +312,12 @@ let applyAdam
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
-  Option.iter use_nesterov ~f:(fun use_nesterov ->
-    Op.set_attr_bool op "use_nesterov" use_nesterov
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
+  Op.set_attr_bool op "use_nesterov" use_nesterov;
   Op.execute1 op
 
 let applyCenteredRMSProp
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (mg : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -369,13 +339,11 @@ let applyCenteredRMSProp
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let applyFtrl
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -395,13 +363,11 @@ let applyFtrl
   Op.add_input op l2;
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let applyFtrlV2
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -423,13 +389,11 @@ let applyFtrlV2
   Op.add_input op l2_shrinkage;
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let applyGradientDescent
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -439,14 +403,12 @@ let applyGradientDescent
   Op.add_input op alpha;
   Op.add_input op delta;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let applyMomentum
-    ?use_locking
-    ?use_nesterov
+    ?(use_locking=false)
+    ?(use_nesterov=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -460,16 +422,12 @@ let applyMomentum
   Op.add_input op grad;
   Op.add_input op momentum;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
-  Option.iter use_nesterov ~f:(fun use_nesterov ->
-    Op.set_attr_bool op "use_nesterov" use_nesterov
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
+  Op.set_attr_bool op "use_nesterov" use_nesterov;
   Op.execute1 op
 
 let applyProximalAdagrad
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -485,13 +443,11 @@ let applyProximalAdagrad
   Op.add_input op l2;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let applyProximalGradientDescent
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -505,13 +461,11 @@ let applyProximalGradientDescent
   Op.add_input op l2;
   Op.add_input op delta;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let applyRMSProp
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -531,13 +485,11 @@ let applyRMSProp
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let approximateEqual
-    ?tolerance
+    ?(tolerance=9.9999997473787516e-06)
     (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
@@ -545,9 +497,7 @@ let approximateEqual
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Option.iter tolerance ~f:(fun tolerance ->
-    Op.set_attr_float op "tolerance" tolerance
-  );
+  Op.set_attr_float op "tolerance" tolerance;
   Op.execute1 op
 
 let argMax
@@ -577,31 +527,21 @@ let argMin
   Op.execute1 op
 
 let asString
-    ?precision
-    ?scientific
-    ?shortest
-    ?width
-    ?fill
+    ?(precision=(-1))
+    ?(scientific=false)
+    ?(shortest=false)
+    ?(width=(-1))
+    ?(fill="")
     (input : ([< `int32 | `int64 | `complex64 | `float | `double | `bool ] as 't) t)
   =
   let op = Op.create context "AsString" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter precision ~f:(fun precision ->
-    Op.set_attr_int op "precision" precision
-  );
-  Option.iter scientific ~f:(fun scientific ->
-    Op.set_attr_bool op "scientific" scientific
-  );
-  Option.iter shortest ~f:(fun shortest ->
-    Op.set_attr_bool op "shortest" shortest
-  );
-  Option.iter width ~f:(fun width ->
-    Op.set_attr_int op "width" width
-  );
-  Option.iter fill ~f:(fun fill ->
-    Op.set_attr_string op "fill" fill
-  );
+  Op.set_attr_int op "precision" precision;
+  Op.set_attr_bool op "scientific" scientific;
+  Op.set_attr_bool op "shortest" shortest;
+  Op.set_attr_int op "width" width;
+  Op.set_attr_string op "fill" fill;
   Op.execute1 op
 
 let asin
@@ -621,8 +561,8 @@ let asinh
   Op.execute1 op
 
 let assign
-    ?validate_shape
-    ?use_locking
+    ?(validate_shape=true)
+    ?(use_locking=true)
     (ref : 't t)
     (value : 't t)
   =
@@ -630,16 +570,12 @@ let assign
   Op.add_input op ref;
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Option.iter validate_shape ~f:(fun validate_shape ->
-    Op.set_attr_bool op "validate_shape" validate_shape
-  );
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "validate_shape" validate_shape;
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let assignAdd
-    ?use_locking
+    ?(use_locking=false)
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
@@ -647,13 +583,11 @@ let assignAdd
   Op.add_input op ref;
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let assignSub
-    ?use_locking
+    ?(use_locking=false)
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
@@ -661,9 +595,7 @@ let assignSub
   Op.add_input op ref;
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let atan
@@ -695,21 +627,19 @@ let atanh
 let audioSpectrogram
     ~window_size
     ~stride
-    ?magnitude_squared
+    ?(magnitude_squared=false)
     (input : [ `float ] t)
   =
   let op = Op.create context "AudioSpectrogram" in
   Op.add_input op input;
   Op.set_attr_int op "window_size" window_size;
   Op.set_attr_int op "stride" stride;
-  Option.iter magnitude_squared ~f:(fun magnitude_squared ->
-    Op.set_attr_bool op "magnitude_squared" magnitude_squared
-  );
+  Op.set_attr_bool op "magnitude_squared" magnitude_squared;
   Op.execute1 op
 
 let audioSummary
     ~sample_rate
-    ?max_outputs
+    ?(max_outputs=3)
     (tag : [ `string ] t)
     (tensor : [ `float ] t)
   =
@@ -717,13 +647,11 @@ let audioSummary
   Op.add_input op tag;
   Op.add_input op tensor;
   Op.set_attr_float op "sample_rate" sample_rate;
-  Option.iter max_outputs ~f:(fun max_outputs ->
-    Op.set_attr_int op "max_outputs" max_outputs
-  );
+  Op.set_attr_int op "max_outputs" max_outputs;
   Op.execute1 op
 
 let audioSummaryV2
-    ?max_outputs
+    ?(max_outputs=3)
     (tag : [ `string ] t)
     (tensor : [ `float ] t)
     (sample_rate : [ `float ] t)
@@ -732,16 +660,14 @@ let audioSummaryV2
   Op.add_input op tag;
   Op.add_input op tensor;
   Op.add_input op sample_rate;
-  Option.iter max_outputs ~f:(fun max_outputs ->
-    Op.set_attr_int op "max_outputs" max_outputs
-  );
+  Op.set_attr_int op "max_outputs" max_outputs;
   Op.execute1 op
 
 let avgPool
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (value : ([< `float | `double ] as 't) t)
   =
   let op = Op.create context "AvgPool" in
@@ -750,16 +676,14 @@ let avgPool
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let avgPool3D
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NDHWC")
     (input : ([< `float | `double ] as 't) t)
   =
   let op = Op.create context "AvgPool3D" in
@@ -768,16 +692,14 @@ let avgPool3D
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let avgPool3DGrad
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NDHWC")
     (orig_input_shape : [ `int32 ] t)
     (grad : ([< `float | `double ] as 't) t)
   =
@@ -788,16 +710,14 @@ let avgPool3DGrad
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let avgPoolGrad
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (orig_input_shape : [ `int32 ] t)
     (grad : ([< `float | `double ] as 't) t)
   =
@@ -808,44 +728,32 @@ let avgPoolGrad
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let barrier
     ~component_types
-    ?shapes
-    ?capacity
-    ?container
-    ?shared_name
+    ?(shapes=[])
+    ?(capacity=(-1))
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "Barrier" in
   Op.set_attr_type_list op "component_types" component_types;
-  Option.iter shapes ~f:(fun shapes ->
-    Op.set_attr_shape_list op "shapes" shapes
-  );
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_shape_list op "shapes" shapes;
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let barrierClose
-    ?cancel_pending_enqueues
+    ?(cancel_pending_enqueues=false)
     (handle : [ `string ] t)
   =
   let op = Op.create context "BarrierClose" in
   Op.add_input op handle;
-  Option.iter cancel_pending_enqueues ~f:(fun cancel_pending_enqueues ->
-    Op.set_attr_bool op "cancel_pending_enqueues" cancel_pending_enqueues
-  );
+  Op.set_attr_bool op "cancel_pending_enqueues" cancel_pending_enqueues;
   Op.execute0 op
 
 let barrierIncompleteSize
@@ -950,8 +858,8 @@ let batchIFFT3D
   Op.execute1 op
 
 let batchMatMul
-    ?adj_x
-    ?adj_y
+    ?(adj_x=false)
+    ?(adj_y=false)
     (x : ([< `float | `double | `int32 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `int32 | `complex64 ] as 't) t)
   =
@@ -959,12 +867,8 @@ let batchMatMul
   Op.add_input op x;
   Op.add_input op y;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Option.iter adj_x ~f:(fun adj_x ->
-    Op.set_attr_bool op "adj_x" adj_x
-  );
-  Option.iter adj_y ~f:(fun adj_y ->
-    Op.set_attr_bool op "adj_y" adj_y
-  );
+  Op.set_attr_bool op "adj_x" adj_x;
+  Op.set_attr_bool op "adj_y" adj_y;
   Op.execute1 op
 
 let batchMatrixBandPart
@@ -1004,15 +908,13 @@ let batchMatrixDiagPart
   Op.execute1 op
 
 let batchMatrixInverse
-    ?adjoint
+    ?(adjoint=false)
     (input : ([< `double | `float ] as 't) t)
   =
   let op = Op.create context "BatchMatrixInverse" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter adjoint ~f:(fun adjoint ->
-    Op.set_attr_bool op "adjoint" adjoint
-  );
+  Op.set_attr_bool op "adjoint" adjoint;
   Op.execute1 op
 
 let batchMatrixSetDiag
@@ -1026,7 +928,7 @@ let batchMatrixSetDiag
   Op.execute1 op
 
 let batchMatrixSolve
-    ?adjoint
+    ?(adjoint=false)
     (matrix : ([< `double | `float ] as 't) t)
     (rhs : ([< `double | `float ] as 't) t)
   =
@@ -1034,13 +936,11 @@ let batchMatrixSolve
   Op.add_input op matrix;
   Op.add_input op rhs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Option.iter adjoint ~f:(fun adjoint ->
-    Op.set_attr_bool op "adjoint" adjoint
-  );
+  Op.set_attr_bool op "adjoint" adjoint;
   Op.execute1 op
 
 let batchMatrixSolveLs
-    ?fast
+    ?(fast=true)
     (matrix : ([< `double | `float ] as 't) t)
     (rhs : ([< `double | `float ] as 't) t)
     (l2_regularizer : [ `double ] t)
@@ -1050,14 +950,12 @@ let batchMatrixSolveLs
   Op.add_input op rhs;
   Op.add_input op l2_regularizer;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Option.iter fast ~f:(fun fast ->
-    Op.set_attr_bool op "fast" fast
-  );
+  Op.set_attr_bool op "fast" fast;
   Op.execute1 op
 
 let batchMatrixTriangularSolve
-    ?lower
-    ?adjoint
+    ?(lower=true)
+    ?(adjoint=false)
     (matrix : ([< `double | `float ] as 't) t)
     (rhs : ([< `double | `float ] as 't) t)
   =
@@ -1065,12 +963,8 @@ let batchMatrixTriangularSolve
   Op.add_input op matrix;
   Op.add_input op rhs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Option.iter lower ~f:(fun lower ->
-    Op.set_attr_bool op "lower" lower
-  );
-  Option.iter adjoint ~f:(fun adjoint ->
-    Op.set_attr_bool op "adjoint" adjoint
-  );
+  Op.set_attr_bool op "lower" lower;
+  Op.set_attr_bool op "adjoint" adjoint;
   Op.execute1 op
 
 let batchNormWithGlobalNormalization
@@ -1122,31 +1016,25 @@ let batchSelfAdjointEig
   Op.execute1 op
 
 let batchSelfAdjointEigV2
-    ?compute_v
+    ?(compute_v=true)
     (input : ([< `double | `float ] as 't) t)
   =
   let op = Op.create context "BatchSelfAdjointEigV2" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter compute_v ~f:(fun compute_v ->
-    Op.set_attr_bool op "compute_v" compute_v
-  );
+  Op.set_attr_bool op "compute_v" compute_v;
   Op.execute2 op
 
 let batchSvd
-    ?compute_uv
-    ?full_matrices
+    ?(compute_uv=true)
+    ?(full_matrices=false)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
   let op = Op.create context "BatchSvd" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter compute_uv ~f:(fun compute_uv ->
-    Op.set_attr_bool op "compute_uv" compute_uv
-  );
-  Option.iter full_matrices ~f:(fun full_matrices ->
-    Op.set_attr_bool op "full_matrices" full_matrices
-  );
+  Op.set_attr_bool op "compute_uv" compute_uv;
+  Op.set_attr_bool op "full_matrices" full_matrices;
   Op.execute3 op
 
 let batchToSpace
@@ -1189,7 +1077,7 @@ let betainc
   Op.execute1 op
 
 let biasAdd
-    ?data_format
+    ?(data_format="NHWC")
     (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (bias : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
@@ -1197,21 +1085,17 @@ let biasAdd
   Op.add_input op value;
   Op.add_input op bias;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let biasAddGrad
-    ?data_format
+    ?(data_format="NHWC")
     (out_backprop : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
   let op = Op.create context "BiasAddGrad" in
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let biasAddV1
@@ -1307,22 +1191,20 @@ let bucketize
   Op.execute1 op
 
 let cTCGreedyDecoder
-    ?merge_repeated
+    ?(merge_repeated=false)
     (inputs__ : [ `float ] t)
     (sequence_length : [ `int32 ] t)
   =
   let op = Op.create context "CTCGreedyDecoder" in
   Op.add_input op inputs__;
   Op.add_input op sequence_length;
-  Option.iter merge_repeated ~f:(fun merge_repeated ->
-    Op.set_attr_bool op "merge_repeated" merge_repeated
-  );
+  Op.set_attr_bool op "merge_repeated" merge_repeated;
   Op.execute4 op
 
 let cTCLoss
-    ?preprocess_collapse_repeated
-    ?ctc_merge_repeated
-    ?ignore_longer_outputs_than_inputs
+    ?(preprocess_collapse_repeated=false)
+    ?(ctc_merge_repeated=true)
+    ?(ignore_longer_outputs_than_inputs=false)
     (inputs__ : [ `float ] t)
     (labels_indices : [ `int64 ] t)
     (labels_values : [ `int32 ] t)
@@ -1333,15 +1215,9 @@ let cTCLoss
   Op.add_input op labels_indices;
   Op.add_input op labels_values;
   Op.add_input op sequence_length;
-  Option.iter preprocess_collapse_repeated ~f:(fun preprocess_collapse_repeated ->
-    Op.set_attr_bool op "preprocess_collapse_repeated" preprocess_collapse_repeated
-  );
-  Option.iter ctc_merge_repeated ~f:(fun ctc_merge_repeated ->
-    Op.set_attr_bool op "ctc_merge_repeated" ctc_merge_repeated
-  );
-  Option.iter ignore_longer_outputs_than_inputs ~f:(fun ignore_longer_outputs_than_inputs ->
-    Op.set_attr_bool op "ignore_longer_outputs_than_inputs" ignore_longer_outputs_than_inputs
-  );
+  Op.set_attr_bool op "preprocess_collapse_repeated" preprocess_collapse_repeated;
+  Op.set_attr_bool op "ctc_merge_repeated" ctc_merge_repeated;
+  Op.set_attr_bool op "ignore_longer_outputs_than_inputs" ignore_longer_outputs_than_inputs;
   Op.execute2 op
 
 let cacheDataset
@@ -1437,8 +1313,8 @@ let complexAbs
 
 let computeAccidentalHits
     ~num_true
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (true_classes : [ `int64 ] t)
     (sampled_candidates : [ `int64 ] t)
   =
@@ -1446,12 +1322,8 @@ let computeAccidentalHits
   Op.add_input op true_classes;
   Op.add_input op sampled_candidates;
   Op.set_attr_int op "num_true" num_true;
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute3 op
 
 let concat
@@ -1502,18 +1374,14 @@ let concatenateDataset
 
 let conditionalAccumulator
     ~shape
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "ConditionalAccumulator" in
   Op.set_attr_shape op "shape" shape;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let conj
@@ -1532,9 +1400,9 @@ let controlTrigger
 
 let conv2D
     ~strides
-    ?use_cudnn_on_gpu
+    ?(use_cudnn_on_gpu=true)
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (input : ([< `float ] as 't) t)
     (filter : ([< `float ] as 't) t)
   =
@@ -1543,20 +1411,16 @@ let conv2D
   Op.add_input op filter;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "strides" strides;
-  Option.iter use_cudnn_on_gpu ~f:(fun use_cudnn_on_gpu ->
-    Op.set_attr_bool op "use_cudnn_on_gpu" use_cudnn_on_gpu
-  );
+  Op.set_attr_bool op "use_cudnn_on_gpu" use_cudnn_on_gpu;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let conv2DBackpropFilter
     ~strides
-    ?use_cudnn_on_gpu
+    ?(use_cudnn_on_gpu=true)
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (input : ([< `float ] as 't) t)
     (filter_sizes : [ `int32 ] t)
     (out_backprop : ([< `float ] as 't) t)
@@ -1567,20 +1431,16 @@ let conv2DBackpropFilter
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "strides" strides;
-  Option.iter use_cudnn_on_gpu ~f:(fun use_cudnn_on_gpu ->
-    Op.set_attr_bool op "use_cudnn_on_gpu" use_cudnn_on_gpu
-  );
+  Op.set_attr_bool op "use_cudnn_on_gpu" use_cudnn_on_gpu;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let conv2DBackpropInput
     ~strides
-    ?use_cudnn_on_gpu
+    ?(use_cudnn_on_gpu=true)
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (input_sizes : [ `int32 ] t)
     (filter : ([< `float ] as 't) t)
     (out_backprop : ([< `float ] as 't) t)
@@ -1591,19 +1451,15 @@ let conv2DBackpropInput
   Op.add_input op out_backprop;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
   Op.set_attr_int_list op "strides" strides;
-  Option.iter use_cudnn_on_gpu ~f:(fun use_cudnn_on_gpu ->
-    Op.set_attr_bool op "use_cudnn_on_gpu" use_cudnn_on_gpu
-  );
+  Op.set_attr_bool op "use_cudnn_on_gpu" use_cudnn_on_gpu;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let conv3D
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NDHWC")
     (input : ([< `float | `double ] as 't) t)
     (filter : ([< `float | `double ] as 't) t)
   =
@@ -1613,9 +1469,7 @@ let conv3D
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let conv3DBackpropFilter
@@ -1637,7 +1491,7 @@ let conv3DBackpropFilter
 let conv3DBackpropFilterV2
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NDHWC")
     (input : ([< `float | `double ] as 't) t)
     (filter_sizes : [ `int32 ] t)
     (out_backprop : ([< `float | `double ] as 't) t)
@@ -1649,9 +1503,7 @@ let conv3DBackpropFilterV2
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let conv3DBackpropInput
@@ -1673,7 +1525,7 @@ let conv3DBackpropInput
 let conv3DBackpropInputV2
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NDHWC")
     (input_sizes : [ `int32 ] t)
     (filter : ([< `float | `double ] as 't) t)
     (out_backprop : ([< `float | `double ] as 't) t)
@@ -1685,33 +1537,27 @@ let conv3DBackpropInputV2
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let copy
-    ?tensor_name
+    ?(tensor_name="")
     (input : 't t)
   =
   let op = Op.create context "Copy" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter tensor_name ~f:(fun tensor_name ->
-    Op.set_attr_string op "tensor_name" tensor_name
-  );
+  Op.set_attr_string op "tensor_name" tensor_name;
   Op.execute1 op
 
 let copyHost
-    ?tensor_name
+    ?(tensor_name="")
     (input : 't t)
   =
   let op = Op.create context "CopyHost" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter tensor_name ~f:(fun tensor_name ->
-    Op.set_attr_string op "tensor_name" tensor_name
-  );
+  Op.set_attr_string op "tensor_name" tensor_name;
   Op.execute1 op
 
 let cos
@@ -1741,8 +1587,8 @@ let countUpTo
   Op.execute1 op
 
 let cropAndResize
-    ?method_
-    ?extrapolation_value
+    ?(method_="bilinear")
+    ?(extrapolation_value=0.)
     (image : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (boxes : [ `float ] t)
     (box_ind : [ `int32 ] t)
@@ -1754,16 +1600,12 @@ let cropAndResize
   Op.add_input op box_ind;
   Op.add_input op crop_size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image);
-  Option.iter method_ ~f:(fun method_ ->
-    Op.set_attr_string op "method" method_
-  );
-  Option.iter extrapolation_value ~f:(fun extrapolation_value ->
-    Op.set_attr_float op "extrapolation_value" extrapolation_value
-  );
+  Op.set_attr_string op "method" method_;
+  Op.set_attr_float op "extrapolation_value" extrapolation_value;
   Op.execute1 op
 
 let cropAndResizeGradBoxes
-    ?method_
+    ?(method_="bilinear")
     (grads : [ `float ] t)
     (image : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (boxes : [ `float ] t)
@@ -1775,14 +1617,12 @@ let cropAndResizeGradBoxes
   Op.add_input op boxes;
   Op.add_input op box_ind;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image);
-  Option.iter method_ ~f:(fun method_ ->
-    Op.set_attr_string op "method" method_
-  );
+  Op.set_attr_string op "method" method_;
   Op.execute1 op
 
 let cropAndResizeGradImage
     ~type_t
-    ?method_
+    ?(method_="bilinear")
     (grads : [ `float ] t)
     (boxes : [ `float ] t)
     (box_ind : [ `int32 ] t)
@@ -1794,9 +1634,7 @@ let cropAndResizeGradImage
   Op.add_input op box_ind;
   Op.add_input op image_size;
   Op.set_attr_data_type op "T" Operation.Type.(to_data_type (P type_t));
-  Option.iter method_ ~f:(fun method_ ->
-    Op.set_attr_string op "method" method_
-  );
+  Op.set_attr_string op "method" method_;
   Op.execute1 op
 
 let cross
@@ -1810,8 +1648,8 @@ let cross
   Op.execute1 op
 
 let cumprod
-    ?exclusive
-    ?reverse
+    ?(exclusive=false)
+    ?(reverse=false)
     (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
@@ -1820,17 +1658,13 @@ let cumprod
   Op.add_input op axis;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type axis);
-  Option.iter exclusive ~f:(fun exclusive ->
-    Op.set_attr_bool op "exclusive" exclusive
-  );
-  Option.iter reverse ~f:(fun reverse ->
-    Op.set_attr_bool op "reverse" reverse
-  );
+  Op.set_attr_bool op "exclusive" exclusive;
+  Op.set_attr_bool op "reverse" reverse;
   Op.execute1 op
 
 let cumsum
-    ?exclusive
-    ?reverse
+    ?(exclusive=false)
+    ?(reverse=false)
     (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
@@ -1839,12 +1673,8 @@ let cumsum
   Op.add_input op axis;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type axis);
-  Option.iter exclusive ~f:(fun exclusive ->
-    Op.set_attr_bool op "exclusive" exclusive
-  );
-  Option.iter reverse ~f:(fun reverse ->
-    Op.set_attr_bool op "reverse" reverse
-  );
+  Op.set_attr_bool op "exclusive" exclusive;
+  Op.set_attr_bool op "reverse" reverse;
   Op.execute1 op
 
 let debugGradientIdentity
@@ -1856,108 +1686,72 @@ let debugGradientIdentity
   Op.execute1 op
 
 let debugIdentity
-    ?device_name
-    ?tensor_name
-    ?gated_grpc
+    ?(device_name="")
+    ?(tensor_name="")
+    ?(gated_grpc=false)
     (input : 't t)
   =
   let op = Op.create context "DebugIdentity" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter device_name ~f:(fun device_name ->
-    Op.set_attr_string op "device_name" device_name
-  );
-  Option.iter tensor_name ~f:(fun tensor_name ->
-    Op.set_attr_string op "tensor_name" tensor_name
-  );
-  Option.iter gated_grpc ~f:(fun gated_grpc ->
-    Op.set_attr_bool op "gated_grpc" gated_grpc
-  );
+  Op.set_attr_string op "device_name" device_name;
+  Op.set_attr_string op "tensor_name" tensor_name;
+  Op.set_attr_bool op "gated_grpc" gated_grpc;
   Op.execute1 op
 
 let debugNanCount
-    ?device_name
-    ?tensor_name
-    ?gated_grpc
+    ?(device_name="")
+    ?(tensor_name="")
+    ?(gated_grpc=false)
     (input : 't t)
   =
   let op = Op.create context "DebugNanCount" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter device_name ~f:(fun device_name ->
-    Op.set_attr_string op "device_name" device_name
-  );
-  Option.iter tensor_name ~f:(fun tensor_name ->
-    Op.set_attr_string op "tensor_name" tensor_name
-  );
-  Option.iter gated_grpc ~f:(fun gated_grpc ->
-    Op.set_attr_bool op "gated_grpc" gated_grpc
-  );
+  Op.set_attr_string op "device_name" device_name;
+  Op.set_attr_string op "tensor_name" tensor_name;
+  Op.set_attr_bool op "gated_grpc" gated_grpc;
   Op.execute1 op
 
 let debugNumericSummary
-    ?device_name
-    ?tensor_name
-    ?lower_bound
-    ?upper_bound
-    ?mute_if_healthy
-    ?gated_grpc
+    ?(device_name="")
+    ?(tensor_name="")
+    ?(lower_bound=(Float.neg_infinity))
+    ?(upper_bound=Float.infinity)
+    ?(mute_if_healthy=false)
+    ?(gated_grpc=false)
     (input : 't t)
   =
   let op = Op.create context "DebugNumericSummary" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter device_name ~f:(fun device_name ->
-    Op.set_attr_string op "device_name" device_name
-  );
-  Option.iter tensor_name ~f:(fun tensor_name ->
-    Op.set_attr_string op "tensor_name" tensor_name
-  );
-  Option.iter lower_bound ~f:(fun lower_bound ->
-    Op.set_attr_float op "lower_bound" lower_bound
-  );
-  Option.iter upper_bound ~f:(fun upper_bound ->
-    Op.set_attr_float op "upper_bound" upper_bound
-  );
-  Option.iter mute_if_healthy ~f:(fun mute_if_healthy ->
-    Op.set_attr_bool op "mute_if_healthy" mute_if_healthy
-  );
-  Option.iter gated_grpc ~f:(fun gated_grpc ->
-    Op.set_attr_bool op "gated_grpc" gated_grpc
-  );
+  Op.set_attr_string op "device_name" device_name;
+  Op.set_attr_string op "tensor_name" tensor_name;
+  Op.set_attr_float op "lower_bound" lower_bound;
+  Op.set_attr_float op "upper_bound" upper_bound;
+  Op.set_attr_bool op "mute_if_healthy" mute_if_healthy;
+  Op.set_attr_bool op "gated_grpc" gated_grpc;
   Op.execute1 op
 
 let decodeAndCropJpeg
-    ?channels
-    ?ratio
-    ?fancy_upscaling
-    ?try_recover_truncated
-    ?acceptable_fraction
-    ?dct_method
+    ?(channels=0)
+    ?(ratio=1)
+    ?(fancy_upscaling=true)
+    ?(try_recover_truncated=false)
+    ?(acceptable_fraction=1.)
+    ?(dct_method="")
     (contents : [ `string ] t)
     (crop_window : [ `int32 ] t)
   =
   let op = Op.create context "DecodeAndCropJpeg" in
   Op.add_input op contents;
   Op.add_input op crop_window;
-  Option.iter channels ~f:(fun channels ->
-    Op.set_attr_int op "channels" channels
-  );
-  Option.iter ratio ~f:(fun ratio ->
-    Op.set_attr_int op "ratio" ratio
-  );
-  Option.iter fancy_upscaling ~f:(fun fancy_upscaling ->
-    Op.set_attr_bool op "fancy_upscaling" fancy_upscaling
-  );
-  Option.iter try_recover_truncated ~f:(fun try_recover_truncated ->
-    Op.set_attr_bool op "try_recover_truncated" try_recover_truncated
-  );
-  Option.iter acceptable_fraction ~f:(fun acceptable_fraction ->
-    Op.set_attr_float op "acceptable_fraction" acceptable_fraction
-  );
-  Option.iter dct_method ~f:(fun dct_method ->
-    Op.set_attr_string op "dct_method" dct_method
-  );
+  Op.set_attr_int op "channels" channels;
+  Op.set_attr_int op "ratio" ratio;
+  Op.set_attr_bool op "fancy_upscaling" fancy_upscaling;
+  Op.set_attr_bool op "try_recover_truncated" try_recover_truncated;
+  Op.set_attr_float op "acceptable_fraction" acceptable_fraction;
+  Op.set_attr_string op "dct_method" dct_method;
   Op.execute1 op
 
 let decodeBase64
@@ -1968,14 +1762,12 @@ let decodeBase64
   Op.execute1 op
 
 let decodeBmp
-    ?channels
+    ?(channels=0)
     (contents : [ `string ] t)
   =
   let op = Op.create context "DecodeBmp" in
   Op.add_input op contents;
-  Option.iter channels ~f:(fun channels ->
-    Op.set_attr_int op "channels" channels
-  );
+  Op.set_attr_int op "channels" channels;
   Op.execute1 op
 
 let decodeGif
@@ -1993,75 +1785,55 @@ let decodeJSONExample
   Op.execute1 op
 
 let decodeJpeg
-    ?channels
-    ?ratio
-    ?fancy_upscaling
-    ?try_recover_truncated
-    ?acceptable_fraction
-    ?dct_method
+    ?(channels=0)
+    ?(ratio=1)
+    ?(fancy_upscaling=true)
+    ?(try_recover_truncated=false)
+    ?(acceptable_fraction=1.)
+    ?(dct_method="")
     (contents : [ `string ] t)
   =
   let op = Op.create context "DecodeJpeg" in
   Op.add_input op contents;
-  Option.iter channels ~f:(fun channels ->
-    Op.set_attr_int op "channels" channels
-  );
-  Option.iter ratio ~f:(fun ratio ->
-    Op.set_attr_int op "ratio" ratio
-  );
-  Option.iter fancy_upscaling ~f:(fun fancy_upscaling ->
-    Op.set_attr_bool op "fancy_upscaling" fancy_upscaling
-  );
-  Option.iter try_recover_truncated ~f:(fun try_recover_truncated ->
-    Op.set_attr_bool op "try_recover_truncated" try_recover_truncated
-  );
-  Option.iter acceptable_fraction ~f:(fun acceptable_fraction ->
-    Op.set_attr_float op "acceptable_fraction" acceptable_fraction
-  );
-  Option.iter dct_method ~f:(fun dct_method ->
-    Op.set_attr_string op "dct_method" dct_method
-  );
+  Op.set_attr_int op "channels" channels;
+  Op.set_attr_int op "ratio" ratio;
+  Op.set_attr_bool op "fancy_upscaling" fancy_upscaling;
+  Op.set_attr_bool op "try_recover_truncated" try_recover_truncated;
+  Op.set_attr_float op "acceptable_fraction" acceptable_fraction;
+  Op.set_attr_string op "dct_method" dct_method;
   Op.execute1 op
 
 let decodePng
     ~type_dtype
-    ?channels
+    ?(channels=0)
     (contents : [ `string ] t)
   =
   let op = Op.create context "DecodePng" in
   Op.add_input op contents;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter channels ~f:(fun channels ->
-    Op.set_attr_int op "channels" channels
-  );
+  Op.set_attr_int op "channels" channels;
   Op.execute1 op
 
 let decodeRaw
     ~type_out_type
-    ?little_endian
+    ?(little_endian=true)
     (bytes : [ `string ] t)
   =
   let op = Op.create context "DecodeRaw" in
   Op.add_input op bytes;
   Op.set_attr_data_type op "out_type" Operation.Type.(to_data_type (P type_out_type));
-  Option.iter little_endian ~f:(fun little_endian ->
-    Op.set_attr_bool op "little_endian" little_endian
-  );
+  Op.set_attr_bool op "little_endian" little_endian;
   Op.execute1 op
 
 let decodeWav
-    ?desired_channels
-    ?desired_samples
+    ?(desired_channels=(-1))
+    ?(desired_samples=(-1))
     (contents : [ `string ] t)
   =
   let op = Op.create context "DecodeWav" in
   Op.add_input op contents;
-  Option.iter desired_channels ~f:(fun desired_channels ->
-    Op.set_attr_int op "desired_channels" desired_channels
-  );
-  Option.iter desired_samples ~f:(fun desired_samples ->
-    Op.set_attr_int op "desired_samples" desired_samples
-  );
+  Op.set_attr_int op "desired_channels" desired_channels;
+  Op.set_attr_int op "desired_samples" desired_samples;
   Op.execute2 op
 
 let deleteSessionTensor
@@ -2073,7 +1845,7 @@ let deleteSessionTensor
 
 let denseToDenseSetOperation
     ~set_operation
-    ?validate_indices
+    ?(validate_indices=true)
     (set1 : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set2 : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
   =
@@ -2082,9 +1854,7 @@ let denseToDenseSetOperation
   Op.add_input op set2;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set1);
   Op.set_attr_string op "set_operation" set_operation;
-  Option.iter validate_indices ~f:(fun validate_indices ->
-    Op.set_attr_bool op "validate_indices" validate_indices
-  );
+  Op.set_attr_bool op "validate_indices" validate_indices;
   Op.execute3 op
 
 let denseToSparseBatchDataset
@@ -2104,7 +1874,7 @@ let denseToSparseBatchDataset
 
 let denseToSparseSetOperation
     ~set_operation
-    ?validate_indices
+    ?(validate_indices=true)
     (set1 : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set2_indices : [ `int64 ] t)
     (set2_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
@@ -2117,29 +1887,25 @@ let denseToSparseSetOperation
   Op.add_input op set2_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set1);
   Op.set_attr_string op "set_operation" set_operation;
-  Option.iter validate_indices ~f:(fun validate_indices ->
-    Op.set_attr_bool op "validate_indices" validate_indices
-  );
+  Op.set_attr_bool op "validate_indices" validate_indices;
   Op.execute3 op
 
 let depthToSpace
     ~block_size
-    ?data_format
+    ?(data_format="NHWC")
     (input : 't t)
   =
   let op = Op.create context "DepthToSpace" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int op "block_size" block_size;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let depthwiseConv2dNative
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (input : ([< `float | `double ] as 't) t)
     (filter : ([< `float | `double ] as 't) t)
   =
@@ -2149,15 +1915,13 @@ let depthwiseConv2dNative
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let depthwiseConv2dNativeBackpropFilter
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (input : ([< `float | `double ] as 't) t)
     (filter_sizes : [ `int32 ] t)
     (out_backprop : ([< `float | `double ] as 't) t)
@@ -2169,15 +1933,13 @@ let depthwiseConv2dNativeBackpropFilter
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let depthwiseConv2dNativeBackpropInput
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (input_sizes : [ `int32 ] t)
     (filter : ([< `float | `double ] as 't) t)
     (out_backprop : ([< `float | `double ] as 't) t)
@@ -2189,13 +1951,11 @@ let depthwiseConv2dNativeBackpropInput
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type filter);
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let dequantize
-    ?mode
+    ?(mode="MIN_COMBINED")
     (input : 't t)
     (min_range : [ `float ] t)
     (max_range : [ `float ] t)
@@ -2205,9 +1965,7 @@ let dequantize
   Op.add_input op min_range;
   Op.add_input op max_range;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter mode ~f:(fun mode ->
-    Op.set_attr_string op "mode" mode
-  );
+  Op.set_attr_string op "mode" mode;
   Op.execute1 op
 
 let deserializeManySparse
@@ -2349,7 +2107,7 @@ let dynamicStitch
   Op.execute1 op
 
 let editDistance
-    ?normalize
+    ?(normalize=true)
     (hypothesis_indices : [ `int64 ] t)
     (hypothesis_values : 't t)
     (hypothesis_shape : [ `int64 ] t)
@@ -2365,9 +2123,7 @@ let editDistance
   Op.add_input op truth_values;
   Op.add_input op truth_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type hypothesis_values);
-  Option.iter normalize ~f:(fun normalize ->
-    Op.set_attr_bool op "normalize" normalize
-  );
+  Op.set_attr_bool op "normalize" normalize;
   Op.execute1 op
 
 let elu
@@ -2389,69 +2145,47 @@ let eluGrad
   Op.execute1 op
 
 let encodeBase64
-    ?pad
+    ?(pad=false)
     (input : [ `string ] t)
   =
   let op = Op.create context "EncodeBase64" in
   Op.add_input op input;
-  Option.iter pad ~f:(fun pad ->
-    Op.set_attr_bool op "pad" pad
-  );
+  Op.set_attr_bool op "pad" pad;
   Op.execute1 op
 
 let encodeJpeg
-    ?format
-    ?quality
-    ?progressive
-    ?optimize_size
-    ?chroma_downsampling
-    ?density_unit
-    ?x_density
-    ?y_density
-    ?xmp_metadata
+    ?(format="")
+    ?(quality=95)
+    ?(progressive=false)
+    ?(optimize_size=false)
+    ?(chroma_downsampling=true)
+    ?(density_unit="in")
+    ?(x_density=300)
+    ?(y_density=300)
+    ?(xmp_metadata="")
     (image : [ `uInt8 ] t)
   =
   let op = Op.create context "EncodeJpeg" in
   Op.add_input op image;
-  Option.iter format ~f:(fun format ->
-    Op.set_attr_string op "format" format
-  );
-  Option.iter quality ~f:(fun quality ->
-    Op.set_attr_int op "quality" quality
-  );
-  Option.iter progressive ~f:(fun progressive ->
-    Op.set_attr_bool op "progressive" progressive
-  );
-  Option.iter optimize_size ~f:(fun optimize_size ->
-    Op.set_attr_bool op "optimize_size" optimize_size
-  );
-  Option.iter chroma_downsampling ~f:(fun chroma_downsampling ->
-    Op.set_attr_bool op "chroma_downsampling" chroma_downsampling
-  );
-  Option.iter density_unit ~f:(fun density_unit ->
-    Op.set_attr_string op "density_unit" density_unit
-  );
-  Option.iter x_density ~f:(fun x_density ->
-    Op.set_attr_int op "x_density" x_density
-  );
-  Option.iter y_density ~f:(fun y_density ->
-    Op.set_attr_int op "y_density" y_density
-  );
-  Option.iter xmp_metadata ~f:(fun xmp_metadata ->
-    Op.set_attr_string op "xmp_metadata" xmp_metadata
-  );
+  Op.set_attr_string op "format" format;
+  Op.set_attr_int op "quality" quality;
+  Op.set_attr_bool op "progressive" progressive;
+  Op.set_attr_bool op "optimize_size" optimize_size;
+  Op.set_attr_bool op "chroma_downsampling" chroma_downsampling;
+  Op.set_attr_string op "density_unit" density_unit;
+  Op.set_attr_int op "x_density" x_density;
+  Op.set_attr_int op "y_density" y_density;
+  Op.set_attr_string op "xmp_metadata" xmp_metadata;
   Op.execute1 op
 
 let encodePng
-    ?compression
+    ?(compression=(-1))
     (image : ([< `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "EncodePng" in
   Op.add_input op image;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image);
-  Option.iter compression ~f:(fun compression ->
-    Op.set_attr_int op "compression" compression
-  );
+  Op.set_attr_int op "compression" compression;
   Op.execute1 op
 
 let encodeWav
@@ -2465,20 +2199,16 @@ let encodeWav
 
 let enter
     ~frame_name
-    ?is_constant
-    ?parallel_iterations
+    ?(is_constant=false)
+    ?(parallel_iterations=10)
     (data : 't t)
   =
   let op = Op.create context "Enter" in
   Op.add_input op data;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_string op "frame_name" frame_name;
-  Option.iter is_constant ~f:(fun is_constant ->
-    Op.set_attr_bool op "is_constant" is_constant
-  );
-  Option.iter parallel_iterations ~f:(fun parallel_iterations ->
-    Op.set_attr_int op "parallel_iterations" parallel_iterations
-  );
+  Op.set_attr_bool op "is_constant" is_constant;
+  Op.set_attr_int op "parallel_iterations" parallel_iterations;
   Op.execute1 op
 
 let equal
@@ -2543,9 +2273,9 @@ let expm1
   Op.execute1 op
 
 let extractGlimpse
-    ?centered
-    ?normalized
-    ?uniform_noise
+    ?(centered=true)
+    ?(normalized=true)
+    ?(uniform_noise=true)
     (input : [ `float ] t)
     (size : [ `int32 ] t)
     (offsets : [ `float ] t)
@@ -2554,15 +2284,9 @@ let extractGlimpse
   Op.add_input op input;
   Op.add_input op size;
   Op.add_input op offsets;
-  Option.iter centered ~f:(fun centered ->
-    Op.set_attr_bool op "centered" centered
-  );
-  Option.iter normalized ~f:(fun normalized ->
-    Op.set_attr_bool op "normalized" normalized
-  );
-  Option.iter uniform_noise ~f:(fun uniform_noise ->
-    Op.set_attr_bool op "uniform_noise" uniform_noise
-  );
+  Op.set_attr_bool op "centered" centered;
+  Op.set_attr_bool op "normalized" normalized;
+  Op.set_attr_bool op "uniform_noise" uniform_noise;
   Op.execute1 op
 
 let extractImagePatches
@@ -2613,50 +2337,34 @@ let fFT3D
 
 let fIFOQueue
     ~component_types
-    ?shapes
-    ?capacity
-    ?container
-    ?shared_name
+    ?(shapes=[])
+    ?(capacity=(-1))
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "FIFOQueue" in
   Op.set_attr_type_list op "component_types" component_types;
-  Option.iter shapes ~f:(fun shapes ->
-    Op.set_attr_shape_list op "shapes" shapes
-  );
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_shape_list op "shapes" shapes;
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let fIFOQueueV2
     ~component_types
-    ?shapes
-    ?capacity
-    ?container
-    ?shared_name
+    ?(shapes=[])
+    ?(capacity=(-1))
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "FIFOQueueV2" in
   Op.set_attr_type_list op "component_types" component_types;
-  Option.iter shapes ~f:(fun shapes ->
-    Op.set_attr_shape_list op "shapes" shapes
-  );
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_shape_list op "shapes" shapes;
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let fact
@@ -2666,56 +2374,40 @@ let fact
   Op.execute1 op
 
 let fakeQuantWithMinMaxArgs
-    ?min
-    ?max
-    ?num_bits
-    ?narrow_range
+    ?(min=(-6.))
+    ?(max=6.)
+    ?(num_bits=8)
+    ?(narrow_range=false)
     (inputs__ : [ `float ] t)
   =
   let op = Op.create context "FakeQuantWithMinMaxArgs" in
   Op.add_input op inputs__;
-  Option.iter min ~f:(fun min ->
-    Op.set_attr_float op "min" min
-  );
-  Option.iter max ~f:(fun max ->
-    Op.set_attr_float op "max" max
-  );
-  Option.iter num_bits ~f:(fun num_bits ->
-    Op.set_attr_int op "num_bits" num_bits
-  );
-  Option.iter narrow_range ~f:(fun narrow_range ->
-    Op.set_attr_bool op "narrow_range" narrow_range
-  );
+  Op.set_attr_float op "min" min;
+  Op.set_attr_float op "max" max;
+  Op.set_attr_int op "num_bits" num_bits;
+  Op.set_attr_bool op "narrow_range" narrow_range;
   Op.execute1 op
 
 let fakeQuantWithMinMaxArgsGradient
-    ?min
-    ?max
-    ?num_bits
-    ?narrow_range
+    ?(min=(-6.))
+    ?(max=6.)
+    ?(num_bits=8)
+    ?(narrow_range=false)
     (gradients : [ `float ] t)
     (inputs__ : [ `float ] t)
   =
   let op = Op.create context "FakeQuantWithMinMaxArgsGradient" in
   Op.add_input op gradients;
   Op.add_input op inputs__;
-  Option.iter min ~f:(fun min ->
-    Op.set_attr_float op "min" min
-  );
-  Option.iter max ~f:(fun max ->
-    Op.set_attr_float op "max" max
-  );
-  Option.iter num_bits ~f:(fun num_bits ->
-    Op.set_attr_int op "num_bits" num_bits
-  );
-  Option.iter narrow_range ~f:(fun narrow_range ->
-    Op.set_attr_bool op "narrow_range" narrow_range
-  );
+  Op.set_attr_float op "min" min;
+  Op.set_attr_float op "max" max;
+  Op.set_attr_int op "num_bits" num_bits;
+  Op.set_attr_bool op "narrow_range" narrow_range;
   Op.execute1 op
 
 let fakeQuantWithMinMaxVars
-    ?num_bits
-    ?narrow_range
+    ?(num_bits=8)
+    ?(narrow_range=false)
     (inputs__ : [ `float ] t)
     (min : [ `float ] t)
     (max : [ `float ] t)
@@ -2724,17 +2416,13 @@ let fakeQuantWithMinMaxVars
   Op.add_input op inputs__;
   Op.add_input op min;
   Op.add_input op max;
-  Option.iter num_bits ~f:(fun num_bits ->
-    Op.set_attr_int op "num_bits" num_bits
-  );
-  Option.iter narrow_range ~f:(fun narrow_range ->
-    Op.set_attr_bool op "narrow_range" narrow_range
-  );
+  Op.set_attr_int op "num_bits" num_bits;
+  Op.set_attr_bool op "narrow_range" narrow_range;
   Op.execute1 op
 
 let fakeQuantWithMinMaxVarsGradient
-    ?num_bits
-    ?narrow_range
+    ?(num_bits=8)
+    ?(narrow_range=false)
     (gradients : [ `float ] t)
     (inputs__ : [ `float ] t)
     (min : [ `float ] t)
@@ -2745,17 +2433,13 @@ let fakeQuantWithMinMaxVarsGradient
   Op.add_input op inputs__;
   Op.add_input op min;
   Op.add_input op max;
-  Option.iter num_bits ~f:(fun num_bits ->
-    Op.set_attr_int op "num_bits" num_bits
-  );
-  Option.iter narrow_range ~f:(fun narrow_range ->
-    Op.set_attr_bool op "narrow_range" narrow_range
-  );
+  Op.set_attr_int op "num_bits" num_bits;
+  Op.set_attr_bool op "narrow_range" narrow_range;
   Op.execute3 op
 
 let fakeQuantWithMinMaxVarsPerChannel
-    ?num_bits
-    ?narrow_range
+    ?(num_bits=8)
+    ?(narrow_range=false)
     (inputs__ : [ `float ] t)
     (min : [ `float ] t)
     (max : [ `float ] t)
@@ -2764,17 +2448,13 @@ let fakeQuantWithMinMaxVarsPerChannel
   Op.add_input op inputs__;
   Op.add_input op min;
   Op.add_input op max;
-  Option.iter num_bits ~f:(fun num_bits ->
-    Op.set_attr_int op "num_bits" num_bits
-  );
-  Option.iter narrow_range ~f:(fun narrow_range ->
-    Op.set_attr_bool op "narrow_range" narrow_range
-  );
+  Op.set_attr_int op "num_bits" num_bits;
+  Op.set_attr_bool op "narrow_range" narrow_range;
   Op.execute1 op
 
 let fakeQuantWithMinMaxVarsPerChannelGradient
-    ?num_bits
-    ?narrow_range
+    ?(num_bits=8)
+    ?(narrow_range=false)
     (gradients : [ `float ] t)
     (inputs__ : [ `float ] t)
     (min : [ `float ] t)
@@ -2785,12 +2465,8 @@ let fakeQuantWithMinMaxVarsPerChannelGradient
   Op.add_input op inputs__;
   Op.add_input op min;
   Op.add_input op max;
-  Option.iter num_bits ~f:(fun num_bits ->
-    Op.set_attr_int op "num_bits" num_bits
-  );
-  Option.iter narrow_range ~f:(fun narrow_range ->
-    Op.set_attr_bool op "narrow_range" narrow_range
-  );
+  Op.set_attr_int op "num_bits" num_bits;
+  Op.set_attr_bool op "narrow_range" narrow_range;
   Op.execute3 op
 
 let fakeQueue
@@ -2826,63 +2502,41 @@ let fixedLengthRecordDataset
   Op.execute1 op
 
 let fixedLengthRecordReader
-    ?header_bytes
+    ?(header_bytes=0)
     ~record_bytes
-    ?footer_bytes
-    ?hop_bytes
-    ?container
-    ?shared_name
+    ?(footer_bytes=0)
+    ?(hop_bytes=0)
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "FixedLengthRecordReader" in
-  Option.iter header_bytes ~f:(fun header_bytes ->
-    Op.set_attr_int op "header_bytes" header_bytes
-  );
+  Op.set_attr_int op "header_bytes" header_bytes;
   Op.set_attr_int op "record_bytes" record_bytes;
-  Option.iter footer_bytes ~f:(fun footer_bytes ->
-    Op.set_attr_int op "footer_bytes" footer_bytes
-  );
-  Option.iter hop_bytes ~f:(fun hop_bytes ->
-    Op.set_attr_int op "hop_bytes" hop_bytes
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_int op "footer_bytes" footer_bytes;
+  Op.set_attr_int op "hop_bytes" hop_bytes;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let fixedLengthRecordReaderV2
-    ?header_bytes
+    ?(header_bytes=0)
     ~record_bytes
-    ?footer_bytes
-    ?hop_bytes
-    ?container
-    ?shared_name
-    ?encoding
+    ?(footer_bytes=0)
+    ?(hop_bytes=0)
+    ?(container="")
+    ?(shared_name="")
+    ?(encoding="")
     ()
   =
   let op = Op.create context "FixedLengthRecordReaderV2" in
-  Option.iter header_bytes ~f:(fun header_bytes ->
-    Op.set_attr_int op "header_bytes" header_bytes
-  );
+  Op.set_attr_int op "header_bytes" header_bytes;
   Op.set_attr_int op "record_bytes" record_bytes;
-  Option.iter footer_bytes ~f:(fun footer_bytes ->
-    Op.set_attr_int op "footer_bytes" footer_bytes
-  );
-  Option.iter hop_bytes ~f:(fun hop_bytes ->
-    Op.set_attr_int op "hop_bytes" hop_bytes
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter encoding ~f:(fun encoding ->
-    Op.set_attr_string op "encoding" encoding
-  );
+  Op.set_attr_int op "footer_bytes" footer_bytes;
+  Op.set_attr_int op "hop_bytes" hop_bytes;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_string op "encoding" encoding;
   Op.execute1 op
 
 let fixedUnigramCandidateSampler
@@ -2890,14 +2544,14 @@ let fixedUnigramCandidateSampler
     ~num_sampled
     ~unique
     ~range_max
-    ?vocab_file
-    ?distortion
-    ?num_reserved_ids
-    ?num_shards
-    ?shard
-    ?unigrams
-    ?seed
-    ?seed2
+    ?(vocab_file="")
+    ?(distortion=1.)
+    ?(num_reserved_ids=0)
+    ?(num_shards=1)
+    ?(shard=0)
+    ?(unigrams=[])
+    ?(seed=0)
+    ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
   let op = Op.create context "FixedUnigramCandidateSampler" in
@@ -2906,30 +2560,14 @@ let fixedUnigramCandidateSampler
   Op.set_attr_int op "num_sampled" num_sampled;
   Op.set_attr_bool op "unique" unique;
   Op.set_attr_int op "range_max" range_max;
-  Option.iter vocab_file ~f:(fun vocab_file ->
-    Op.set_attr_string op "vocab_file" vocab_file
-  );
-  Option.iter distortion ~f:(fun distortion ->
-    Op.set_attr_float op "distortion" distortion
-  );
-  Option.iter num_reserved_ids ~f:(fun num_reserved_ids ->
-    Op.set_attr_int op "num_reserved_ids" num_reserved_ids
-  );
-  Option.iter num_shards ~f:(fun num_shards ->
-    Op.set_attr_int op "num_shards" num_shards
-  );
-  Option.iter shard ~f:(fun shard ->
-    Op.set_attr_int op "shard" shard
-  );
-  Option.iter unigrams ~f:(fun unigrams ->
-    Op.set_attr_float_list op "unigrams" unigrams
-  );
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_string op "vocab_file" vocab_file;
+  Op.set_attr_float op "distortion" distortion;
+  Op.set_attr_int op "num_reserved_ids" num_reserved_ids;
+  Op.set_attr_int op "num_shards" num_shards;
+  Op.set_attr_int op "shard" shard;
+  Op.set_attr_float_list op "unigrams" unigrams;
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute3 op
 
 let floor
@@ -2962,36 +2600,26 @@ let floorMod
 
 let fractionalAvgPool
     ~pooling_ratio
-    ?pseudo_random
-    ?overlapping
-    ?deterministic
-    ?seed
-    ?seed2
+    ?(pseudo_random=false)
+    ?(overlapping=false)
+    ?(deterministic=false)
+    ?(seed=0)
+    ?(seed2=0)
     (value : ([< `float | `double | `int32 | `int64 ] as 't) t)
   =
   let op = Op.create context "FractionalAvgPool" in
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_float_list op "pooling_ratio" pooling_ratio;
-  Option.iter pseudo_random ~f:(fun pseudo_random ->
-    Op.set_attr_bool op "pseudo_random" pseudo_random
-  );
-  Option.iter overlapping ~f:(fun overlapping ->
-    Op.set_attr_bool op "overlapping" overlapping
-  );
-  Option.iter deterministic ~f:(fun deterministic ->
-    Op.set_attr_bool op "deterministic" deterministic
-  );
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_bool op "pseudo_random" pseudo_random;
+  Op.set_attr_bool op "overlapping" overlapping;
+  Op.set_attr_bool op "deterministic" deterministic;
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute3 op
 
 let fractionalAvgPoolGrad
-    ?overlapping
+    ?(overlapping=false)
     (orig_input_tensor_shape : [ `int64 ] t)
     (out_backprop : ([< `float | `double | `int32 | `int64 ] as 't) t)
     (row_pooling_sequence : [ `int64 ] t)
@@ -3003,43 +2631,31 @@ let fractionalAvgPoolGrad
   Op.add_input op row_pooling_sequence;
   Op.add_input op col_pooling_sequence;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type out_backprop);
-  Option.iter overlapping ~f:(fun overlapping ->
-    Op.set_attr_bool op "overlapping" overlapping
-  );
+  Op.set_attr_bool op "overlapping" overlapping;
   Op.execute1 op
 
 let fractionalMaxPool
     ~pooling_ratio
-    ?pseudo_random
-    ?overlapping
-    ?deterministic
-    ?seed
-    ?seed2
+    ?(pseudo_random=false)
+    ?(overlapping=false)
+    ?(deterministic=false)
+    ?(seed=0)
+    ?(seed2=0)
     (value : ([< `float | `double | `int32 | `int64 ] as 't) t)
   =
   let op = Op.create context "FractionalMaxPool" in
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_float_list op "pooling_ratio" pooling_ratio;
-  Option.iter pseudo_random ~f:(fun pseudo_random ->
-    Op.set_attr_bool op "pseudo_random" pseudo_random
-  );
-  Option.iter overlapping ~f:(fun overlapping ->
-    Op.set_attr_bool op "overlapping" overlapping
-  );
-  Option.iter deterministic ~f:(fun deterministic ->
-    Op.set_attr_bool op "deterministic" deterministic
-  );
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_bool op "pseudo_random" pseudo_random;
+  Op.set_attr_bool op "overlapping" overlapping;
+  Op.set_attr_bool op "deterministic" deterministic;
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute3 op
 
 let fractionalMaxPoolGrad
-    ?overlapping
+    ?(overlapping=false)
     (orig_input : ([< `float | `double | `int32 | `int64 ] as 't) t)
     (orig_output : ([< `float | `double | `int32 | `int64 ] as 't) t)
     (out_backprop : ([< `float | `double | `int32 | `int64 ] as 't) t)
@@ -3053,15 +2669,13 @@ let fractionalMaxPoolGrad
   Op.add_input op row_pooling_sequence;
   Op.add_input op col_pooling_sequence;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
-  Option.iter overlapping ~f:(fun overlapping ->
-    Op.set_attr_bool op "overlapping" overlapping
-  );
+  Op.set_attr_bool op "overlapping" overlapping;
   Op.execute1 op
 
 let fusedBatchNorm
-    ?epsilon
-    ?data_format
-    ?is_training
+    ?(epsilon=9.9999997473787516e-05)
+    ?(data_format="NHWC")
+    ?(is_training=true)
     (x : ([< `float ] as 't) t)
     (scale : ([< `float ] as 't) t)
     (offset : ([< `float ] as 't) t)
@@ -3075,21 +2689,15 @@ let fusedBatchNorm
   Op.add_input op mean;
   Op.add_input op variance;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Option.iter epsilon ~f:(fun epsilon ->
-    Op.set_attr_float op "epsilon" epsilon
-  );
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
-  Option.iter is_training ~f:(fun is_training ->
-    Op.set_attr_bool op "is_training" is_training
-  );
+  Op.set_attr_float op "epsilon" epsilon;
+  Op.set_attr_string op "data_format" data_format;
+  Op.set_attr_bool op "is_training" is_training;
   Op.execute5 op
 
 let fusedBatchNormGrad
-    ?epsilon
-    ?data_format
-    ?is_training
+    ?(epsilon=9.9999997473787516e-05)
+    ?(data_format="NHWC")
+    ?(is_training=true)
     (y_backprop : ([< `float ] as 't) t)
     (x : ([< `float ] as 't) t)
     (scale : ([< `float ] as 't) t)
@@ -3103,21 +2711,15 @@ let fusedBatchNormGrad
   Op.add_input op reserve_space_1;
   Op.add_input op reserve_space_2;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
-  Option.iter epsilon ~f:(fun epsilon ->
-    Op.set_attr_float op "epsilon" epsilon
-  );
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
-  Option.iter is_training ~f:(fun is_training ->
-    Op.set_attr_bool op "is_training" is_training
-  );
+  Op.set_attr_float op "epsilon" epsilon;
+  Op.set_attr_string op "data_format" data_format;
+  Op.set_attr_bool op "is_training" is_training;
   Op.execute5 op
 
 let fusedBatchNormGradV2
-    ?epsilon
-    ?data_format
-    ?is_training
+    ?(epsilon=9.9999997473787516e-05)
+    ?(data_format="NHWC")
+    ?(is_training=true)
     (y_backprop : ([< `float ] as 't) t)
     (x : ([< `float ] as 't) t)
     (scale : [ `float ] t)
@@ -3132,21 +2734,15 @@ let fusedBatchNormGradV2
   Op.add_input op reserve_space_2;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y_backprop);
   Op.set_attr_data_type op "U" (Op.tensor_handle_data_type reserve_space_1);
-  Option.iter epsilon ~f:(fun epsilon ->
-    Op.set_attr_float op "epsilon" epsilon
-  );
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
-  Option.iter is_training ~f:(fun is_training ->
-    Op.set_attr_bool op "is_training" is_training
-  );
+  Op.set_attr_float op "epsilon" epsilon;
+  Op.set_attr_string op "data_format" data_format;
+  Op.set_attr_bool op "is_training" is_training;
   Op.execute5 op
 
 let fusedBatchNormV2
-    ?epsilon
-    ?data_format
-    ?is_training
+    ?(epsilon=9.9999997473787516e-05)
+    ?(data_format="NHWC")
+    ?(is_training=true)
     (x : ([< `float ] as 't) t)
     (scale : ([< `float ] as 'u) t)
     (offset : ([< `float ] as 'u) t)
@@ -3161,15 +2757,9 @@ let fusedBatchNormV2
   Op.add_input op variance;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
   Op.set_attr_data_type op "U" (Op.tensor_handle_data_type scale);
-  Option.iter epsilon ~f:(fun epsilon ->
-    Op.set_attr_float op "epsilon" epsilon
-  );
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
-  Option.iter is_training ~f:(fun is_training ->
-    Op.set_attr_bool op "is_training" is_training
-  );
+  Op.set_attr_float op "epsilon" epsilon;
+  Op.set_attr_string op "data_format" data_format;
+  Op.set_attr_bool op "is_training" is_training;
   Op.execute5 op
 
 let fusedPadConv2D
@@ -3191,7 +2781,7 @@ let fusedPadConv2D
   Op.execute1 op
 
 let fusedResizeAndPadConv2D
-    ?resize_align_corners
+    ?(resize_align_corners=false)
     ~mode
     ~strides
     ~padding
@@ -3206,16 +2796,14 @@ let fusedResizeAndPadConv2D
   Op.add_input op paddings;
   Op.add_input op filter;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter resize_align_corners ~f:(fun resize_align_corners ->
-    Op.set_attr_bool op "resize_align_corners" resize_align_corners
-  );
+  Op.set_attr_bool op "resize_align_corners" resize_align_corners;
   Op.set_attr_string op "mode" mode;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
   Op.execute1 op
 
 let gather
-    ?validate_indices
+    ?(validate_indices=true)
     (params : 'tparams t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
@@ -3224,9 +2812,7 @@ let gather
   Op.add_input op indices;
   Op.set_attr_data_type op "Tparams" (Op.tensor_handle_data_type params);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter validate_indices ~f:(fun validate_indices ->
-    Op.set_attr_bool op "validate_indices" validate_indices
-  );
+  Op.set_attr_bool op "validate_indices" validate_indices;
   Op.execute1 op
 
 let gatherNd
@@ -3321,39 +2907,27 @@ let hSVToRGB
   Op.execute1 op
 
 let hashTable
-    ?container
-    ?shared_name
-    ?use_node_name_sharing
+    ?(container="")
+    ?(shared_name="")
+    ?(use_node_name_sharing=false)
     ()
   =
   let op = Op.create context "HashTable" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter use_node_name_sharing ~f:(fun use_node_name_sharing ->
-    Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing;
   Op.execute1 op
 
 let hashTableV2
-    ?container
-    ?shared_name
-    ?use_node_name_sharing
+    ?(container="")
+    ?(shared_name="")
+    ?(use_node_name_sharing=false)
     ()
   =
   let op = Op.create context "HashTableV2" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter use_node_name_sharing ~f:(fun use_node_name_sharing ->
-    Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing;
   Op.execute1 op
 
 let histogramSummary
@@ -3423,31 +2997,23 @@ let identity
   Op.execute1 op
 
 let identityReader
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "IdentityReader" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let identityReaderV2
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "IdentityReaderV2" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let igamma
@@ -3492,7 +3058,7 @@ let imag
   Op.execute1 op
 
 let imageSummary
-    ?max_images
+    ?(max_images=3)
     (tag : [ `string ] t)
     (tensor : ([< `uInt8 | `float | `double ] as 't) t)
   =
@@ -3500,9 +3066,7 @@ let imageSummary
   Op.add_input op tag;
   Op.add_input op tensor;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
-  Option.iter max_images ~f:(fun max_images ->
-    Op.set_attr_int op "max_images" max_images
-  );
+  Op.set_attr_int op "max_images" max_images;
   Op.execute1 op
 
 let immutableConst
@@ -3557,8 +3121,8 @@ let initializeTable
 let initializeTableFromTextFile
     ~key_index
     ~value_index
-    ?vocab_size
-    ?delimiter
+    ?(vocab_size=(-1))
+    ?(delimiter="	")
     (table_handle : [ `string ] t)
     (filename : [ `string ] t)
   =
@@ -3567,19 +3131,15 @@ let initializeTableFromTextFile
   Op.add_input op filename;
   Op.set_attr_int op "key_index" key_index;
   Op.set_attr_int op "value_index" value_index;
-  Option.iter vocab_size ~f:(fun vocab_size ->
-    Op.set_attr_int op "vocab_size" vocab_size
-  );
-  Option.iter delimiter ~f:(fun delimiter ->
-    Op.set_attr_string op "delimiter" delimiter
-  );
+  Op.set_attr_int op "vocab_size" vocab_size;
+  Op.set_attr_string op "delimiter" delimiter;
   Op.execute0 op
 
 let initializeTableFromTextFileV2
     ~key_index
     ~value_index
-    ?vocab_size
-    ?delimiter
+    ?(vocab_size=(-1))
+    ?(delimiter="	")
     (table_handle : [ `resource ] t)
     (filename : [ `string ] t)
   =
@@ -3588,12 +3148,8 @@ let initializeTableFromTextFileV2
   Op.add_input op filename;
   Op.set_attr_int op "key_index" key_index;
   Op.set_attr_int op "value_index" value_index;
-  Option.iter vocab_size ~f:(fun vocab_size ->
-    Op.set_attr_int op "vocab_size" vocab_size
-  );
-  Option.iter delimiter ~f:(fun delimiter ->
-    Op.set_attr_string op "delimiter" delimiter
-  );
+  Op.set_attr_int op "vocab_size" vocab_size;
+  Op.set_attr_string op "delimiter" delimiter;
   Op.execute0 op
 
 let initializeTableV2
@@ -3690,18 +3246,14 @@ let iterator
   Op.execute1 op
 
 let iteratorFromStringHandle
-    ?output_types
-    ?output_shapes
+    ?(output_types=[])
+    ?(output_shapes=[])
     (string_handle : [ `string ] t)
   =
   let op = Op.create context "IteratorFromStringHandle" in
   Op.add_input op string_handle;
-  Option.iter output_types ~f:(fun output_types ->
-    Op.set_attr_type_list op "output_types" output_types
-  );
-  Option.iter output_shapes ~f:(fun output_shapes ->
-    Op.set_attr_shape_list op "output_shapes" output_shapes
-  );
+  Op.set_attr_type_list op "output_types" output_types;
+  Op.set_attr_shape_list op "output_shapes" output_shapes;
   Op.execute1 op
 
 let iteratorToStringHandle
@@ -3720,48 +3272,36 @@ let l2Loss
   Op.execute1 op
 
 let lMDBReader
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "LMDBReader" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let lRN
-    ?depth_radius
-    ?bias
-    ?alpha
-    ?beta
+    ?(depth_radius=5)
+    ?(bias=1.)
+    ?(alpha=1.)
+    ?(beta=0.5)
     (input : ([< `float ] as 't) t)
   =
   let op = Op.create context "LRN" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter depth_radius ~f:(fun depth_radius ->
-    Op.set_attr_int op "depth_radius" depth_radius
-  );
-  Option.iter bias ~f:(fun bias ->
-    Op.set_attr_float op "bias" bias
-  );
-  Option.iter alpha ~f:(fun alpha ->
-    Op.set_attr_float op "alpha" alpha
-  );
-  Option.iter beta ~f:(fun beta ->
-    Op.set_attr_float op "beta" beta
-  );
+  Op.set_attr_int op "depth_radius" depth_radius;
+  Op.set_attr_float op "bias" bias;
+  Op.set_attr_float op "alpha" alpha;
+  Op.set_attr_float op "beta" beta;
   Op.execute1 op
 
 let lRNGrad
-    ?depth_radius
-    ?bias
-    ?alpha
-    ?beta
+    ?(depth_radius=5)
+    ?(bias=1.)
+    ?(alpha=1.)
+    ?(beta=0.5)
     (input_grads : ([< `float ] as 't) t)
     (input_image : ([< `float ] as 't) t)
     (output_image : ([< `float ] as 't) t)
@@ -3771,18 +3311,10 @@ let lRNGrad
   Op.add_input op input_image;
   Op.add_input op output_image;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_grads);
-  Option.iter depth_radius ~f:(fun depth_radius ->
-    Op.set_attr_int op "depth_radius" depth_radius
-  );
-  Option.iter bias ~f:(fun bias ->
-    Op.set_attr_float op "bias" bias
-  );
-  Option.iter alpha ~f:(fun alpha ->
-    Op.set_attr_float op "alpha" alpha
-  );
-  Option.iter beta ~f:(fun beta ->
-    Op.set_attr_float op "beta" beta
-  );
+  Op.set_attr_int op "depth_radius" depth_radius;
+  Op.set_attr_float op "bias" bias;
+  Op.set_attr_float op "alpha" alpha;
+  Op.set_attr_float op "beta" beta;
   Op.execute1 op
 
 let learnedUnigramCandidateSampler
@@ -3790,8 +3322,8 @@ let learnedUnigramCandidateSampler
     ~num_sampled
     ~unique
     ~range_max
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
   let op = Op.create context "LearnedUnigramCandidateSampler" in
@@ -3800,12 +3332,8 @@ let learnedUnigramCandidateSampler
   Op.set_attr_int op "num_sampled" num_sampled;
   Op.set_attr_bool op "unique" unique;
   Op.set_attr_int op "range_max" range_max;
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute3 op
 
 let less
@@ -3864,7 +3392,7 @@ let listDiff
 let loadAndRemapMatrix
     ~num_rows
     ~num_cols
-    ?max_rows_in_memory
+    ?(max_rows_in_memory=(-1))
     (ckpt_path : [ `string ] t)
     (old_tensor_name : [ `string ] t)
     (row_remapping : [ `int64 ] t)
@@ -3879,9 +3407,7 @@ let loadAndRemapMatrix
   Op.add_input op initializing_values;
   Op.set_attr_int op "num_rows" num_rows;
   Op.set_attr_int op "num_cols" num_cols;
-  Option.iter max_rows_in_memory ~f:(fun max_rows_in_memory ->
-    Op.set_attr_int op "max_rows_in_memory" max_rows_in_memory
-  );
+  Op.set_attr_int op "max_rows_in_memory" max_rows_in_memory;
   Op.execute1 op
 
 let log
@@ -3921,8 +3447,8 @@ let logUniformCandidateSampler
     ~num_sampled
     ~unique
     ~range_max
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
   let op = Op.create context "LogUniformCandidateSampler" in
@@ -3931,12 +3457,8 @@ let logUniformCandidateSampler
   Op.set_attr_int op "num_sampled" num_sampled;
   Op.set_attr_bool op "unique" unique;
   Op.set_attr_int op "range_max" range_max;
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute3 op
 
 let logicalAnd
@@ -4095,80 +3617,56 @@ let makeIterator
   Op.execute0 op
 
 let mapClear
-    ?capacity
-    ?memory_limit
+    ?(capacity=0)
+    ?(memory_limit=0)
     ~dtypes
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "MapClear" in
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter memory_limit ~f:(fun memory_limit ->
-    Op.set_attr_int op "memory_limit" memory_limit
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "memory_limit" memory_limit;
   Op.set_attr_type_list op "dtypes" dtypes;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute0 op
 
 let mapIncompleteSize
-    ?capacity
-    ?memory_limit
+    ?(capacity=0)
+    ?(memory_limit=0)
     ~dtypes
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "MapIncompleteSize" in
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter memory_limit ~f:(fun memory_limit ->
-    Op.set_attr_int op "memory_limit" memory_limit
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "memory_limit" memory_limit;
   Op.set_attr_type_list op "dtypes" dtypes;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let mapSize
-    ?capacity
-    ?memory_limit
+    ?(capacity=0)
+    ?(memory_limit=0)
     ~dtypes
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "MapSize" in
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter memory_limit ~f:(fun memory_limit ->
-    Op.set_attr_int op "memory_limit" memory_limit
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "memory_limit" memory_limit;
   Op.set_attr_type_list op "dtypes" dtypes;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let matMul
-    ?transpose_a
-    ?transpose_b
+    ?(transpose_a=false)
+    ?(transpose_b=false)
     (a : ([< `float | `double | `int32 | `complex64 ] as 't) t)
     (b : ([< `float | `double | `int32 | `complex64 ] as 't) t)
   =
@@ -4176,12 +3674,8 @@ let matMul
   Op.add_input op a;
   Op.add_input op b;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a);
-  Option.iter transpose_a ~f:(fun transpose_a ->
-    Op.set_attr_bool op "transpose_a" transpose_a
-  );
-  Option.iter transpose_b ~f:(fun transpose_b ->
-    Op.set_attr_bool op "transpose_b" transpose_b
-  );
+  Op.set_attr_bool op "transpose_a" transpose_a;
+  Op.set_attr_bool op "transpose_b" transpose_b;
   Op.execute1 op
 
 let matchingFiles
@@ -4228,15 +3722,13 @@ let matrixDiagPart
   Op.execute1 op
 
 let matrixInverse
-    ?adjoint
+    ?(adjoint=false)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
   let op = Op.create context "MatrixInverse" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter adjoint ~f:(fun adjoint ->
-    Op.set_attr_bool op "adjoint" adjoint
-  );
+  Op.set_attr_bool op "adjoint" adjoint;
   Op.execute1 op
 
 let matrixSetDiag
@@ -4250,7 +3742,7 @@ let matrixSetDiag
   Op.execute1 op
 
 let matrixSolve
-    ?adjoint
+    ?(adjoint=false)
     (matrix : ([< `double | `float | `complex64 ] as 't) t)
     (rhs : ([< `double | `float | `complex64 ] as 't) t)
   =
@@ -4258,13 +3750,11 @@ let matrixSolve
   Op.add_input op matrix;
   Op.add_input op rhs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Option.iter adjoint ~f:(fun adjoint ->
-    Op.set_attr_bool op "adjoint" adjoint
-  );
+  Op.set_attr_bool op "adjoint" adjoint;
   Op.execute1 op
 
 let matrixSolveLs
-    ?fast
+    ?(fast=true)
     (matrix : ([< `double | `float | `complex64 ] as 't) t)
     (rhs : ([< `double | `float | `complex64 ] as 't) t)
     (l2_regularizer : [ `double ] t)
@@ -4274,14 +3764,12 @@ let matrixSolveLs
   Op.add_input op rhs;
   Op.add_input op l2_regularizer;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Option.iter fast ~f:(fun fast ->
-    Op.set_attr_bool op "fast" fast
-  );
+  Op.set_attr_bool op "fast" fast;
   Op.execute1 op
 
 let matrixTriangularSolve
-    ?lower
-    ?adjoint
+    ?(lower=true)
+    ?(adjoint=false)
     (matrix : ([< `double | `float | `complex64 ] as 't) t)
     (rhs : ([< `double | `float | `complex64 ] as 't) t)
   =
@@ -4289,16 +3777,12 @@ let matrixTriangularSolve
   Op.add_input op matrix;
   Op.add_input op rhs;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type matrix);
-  Option.iter lower ~f:(fun lower ->
-    Op.set_attr_bool op "lower" lower
-  );
-  Option.iter adjoint ~f:(fun adjoint ->
-    Op.set_attr_bool op "adjoint" adjoint
-  );
+  Op.set_attr_bool op "lower" lower;
+  Op.set_attr_bool op "adjoint" adjoint;
   Op.execute1 op
 
 let max
-    ?keep_dims
+    ?(keep_dims=false)
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
@@ -4307,16 +3791,14 @@ let max
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute1 op
 
 let maxPool
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "MaxPool" in
@@ -4325,16 +3807,14 @@ let maxPool
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let maxPool3D
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NDHWC")
     (input : ([< `float ] as 't) t)
   =
   let op = Op.create context "MaxPool3D" in
@@ -4343,16 +3823,14 @@ let maxPool3D
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let maxPool3DGrad
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NDHWC")
     (orig_input : ([< `float ] as 'tInput) t)
     (orig_output : ([< `float ] as 'tInput) t)
     (grad : ([< `float ] as 't) t)
@@ -4366,16 +3844,14 @@ let maxPool3DGrad
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let maxPool3DGradGrad
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NDHWC")
     (orig_input : ([< `float ] as 't) t)
     (orig_output : ([< `float ] as 't) t)
     (grad : ([< `float ] as 't) t)
@@ -4388,16 +3864,14 @@ let maxPool3DGradGrad
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let maxPoolGrad
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -4410,16 +3884,14 @@ let maxPoolGrad
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let maxPoolGradGrad
     ~ksize
     ~strides
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -4432,14 +3904,12 @@ let maxPoolGradGrad
   Op.set_attr_int_list op "ksize" ksize;
   Op.set_attr_int_list op "strides" strides;
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let maxPoolGradGradV2
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -4454,9 +3924,7 @@ let maxPoolGradGradV2
   Op.add_input op strides;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let maxPoolGradGradWithArgmax
@@ -4480,7 +3948,7 @@ let maxPoolGradGradWithArgmax
 
 let maxPoolGradV2
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -4495,9 +3963,7 @@ let maxPoolGradV2
   Op.add_input op strides;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type orig_input);
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let maxPoolGradWithArgmax
@@ -4521,7 +3987,7 @@ let maxPoolGradWithArgmax
 
 let maxPoolV2
     ~padding
-    ?data_format
+    ?(data_format="NHWC")
     (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (ksize : [ `int32 ] t)
     (strides : [ `int32 ] t)
@@ -4532,9 +3998,7 @@ let maxPoolV2
   Op.add_input op strides;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_string op "padding" padding;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let maxPoolWithArgmax
@@ -4564,7 +4028,7 @@ let maximum
   Op.execute1 op
 
 let mean
-    ?keep_dims
+    ?(keep_dims=false)
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
@@ -4573,9 +4037,7 @@ let mean
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute1 op
 
 let merge
@@ -4596,45 +4058,35 @@ let mergeSummary
   Op.execute1 op
 
 let mergeV2Checkpoints
-    ?delete_old_dirs
+    ?(delete_old_dirs=true)
     (checkpoint_prefixes : [ `string ] t)
     (destination_prefix : [ `string ] t)
   =
   let op = Op.create context "MergeV2Checkpoints" in
   Op.add_input op checkpoint_prefixes;
   Op.add_input op destination_prefix;
-  Option.iter delete_old_dirs ~f:(fun delete_old_dirs ->
-    Op.set_attr_bool op "delete_old_dirs" delete_old_dirs
-  );
+  Op.set_attr_bool op "delete_old_dirs" delete_old_dirs;
   Op.execute0 op
 
 let mfcc
-    ?upper_frequency_limit
-    ?lower_frequency_limit
-    ?filterbank_channel_count
-    ?dct_coefficient_count
+    ?(upper_frequency_limit=4000.)
+    ?(lower_frequency_limit=20.)
+    ?(filterbank_channel_count=40)
+    ?(dct_coefficient_count=13)
     (spectrogram : [ `float ] t)
     (sample_rate : [ `int32 ] t)
   =
   let op = Op.create context "Mfcc" in
   Op.add_input op spectrogram;
   Op.add_input op sample_rate;
-  Option.iter upper_frequency_limit ~f:(fun upper_frequency_limit ->
-    Op.set_attr_float op "upper_frequency_limit" upper_frequency_limit
-  );
-  Option.iter lower_frequency_limit ~f:(fun lower_frequency_limit ->
-    Op.set_attr_float op "lower_frequency_limit" lower_frequency_limit
-  );
-  Option.iter filterbank_channel_count ~f:(fun filterbank_channel_count ->
-    Op.set_attr_int op "filterbank_channel_count" filterbank_channel_count
-  );
-  Option.iter dct_coefficient_count ~f:(fun dct_coefficient_count ->
-    Op.set_attr_int op "dct_coefficient_count" dct_coefficient_count
-  );
+  Op.set_attr_float op "upper_frequency_limit" upper_frequency_limit;
+  Op.set_attr_float op "lower_frequency_limit" lower_frequency_limit;
+  Op.set_attr_int op "filterbank_channel_count" filterbank_channel_count;
+  Op.set_attr_int op "dct_coefficient_count" dct_coefficient_count;
   Op.execute1 op
 
 let min
-    ?keep_dims
+    ?(keep_dims=false)
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
@@ -4643,9 +4095,7 @@ let min
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute1 op
 
 let minimum
@@ -4705,8 +4155,8 @@ let mul
   Op.execute1 op
 
 let multinomial
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (logits : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (num_samples : [ `int32 ] t)
   =
@@ -4714,156 +4164,100 @@ let multinomial
   Op.add_input op logits;
   Op.add_input op num_samples;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type logits);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let mutableDenseHashTable
-    ?container
-    ?shared_name
-    ?use_node_name_sharing
-    ?value_shape
-    ?initial_num_buckets
-    ?max_load_factor
+    ?(container="")
+    ?(shared_name="")
+    ?(use_node_name_sharing=false)
+    ?(value_shape=[])
+    ?(initial_num_buckets=131072)
+    ?(max_load_factor=0.800000011920929)
     (empty_key : 'key_dtype t)
   =
   let op = Op.create context "MutableDenseHashTable" in
   Op.add_input op empty_key;
   Op.set_attr_data_type op "key_dtype" (Op.tensor_handle_data_type empty_key);
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter use_node_name_sharing ~f:(fun use_node_name_sharing ->
-    Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing
-  );
-  Option.iter value_shape ~f:(fun value_shape ->
-    Op.set_attr_shape op "value_shape" value_shape
-  );
-  Option.iter initial_num_buckets ~f:(fun initial_num_buckets ->
-    Op.set_attr_int op "initial_num_buckets" initial_num_buckets
-  );
-  Option.iter max_load_factor ~f:(fun max_load_factor ->
-    Op.set_attr_float op "max_load_factor" max_load_factor
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing;
+  Op.set_attr_shape op "value_shape" value_shape;
+  Op.set_attr_int op "initial_num_buckets" initial_num_buckets;
+  Op.set_attr_float op "max_load_factor" max_load_factor;
   Op.execute1 op
 
 let mutableDenseHashTableV2
-    ?container
-    ?shared_name
-    ?use_node_name_sharing
-    ?value_shape
-    ?initial_num_buckets
-    ?max_load_factor
+    ?(container="")
+    ?(shared_name="")
+    ?(use_node_name_sharing=false)
+    ?(value_shape=[])
+    ?(initial_num_buckets=131072)
+    ?(max_load_factor=0.800000011920929)
     (empty_key : 'key_dtype t)
   =
   let op = Op.create context "MutableDenseHashTableV2" in
   Op.add_input op empty_key;
   Op.set_attr_data_type op "key_dtype" (Op.tensor_handle_data_type empty_key);
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter use_node_name_sharing ~f:(fun use_node_name_sharing ->
-    Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing
-  );
-  Option.iter value_shape ~f:(fun value_shape ->
-    Op.set_attr_shape op "value_shape" value_shape
-  );
-  Option.iter initial_num_buckets ~f:(fun initial_num_buckets ->
-    Op.set_attr_int op "initial_num_buckets" initial_num_buckets
-  );
-  Option.iter max_load_factor ~f:(fun max_load_factor ->
-    Op.set_attr_float op "max_load_factor" max_load_factor
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing;
+  Op.set_attr_shape op "value_shape" value_shape;
+  Op.set_attr_int op "initial_num_buckets" initial_num_buckets;
+  Op.set_attr_float op "max_load_factor" max_load_factor;
   Op.execute1 op
 
 let mutableHashTable
-    ?container
-    ?shared_name
-    ?use_node_name_sharing
+    ?(container="")
+    ?(shared_name="")
+    ?(use_node_name_sharing=false)
     ()
   =
   let op = Op.create context "MutableHashTable" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter use_node_name_sharing ~f:(fun use_node_name_sharing ->
-    Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing;
   Op.execute1 op
 
 let mutableHashTableOfTensors
-    ?container
-    ?shared_name
-    ?use_node_name_sharing
-    ?value_shape
+    ?(container="")
+    ?(shared_name="")
+    ?(use_node_name_sharing=false)
+    ?(value_shape=[])
     ()
   =
   let op = Op.create context "MutableHashTableOfTensors" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter use_node_name_sharing ~f:(fun use_node_name_sharing ->
-    Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing
-  );
-  Option.iter value_shape ~f:(fun value_shape ->
-    Op.set_attr_shape op "value_shape" value_shape
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing;
+  Op.set_attr_shape op "value_shape" value_shape;
   Op.execute1 op
 
 let mutableHashTableOfTensorsV2
-    ?container
-    ?shared_name
-    ?use_node_name_sharing
-    ?value_shape
+    ?(container="")
+    ?(shared_name="")
+    ?(use_node_name_sharing=false)
+    ?(value_shape=[])
     ()
   =
   let op = Op.create context "MutableHashTableOfTensorsV2" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter use_node_name_sharing ~f:(fun use_node_name_sharing ->
-    Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing
-  );
-  Option.iter value_shape ~f:(fun value_shape ->
-    Op.set_attr_shape op "value_shape" value_shape
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing;
+  Op.set_attr_shape op "value_shape" value_shape;
   Op.execute1 op
 
 let mutableHashTableV2
-    ?container
-    ?shared_name
-    ?use_node_name_sharing
+    ?(container="")
+    ?(shared_name="")
+    ?(use_node_name_sharing=false)
     ()
   =
   let op = Op.create context "MutableHashTableV2" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter use_node_name_sharing ~f:(fun use_node_name_sharing ->
-    Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_bool op "use_node_name_sharing" use_node_name_sharing;
   Op.execute1 op
 
 let neg
@@ -4908,7 +4302,7 @@ let noOp
   Op.execute0 op
 
 let nonMaxSuppression
-    ?iou_threshold
+    ?(iou_threshold=0.5)
     (boxes : [ `float ] t)
     (scores : [ `float ] t)
     (max_output_size : [ `int32 ] t)
@@ -4917,9 +4311,7 @@ let nonMaxSuppression
   Op.add_input op boxes;
   Op.add_input op scores;
   Op.add_input op max_output_size;
-  Option.iter iou_threshold ~f:(fun iou_threshold ->
-    Op.set_attr_float op "iou_threshold" iou_threshold
-  );
+  Op.set_attr_float op "iou_threshold" iou_threshold;
   Op.execute1 op
 
 let nonMaxSuppressionV2
@@ -4946,7 +4338,7 @@ let notEqual
   Op.execute1 op
 
 let oneHot
-    ?axis
+    ?(axis=(-1))
     (indices : ([< `uInt8 | `int32 | `int64 ] as 'tI) t)
     (depth : [ `int32 ] t)
     (on_value : 't t)
@@ -4959,27 +4351,21 @@ let oneHot
   Op.add_input op off_value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type on_value);
   Op.set_attr_data_type op "TI" (Op.tensor_handle_data_type indices);
-  Option.iter axis ~f:(fun axis ->
-    Op.set_attr_int op "axis" axis
-  );
+  Op.set_attr_int op "axis" axis;
   Op.execute1 op
 
 let oneShotIterator
     ~output_types
     ~output_shapes
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "OneShotIterator" in
   Op.set_attr_type_list op "output_types" output_types;
   Op.set_attr_shape_list op "output_shapes" output_shapes;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let onesLike
@@ -4991,88 +4377,62 @@ let onesLike
   Op.execute1 op
 
 let orderedMapClear
-    ?capacity
-    ?memory_limit
+    ?(capacity=0)
+    ?(memory_limit=0)
     ~dtypes
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "OrderedMapClear" in
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter memory_limit ~f:(fun memory_limit ->
-    Op.set_attr_int op "memory_limit" memory_limit
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "memory_limit" memory_limit;
   Op.set_attr_type_list op "dtypes" dtypes;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute0 op
 
 let orderedMapIncompleteSize
-    ?capacity
-    ?memory_limit
+    ?(capacity=0)
+    ?(memory_limit=0)
     ~dtypes
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "OrderedMapIncompleteSize" in
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter memory_limit ~f:(fun memory_limit ->
-    Op.set_attr_int op "memory_limit" memory_limit
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "memory_limit" memory_limit;
   Op.set_attr_type_list op "dtypes" dtypes;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let orderedMapSize
-    ?capacity
-    ?memory_limit
+    ?(capacity=0)
+    ?(memory_limit=0)
     ~dtypes
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "OrderedMapSize" in
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter memory_limit ~f:(fun memory_limit ->
-    Op.set_attr_int op "memory_limit" memory_limit
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "memory_limit" memory_limit;
   Op.set_attr_type_list op "dtypes" dtypes;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let pack
-    ?axis
+    ?(axis=0)
     (values : 't t list)
   =
   let op = Op.create context "Pack" in
   List.iter values ~f:(Op.add_input op);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type (List.hd_exn values));
   Op.set_attr_int op "N" (List.length values);
-  Option.iter axis ~f:(fun axis ->
-    Op.set_attr_int op "axis" axis
-  );
+  Op.set_attr_int op "axis" axis;
   Op.execute1 op
 
 let pad
@@ -5101,50 +4461,34 @@ let padV2
 
 let paddingFIFOQueue
     ~component_types
-    ?shapes
-    ?capacity
-    ?container
-    ?shared_name
+    ?(shapes=[])
+    ?(capacity=(-1))
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "PaddingFIFOQueue" in
   Op.set_attr_type_list op "component_types" component_types;
-  Option.iter shapes ~f:(fun shapes ->
-    Op.set_attr_shape_list op "shapes" shapes
-  );
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_shape_list op "shapes" shapes;
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let paddingFIFOQueueV2
     ~component_types
-    ?shapes
-    ?capacity
-    ?container
-    ?shared_name
+    ?(shapes=[])
+    ?(capacity=(-1))
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "PaddingFIFOQueueV2" in
   Op.set_attr_type_list op "component_types" component_types;
-  Option.iter shapes ~f:(fun shapes ->
-    Op.set_attr_shape_list op "shapes" shapes
-  );
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_shape_list op "shapes" shapes;
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let parallelConcat
@@ -5170,8 +4514,8 @@ let parallelDynamicStitch
   Op.execute1 op
 
 let parameterizedTruncatedNormal
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 't) t)
     (means : ([< `float | `double ] as 'dtype) t)
     (stdevs : ([< `float | `double ] as 'dtype) t)
@@ -5186,12 +4530,8 @@ let parameterizedTruncatedNormal
   Op.add_input op maxvals;
   Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type means);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let parseTensor
@@ -5205,14 +4545,12 @@ let parseTensor
 
 let placeholder
     ~type_dtype
-    ?shape
+    ?(shape=[])
     ()
   =
   let op = Op.create context "Placeholder" in
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter shape ~f:(fun shape ->
-    Op.set_attr_shape op "shape" shape
-  );
+  Op.set_attr_shape op "shape" shape;
   Op.execute1 op
 
 let placeholderV2
@@ -5277,67 +4615,49 @@ let prefetchDataset
   Op.execute1 op
 
 let preventGradient
-    ?message
+    ?(message="")
     (input : 't t)
   =
   let op = Op.create context "PreventGradient" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter message ~f:(fun message ->
-    Op.set_attr_string op "message" message
-  );
+  Op.set_attr_string op "message" message;
   Op.execute1 op
 
 let priorityQueue
-    ?component_types
+    ?(component_types=[])
     ~shapes
-    ?capacity
-    ?container
-    ?shared_name
+    ?(capacity=(-1))
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "PriorityQueue" in
-  Option.iter component_types ~f:(fun component_types ->
-    Op.set_attr_type_list op "component_types" component_types
-  );
+  Op.set_attr_type_list op "component_types" component_types;
   Op.set_attr_shape_list op "shapes" shapes;
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let priorityQueueV2
-    ?component_types
+    ?(component_types=[])
     ~shapes
-    ?capacity
-    ?container
-    ?shared_name
+    ?(capacity=(-1))
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "PriorityQueueV2" in
-  Option.iter component_types ~f:(fun component_types ->
-    Op.set_attr_type_list op "component_types" component_types
-  );
+  Op.set_attr_type_list op "component_types" component_types;
   Op.set_attr_shape_list op "shapes" shapes;
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let prod
-    ?keep_dims
+    ?(keep_dims=false)
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
@@ -5346,55 +4666,41 @@ let prod
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute1 op
 
 let qr
-    ?full_matrices
+    ?(full_matrices=false)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
   let op = Op.create context "Qr" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter full_matrices ~f:(fun full_matrices ->
-    Op.set_attr_bool op "full_matrices" full_matrices
-  );
+  Op.set_attr_bool op "full_matrices" full_matrices;
   Op.execute2 op
 
 let quantizeAndDequantize
-    ?signed_input
-    ?num_bits
-    ?range_given
-    ?input_min
-    ?input_max
+    ?(signed_input=true)
+    ?(num_bits=8)
+    ?(range_given=false)
+    ?(input_min=0.)
+    ?(input_max=0.)
     (input : ([< `float | `double ] as 't) t)
   =
   let op = Op.create context "QuantizeAndDequantize" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter signed_input ~f:(fun signed_input ->
-    Op.set_attr_bool op "signed_input" signed_input
-  );
-  Option.iter num_bits ~f:(fun num_bits ->
-    Op.set_attr_int op "num_bits" num_bits
-  );
-  Option.iter range_given ~f:(fun range_given ->
-    Op.set_attr_bool op "range_given" range_given
-  );
-  Option.iter input_min ~f:(fun input_min ->
-    Op.set_attr_float op "input_min" input_min
-  );
-  Option.iter input_max ~f:(fun input_max ->
-    Op.set_attr_float op "input_max" input_max
-  );
+  Op.set_attr_bool op "signed_input" signed_input;
+  Op.set_attr_int op "num_bits" num_bits;
+  Op.set_attr_bool op "range_given" range_given;
+  Op.set_attr_float op "input_min" input_min;
+  Op.set_attr_float op "input_max" input_max;
   Op.execute1 op
 
 let quantizeAndDequantizeV2
-    ?signed_input
-    ?num_bits
-    ?range_given
+    ?(signed_input=true)
+    ?(num_bits=8)
+    ?(range_given=false)
     (input : ([< `float | `double ] as 't) t)
     (input_min : ([< `float | `double ] as 't) t)
     (input_max : ([< `float | `double ] as 't) t)
@@ -5404,20 +4710,14 @@ let quantizeAndDequantizeV2
   Op.add_input op input_min;
   Op.add_input op input_max;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter signed_input ~f:(fun signed_input ->
-    Op.set_attr_bool op "signed_input" signed_input
-  );
-  Option.iter num_bits ~f:(fun num_bits ->
-    Op.set_attr_int op "num_bits" num_bits
-  );
-  Option.iter range_given ~f:(fun range_given ->
-    Op.set_attr_bool op "range_given" range_given
-  );
+  Op.set_attr_bool op "signed_input" signed_input;
+  Op.set_attr_int op "num_bits" num_bits;
+  Op.set_attr_bool op "range_given" range_given;
   Op.execute1 op
 
 let quantizeAndDequantizeV3
-    ?signed_input
-    ?range_given
+    ?(signed_input=true)
+    ?(range_given=true)
     (input : ([< `float | `double ] as 't) t)
     (input_min : ([< `float | `double ] as 't) t)
     (input_max : ([< `float | `double ] as 't) t)
@@ -5429,12 +4729,8 @@ let quantizeAndDequantizeV3
   Op.add_input op input_max;
   Op.add_input op num_bits;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter signed_input ~f:(fun signed_input ->
-    Op.set_attr_bool op "signed_input" signed_input
-  );
-  Option.iter range_given ~f:(fun range_given ->
-    Op.set_attr_bool op "range_given" range_given
-  );
+  Op.set_attr_bool op "signed_input" signed_input;
+  Op.set_attr_bool op "range_given" range_given;
   Op.execute1 op
 
 let quantizeDownAndShrinkRange
@@ -5453,7 +4749,7 @@ let quantizeDownAndShrinkRange
 
 let quantizeV2
     ~type_t
-    ?mode
+    ?(mode="MIN_COMBINED")
     (input : [ `float ] t)
     (min_range : [ `float ] t)
     (max_range : [ `float ] t)
@@ -5463,9 +4759,7 @@ let quantizeV2
   Op.add_input op min_range;
   Op.add_input op max_range;
   Op.set_attr_data_type op "T" Operation.Type.(to_data_type (P type_t));
-  Option.iter mode ~f:(fun mode ->
-    Op.set_attr_string op "mode" mode
-  );
+  Op.set_attr_string op "mode" mode;
   Op.execute3 op
 
 let quantizedAdd
@@ -5611,11 +4905,11 @@ let quantizedConv2D
   Op.execute3 op
 
 let quantizedInstanceNorm
-    ?output_range_given
-    ?given_y_min
-    ?given_y_max
-    ?variance_epsilon
-    ?min_separation
+    ?(output_range_given=false)
+    ?(given_y_min=0.)
+    ?(given_y_max=0.)
+    ?(variance_epsilon=9.9999997473787516e-06)
+    ?(min_separation=0.0010000000474974513)
     (x : 't t)
     (x_min : [ `float ] t)
     (x_max : [ `float ] t)
@@ -5625,27 +4919,17 @@ let quantizedInstanceNorm
   Op.add_input op x_min;
   Op.add_input op x_max;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type x);
-  Option.iter output_range_given ~f:(fun output_range_given ->
-    Op.set_attr_bool op "output_range_given" output_range_given
-  );
-  Option.iter given_y_min ~f:(fun given_y_min ->
-    Op.set_attr_float op "given_y_min" given_y_min
-  );
-  Option.iter given_y_max ~f:(fun given_y_max ->
-    Op.set_attr_float op "given_y_max" given_y_max
-  );
-  Option.iter variance_epsilon ~f:(fun variance_epsilon ->
-    Op.set_attr_float op "variance_epsilon" variance_epsilon
-  );
-  Option.iter min_separation ~f:(fun min_separation ->
-    Op.set_attr_float op "min_separation" min_separation
-  );
+  Op.set_attr_bool op "output_range_given" output_range_given;
+  Op.set_attr_float op "given_y_min" given_y_min;
+  Op.set_attr_float op "given_y_max" given_y_max;
+  Op.set_attr_float op "variance_epsilon" variance_epsilon;
+  Op.set_attr_float op "min_separation" min_separation;
   Op.execute3 op
 
 let quantizedMatMul
     ~type_toutput
-    ?transpose_a
-    ?transpose_b
+    ?(transpose_a=false)
+    ?(transpose_b=false)
     (a : 't1 t)
     (b : 't2 t)
     (min_a : [ `float ] t)
@@ -5663,12 +4947,8 @@ let quantizedMatMul
   Op.set_attr_data_type op "Toutput" Operation.Type.(to_data_type (P type_toutput));
   Op.set_attr_data_type op "T1" (Op.tensor_handle_data_type a);
   Op.set_attr_data_type op "T2" (Op.tensor_handle_data_type b);
-  Option.iter transpose_a ~f:(fun transpose_a ->
-    Op.set_attr_bool op "transpose_a" transpose_a
-  );
-  Option.iter transpose_b ~f:(fun transpose_b ->
-    Op.set_attr_bool op "transpose_b" transpose_b
-  );
+  Op.set_attr_bool op "transpose_a" transpose_a;
+  Op.set_attr_bool op "transpose_b" transpose_b;
   Op.execute3 op
 
 let quantizedMaxPool
@@ -5770,7 +5050,7 @@ let quantizedReshape
   Op.execute3 op
 
 let quantizedResizeBilinear
-    ?align_corners
+    ?(align_corners=false)
     (images : ([< `float ] as 't) t)
     (size : [ `int32 ] t)
     (min : [ `float ] t)
@@ -5782,31 +5062,25 @@ let quantizedResizeBilinear
   Op.add_input op min;
   Op.add_input op max;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
-  Option.iter align_corners ~f:(fun align_corners ->
-    Op.set_attr_bool op "align_corners" align_corners
-  );
+  Op.set_attr_bool op "align_corners" align_corners;
   Op.execute3 op
 
 let queueClose
-    ?cancel_pending_enqueues
+    ?(cancel_pending_enqueues=false)
     (handle : [ `string ] t)
   =
   let op = Op.create context "QueueClose" in
   Op.add_input op handle;
-  Option.iter cancel_pending_enqueues ~f:(fun cancel_pending_enqueues ->
-    Op.set_attr_bool op "cancel_pending_enqueues" cancel_pending_enqueues
-  );
+  Op.set_attr_bool op "cancel_pending_enqueues" cancel_pending_enqueues;
   Op.execute0 op
 
 let queueCloseV2
-    ?cancel_pending_enqueues
+    ?(cancel_pending_enqueues=false)
     (handle : [ `resource ] t)
   =
   let op = Op.create context "QueueCloseV2" in
   Op.add_input op handle;
-  Option.iter cancel_pending_enqueues ~f:(fun cancel_pending_enqueues ->
-    Op.set_attr_bool op "cancel_pending_enqueues" cancel_pending_enqueues
-  );
+  Op.set_attr_bool op "cancel_pending_enqueues" cancel_pending_enqueues;
   Op.execute0 op
 
 let queueIsClosed
@@ -5873,8 +5147,8 @@ let rGBToHSV
   Op.execute1 op
 
 let randomCrop
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (image : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int64 ] t)
   =
@@ -5882,17 +5156,13 @@ let randomCrop
   Op.add_input op image;
   Op.add_input op size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let randomGamma
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 's) t)
     (alpha : ([< `float | `double ] as 't) t)
   =
@@ -5901,17 +5171,13 @@ let randomGamma
   Op.add_input op alpha;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type alpha);
   Op.set_attr_data_type op "S" (Op.tensor_handle_data_type shape);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let randomPoisson
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 's) t)
     (rate : ([< `float | `double ] as 'dtype) t)
   =
@@ -5920,18 +5186,14 @@ let randomPoisson
   Op.add_input op rate;
   Op.set_attr_data_type op "dtype" (Op.tensor_handle_data_type rate);
   Op.set_attr_data_type op "S" (Op.tensor_handle_data_type shape);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let randomPoissonV2
     ~type_dtype
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 's) t)
     (rate : ([< `float | `double | `int32 | `int64 ] as 'r) t)
   =
@@ -5941,141 +5203,97 @@ let randomPoissonV2
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "S" (Op.tensor_handle_data_type shape);
   Op.set_attr_data_type op "R" (Op.tensor_handle_data_type rate);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let randomShuffle
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (value : 't t)
   =
   let op = Op.create context "RandomShuffle" in
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let randomShuffleQueue
     ~component_types
-    ?shapes
-    ?capacity
-    ?min_after_dequeue
-    ?seed
-    ?seed2
-    ?container
-    ?shared_name
+    ?(shapes=[])
+    ?(capacity=(-1))
+    ?(min_after_dequeue=0)
+    ?(seed=0)
+    ?(seed2=0)
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "RandomShuffleQueue" in
   Op.set_attr_type_list op "component_types" component_types;
-  Option.iter shapes ~f:(fun shapes ->
-    Op.set_attr_shape_list op "shapes" shapes
-  );
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter min_after_dequeue ~f:(fun min_after_dequeue ->
-    Op.set_attr_int op "min_after_dequeue" min_after_dequeue
-  );
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_shape_list op "shapes" shapes;
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "min_after_dequeue" min_after_dequeue;
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let randomShuffleQueueV2
     ~component_types
-    ?shapes
-    ?capacity
-    ?min_after_dequeue
-    ?seed
-    ?seed2
-    ?container
-    ?shared_name
+    ?(shapes=[])
+    ?(capacity=(-1))
+    ?(min_after_dequeue=0)
+    ?(seed=0)
+    ?(seed2=0)
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "RandomShuffleQueueV2" in
   Op.set_attr_type_list op "component_types" component_types;
-  Option.iter shapes ~f:(fun shapes ->
-    Op.set_attr_shape_list op "shapes" shapes
-  );
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter min_after_dequeue ~f:(fun min_after_dequeue ->
-    Op.set_attr_int op "min_after_dequeue" min_after_dequeue
-  );
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_shape_list op "shapes" shapes;
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "min_after_dequeue" min_after_dequeue;
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let randomStandardNormal
     ~type_dtype
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 't) t)
   =
   let op = Op.create context "RandomStandardNormal" in
   Op.add_input op shape;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let randomUniform
     ~type_dtype
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 't) t)
   =
   let op = Op.create context "RandomUniform" in
   Op.add_input op shape;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let randomUniformInt
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 't) t)
     (minval : ([< `int32 | `int64 ] as 'tout) t)
     (maxval : ([< `int32 | `int64 ] as 'tout) t)
@@ -6086,12 +5304,8 @@ let randomUniformInt
   Op.add_input op maxval;
   Op.set_attr_data_type op "Tout" (Op.tensor_handle_data_type minval);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let range
@@ -6290,65 +5504,47 @@ let reciprocalGrad
 
 let recordInput
     ~file_pattern
-    ?file_random_seed
-    ?file_shuffle_shift_ratio
-    ?file_buffer_size
-    ?file_parallelism
-    ?batch_size
+    ?(file_random_seed=301)
+    ?(file_shuffle_shift_ratio=0.)
+    ?(file_buffer_size=10000)
+    ?(file_parallelism=16)
+    ?(batch_size=32)
     ()
   =
   let op = Op.create context "RecordInput" in
   Op.set_attr_string op "file_pattern" file_pattern;
-  Option.iter file_random_seed ~f:(fun file_random_seed ->
-    Op.set_attr_int op "file_random_seed" file_random_seed
-  );
-  Option.iter file_shuffle_shift_ratio ~f:(fun file_shuffle_shift_ratio ->
-    Op.set_attr_float op "file_shuffle_shift_ratio" file_shuffle_shift_ratio
-  );
-  Option.iter file_buffer_size ~f:(fun file_buffer_size ->
-    Op.set_attr_int op "file_buffer_size" file_buffer_size
-  );
-  Option.iter file_parallelism ~f:(fun file_parallelism ->
-    Op.set_attr_int op "file_parallelism" file_parallelism
-  );
-  Option.iter batch_size ~f:(fun batch_size ->
-    Op.set_attr_int op "batch_size" batch_size
-  );
+  Op.set_attr_int op "file_random_seed" file_random_seed;
+  Op.set_attr_float op "file_shuffle_shift_ratio" file_shuffle_shift_ratio;
+  Op.set_attr_int op "file_buffer_size" file_buffer_size;
+  Op.set_attr_int op "file_parallelism" file_parallelism;
+  Op.set_attr_int op "batch_size" batch_size;
   Op.execute1 op
 
 let reduceJoin
-    ?keep_dims
-    ?separator
+    ?(keep_dims=false)
+    ?(separator="")
     (inputs__ : [ `string ] t)
     (reduction_indices : [ `int32 ] t)
   =
   let op = Op.create context "ReduceJoin" in
   Op.add_input op inputs__;
   Op.add_input op reduction_indices;
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
-  Option.iter separator ~f:(fun separator ->
-    Op.set_attr_string op "separator" separator
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
+  Op.set_attr_string op "separator" separator;
   Op.execute1 op
 
 let refEnter
     ~frame_name
-    ?is_constant
-    ?parallel_iterations
+    ?(is_constant=false)
+    ?(parallel_iterations=10)
     (data : 't t)
   =
   let op = Op.create context "RefEnter" in
   Op.add_input op data;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type data);
   Op.set_attr_string op "frame_name" frame_name;
-  Option.iter is_constant ~f:(fun is_constant ->
-    Op.set_attr_bool op "is_constant" is_constant
-  );
-  Option.iter parallel_iterations ~f:(fun parallel_iterations ->
-    Op.set_attr_int op "parallel_iterations" parallel_iterations
-  );
+  Op.set_attr_bool op "is_constant" is_constant;
+  Op.set_attr_int op "parallel_iterations" parallel_iterations;
   Op.execute1 op
 
 let refExit
@@ -6496,7 +5692,7 @@ let reshape
   Op.execute1 op
 
 let resizeArea
-    ?align_corners
+    ?(align_corners=false)
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
@@ -6504,13 +5700,11 @@ let resizeArea
   Op.add_input op images;
   Op.add_input op size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
-  Option.iter align_corners ~f:(fun align_corners ->
-    Op.set_attr_bool op "align_corners" align_corners
-  );
+  Op.set_attr_bool op "align_corners" align_corners;
   Op.execute1 op
 
 let resizeBicubic
-    ?align_corners
+    ?(align_corners=false)
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
@@ -6518,13 +5712,11 @@ let resizeBicubic
   Op.add_input op images;
   Op.add_input op size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
-  Option.iter align_corners ~f:(fun align_corners ->
-    Op.set_attr_bool op "align_corners" align_corners
-  );
+  Op.set_attr_bool op "align_corners" align_corners;
   Op.execute1 op
 
 let resizeBicubicGrad
-    ?align_corners
+    ?(align_corners=false)
     (grads : [ `float ] t)
     (original_image : ([< `float | `double ] as 't) t)
   =
@@ -6532,13 +5724,11 @@ let resizeBicubicGrad
   Op.add_input op grads;
   Op.add_input op original_image;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type original_image);
-  Option.iter align_corners ~f:(fun align_corners ->
-    Op.set_attr_bool op "align_corners" align_corners
-  );
+  Op.set_attr_bool op "align_corners" align_corners;
   Op.execute1 op
 
 let resizeBilinear
-    ?align_corners
+    ?(align_corners=false)
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
@@ -6546,13 +5736,11 @@ let resizeBilinear
   Op.add_input op images;
   Op.add_input op size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
-  Option.iter align_corners ~f:(fun align_corners ->
-    Op.set_attr_bool op "align_corners" align_corners
-  );
+  Op.set_attr_bool op "align_corners" align_corners;
   Op.execute1 op
 
 let resizeBilinearGrad
-    ?align_corners
+    ?(align_corners=false)
     (grads : [ `float ] t)
     (original_image : ([< `float | `double ] as 't) t)
   =
@@ -6560,13 +5748,11 @@ let resizeBilinearGrad
   Op.add_input op grads;
   Op.add_input op original_image;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type original_image);
-  Option.iter align_corners ~f:(fun align_corners ->
-    Op.set_attr_bool op "align_corners" align_corners
-  );
+  Op.set_attr_bool op "align_corners" align_corners;
   Op.execute1 op
 
 let resizeNearestNeighbor
-    ?align_corners
+    ?(align_corners=false)
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
@@ -6574,13 +5760,11 @@ let resizeNearestNeighbor
   Op.add_input op images;
   Op.add_input op size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type images);
-  Option.iter align_corners ~f:(fun align_corners ->
-    Op.set_attr_bool op "align_corners" align_corners
-  );
+  Op.set_attr_bool op "align_corners" align_corners;
   Op.execute1 op
 
 let resizeNearestNeighborGrad
-    ?align_corners
+    ?(align_corners=false)
     (grads : ([< `uInt8 | `int32 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
@@ -6588,13 +5772,11 @@ let resizeNearestNeighborGrad
   Op.add_input op grads;
   Op.add_input op size;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grads);
-  Option.iter align_corners ~f:(fun align_corners ->
-    Op.set_attr_bool op "align_corners" align_corners
-  );
+  Op.set_attr_bool op "align_corners" align_corners;
   Op.execute1 op
 
 let resourceApplyAdadelta
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (accum_update : [ `resource ] t)
@@ -6612,13 +5794,11 @@ let resourceApplyAdadelta
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceApplyAdagrad
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -6630,13 +5810,11 @@ let resourceApplyAdagrad
   Op.add_input op lr;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceApplyAdagradDA
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (gradient_accumulator : [ `resource ] t)
     (gradient_squared_accumulator : [ `resource ] t)
@@ -6656,14 +5834,12 @@ let resourceApplyAdagradDA
   Op.add_input op l2;
   Op.add_input op global_step;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceApplyAdam
-    ?use_locking
-    ?use_nesterov
+    ?(use_locking=false)
+    ?(use_nesterov=false)
     (var : [ `resource ] t)
     (m : [ `resource ] t)
     (v : [ `resource ] t)
@@ -6687,16 +5863,12 @@ let resourceApplyAdam
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type beta1_power);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
-  Option.iter use_nesterov ~f:(fun use_nesterov ->
-    Op.set_attr_bool op "use_nesterov" use_nesterov
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
+  Op.set_attr_bool op "use_nesterov" use_nesterov;
   Op.execute0 op
 
 let resourceApplyCenteredRMSProp
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (mg : [ `resource ] t)
     (ms : [ `resource ] t)
@@ -6718,13 +5890,11 @@ let resourceApplyCenteredRMSProp
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceApplyFtrl
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
@@ -6744,13 +5914,11 @@ let resourceApplyFtrl
   Op.add_input op l2;
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceApplyFtrlV2
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
@@ -6772,13 +5940,11 @@ let resourceApplyFtrlV2
   Op.add_input op l2_shrinkage;
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceApplyGradientDescent
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -6788,14 +5954,12 @@ let resourceApplyGradientDescent
   Op.add_input op alpha;
   Op.add_input op delta;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type alpha);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceApplyMomentum
-    ?use_locking
-    ?use_nesterov
+    ?(use_locking=false)
+    ?(use_nesterov=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -6809,16 +5973,12 @@ let resourceApplyMomentum
   Op.add_input op grad;
   Op.add_input op momentum;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
-  Option.iter use_nesterov ~f:(fun use_nesterov ->
-    Op.set_attr_bool op "use_nesterov" use_nesterov
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
+  Op.set_attr_bool op "use_nesterov" use_nesterov;
   Op.execute0 op
 
 let resourceApplyProximalAdagrad
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -6834,13 +5994,11 @@ let resourceApplyProximalAdagrad
   Op.add_input op l2;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceApplyProximalGradientDescent
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -6854,13 +6012,11 @@ let resourceApplyProximalGradientDescent
   Op.add_input op l2;
   Op.add_input op delta;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type alpha);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceApplyRMSProp
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
@@ -6880,13 +6036,11 @@ let resourceApplyRMSProp
   Op.add_input op epsilon;
   Op.add_input op grad;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceSparseApplyAdadelta
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (accum_update : [ `resource ] t)
@@ -6907,13 +6061,11 @@ let resourceSparseApplyAdadelta
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceSparseApplyAdagrad
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -6928,13 +6080,11 @@ let resourceSparseApplyAdagrad
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceSparseApplyAdagradDA
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (gradient_accumulator : [ `resource ] t)
     (gradient_squared_accumulator : [ `resource ] t)
@@ -6957,13 +6107,11 @@ let resourceSparseApplyAdagradDA
   Op.add_input op global_step;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceSparseApplyCenteredRMSProp
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (mg : [ `resource ] t)
     (ms : [ `resource ] t)
@@ -6988,13 +6136,11 @@ let resourceSparseApplyCenteredRMSProp
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceSparseApplyFtrl
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
@@ -7017,13 +6163,11 @@ let resourceSparseApplyFtrl
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceSparseApplyFtrlV2
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
@@ -7048,14 +6192,12 @@ let resourceSparseApplyFtrlV2
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type grad);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceSparseApplyMomentum
-    ?use_locking
-    ?use_nesterov
+    ?(use_locking=false)
+    ?(use_nesterov=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -7072,16 +6214,12 @@ let resourceSparseApplyMomentum
   Op.add_input op momentum;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
-  Option.iter use_nesterov ~f:(fun use_nesterov ->
-    Op.set_attr_bool op "use_nesterov" use_nesterov
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
+  Op.set_attr_bool op "use_nesterov" use_nesterov;
   Op.execute0 op
 
 let resourceSparseApplyProximalAdagrad
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -7100,13 +6238,11 @@ let resourceSparseApplyProximalAdagrad
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceSparseApplyProximalGradientDescent
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -7123,13 +6259,11 @@ let resourceSparseApplyProximalGradientDescent
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type alpha);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceSparseApplyRMSProp
-    ?use_locking
+    ?(use_locking=false)
     (var : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
@@ -7152,17 +6286,15 @@ let resourceSparseApplyRMSProp
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type lr);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute0 op
 
 let resourceStridedSliceAssign
-    ?begin_mask
-    ?end_mask
-    ?ellipsis_mask
-    ?new_axis_mask
-    ?shrink_axis_mask
+    ?(begin_mask=0)
+    ?(end_mask=0)
+    ?(ellipsis_mask=0)
+    ?(new_axis_mask=0)
+    ?(shrink_axis_mask=0)
     (ref : [ `resource ] t)
     (begin__ : ([< `int32 | `int64 ] as 'index) t)
     (end__ : ([< `int32 | `int64 ] as 'index) t)
@@ -7177,26 +6309,16 @@ let resourceStridedSliceAssign
   Op.add_input op value;
   Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type begin__);
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
-  Option.iter begin_mask ~f:(fun begin_mask ->
-    Op.set_attr_int op "begin_mask" begin_mask
-  );
-  Option.iter end_mask ~f:(fun end_mask ->
-    Op.set_attr_int op "end_mask" end_mask
-  );
-  Option.iter ellipsis_mask ~f:(fun ellipsis_mask ->
-    Op.set_attr_int op "ellipsis_mask" ellipsis_mask
-  );
-  Option.iter new_axis_mask ~f:(fun new_axis_mask ->
-    Op.set_attr_int op "new_axis_mask" new_axis_mask
-  );
-  Option.iter shrink_axis_mask ~f:(fun shrink_axis_mask ->
-    Op.set_attr_int op "shrink_axis_mask" shrink_axis_mask
-  );
+  Op.set_attr_int op "begin_mask" begin_mask;
+  Op.set_attr_int op "end_mask" end_mask;
+  Op.set_attr_int op "ellipsis_mask" ellipsis_mask;
+  Op.set_attr_int op "new_axis_mask" new_axis_mask;
+  Op.set_attr_int op "shrink_axis_mask" shrink_axis_mask;
   Op.execute0 op
 
 let restore
     ~type_dt
-    ?preferred_shard
+    ?(preferred_shard=(-1))
     (file_pattern : [ `string ] t)
     (tensor_name : [ `string ] t)
   =
@@ -7204,9 +6326,7 @@ let restore
   Op.add_input op file_pattern;
   Op.add_input op tensor_name;
   Op.set_attr_data_type op "dt" Operation.Type.(to_data_type (P type_dt));
-  Option.iter preferred_shard ~f:(fun preferred_shard ->
-    Op.set_attr_int op "preferred_shard" preferred_shard
-  );
+  Op.set_attr_int op "preferred_shard" preferred_shard;
   Op.execute1 op
 
 let restoreIterator
@@ -7220,7 +6340,7 @@ let restoreIterator
 
 let restoreSlice
     ~type_dt
-    ?preferred_shard
+    ?(preferred_shard=(-1))
     (file_pattern : [ `string ] t)
     (tensor_name : [ `string ] t)
     (shape_and_slice : [ `string ] t)
@@ -7230,9 +6350,7 @@ let restoreSlice
   Op.add_input op tensor_name;
   Op.add_input op shape_and_slice;
   Op.set_attr_data_type op "dt" Operation.Type.(to_data_type (P type_dt));
-  Option.iter preferred_shard ~f:(fun preferred_shard ->
-    Op.set_attr_int op "preferred_shard" preferred_shard
-  );
+  Op.set_attr_int op "preferred_shard" preferred_shard;
   Op.execute1 op
 
 let reverse
@@ -7247,7 +6365,7 @@ let reverse
 
 let reverseSequence
     ~seq_dim
-    ?batch_dim
+    ?(batch_dim=0)
     (input : 't t)
     (seq_lengths : ([< `int32 | `int64 ] as 'tlen) t)
   =
@@ -7257,9 +6375,7 @@ let reverseSequence
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tlen" (Op.tensor_handle_data_type seq_lengths);
   Op.set_attr_int op "seq_dim" seq_dim;
-  Option.iter batch_dim ~f:(fun batch_dim ->
-    Op.set_attr_int op "batch_dim" batch_dim
-  );
+  Op.set_attr_int op "batch_dim" batch_dim;
   Op.execute1 op
 
 let reverseV2
@@ -7307,80 +6423,6 @@ let rsqrtGrad
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type y);
   Op.execute1 op
 
-let sampleDistortedBoundingBox
-    ?seed
-    ?seed2
-    ?min_object_covered
-    ?aspect_ratio_range
-    ?area_range
-    ?max_attempts
-    ?use_image_if_no_bounding_boxes
-    (image_size : ([< `uInt8 | `int32 | `int64 ] as 't) t)
-    (bounding_boxes : [ `float ] t)
-  =
-  let op = Op.create context "SampleDistortedBoundingBox" in
-  Op.add_input op image_size;
-  Op.add_input op bounding_boxes;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image_size);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
-  Option.iter min_object_covered ~f:(fun min_object_covered ->
-    Op.set_attr_float op "min_object_covered" min_object_covered
-  );
-  Option.iter aspect_ratio_range ~f:(fun aspect_ratio_range ->
-    Op.set_attr_float_list op "aspect_ratio_range" aspect_ratio_range
-  );
-  Option.iter area_range ~f:(fun area_range ->
-    Op.set_attr_float_list op "area_range" area_range
-  );
-  Option.iter max_attempts ~f:(fun max_attempts ->
-    Op.set_attr_int op "max_attempts" max_attempts
-  );
-  Option.iter use_image_if_no_bounding_boxes ~f:(fun use_image_if_no_bounding_boxes ->
-    Op.set_attr_bool op "use_image_if_no_bounding_boxes" use_image_if_no_bounding_boxes
-  );
-  Op.execute3 op
-
-let sampleDistortedBoundingBoxV2
-    ?seed
-    ?seed2
-    ?aspect_ratio_range
-    ?area_range
-    ?max_attempts
-    ?use_image_if_no_bounding_boxes
-    (image_size : ([< `uInt8 | `int32 | `int64 ] as 't) t)
-    (bounding_boxes : [ `float ] t)
-    (min_object_covered : [ `float ] t)
-  =
-  let op = Op.create context "SampleDistortedBoundingBoxV2" in
-  Op.add_input op image_size;
-  Op.add_input op bounding_boxes;
-  Op.add_input op min_object_covered;
-  Op.set_attr_data_type op "T" (Op.tensor_handle_data_type image_size);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
-  Option.iter aspect_ratio_range ~f:(fun aspect_ratio_range ->
-    Op.set_attr_float_list op "aspect_ratio_range" aspect_ratio_range
-  );
-  Option.iter area_range ~f:(fun area_range ->
-    Op.set_attr_float_list op "area_range" area_range
-  );
-  Option.iter max_attempts ~f:(fun max_attempts ->
-    Op.set_attr_int op "max_attempts" max_attempts
-  );
-  Option.iter use_image_if_no_bounding_boxes ~f:(fun use_image_if_no_bounding_boxes ->
-    Op.set_attr_bool op "use_image_if_no_bounding_boxes" use_image_if_no_bounding_boxes
-  );
-  Op.execute3 op
-
 let saveIterator
     (iterator : [ `resource ] t)
     (path : [ `string ] t)
@@ -7401,7 +6443,7 @@ let scalarSummary
   Op.execute1 op
 
 let scatterAdd
-    ?use_locking
+    ?(use_locking=false)
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -7412,13 +6454,11 @@ let scatterAdd
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let scatterDiv
-    ?use_locking
+    ?(use_locking=false)
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -7429,13 +6469,11 @@ let scatterDiv
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let scatterMul
-    ?use_locking
+    ?(use_locking=false)
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -7446,9 +6484,7 @@ let scatterMul
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let scatterNd
@@ -7465,7 +6501,7 @@ let scatterNd
   Op.execute1 op
 
 let scatterNdAdd
-    ?use_locking
+    ?(use_locking=false)
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -7476,9 +6512,7 @@ let scatterNdAdd
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let scatterNdNonAliasingAdd
@@ -7495,7 +6529,7 @@ let scatterNdNonAliasingAdd
   Op.execute1 op
 
 let scatterNdSub
-    ?use_locking
+    ?(use_locking=false)
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -7506,13 +6540,11 @@ let scatterNdSub
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let scatterNdUpdate
-    ?use_locking
+    ?(use_locking=true)
     (ref : 't t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : 't t)
@@ -7523,13 +6555,11 @@ let scatterNdUpdate
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let scatterSub
-    ?use_locking
+    ?(use_locking=false)
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -7540,13 +6570,11 @@ let scatterSub
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let scatterUpdate
-    ?use_locking
+    ?(use_locking=true)
     (ref : 't t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : 't t)
@@ -7557,9 +6585,7 @@ let scatterUpdate
   Op.add_input op updates;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sdcaFprint
@@ -7657,15 +6683,13 @@ let selfAdjointEig
   Op.execute1 op
 
 let selfAdjointEigV2
-    ?compute_v
+    ?(compute_v=true)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
   let op = Op.create context "SelfAdjointEigV2" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter compute_v ~f:(fun compute_v ->
-    Op.set_attr_bool op "compute_v" compute_v
-  );
+  Op.set_attr_bool op "compute_v" compute_v;
   Op.execute2 op
 
 let selu
@@ -7719,7 +6743,7 @@ let serializeTensor
   Op.execute1 op
 
 let setSize
-    ?validate_indices
+    ?(validate_indices=true)
     (set_indices : [ `int64 ] t)
     (set_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set_shape : [ `int64 ] t)
@@ -7729,9 +6753,7 @@ let setSize
   Op.add_input op set_values;
   Op.add_input op set_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set_values);
-  Option.iter validate_indices ~f:(fun validate_indices ->
-    Op.set_attr_bool op "validate_indices" validate_indices
-  );
+  Op.set_attr_bool op "validate_indices" validate_indices;
   Op.execute1 op
 
 let shape
@@ -7776,7 +6798,7 @@ let shardedFilespec
   Op.execute1 op
 
 let shuffleDataset
-    ?reshuffle_each_iteration
+    ?(reshuffle_each_iteration=true)
     ~output_types
     ~output_shapes
     (input_dataset : [ `variant ] t)
@@ -7789,9 +6811,7 @@ let shuffleDataset
   Op.add_input op buffer_size;
   Op.add_input op seed;
   Op.add_input op seed2;
-  Option.iter reshuffle_each_iteration ~f:(fun reshuffle_each_iteration ->
-    Op.set_attr_bool op "reshuffle_each_iteration" reshuffle_each_iteration
-  );
+  Op.set_attr_bool op "reshuffle_each_iteration" reshuffle_each_iteration;
   Op.set_attr_type_list op "output_types" output_types;
   Op.set_attr_shape_list op "output_shapes" output_shapes;
   Op.execute1 op
@@ -7864,23 +6884,17 @@ let skipDataset
 let skipgram
     ~filename
     ~batch_size
-    ?window_size
-    ?min_count
-    ?subsample
+    ?(window_size=5)
+    ?(min_count=5)
+    ?(subsample=0.0010000000474974513)
     ()
   =
   let op = Op.create context "Skipgram" in
   Op.set_attr_string op "filename" filename;
   Op.set_attr_int op "batch_size" batch_size;
-  Option.iter window_size ~f:(fun window_size ->
-    Op.set_attr_int op "window_size" window_size
-  );
-  Option.iter min_count ~f:(fun min_count ->
-    Op.set_attr_int op "min_count" min_count
-  );
-  Option.iter subsample ~f:(fun subsample ->
-    Op.set_attr_float op "subsample" subsample
-  );
+  Op.set_attr_int op "window_size" window_size;
+  Op.set_attr_int op "min_count" min_count;
+  Op.set_attr_float op "subsample" subsample;
   Op.execute7 op
 
 let slice
@@ -7979,16 +6993,14 @@ let spaceToBatchND
 
 let spaceToDepth
     ~block_size
-    ?data_format
+    ?(data_format="NHWC")
     (input : 't t)
   =
   let op = Op.create context "SpaceToDepth" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int op "block_size" block_size;
-  Option.iter data_format ~f:(fun data_format ->
-    Op.set_attr_string op "data_format" data_format
-  );
+  Op.set_attr_string op "data_format" data_format;
   Op.execute1 op
 
 let sparseAccumulatorApplyGradient
@@ -8056,7 +7068,7 @@ let sparseAddGrad
   Op.execute2 op
 
 let sparseApplyAdadelta
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum_update : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8077,13 +7089,11 @@ let sparseApplyAdadelta
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sparseApplyAdagrad
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8098,13 +7108,11 @@ let sparseApplyAdagrad
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sparseApplyAdagradDA
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (gradient_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (gradient_squared_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8127,13 +7135,11 @@ let sparseApplyAdagradDA
   Op.add_input op global_step;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sparseApplyCenteredRMSProp
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (mg : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8158,13 +7164,11 @@ let sparseApplyCenteredRMSProp
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sparseApplyFtrl
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8187,13 +7191,11 @@ let sparseApplyFtrl
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sparseApplyFtrlV2
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8218,14 +7220,12 @@ let sparseApplyFtrlV2
   Op.add_input op lr_power;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sparseApplyMomentum
-    ?use_locking
-    ?use_nesterov
+    ?(use_locking=false)
+    ?(use_nesterov=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8242,16 +7242,12 @@ let sparseApplyMomentum
   Op.add_input op momentum;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
-  Option.iter use_nesterov ~f:(fun use_nesterov ->
-    Op.set_attr_bool op "use_nesterov" use_nesterov
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
+  Op.set_attr_bool op "use_nesterov" use_nesterov;
   Op.execute1 op
 
 let sparseApplyProximalAdagrad
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8270,13 +7266,11 @@ let sparseApplyProximalAdagrad
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sparseApplyProximalGradientDescent
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8293,13 +7287,11 @@ let sparseApplyProximalGradientDescent
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sparseApplyRMSProp
-    ?use_locking
+    ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8322,9 +7314,7 @@ let sparseApplyRMSProp
   Op.add_input op indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type var);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type indices);
-  Option.iter use_locking ~f:(fun use_locking ->
-    Op.set_attr_bool op "use_locking" use_locking
-  );
+  Op.set_attr_bool op "use_locking" use_locking;
   Op.execute1 op
 
 let sparseConcat
@@ -8344,18 +7334,14 @@ let sparseConcat
 
 let sparseConditionalAccumulator
     ~shape
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "SparseConditionalAccumulator" in
   Op.set_attr_shape op "shape" shape;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let sparseDenseCwiseAdd
@@ -8425,10 +7411,10 @@ let sparseFillEmptyRowsGrad
   Op.execute2 op
 
 let sparseMatMul
-    ?transpose_a
-    ?transpose_b
-    ?a_is_sparse
-    ?b_is_sparse
+    ?(transpose_a=false)
+    ?(transpose_b=false)
+    ?(a_is_sparse=false)
+    ?(b_is_sparse=false)
     (a : ([< `float ] as 'ta) t)
     (b : ([< `float ] as 'tb) t)
   =
@@ -8437,22 +7423,14 @@ let sparseMatMul
   Op.add_input op b;
   Op.set_attr_data_type op "Ta" (Op.tensor_handle_data_type a);
   Op.set_attr_data_type op "Tb" (Op.tensor_handle_data_type b);
-  Option.iter transpose_a ~f:(fun transpose_a ->
-    Op.set_attr_bool op "transpose_a" transpose_a
-  );
-  Option.iter transpose_b ~f:(fun transpose_b ->
-    Op.set_attr_bool op "transpose_b" transpose_b
-  );
-  Option.iter a_is_sparse ~f:(fun a_is_sparse ->
-    Op.set_attr_bool op "a_is_sparse" a_is_sparse
-  );
-  Option.iter b_is_sparse ~f:(fun b_is_sparse ->
-    Op.set_attr_bool op "b_is_sparse" b_is_sparse
-  );
+  Op.set_attr_bool op "transpose_a" transpose_a;
+  Op.set_attr_bool op "transpose_b" transpose_b;
+  Op.set_attr_bool op "a_is_sparse" a_is_sparse;
+  Op.set_attr_bool op "b_is_sparse" b_is_sparse;
   Op.execute1 op
 
 let sparseReduceMax
-    ?keep_dims
+    ?(keep_dims=false)
     (input_indices : [ `int64 ] t)
     (input_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (input_shape : [ `int64 ] t)
@@ -8464,13 +7442,11 @@ let sparseReduceMax
   Op.add_input op input_shape;
   Op.add_input op reduction_axes;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute1 op
 
 let sparseReduceMaxSparse
-    ?keep_dims
+    ?(keep_dims=false)
     (input_indices : [ `int64 ] t)
     (input_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (input_shape : [ `int64 ] t)
@@ -8482,13 +7458,11 @@ let sparseReduceMaxSparse
   Op.add_input op input_shape;
   Op.add_input op reduction_axes;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute3 op
 
 let sparseReduceSum
-    ?keep_dims
+    ?(keep_dims=false)
     (input_indices : [ `int64 ] t)
     (input_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (input_shape : [ `int64 ] t)
@@ -8500,13 +7474,11 @@ let sparseReduceSum
   Op.add_input op input_shape;
   Op.add_input op reduction_axes;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute1 op
 
 let sparseReduceSumSparse
-    ?keep_dims
+    ?(keep_dims=false)
     (input_indices : [ `int64 ] t)
     (input_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (input_shape : [ `int64 ] t)
@@ -8518,9 +7490,7 @@ let sparseReduceSumSparse
   Op.add_input op input_shape;
   Op.add_input op reduction_axes;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input_values);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute3 op
 
 let sparseReorder
@@ -8706,8 +7676,8 @@ let sparseTensorDenseAdd
   Op.execute1 op
 
 let sparseTensorDenseMatMul
-    ?adjoint_a
-    ?adjoint_b
+    ?(adjoint_a=false)
+    ?(adjoint_b=false)
     (a_indices : ([< `int32 | `int64 ] as 'tindices) t)
     (a_values : 't t)
     (a_shape : [ `int64 ] t)
@@ -8720,12 +7690,8 @@ let sparseTensorDenseMatMul
   Op.add_input op b;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type a_values);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type a_indices);
-  Option.iter adjoint_a ~f:(fun adjoint_a ->
-    Op.set_attr_bool op "adjoint_a" adjoint_a
-  );
-  Option.iter adjoint_b ~f:(fun adjoint_b ->
-    Op.set_attr_bool op "adjoint_b" adjoint_b
-  );
+  Op.set_attr_bool op "adjoint_a" adjoint_a;
+  Op.set_attr_bool op "adjoint_b" adjoint_b;
   Op.execute1 op
 
 let sparseTensorSliceDataset
@@ -8741,7 +7707,7 @@ let sparseTensorSliceDataset
   Op.execute1 op
 
 let sparseToDense
-    ?validate_indices
+    ?(validate_indices=true)
     (sparse_indices : ([< `int32 | `int64 ] as 'tindices) t)
     (output_shape : ([< `int32 | `int64 ] as 'tindices) t)
     (sparse_values : 't t)
@@ -8754,14 +7720,12 @@ let sparseToDense
   Op.add_input op default_value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type sparse_values);
   Op.set_attr_data_type op "Tindices" (Op.tensor_handle_data_type sparse_indices);
-  Option.iter validate_indices ~f:(fun validate_indices ->
-    Op.set_attr_bool op "validate_indices" validate_indices
-  );
+  Op.set_attr_bool op "validate_indices" validate_indices;
   Op.execute1 op
 
 let sparseToSparseSetOperation
     ~set_operation
-    ?validate_indices
+    ?(validate_indices=true)
     (set1_indices : [ `int64 ] t)
     (set1_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set1_shape : [ `int64 ] t)
@@ -8778,9 +7742,7 @@ let sparseToSparseSetOperation
   Op.add_input op set2_shape;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type set1_values);
   Op.set_attr_string op "set_operation" set_operation;
-  Option.iter validate_indices ~f:(fun validate_indices ->
-    Op.set_attr_bool op "validate_indices" validate_indices
-  );
+  Op.set_attr_bool op "validate_indices" validate_indices;
   Op.execute3 op
 
 let split
@@ -8862,25 +7824,21 @@ let squaredDifference
   Op.execute1 op
 
 let squeeze
-    ?squeeze_dims
+    ?(squeeze_dims=[])
     (input : 't t)
   =
   let op = Op.create context "Squeeze" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter squeeze_dims ~f:(fun squeeze_dims ->
-    Op.set_attr_int_list op "squeeze_dims" squeeze_dims
-  );
+  Op.set_attr_int_list op "squeeze_dims" squeeze_dims;
   Op.execute1 op
 
 let stack
-    ?stack_name
+    ?(stack_name="")
     ()
   =
   let op = Op.create context "Stack" in
-  Option.iter stack_name ~f:(fun stack_name ->
-    Op.set_attr_string op "stack_name" stack_name
-  );
+  Op.set_attr_string op "stack_name" stack_name;
   Op.execute1 op
 
 let stackClose
@@ -8916,7 +7874,7 @@ let stackPopV2
   Op.execute1 op
 
 let stackPush
-    ?swap_memory
+    ?(swap_memory=false)
     (handle : [ `string ] t)
     (elem : 't t)
   =
@@ -8924,13 +7882,11 @@ let stackPush
   Op.add_input op handle;
   Op.add_input op elem;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type elem);
-  Option.iter swap_memory ~f:(fun swap_memory ->
-    Op.set_attr_bool op "swap_memory" swap_memory
-  );
+  Op.set_attr_bool op "swap_memory" swap_memory;
   Op.execute1 op
 
 let stackPushV2
-    ?swap_memory
+    ?(swap_memory=false)
     (handle : [ `resource ] t)
     (elem : 't t)
   =
@@ -8938,68 +7894,48 @@ let stackPushV2
   Op.add_input op handle;
   Op.add_input op elem;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type elem);
-  Option.iter swap_memory ~f:(fun swap_memory ->
-    Op.set_attr_bool op "swap_memory" swap_memory
-  );
+  Op.set_attr_bool op "swap_memory" swap_memory;
   Op.execute1 op
 
 let stackV2
-    ?stack_name
+    ?(stack_name="")
     (max_size : [ `int32 ] t)
   =
   let op = Op.create context "StackV2" in
   Op.add_input op max_size;
-  Option.iter stack_name ~f:(fun stack_name ->
-    Op.set_attr_string op "stack_name" stack_name
-  );
+  Op.set_attr_string op "stack_name" stack_name;
   Op.execute1 op
 
 let stageClear
-    ?capacity
-    ?memory_limit
+    ?(capacity=0)
+    ?(memory_limit=0)
     ~dtypes
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "StageClear" in
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter memory_limit ~f:(fun memory_limit ->
-    Op.set_attr_int op "memory_limit" memory_limit
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "memory_limit" memory_limit;
   Op.set_attr_type_list op "dtypes" dtypes;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute0 op
 
 let stageSize
-    ?capacity
-    ?memory_limit
+    ?(capacity=0)
+    ?(memory_limit=0)
     ~dtypes
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "StageSize" in
-  Option.iter capacity ~f:(fun capacity ->
-    Op.set_attr_int op "capacity" capacity
-  );
-  Option.iter memory_limit ~f:(fun memory_limit ->
-    Op.set_attr_int op "memory_limit" memory_limit
-  );
+  Op.set_attr_int op "capacity" capacity;
+  Op.set_attr_int op "memory_limit" memory_limit;
   Op.set_attr_type_list op "dtypes" dtypes;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let statelessRandomNormal
@@ -9047,11 +7983,11 @@ let stopGradient
   Op.execute1 op
 
 let stridedSlice
-    ?begin_mask
-    ?end_mask
-    ?ellipsis_mask
-    ?new_axis_mask
-    ?shrink_axis_mask
+    ?(begin_mask=0)
+    ?(end_mask=0)
+    ?(ellipsis_mask=0)
+    ?(new_axis_mask=0)
+    ?(shrink_axis_mask=0)
     (input : 't t)
     (begin__ : ([< `int32 | `int64 ] as 'index) t)
     (end__ : ([< `int32 | `int64 ] as 'index) t)
@@ -9064,29 +8000,19 @@ let stridedSlice
   Op.add_input op strides;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type begin__);
-  Option.iter begin_mask ~f:(fun begin_mask ->
-    Op.set_attr_int op "begin_mask" begin_mask
-  );
-  Option.iter end_mask ~f:(fun end_mask ->
-    Op.set_attr_int op "end_mask" end_mask
-  );
-  Option.iter ellipsis_mask ~f:(fun ellipsis_mask ->
-    Op.set_attr_int op "ellipsis_mask" ellipsis_mask
-  );
-  Option.iter new_axis_mask ~f:(fun new_axis_mask ->
-    Op.set_attr_int op "new_axis_mask" new_axis_mask
-  );
-  Option.iter shrink_axis_mask ~f:(fun shrink_axis_mask ->
-    Op.set_attr_int op "shrink_axis_mask" shrink_axis_mask
-  );
+  Op.set_attr_int op "begin_mask" begin_mask;
+  Op.set_attr_int op "end_mask" end_mask;
+  Op.set_attr_int op "ellipsis_mask" ellipsis_mask;
+  Op.set_attr_int op "new_axis_mask" new_axis_mask;
+  Op.set_attr_int op "shrink_axis_mask" shrink_axis_mask;
   Op.execute1 op
 
 let stridedSliceAssign
-    ?begin_mask
-    ?end_mask
-    ?ellipsis_mask
-    ?new_axis_mask
-    ?shrink_axis_mask
+    ?(begin_mask=0)
+    ?(end_mask=0)
+    ?(ellipsis_mask=0)
+    ?(new_axis_mask=0)
+    ?(shrink_axis_mask=0)
     (ref : 't t)
     (begin__ : ([< `int32 | `int64 ] as 'index) t)
     (end__ : ([< `int32 | `int64 ] as 'index) t)
@@ -9101,29 +8027,19 @@ let stridedSliceAssign
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type ref);
   Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type begin__);
-  Option.iter begin_mask ~f:(fun begin_mask ->
-    Op.set_attr_int op "begin_mask" begin_mask
-  );
-  Option.iter end_mask ~f:(fun end_mask ->
-    Op.set_attr_int op "end_mask" end_mask
-  );
-  Option.iter ellipsis_mask ~f:(fun ellipsis_mask ->
-    Op.set_attr_int op "ellipsis_mask" ellipsis_mask
-  );
-  Option.iter new_axis_mask ~f:(fun new_axis_mask ->
-    Op.set_attr_int op "new_axis_mask" new_axis_mask
-  );
-  Option.iter shrink_axis_mask ~f:(fun shrink_axis_mask ->
-    Op.set_attr_int op "shrink_axis_mask" shrink_axis_mask
-  );
+  Op.set_attr_int op "begin_mask" begin_mask;
+  Op.set_attr_int op "end_mask" end_mask;
+  Op.set_attr_int op "ellipsis_mask" ellipsis_mask;
+  Op.set_attr_int op "new_axis_mask" new_axis_mask;
+  Op.set_attr_int op "shrink_axis_mask" shrink_axis_mask;
   Op.execute1 op
 
 let stridedSliceGrad
-    ?begin_mask
-    ?end_mask
-    ?ellipsis_mask
-    ?new_axis_mask
-    ?shrink_axis_mask
+    ?(begin_mask=0)
+    ?(end_mask=0)
+    ?(ellipsis_mask=0)
+    ?(new_axis_mask=0)
+    ?(shrink_axis_mask=0)
     (shape : ([< `int32 | `int64 ] as 'index) t)
     (begin__ : ([< `int32 | `int64 ] as 'index) t)
     (end__ : ([< `int32 | `int64 ] as 'index) t)
@@ -9138,46 +8054,32 @@ let stridedSliceGrad
   Op.add_input op dy;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type dy);
   Op.set_attr_data_type op "Index" (Op.tensor_handle_data_type shape);
-  Option.iter begin_mask ~f:(fun begin_mask ->
-    Op.set_attr_int op "begin_mask" begin_mask
-  );
-  Option.iter end_mask ~f:(fun end_mask ->
-    Op.set_attr_int op "end_mask" end_mask
-  );
-  Option.iter ellipsis_mask ~f:(fun ellipsis_mask ->
-    Op.set_attr_int op "ellipsis_mask" ellipsis_mask
-  );
-  Option.iter new_axis_mask ~f:(fun new_axis_mask ->
-    Op.set_attr_int op "new_axis_mask" new_axis_mask
-  );
-  Option.iter shrink_axis_mask ~f:(fun shrink_axis_mask ->
-    Op.set_attr_int op "shrink_axis_mask" shrink_axis_mask
-  );
+  Op.set_attr_int op "begin_mask" begin_mask;
+  Op.set_attr_int op "end_mask" end_mask;
+  Op.set_attr_int op "ellipsis_mask" ellipsis_mask;
+  Op.set_attr_int op "new_axis_mask" new_axis_mask;
+  Op.set_attr_int op "shrink_axis_mask" shrink_axis_mask;
   Op.execute1 op
 
 let stringJoin
-    ?separator
+    ?(separator="")
     (inputs__ : [ `string ] t list)
   =
   let op = Op.create context "StringJoin" in
   List.iter inputs__ ~f:(Op.add_input op);
   Op.set_attr_int op "N" (List.length inputs__);
-  Option.iter separator ~f:(fun separator ->
-    Op.set_attr_string op "separator" separator
-  );
+  Op.set_attr_string op "separator" separator;
   Op.execute1 op
 
 let stringSplit
-    ?skip_empty
+    ?(skip_empty=true)
     (input : [ `string ] t)
     (delimiter : [ `string ] t)
   =
   let op = Op.create context "StringSplit" in
   Op.add_input op input;
   Op.add_input op delimiter;
-  Option.iter skip_empty ~f:(fun skip_empty ->
-    Op.set_attr_bool op "skip_empty" skip_empty
-  );
+  Op.set_attr_bool op "skip_empty" skip_empty;
   Op.execute3 op
 
 let stringToHashBucket
@@ -9241,7 +8143,7 @@ let substr
   Op.execute1 op
 
 let sum
-    ?keep_dims
+    ?(keep_dims=false)
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
@@ -9250,25 +8152,19 @@ let sum
   Op.add_input op reduction_indices;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_data_type op "Tidx" (Op.tensor_handle_data_type reduction_indices);
-  Option.iter keep_dims ~f:(fun keep_dims ->
-    Op.set_attr_bool op "keep_dims" keep_dims
-  );
+  Op.set_attr_bool op "keep_dims" keep_dims;
   Op.execute1 op
 
 let svd
-    ?compute_uv
-    ?full_matrices
+    ?(compute_uv=true)
+    ?(full_matrices=false)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
   let op = Op.create context "Svd" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter compute_uv ~f:(fun compute_uv ->
-    Op.set_attr_bool op "compute_uv" compute_uv
-  );
-  Option.iter full_matrices ~f:(fun full_matrices ->
-    Op.set_attr_bool op "full_matrices" full_matrices
-  );
+  Op.set_attr_bool op "compute_uv" compute_uv;
+  Op.set_attr_bool op "full_matrices" full_matrices;
   Op.execute3 op
 
 let switch
@@ -9293,39 +8189,27 @@ let tFRecordDataset
   Op.execute1 op
 
 let tFRecordReader
-    ?container
-    ?shared_name
-    ?compression_type
+    ?(container="")
+    ?(shared_name="")
+    ?(compression_type="")
     ()
   =
   let op = Op.create context "TFRecordReader" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter compression_type ~f:(fun compression_type ->
-    Op.set_attr_string op "compression_type" compression_type
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_string op "compression_type" compression_type;
   Op.execute1 op
 
 let tFRecordReaderV2
-    ?container
-    ?shared_name
-    ?compression_type
+    ?(container="")
+    ?(shared_name="")
+    ?(compression_type="")
     ()
   =
   let op = Op.create context "TFRecordReaderV2" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
-  Option.iter compression_type ~f:(fun compression_type ->
-    Op.set_attr_string op "compression_type" compression_type
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
+  Op.set_attr_string op "compression_type" compression_type;
   Op.execute1 op
 
 let takeDataset
@@ -9343,19 +8227,15 @@ let takeDataset
 
 let takeManySparseFromTensorsMap
     ~type_dtype
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     (sparse_handles : [ `int64 ] t)
   =
   let op = Op.create context "TakeManySparseFromTensorsMap" in
   Op.add_input op sparse_handles;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute3 op
 
 let tan
@@ -9387,38 +8267,28 @@ let tanhGrad
 let temporaryVariable
     ~type_dtype
     ~shape
-    ?var_name
+    ?(var_name="")
     ()
   =
   let op = Op.create context "TemporaryVariable" in
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_shape op "shape" shape;
-  Option.iter var_name ~f:(fun var_name ->
-    Op.set_attr_string op "var_name" var_name
-  );
+  Op.set_attr_string op "var_name" var_name;
   Op.execute1 op
 
 let tensorArray
-    ?dynamic_size
-    ?clear_after_read
-    ?tensor_array_name
-    ?element_shape
+    ?(dynamic_size=false)
+    ?(clear_after_read=true)
+    ?(tensor_array_name="")
+    ?(element_shape=[])
     (size : [ `int32 ] t)
   =
   let op = Op.create context "TensorArray" in
   Op.add_input op size;
-  Option.iter dynamic_size ~f:(fun dynamic_size ->
-    Op.set_attr_bool op "dynamic_size" dynamic_size
-  );
-  Option.iter clear_after_read ~f:(fun clear_after_read ->
-    Op.set_attr_bool op "clear_after_read" clear_after_read
-  );
-  Option.iter tensor_array_name ~f:(fun tensor_array_name ->
-    Op.set_attr_string op "tensor_array_name" tensor_array_name
-  );
-  Option.iter element_shape ~f:(fun element_shape ->
-    Op.set_attr_shape op "element_shape" element_shape
-  );
+  Op.set_attr_bool op "dynamic_size" dynamic_size;
+  Op.set_attr_bool op "clear_after_read" clear_after_read;
+  Op.set_attr_string op "tensor_array_name" tensor_array_name;
+  Op.set_attr_shape op "element_shape" element_shape;
   Op.execute1 op
 
 let tensorArrayClose
@@ -9444,7 +8314,7 @@ let tensorArrayCloseV3
 
 let tensorArrayConcat
     ~type_dtype
-    ?element_shape_except0
+    ?(element_shape_except0=[])
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
@@ -9452,14 +8322,12 @@ let tensorArrayConcat
   Op.add_input op handle;
   Op.add_input op flow_in;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter element_shape_except0 ~f:(fun element_shape_except0 ->
-    Op.set_attr_shape op "element_shape_except0" element_shape_except0
-  );
+  Op.set_attr_shape op "element_shape_except0" element_shape_except0;
   Op.execute2 op
 
 let tensorArrayConcatV2
     ~type_dtype
-    ?element_shape_except0
+    ?(element_shape_except0=[])
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
@@ -9467,14 +8335,12 @@ let tensorArrayConcatV2
   Op.add_input op handle;
   Op.add_input op flow_in;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter element_shape_except0 ~f:(fun element_shape_except0 ->
-    Op.set_attr_shape op "element_shape_except0" element_shape_except0
-  );
+  Op.set_attr_shape op "element_shape_except0" element_shape_except0;
   Op.execute2 op
 
 let tensorArrayConcatV3
     ~type_dtype
-    ?element_shape_except0
+    ?(element_shape_except0=[])
     (handle : [ `resource ] t)
     (flow_in : [ `float ] t)
   =
@@ -9482,14 +8348,12 @@ let tensorArrayConcatV3
   Op.add_input op handle;
   Op.add_input op flow_in;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter element_shape_except0 ~f:(fun element_shape_except0 ->
-    Op.set_attr_shape op "element_shape_except0" element_shape_except0
-  );
+  Op.set_attr_shape op "element_shape_except0" element_shape_except0;
   Op.execute2 op
 
 let tensorArrayGather
     ~type_dtype
-    ?element_shape
+    ?(element_shape=[])
     (handle : [ `string ] t)
     (indices : [ `int32 ] t)
     (flow_in : [ `float ] t)
@@ -9499,14 +8363,12 @@ let tensorArrayGather
   Op.add_input op indices;
   Op.add_input op flow_in;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter element_shape ~f:(fun element_shape ->
-    Op.set_attr_shape op "element_shape" element_shape
-  );
+  Op.set_attr_shape op "element_shape" element_shape;
   Op.execute1 op
 
 let tensorArrayGatherV2
     ~type_dtype
-    ?element_shape
+    ?(element_shape=[])
     (handle : [ `string ] t)
     (indices : [ `int32 ] t)
     (flow_in : [ `float ] t)
@@ -9516,14 +8378,12 @@ let tensorArrayGatherV2
   Op.add_input op indices;
   Op.add_input op flow_in;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter element_shape ~f:(fun element_shape ->
-    Op.set_attr_shape op "element_shape" element_shape
-  );
+  Op.set_attr_shape op "element_shape" element_shape;
   Op.execute1 op
 
 let tensorArrayGatherV3
     ~type_dtype
-    ?element_shape
+    ?(element_shape=[])
     (handle : [ `resource ] t)
     (indices : [ `int32 ] t)
     (flow_in : [ `float ] t)
@@ -9533,9 +8393,7 @@ let tensorArrayGatherV3
   Op.add_input op indices;
   Op.add_input op flow_in;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter element_shape ~f:(fun element_shape ->
-    Op.set_attr_shape op "element_shape" element_shape
-  );
+  Op.set_attr_shape op "element_shape" element_shape;
   Op.execute1 op
 
 let tensorArrayGrad
@@ -9573,7 +8431,7 @@ let tensorArrayGradV3
 
 let tensorArrayPack
     ~type_dtype
-    ?element_shape
+    ?(element_shape=[])
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
@@ -9581,9 +8439,7 @@ let tensorArrayPack
   Op.add_input op handle;
   Op.add_input op flow_in;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
-  Option.iter element_shape ~f:(fun element_shape ->
-    Op.set_attr_shape op "element_shape" element_shape
-  );
+  Op.set_attr_shape op "element_shape" element_shape;
   Op.execute1 op
 
 let tensorArrayRead
@@ -9749,49 +8605,33 @@ let tensorArrayUnpack
   Op.execute1 op
 
 let tensorArrayV2
-    ?element_shape
-    ?dynamic_size
-    ?clear_after_read
-    ?tensor_array_name
+    ?(element_shape=[])
+    ?(dynamic_size=false)
+    ?(clear_after_read=true)
+    ?(tensor_array_name="")
     (size : [ `int32 ] t)
   =
   let op = Op.create context "TensorArrayV2" in
   Op.add_input op size;
-  Option.iter element_shape ~f:(fun element_shape ->
-    Op.set_attr_shape op "element_shape" element_shape
-  );
-  Option.iter dynamic_size ~f:(fun dynamic_size ->
-    Op.set_attr_bool op "dynamic_size" dynamic_size
-  );
-  Option.iter clear_after_read ~f:(fun clear_after_read ->
-    Op.set_attr_bool op "clear_after_read" clear_after_read
-  );
-  Option.iter tensor_array_name ~f:(fun tensor_array_name ->
-    Op.set_attr_string op "tensor_array_name" tensor_array_name
-  );
+  Op.set_attr_shape op "element_shape" element_shape;
+  Op.set_attr_bool op "dynamic_size" dynamic_size;
+  Op.set_attr_bool op "clear_after_read" clear_after_read;
+  Op.set_attr_string op "tensor_array_name" tensor_array_name;
   Op.execute1 op
 
 let tensorArrayV3
-    ?element_shape
-    ?dynamic_size
-    ?clear_after_read
-    ?tensor_array_name
+    ?(element_shape=[])
+    ?(dynamic_size=false)
+    ?(clear_after_read=true)
+    ?(tensor_array_name="")
     (size : [ `int32 ] t)
   =
   let op = Op.create context "TensorArrayV3" in
   Op.add_input op size;
-  Option.iter element_shape ~f:(fun element_shape ->
-    Op.set_attr_shape op "element_shape" element_shape
-  );
-  Option.iter dynamic_size ~f:(fun dynamic_size ->
-    Op.set_attr_bool op "dynamic_size" dynamic_size
-  );
-  Option.iter clear_after_read ~f:(fun clear_after_read ->
-    Op.set_attr_bool op "clear_after_read" clear_after_read
-  );
-  Option.iter tensor_array_name ~f:(fun tensor_array_name ->
-    Op.set_attr_string op "tensor_array_name" tensor_array_name
-  );
+  Op.set_attr_shape op "element_shape" element_shape;
+  Op.set_attr_bool op "dynamic_size" dynamic_size;
+  Op.set_attr_bool op "clear_after_read" clear_after_read;
+  Op.set_attr_string op "tensor_array_name" tensor_array_name;
   Op.execute2 op
 
 let tensorArrayWrite
@@ -9837,19 +8677,15 @@ let tensorArrayWriteV3
   Op.execute1 op
 
 let tensorSummary
-    ?description
-    ?display_name
+    ?(description="")
+    ?(display_name="")
     (tensor : 't t)
   =
   let op = Op.create context "TensorSummary" in
   Op.add_input op tensor;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type tensor);
-  Option.iter description ~f:(fun description ->
-    Op.set_attr_string op "description" description
-  );
-  Option.iter display_name ~f:(fun display_name ->
-    Op.set_attr_string op "display_name" display_name
-  );
+  Op.set_attr_string op "description" description;
+  Op.set_attr_string op "display_name" display_name;
   Op.execute1 op
 
 let tensorSummaryV2
@@ -9876,39 +8712,27 @@ let textLineDataset
   Op.execute1 op
 
 let textLineReader
-    ?skip_header_lines
-    ?container
-    ?shared_name
+    ?(skip_header_lines=0)
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "TextLineReader" in
-  Option.iter skip_header_lines ~f:(fun skip_header_lines ->
-    Op.set_attr_int op "skip_header_lines" skip_header_lines
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_int op "skip_header_lines" skip_header_lines;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let textLineReaderV2
-    ?skip_header_lines
-    ?container
-    ?shared_name
+    ?(skip_header_lines=0)
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "TextLineReaderV2" in
-  Option.iter skip_header_lines ~f:(fun skip_header_lines ->
-    Op.set_attr_int op "skip_header_lines" skip_header_lines
-  );
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_int op "skip_header_lines" skip_header_lines;
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let threadUnsafeUnigramCandidateSampler
@@ -9916,8 +8740,8 @@ let threadUnsafeUnigramCandidateSampler
     ~num_sampled
     ~unique
     ~range_max
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
   let op = Op.create context "ThreadUnsafeUnigramCandidateSampler" in
@@ -9926,12 +8750,8 @@ let threadUnsafeUnigramCandidateSampler
   Op.set_attr_int op "num_sampled" num_sampled;
   Op.set_attr_bool op "unique" unique;
   Op.set_attr_int op "range_max" range_max;
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute3 op
 
 let tile
@@ -9957,20 +8777,18 @@ let tileGrad
 
 let topK
     ~k
-    ?sorted
+    ?(sorted=true)
     (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
   let op = Op.create context "TopK" in
   Op.add_input op input;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
   Op.set_attr_int op "k" k;
-  Option.iter sorted ~f:(fun sorted ->
-    Op.set_attr_bool op "sorted" sorted
-  );
+  Op.set_attr_bool op "sorted" sorted;
   Op.execute2 op
 
 let topKV2
-    ?sorted
+    ?(sorted=true)
     (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (k : [ `int32 ] t)
   =
@@ -9978,9 +8796,7 @@ let topKV2
   Op.add_input op input;
   Op.add_input op k;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type input);
-  Option.iter sorted ~f:(fun sorted ->
-    Op.set_attr_bool op "sorted" sorted
-  );
+  Op.set_attr_bool op "sorted" sorted;
   Op.execute2 op
 
 let transpose
@@ -10016,20 +8832,16 @@ let truncateMod
 
 let truncatedNormal
     ~type_dtype
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 't) t)
   =
   let op = Op.create context "TruncatedNormal" in
   Op.add_input op shape;
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type shape);
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute1 op
 
 let uniformCandidateSampler
@@ -10037,8 +8849,8 @@ let uniformCandidateSampler
     ~num_sampled
     ~unique
     ~range_max
-    ?seed
-    ?seed2
+    ?(seed=0)
+    ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
   let op = Op.create context "UniformCandidateSampler" in
@@ -10047,12 +8859,8 @@ let uniformCandidateSampler
   Op.set_attr_int op "num_sampled" num_sampled;
   Op.set_attr_bool op "unique" unique;
   Op.set_attr_int op "range_max" range_max;
-  Option.iter seed ~f:(fun seed ->
-    Op.set_attr_int op "seed" seed
-  );
-  Option.iter seed2 ~f:(fun seed2 ->
-    Op.set_attr_int op "seed2" seed2
-  );
+  Op.set_attr_int op "seed" seed;
+  Op.set_attr_int op "seed2" seed2;
   Op.execute3 op
 
 let unique
@@ -10077,16 +8885,14 @@ let uniqueWithCounts
 
 let unpack
     ~num
-    ?axis
+    ?(axis=0)
     (value : 't t)
   =
   let op = Op.create context "Unpack" in
   Op.add_input op value;
   Op.set_attr_data_type op "T" (Op.tensor_handle_data_type value);
   Op.set_attr_int op "num" num;
-  Option.iter axis ~f:(fun axis ->
-    Op.set_attr_int op "axis" axis
-  );
+  Op.set_attr_int op "axis" axis;
   Op.execute op ~output_len:num
 
 let unsortedSegmentMax
@@ -10118,37 +8924,29 @@ let unsortedSegmentSum
 let variable
     ~type_dtype
     ~shape
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "Variable" in
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_shape op "shape" shape;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let variableV2
     ~type_dtype
     ~shape
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "VariableV2" in
   Op.set_attr_data_type op "dtype" Operation.Type.(to_data_type (P type_dtype));
   Op.set_attr_shape op "shape" shape;
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let where
@@ -10159,31 +8957,23 @@ let where
   Op.execute1 op
 
 let wholeFileReader
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "WholeFileReader" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let wholeFileReaderV2
-    ?container
-    ?shared_name
+    ?(container="")
+    ?(shared_name="")
     ()
   =
   let op = Op.create context "WholeFileReaderV2" in
-  Option.iter container ~f:(fun container ->
-    Op.set_attr_string op "container" container
-  );
-  Option.iter shared_name ~f:(fun shared_name ->
-    Op.set_attr_string op "shared_name" shared_name
-  );
+  Op.set_attr_string op "container" container;
+  Op.set_attr_string op "shared_name" shared_name;
   Op.execute1 op
 
 let writeFile

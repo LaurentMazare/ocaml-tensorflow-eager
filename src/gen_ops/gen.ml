@@ -67,7 +67,7 @@ module Attribute = struct
   type t =
     { name : string
     ; attr_type : attr_type
-    ; has_default_value : bool
+    ; default_value : string option
     ; match_input_length : Input.t option
     }
 
@@ -114,18 +114,19 @@ module Attribute = struct
     match t.match_input_length with
     | None ->
       p "  %s%s:%s ->"
-        (if t.has_default_value then "?" else "")
+        (if Option.is_some t.default_value then "?" else "")
         (caml_name t)
         (caml_type t.attr_type)
     | Some _ -> ()
 
-  let ml_def t (p : ('a, unit, string, unit) format4 -> 'a) =
+  let ml_def t out_channel =
+    let p s = p out_channel s in
     match t.match_input_length with
-    | None ->
-      p "    %s%s"
-        (if t.has_default_value then "?" else "~")
-        (caml_name t)
     | Some _ -> ()
+    | None ->
+      match t.default_value with
+      | None -> p "    ~%s" (caml_name t)
+      | Some default_value -> p "    ?(%s=%s)" (caml_name t) default_value
 
   let caml_eval_name t =
     let caml_name = caml_name t in
@@ -136,13 +137,7 @@ module Attribute = struct
   let ml_apply t out_channel =
     let p s = p out_channel s in
     let caml_name = caml_eval_name t in
-    if t.has_default_value && Option.is_none t.match_input_length
-    then begin
-      p "  Option.iter %s ~f:(fun %s ->" caml_name caml_name;
-      p "    Op.%s op \"%s\" %s" (setter t.attr_type) t.name caml_name;
-      p "  );";
-    end else
-      p "  Op.%s op \"%s\" %s;" (setter t.attr_type) t.name caml_name
+    p "  Op.%s op \"%s\" %s;" (setter t.attr_type) t.name caml_name
 end
 
 module Op = struct
@@ -207,6 +202,27 @@ module Op = struct
         else Some (name, allowed_values)
       | _ -> None)
 
+  let float_to_string f =
+    match Float.classify f with
+    | Normal | Subnormal | Zero -> Float.to_string f
+    | Nan -> "Float.nan"
+    | Infinite when Float.(<) f 0. -> "Float.neg_infinity"
+    | Infinite -> "Float.infinity"
+
+  let attr_value_string (attr_value : Op_def_piqi.Attr_value.t) =
+    match attr_value with
+    | { i = Some value; _ } when Int64.(value >= zero) -> Int64.to_string value
+    | { i = Some value; _ } -> Printf.sprintf "(%s)" (Int64.to_string value)
+    | { f = Some value; _ } when Float.(value >= zero) -> float_to_string value
+    | { f = Some value; _ } -> Printf.sprintf "(%s)" (float_to_string value)
+    | { s = Some s; _ } -> Printf.sprintf "\"%s\"" s
+    | { b = Some true; _ } -> "true"
+    | { b = Some false; _ } -> "false"
+    (* TODO: this is likely to be incorrect as a default value. *)
+    | { shape = Some _; _ } -> "[]"
+    | { list = Some { s = []; i = []; f = []; b = []; type_ = []; shape = []; tensor = []; func = [] } ; _ } -> "[]"
+    | _ -> raise (Not_supported "unsupported attr value")
+
   let get_attr (attr : Op_def_piqi.Op_def_attr_def.t) ~inputs =
     Option.bind attr.type_ ~f:Attribute.of_dtype
     |> Option.map ~f:(fun attr_type ->
@@ -219,7 +235,7 @@ module Op = struct
       in
       { Attribute.name
       ; attr_type
-      ; has_default_value = Option.is_some attr.default_value
+      ; default_value = Option.map ~f:attr_value_string attr.default_value
       ; match_input_length
       })
 
@@ -359,7 +375,7 @@ let handle_one_op (op : Op.t) out_channel =
   List.iter alphas ~f:(fun (alpha, _output_type) ->
     p "    ~%s" (type_variable ~alpha));
   List.iter op.attributes ~f:(fun attribute ->
-    Attribute.ml_def attribute p);
+    Attribute.ml_def attribute out_channel);
   List.iter op.inputs ~f:(fun input ->
     let name = Input.caml_name input in
     let maybe_list = if Option.is_some input.number_attr then " list" else "" in

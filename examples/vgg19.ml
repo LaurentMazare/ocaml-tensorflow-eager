@@ -12,24 +12,16 @@ let ckpt_file = Tensor_handle.of_string_exn "vgg19.ckpt"
 
 let restore ~name ~shape:_ =
   Ops.restore ckpt_file (Tensor_handle.of_string_exn name)
-    ~preferred_shard:0
     ~type_dt:Type.Float
 
 let conv2d th ~in_channels ~out_channels ~name =
   let prefix = P.sprintf "%s/%s_" name name in
   let w = restore ~name:(prefix ^ "filters") ~shape:[ 3; 3; in_channels; out_channels ] in
   let b = restore ~name:(prefix ^ "biases") ~shape:[ out_channels ] in
-  let conv2d =
-    Ops.conv2D th w
-      ~use_cudnn_on_gpu:false
-      ~data_format:"NHWC"
-      ~strides:[1; 1; 1; 1]
-      ~padding:"SAME"
-  in
+  let conv2d = Ops.conv2D th w ~strides:[1; 1; 1; 1] ~padding:"SAME" in
   Ops.(+) conv2d b
 
-let max_pool th =
-  Ops.maxPool th ~ksize:[1; 2; 2; 1] ~strides:[1; 2; 2; 1] ~padding:"SAME" ~data_format:"NHWC"
+let max_pool th = Ops.maxPool th ~ksize:[1; 2; 2; 1] ~strides:[1; 2; 2; 1] ~padding:"SAME"
 
 let scalar_int32 int =
   let tensor = Tensor.create Int32 [||] in
@@ -64,7 +56,7 @@ let read_image filename =
     (const_int32 [ (height - min_edge)/2; (width - min_edge)/2; 0 ])
     (const_int32 [ min_edge; min_edge; 3 ])
   |> reshape ~shape:[1; min_edge; min_edge; 3]
-  |> fun th -> Ops.resizeBicubic th (const_int32 [ img_dim; img_dim ]) ~align_corners:false
+  |> fun th -> Ops.resizeBicubic th (const_int32 [ img_dim; img_dim ])
   |> fun th -> Ops.reverseV2 th (const_int32 [-1]) (* Switch from RGB to BGR. *)
   |> fun th -> Ops.(-) th (const_float32 [ 103.939; 116.779; 123.68 ])
 
@@ -73,7 +65,7 @@ let dense ~name out_dims th =
   let prefix = P.sprintf "%s/%s_" name name in
   let w = restore ~name:(prefix ^ "weights") ~shape:[ in_dims; out_dims ] in
   let b = restore ~name:(prefix ^ "biases") ~shape:[ out_dims ] in
-  Ops.(matMul ~transpose_b:false ~transpose_a:false th w + b)
+  Ops.(matMul th w + b)
 
 let vgg19 filename =
   let block iter ~block_idx ~out_channels th =
@@ -102,6 +94,6 @@ let vgg19 filename =
 
 let () =
   let logits = vgg19 "image.jpg" in
-  let pr5, top5 = Ops.topKV2 logits (scalar_int32 5) ~sorted:true in
+  let pr5, top5 = Ops.topKV2 logits (scalar_int32 5) in
   Ops.print pr5 ~summarize:1000;
   Ops.print top5 ~summarize:1000
