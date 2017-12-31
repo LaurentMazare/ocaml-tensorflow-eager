@@ -23,22 +23,7 @@ let conv2d th ~in_channels ~out_channels ~name =
 
 let max_pool th = Ops.maxPool th ~ksize:[1; 2; 2; 1] ~strides:[1; 2; 2; 1] ~padding:"SAME"
 
-let scalar_int32 int =
-  let tensor = Tensor.create Int32 [||] in
-  Tensor.copy_elt_list tensor (List.map [int] ~f:Int32.of_int_exn);
-  Tensor_handle.create_exn (Tensor.P tensor)
-
-let const_int32 int_list =
-  let tensor = Tensor.create Int32 [| List.length int_list |] in
-  Tensor.copy_elt_list tensor (List.map int_list ~f:Int32.of_int_exn);
-  Tensor_handle.create_exn (Tensor.P tensor)
-
-let const_float32 float_list =
-  let tensor = Tensor.create Float32 [| List.length float_list |] in
-  Tensor.copy_elt_list tensor float_list;
-  Tensor_handle.create_exn (Tensor.P tensor)
-
-let reshape th ~shape = Ops.reshape th (const_int32 shape)
+let reshape th ~shape = Ops.reshape th (Tensor_handle.vec_i32_exn shape)
 
 let read_image filename =
   let image =
@@ -53,12 +38,12 @@ let read_image filename =
   in
   let min_edge = Int.min height width in
   Ops.slice image
-    (const_int32 [ (height - min_edge)/2; (width - min_edge)/2; 0 ])
-    (const_int32 [ min_edge; min_edge; 3 ])
+    (Tensor_handle.vec_i32_exn [ (height - min_edge)/2; (width - min_edge)/2; 0 ])
+    (Tensor_handle.vec_i32_exn [ min_edge; min_edge; 3 ])
   |> reshape ~shape:[1; min_edge; min_edge; 3]
-  |> fun th -> Ops.resizeBicubic th (const_int32 [ img_dim; img_dim ])
-  |> fun th -> Ops.reverseV2 th (const_int32 [-1]) (* Switch from RGB to BGR. *)
-  |> fun th -> Ops.(-) th (const_float32 [ 103.939; 116.779; 123.68 ])
+  |> fun th -> Ops.resizeBicubic th (Tensor_handle.vec_i32_exn [ img_dim; img_dim ])
+  |> fun th -> Ops.reverseV2 th (Tensor_handle.vec_i32_exn [-1]) (* Switch from RGB to BGR. *)
+  |> fun th -> Ops.(-) th (Tensor_handle.vec_f32_exn [ 103.939; 116.779; 123.68 ])
 
 let dense ~name out_dims th =
   let in_dims = Tensor_handle.dims th |> List.last_exn in
@@ -94,6 +79,6 @@ let vgg19 filename =
 
 let () =
   let logits = vgg19 "image.jpg" in
-  let pr5, top5 = Ops.topKV2 logits (scalar_int32 5) in
+  let pr5, top5 = Ops.topKV2 logits (Tensor_handle.scalar_i32_exn 5) in
   Ops.print pr5 ~summarize:1000;
   Ops.print top5 ~summarize:1000

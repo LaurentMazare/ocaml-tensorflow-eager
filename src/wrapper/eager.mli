@@ -31,10 +31,13 @@ module Tensor_handle : sig
   val of_string : string -> [ `string ] t Status.result
   val of_string_exn : string -> [ `string ] t
 
-  val scalar_f32 : float -> [ `float ] t Status.result
+  val scalar_i32_exn : int -> [ `int32 ] t
   val scalar_f32_exn : float -> [ `float ] t
-  val scalar_f64 : float -> [ `double ] t Status.result
   val scalar_f64_exn : float -> [ `double ] t
+
+  val vec_i32_exn : int list -> [ `int32 ] t
+  val vec_f32_exn : float list -> [ `float ] t
+  val vec_f64_exn : float list -> [ `double ] t
 
   val resolve_scalar_float_exn : [< `float | `double ] t -> float
 end

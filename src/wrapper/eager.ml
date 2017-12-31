@@ -83,19 +83,23 @@ module Tensor_handle = struct
   let of_string string = of_strings [ string ] ~shape:[]
   let of_string_exn string = of_strings_exn [ string ] ~shape:[]
 
-  let scalar_f32 float =
-    let tensor = Tensor.create0 Bigarray.float32 in
-    Tensor.set tensor [||] float;
-    create (Tensor.P tensor)
+  let scalar_exn type_ value =
+    let tensor = Tensor.create type_ [||] in
+    Tensor.set tensor [||] value;
+    create_exn (Tensor.P tensor)
 
-  let scalar_f32_exn float = scalar_f32 float |> Status.ok_exn
+  let scalar_i32_exn int = scalar_exn Int32 (Int32.of_int int)
+  let scalar_f32_exn = scalar_exn Float32
+  let scalar_f64_exn = scalar_exn Float64
 
-  let scalar_f64 float =
-    let tensor = Tensor.create0 Bigarray.float64 in
-    Tensor.set tensor [||] float;
-    create (Tensor.P tensor)
+  let vec_exn type_ list =
+    let tensor = Tensor.create type_ [| List.length list |] in
+    Tensor.copy_elt_list tensor list;
+    create_exn (Tensor.P tensor)
 
-  let scalar_f64_exn float = scalar_f64 float |> Status.ok_exn
+  let vec_i32_exn list = vec_exn Int32 (List.map Int32.of_int list)
+  let vec_f32_exn = vec_exn Float32
+  let vec_f64_exn = vec_exn Float64
 
   let resolve_scalar_float_exn t =
     let output_tensor = resolve_exn t in
