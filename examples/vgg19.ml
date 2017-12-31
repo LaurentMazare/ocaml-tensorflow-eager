@@ -80,5 +80,5 @@ let vgg19 filename =
 let () =
   let logits = vgg19 "image.jpg" in
   let pr5, top5 = Ops.topKV2 logits (Tensor_handle.scalar_i32_exn 5) in
-  Ops.print pr5 ~summarize:1000;
-  Ops.print top5 ~summarize:1000
+  Ops.print pr5;
+  Ops.print top5

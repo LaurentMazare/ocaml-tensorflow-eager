@@ -7,7 +7,7 @@ let (/) = div
 
 let context = Op.default_context ()
 
-let print ?(summarize=3) ?(message = "") tensor_handle =
+let print ?(summarize=20) ?(message = "") tensor_handle =
   let op = Op.create context "Print" in
   let data_type = Op.tensor_handle_data_type tensor_handle in
   Op.add_input op tensor_handle;
