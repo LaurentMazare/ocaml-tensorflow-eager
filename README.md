@@ -9,6 +9,8 @@ LIBRARY_PATH=$TFPATH/lib:$LIBRARY_PATH C_INCLUDE_PATH=$TFPATH/include:$C_INCLUDE
 
 ## Examples
 
+A very simple example performing an addition using TensorFlow can be seen below:
+
 ```ocaml
 module Ops = Tf_ops.Ops
 module Tensor_handle = Tf_core.Eager.Tensor_handle
@@ -22,4 +24,4 @@ let () =
   Printf.printf "%f\n" forty_two
 ```
 
-For the VGG-19 example, the weights are available [here](http://download.tensorflow.org/models/vgg_19_2016_08_28.tar.gz).
+For the [VGG-19 example](https://github.com/LaurentMazare/ocaml-tf/tree/master/examples/vnn19.ml), the weights are available [here](http://download.tensorflow.org/models/vgg_19_2016_08_28.tar.gz).
