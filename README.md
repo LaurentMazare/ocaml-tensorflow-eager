@@ -21,3 +21,5 @@ let () =
   in
   Printf.printf "%f\n" forty_two
 ```
+
+For the VGG-19 example, the weights are available [here](http://download.tensorflow.org/models/vgg_19_2016_08_28.tar.gz).
