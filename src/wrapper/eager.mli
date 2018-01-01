@@ -40,6 +40,9 @@ module Tensor_handle : sig
   val vec_f64_exn : float list -> [ `double ] t
 
   val resolve_scalar_float_exn : [< `float | `double ] t -> float
+  val resolve_vec_float_exn : [< `float | `double ] t -> float list
+
+  val resolve_vec_int_exn : [< `int32 | `int64 ] t -> int list
 end
 
 module Op : sig

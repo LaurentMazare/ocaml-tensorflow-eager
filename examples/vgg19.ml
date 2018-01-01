@@ -56,10 +56,6 @@ let vgg19 filename =
   |> Ops.relu
   |> dense ~name:"fc8" 1000
   |> reshape ~shape:[1; -1]
-  |> Ops.softmax
 
 let () =
-  let logits = vgg19 "image.jpg" in
-  let pr5, top5 = Ops.topKV2 logits (Tensor_handle.scalar_i32_exn 5) in
-  Ops.print pr5;
-  Ops.print top5
+  vgg19 "image.jpg" |> Imagenet_helper.print_top_k_from_logits ~k:5

@@ -74,6 +74,12 @@ let to_float_list (P tensor) =
   | Bigarray.Float64 -> to_elt_list tensor
   | _ -> failwith "Not a float tensor"
 
+let to_int_list (P tensor) =
+  match kind tensor with
+  | Bigarray.Int32 -> to_elt_list tensor |> List.map Int32.to_int
+  | Bigarray.Int64 -> to_elt_list tensor |> List.map Int64.to_int
+  | _ -> failwith "Not an int tensor"
+
 let copy_elt_list : type a b. (a, b) t -> a list -> unit = fun t data ->
   let size = Array.fold_left ( * ) 1 (Bigarray.Genarray.dims t) in
   let t_data = Bigarray.reshape_1 t size in

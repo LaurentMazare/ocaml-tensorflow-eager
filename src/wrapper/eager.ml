@@ -109,6 +109,12 @@ module Tensor_handle = struct
       match Tensor.float64 output_tensor with
       | Some tensor -> Tensor.get tensor [||]
       | None -> failwith "not a float32/float64 tensor"
+
+  let resolve_vec_float_exn t =
+    resolve_exn t |> Tensor.to_float_list
+
+  let resolve_vec_int_exn t =
+    resolve_exn t |> Tensor.to_int_list
 end
 
 module Op = struct

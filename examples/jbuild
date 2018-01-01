@@ -2,4 +2,4 @@
 
 (executables
  ((names (hello_world vgg19))
-  (libraries (base tf_core tf_ops))))
+  (libraries (base stdio tf_core tf_ops))))

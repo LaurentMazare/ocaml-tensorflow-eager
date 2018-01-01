@@ -8,6 +8,7 @@ type p = P : (_, _) t -> p
 val print : p -> unit
 
 val to_elt_list : ('a, 'b) t -> 'a list
+val to_int_list : p -> int list
 val to_float_list : p -> float list
 val copy_elt_list : ('a, 'b) t -> 'a list -> unit
 
