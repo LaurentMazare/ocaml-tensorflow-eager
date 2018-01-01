@@ -24,4 +24,4 @@ let () =
   Printf.printf "%f\n" forty_two
 ```
 
-For the [VGG-19 example](https://github.com/LaurentMazare/ocaml-tf/tree/master/examples/vnn19.ml), the weights are available [here](http://download.tensorflow.org/models/vgg_19_2016_08_28.tar.gz).
+For the [VGG-19 example](https://github.com/LaurentMazare/ocaml-tf/tree/master/examples/vgg19.ml), the weights are available [here](http://download.tensorflow.org/models/vgg_19_2016_08_28.tar.gz).
