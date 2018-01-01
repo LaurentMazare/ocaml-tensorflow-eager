@@ -1,5 +1,5 @@
 (jbuild_version 1)
 
 (executables
- ((names (hello_world vgg19))
+ ((names (hello_world resnet50 vgg19))
   (libraries (base stdio tf_core tf_ops))))

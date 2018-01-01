@@ -1,4 +1,4 @@
-ALL = examples/hello_world.exe examples/vgg19.exe
+ALL = examples/hello_world.exe examples/resnet50.exe examples/vgg19.exe
 
 .FORCE:
 
