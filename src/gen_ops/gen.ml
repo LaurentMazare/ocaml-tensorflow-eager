@@ -300,7 +300,7 @@ let output_type_string op output_type =
   | Fixed p -> "Type." ^ Op_type.to_string p
   | Polymorphic (alpha, _) ->
     match same_input_and_output_type op ~alpha with
-    | Some input -> Printf.sprintf "(Op.tensor_handle_data_type %s)" (Input.caml_comp_name input)
+    | Some input -> Printf.sprintf "(Op.Tensor_handle.data_type %s)" (Input.caml_comp_name input)
     | None -> Printf.sprintf "Operation.Type.(to_data_type (P %s))" (type_variable ~alpha)
 
 let needs_variable_for_output_type op output_type =
@@ -357,7 +357,7 @@ let gen_mli ops =
   p "";
   p "open Tf_core";
   p "";
-  p "type 'a t = 'a Op.tensor_handle";
+  p "type 'a t = 'a Op.Tensor_handle.t";
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
   p "";
@@ -400,7 +400,7 @@ let handle_one_op (op : Op.t) out_channel =
   List.iter op.inputs ~f:(fun (input : Input.t) ->
     Option.iter input.type_name ~f:(fun type_name ->
       let name = Input.caml_comp_name input in
-      let type_string = Printf.sprintf "(Op.tensor_handle_data_type %s)" name in
+      let type_string = Printf.sprintf "(Op.Tensor_handle.data_type %s)" name in
       if not (Hash_set.mem attr_names type_name)
       then begin
         Hash_set.add attr_names type_name;
@@ -425,7 +425,7 @@ let gen_ml ops =
   p "open Base";
   p "open Tf_core";
   p "";
-  p "type 'a t = 'a Op.tensor_handle";
+  p "type 'a t = 'a Op.Tensor_handle.t";
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
   p "";

@@ -4,7 +4,8 @@ open Tf_core
 type t = Eager.Op.t
 
 (* TODO: add some tape handling in order to handle backprop. *)
-type 'a tensor_handle = 'a Eager.Tensor_handle.t
+module Tensor_handle = Eager.Tensor_handle
+
 type context = Eager.Context.t
 
 let default_context () =
@@ -59,6 +60,4 @@ let execute5 = Eager.execute5_exn
 let execute6 = Eager.execute6_exn
 let execute7 = Eager.execute7_exn
 
-let tensor_handle_data_type = Eager.Tensor_handle.data_type
-
-type 'a binary = 'a tensor_handle -> 'a tensor_handle -> 'a tensor_handle
+type 'a binary = 'a Tensor_handle.t -> 'a Tensor_handle.t -> 'a Tensor_handle.t
