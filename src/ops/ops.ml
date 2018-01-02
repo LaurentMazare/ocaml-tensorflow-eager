@@ -18,3 +18,5 @@ let print ?(summarize=20) ?(message = "") tensor_handle =
   Op.set_attr_int op "summarize" summarize;
   Op.set_attr_int op "first_n" (-1);
   Op.execute0 op
+
+let mm = matMul

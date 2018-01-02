@@ -1,3 +1,4 @@
+(* TODO: Consider functorizing generated ops over this signature ? *)
 open Base
 open Tf_core
 

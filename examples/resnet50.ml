@@ -31,8 +31,6 @@ let max_pool th ~kernel_size:k ~stride:s =
 let avg_pool th ~stride:s =
   O.avgPool th ~ksize:[1; s; s; 1] ~strides:[1; s; s; 1] ~padding:"VALID"
 
-let reshape th ~shape = O.reshape th (T.vec_i32_exn shape)
-
 let batch_normalization th ~name =
   let shape = T.dims th |> List.tl_exn in
   let mean_ = restore ~name:(name ^ "/moving_mean") ~shape in
@@ -42,23 +40,23 @@ let batch_normalization th ~name =
   O.((th - mean_) / sqrt var * gamma + beta)
 
 let basic_block th ~name ~out_features ~stride =
+  let in_features = T.dims th |> List.last_exn in
+  let conv_name c = Printf.sprintf "%s/bottleneck_v1/%s" name c in
   let shortcut =
-    if stride = 1
+    if in_features = out_features
     then th
     else
-      let in_features = T.dims th |> List.last_exn in
-      let half_diff = (out_features - in_features) / 2 in
-      T.vec_i32_exn [ 0; 0; 0; 0; 0; 0; half_diff; half_diff ]
-      |> reshape ~shape:[ 4; 2 ]
-      |> O.pad (avg_pool th ~stride)
+      conv2d th ~name:(conv_name "shortcut") ~out_features ~stride ~kernel_size:1
   in
-  let conv_name idx = Printf.sprintf "%s/bottleneck_v1/conv%d" name idx in
-  conv2d th ~name:(conv_name 1) ~out_features ~stride ~kernel_size:3
-  |> batch_normalization ~name:(conv_name 1 ^ "/BatchNorm")
+  conv2d th ~name:(conv_name "conv1") ~out_features ~stride ~kernel_size:1
+  |> batch_normalization ~name:(conv_name "conv1/BatchNorm")
   |> O.relu
-  |> conv2d ~name:(conv_name 2) ~out_features ~stride:1 ~kernel_size:1
+  |> conv2d ~name:(conv_name "conv2") ~out_features ~stride:1 ~kernel_size:3
+  |> batch_normalization ~name:(conv_name "conv2/BatchNorm")
+  |> O.relu
+  |> conv2d ~name:(conv_name "conv3") ~out_features ~stride:1 ~kernel_size:1
+  |> batch_normalization ~name:(conv_name "conv3/BatchNorm")
   |> O.add shortcut
-  |> batch_normalization ~name:(conv_name 2 ^ "/BatchNorm")
   |> O.relu
 
 let block_stack layer ~name ~depth ~out_features ~stride =
@@ -69,10 +67,14 @@ let block_stack layer ~name ~depth ~out_features ~stride =
 
 let dense ~name out_dims th =
   let in_dims = T.dims th |> List.last_exn in
-  let prefix = P.sprintf "resnet/%s/" name in
-  let w = restore ~name:(prefix ^ "weights") ~shape:([ in_dims; out_dims ]) in
-  let b = restore ~name:(prefix ^ "biases") ~shape:[ out_dims ] in
-  O.(matMul th w + b)
+  let w = restore ~name:(name ^ "/weights") ~shape:([ in_dims; out_dims ]) in
+  let b = restore ~name:(name ^ "/biases") ~shape:[ out_dims ] in
+  (* Use conv2D rather than fully-connected as in:
+     https://github.com/tensorflow/models/blob/master/research/slim/nets/resnet_v1.py
+  *)
+  O.(conv2D th w ~strides:[1; 1; 1; 1] ~padding:"VALID" + b)
+
+let reshape th ~shape = O.reshape th (T.vec_i32_exn shape)
 
 let resnet filename =
   Imagenet_helper.read_image filename
@@ -86,6 +88,7 @@ let resnet filename =
   |> block_stack ~name:"block4" ~depth:3 ~out_features:2048 ~stride:2
   |> avg_pool ~stride:7
   |> dense ~name:"logits" 1000
+  |> reshape ~shape:[1; -1]
 
 let () =
   resnet "image.jpg" |> Imagenet_helper.print_top_k_from_logits ~k:5

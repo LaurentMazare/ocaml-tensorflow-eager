@@ -2,6 +2,8 @@ open Base
 open Tf_core
 
 type t = Eager.Op.t
+
+(* TODO: add some tape handling in order to handle backprop. *)
 type 'a tensor_handle = 'a Eager.Tensor_handle.t
 type context = Eager.Context.t
 
