@@ -2,7 +2,7 @@ module P = Printf
 open Base
 
 module O = Tf_ops.Ops
-module T = Tf_core.Eager.Tensor_handle
+module T = Tf_ops.Op.Tensor_handle
 module Type = Tf_core.Operation.Type
 
 let ckpt_file = T.of_string_exn "resnet_v1_50.ckpt"

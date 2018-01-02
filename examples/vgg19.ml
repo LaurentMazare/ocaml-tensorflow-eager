@@ -3,7 +3,7 @@ open Base
 
 module Ops = Tf_ops.Ops
 module Tensor = Tf_core.Tensor
-module Tensor_handle = Tf_core.Eager.Tensor_handle
+module Tensor_handle = Tf_ops.Op.Tensor_handle
 module Type = Tf_core.Operation.Type
 
 (* The weights can be found here: http://download.tensorflow.org/models/vgg_19_2016_08_28.tar.gz *)

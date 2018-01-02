@@ -3,8 +3,72 @@ open Tf_core
 
 type t = Eager.Op.t
 
-(* TODO: add some tape handling in order to handle backprop. *)
-module Tensor_handle = Eager.Tensor_handle
+module Tape_info : sig
+  type t
+  val create : unit -> t
+end = struct
+  (* TODO *)
+  type t = unit
+
+  let create () = ()
+end
+
+module Tensor_handle = struct
+  type 'a t =
+    { handle : 'a Eager.Tensor_handle.t
+    ; tape_info : Tape_info.t option
+    }
+
+  let create_no_tape_info handle =
+    { handle; tape_info = None }
+
+  let create_exn tensor =
+    Eager.Tensor_handle.create_exn tensor
+    |> create_no_tape_info
+
+  let of_strings_exn strings ~shape =
+    Eager.Tensor_handle.of_strings_exn strings ~shape
+    |> create_no_tape_info
+
+  let of_string_exn str =
+    Eager.Tensor_handle.of_string_exn str
+    |> create_no_tape_info
+
+  let scalar_i32_exn i =
+    Eager.Tensor_handle.scalar_i32_exn i
+    |> create_no_tape_info
+
+  let scalar_f32_exn f =
+    Eager.Tensor_handle.scalar_f32_exn f
+    |> create_no_tape_info
+
+  let scalar_f64_exn f =
+    Eager.Tensor_handle.scalar_f64_exn f
+    |> create_no_tape_info
+
+  let vec_i32_exn i =
+    Eager.Tensor_handle.vec_i32_exn i
+    |> create_no_tape_info
+
+  let vec_f32_exn f =
+    Eager.Tensor_handle.vec_f32_exn f
+    |> create_no_tape_info
+
+  let vec_f64_exn f =
+    Eager.Tensor_handle.vec_f64_exn f
+    |> create_no_tape_info
+
+
+  let resolve_exn t = Eager.Tensor_handle.resolve_exn t.handle
+  let resolve_scalar_float_exn t = Eager.Tensor_handle.resolve_scalar_float_exn t.handle
+  let resolve_vec_float_exn t = Eager.Tensor_handle.resolve_vec_float_exn t.handle
+  let resolve_vec_int_exn t = Eager.Tensor_handle.resolve_vec_int_exn t.handle
+  let dims t = Eager.Tensor_handle.dims t.handle
+  let data_type t = Eager.Tensor_handle.data_type t.handle
+
+  let watch t =
+    { t with tape_info = Some (Tape_info.create ()) }
+end
 
 type context = Eager.Context.t
 
@@ -44,20 +108,64 @@ let set_attr_shape_list t name values =
   Eager.Op.set_attr_shape_list t name values
   |> Wrapper.Status.ok_exn
 
-let add_input t tensor_handle =
-  Eager.Op.add_input t tensor_handle
+let add_input t th =
+  Eager.Op.add_input t th.Tensor_handle.handle
   |> Wrapper.Status.ok_exn
 
 let execute t ~output_len =
   Eager.execute_exn t ~output_len
+  |> List.map ~f:Tensor_handle.create_no_tape_info
 
-let execute0 = Eager.execute0_exn
-let execute1 = Eager.execute1_exn
-let execute2 = Eager.execute2_exn
-let execute3 = Eager.execute3_exn
-let execute4 = Eager.execute4_exn
-let execute5 = Eager.execute5_exn
-let execute6 = Eager.execute6_exn
-let execute7 = Eager.execute7_exn
+let execute0 t =
+  Eager.execute0_exn t
+
+let execute1 t =
+  let th1 = Eager.execute1_exn t in
+  Tensor_handle.create_no_tape_info th1
+
+let execute2 t =
+  let th1, th2 = Eager.execute2_exn t in
+  Tensor_handle.create_no_tape_info th1,
+  Tensor_handle.create_no_tape_info th2
+
+let execute3 t =
+  let th1, th2, th3 = Eager.execute3_exn t in
+  Tensor_handle.create_no_tape_info th1,
+  Tensor_handle.create_no_tape_info th2,
+  Tensor_handle.create_no_tape_info th3
+
+let execute4 t =
+  let th1, th2, th3, th4 = Eager.execute4_exn t in
+  Tensor_handle.create_no_tape_info th1,
+  Tensor_handle.create_no_tape_info th2,
+  Tensor_handle.create_no_tape_info th3,
+  Tensor_handle.create_no_tape_info th4
+
+let execute5 t =
+  let th1, th2, th3, th4, th5 = Eager.execute5_exn t in
+  Tensor_handle.create_no_tape_info th1,
+  Tensor_handle.create_no_tape_info th2,
+  Tensor_handle.create_no_tape_info th3,
+  Tensor_handle.create_no_tape_info th4,
+  Tensor_handle.create_no_tape_info th5
+
+let execute6 t =
+  let th1, th2, th3, th4, th5, th6 = Eager.execute6_exn t in
+  Tensor_handle.create_no_tape_info th1,
+  Tensor_handle.create_no_tape_info th2,
+  Tensor_handle.create_no_tape_info th3,
+  Tensor_handle.create_no_tape_info th4,
+  Tensor_handle.create_no_tape_info th5,
+  Tensor_handle.create_no_tape_info th6
+
+let execute7 t =
+  let th1, th2, th3, th4, th5, th6, th7 = Eager.execute7_exn t in
+  Tensor_handle.create_no_tape_info th1,
+  Tensor_handle.create_no_tape_info th2,
+  Tensor_handle.create_no_tape_info th3,
+  Tensor_handle.create_no_tape_info th4,
+  Tensor_handle.create_no_tape_info th5,
+  Tensor_handle.create_no_tape_info th6,
+  Tensor_handle.create_no_tape_info th7
 
 type 'a binary = 'a Tensor_handle.t -> 'a Tensor_handle.t -> 'a Tensor_handle.t

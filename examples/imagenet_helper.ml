@@ -1,7 +1,7 @@
 open Base
 open Stdio
 module Ops = Tf_ops.Ops
-module Tensor_handle = Tf_core.Eager.Tensor_handle
+module Tensor_handle = Tf_ops.Op.Tensor_handle
 module Type = Tf_core.Operation.Type
 
 let img_dim = 224

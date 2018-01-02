@@ -3,7 +3,35 @@ open Base
 open Tf_core
 
 type t
-module Tensor_handle : module type of Eager.Tensor_handle
+module Tensor_handle : sig
+  type _ t
+  val create_exn : Tensor.p -> _ t
+
+  val resolve_exn : _ t -> Tensor.p
+
+  val dims : _ t -> int list
+
+  val data_type : _ t -> Wrapper.data_type
+
+  val of_strings_exn : string list -> shape:int list -> [ `string ] t
+
+  val of_string_exn : string -> [ `string ] t
+
+  val scalar_i32_exn : int -> [ `int32 ] t
+  val scalar_f32_exn : float -> [ `float ] t
+  val scalar_f64_exn : float -> [ `double ] t
+
+  val vec_i32_exn : int list -> [ `int32 ] t
+  val vec_f32_exn : float list -> [ `float ] t
+  val vec_f64_exn : float list -> [ `double ] t
+
+  val resolve_scalar_float_exn : [< `float | `double ] t -> float
+  val resolve_vec_float_exn : [< `float | `double ] t -> float list
+
+  val resolve_vec_int_exn : [< `int32 | `int64 ] t -> int list
+
+  val watch : 'a t -> 'a t
+end
 
 type context
 
