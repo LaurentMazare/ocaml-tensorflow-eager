@@ -100,15 +100,15 @@ module Attribute = struct
     | _str -> None
 
   let setter = function
-    | String -> "set_attr_string"
-    | Shape -> "set_attr_shape"
-    | Int -> "set_attr_int"
-    | Float -> "set_attr_float"
-    | Bool -> "set_attr_bool"
-    | List `float -> "set_attr_float_list"
-    | List `int -> "set_attr_int_list"
-    | List `shape -> "set_attr_shape_list"
-    | List `type_ -> "set_attr_type_list"
+    | String -> "`string"
+    | Shape -> "`shape"
+    | Int -> "`int"
+    | Float -> "`float"
+    | Bool -> "`bool"
+    | List `float -> "`list_float"
+    | List `int -> "`list_int"
+    | List `shape -> "`list_shape"
+    | List `type_ -> "`list_type_p"
 
   let mli t (p : ('a, unit, string, unit) format4 -> 'a) =
     match t.match_input_length with
@@ -137,7 +137,7 @@ module Attribute = struct
   let ml_apply t out_channel =
     let p s = p out_channel s in
     let caml_name = caml_eval_name t in
-    p "  |> Op.%s ~name:\"%s\" ~value:%s" (setter t.attr_type) t.name caml_name
+    p "    \"%s\", %s %s;" t.name (setter t.attr_type) caml_name
 end
 
 module Op = struct
@@ -387,19 +387,22 @@ let handle_one_op (op : Op.t) out_channel =
   if List.is_empty op.inputs
   then p "    ()";
   p "  =";
-  p "  Op.create context Op_names.%s" (Op.caml_name op);
-  List.iter op.inputs ~f:(fun input ->
-    if Option.is_some input.number_attr
-    then p "  |> fun init -> List.fold %s ~init ~f:Op.add_input" (Input.caml_name input)
-    else p "  |> fun op -> Op.add_input op %s" (Input.caml_name input));
+  let inputs =
+    List.map op.inputs ~f:(fun input ->
+      if Option.is_some input.number_attr
+      then Printf.sprintf "  ] @ List.map %s ~f:(fun x -> Op.Tensor_handle.P x) @ [" (Input.caml_name input)
+      else Printf.sprintf "Op.Tensor_handle.P %s; " (Input.caml_name input))
+  in
+  p "  let inputs = [ %s ] in" (String.concat inputs ~sep:"");
   let attr_names = Hash_set.create (module String) () in
+  p "  let attrs = [";
   List.iter op.output_types ~f:(fun output_type ->
     Option.iter output_type.name ~f:(fun output_type_name ->
       let output_type_string = output_type_string op output_type.type_ in
       if not (Hash_set.mem attr_names output_type_name)
       then begin
         Hash_set.add attr_names output_type_name;
-        p "  |> Op.set_attr_data_type ~name:\"%s\" ~value:%s" output_type_name output_type_string
+        p "    \"%s\", `type_ %s;" output_type_name output_type_string
       end));
   List.iter op.inputs ~f:(fun (input : Input.t) ->
     Option.iter input.type_name ~f:(fun type_name ->
@@ -408,9 +411,12 @@ let handle_one_op (op : Op.t) out_channel =
       if not (Hash_set.mem attr_names type_name)
       then begin
         Hash_set.add attr_names type_name;
-        p "  |> Op.set_attr_data_type ~name:\"%s\" ~value:%s" type_name type_string
+        p "    \"%s\", `type_ %s;" type_name type_string
       end));
   List.iter op.attributes ~f:(fun attribute -> Attribute.ml_apply attribute out_channel);
+  p "  ]";
+  p "  in";
+  p "  Op.create context Op_names.%s inputs attrs" (Op.caml_name op);
   begin
     match op.output_types with
     | [ { number_attr = Some attr; _ } ] ->

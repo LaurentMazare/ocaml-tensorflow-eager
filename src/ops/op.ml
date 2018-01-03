@@ -78,6 +78,7 @@ module Tensor_handle = struct
 
   let dims t = Eager.Tensor_handle.dims t.handle
   let data_type t = Eager.Tensor_handle.data_type t.handle
+  let data_type_p (P t) = Eager.Tensor_handle.data_type t.handle
 
   let watch t =
     { t with tape_info = Some (Tape_info.create ()) }
@@ -85,7 +86,7 @@ end
 
 type t =
   { op : Eager.Op.t
-  ; rev_inputs : Tensor_handle.p list
+  ; inputs : Tensor_handle.p list
   }
 
 type context = Eager.Context.t
@@ -94,67 +95,47 @@ let default_context () =
   Eager.Context.create ()
   |> Wrapper.Status.ok_exn
 
-let create context name =
+type attr =
+  [ `bool of bool
+  | `float of float
+  | `int of int
+  | `list_float of float list
+  | `list_int of int list
+  | `list_shape of int list list
+  | `list_type of Tf_core.Wrapper.data_type list
+  | `list_type_p of Operation.Type.p list
+  | `shape of int list
+  | `string of string
+  | `type_ of Tf_core.Wrapper.data_type
+  ]
+
+let create context name inputs attrs =
   let op = Eager.Op.create context (Name.to_string name) |> Wrapper.Status.ok_exn in
-  { op; rev_inputs = [] }
-
-let set_attr_string t ~name ~value =
-  Eager.Op.set_attr_string t.op name value;
-  t
-
-let set_attr_bool t ~name ~value =
-  Eager.Op.set_attr_bool t.op name value;
-  t
-
-let set_attr_float t ~name ~value =
-  Eager.Op.set_attr_float t.op name value;
-  t
-
-let set_attr_float_list t ~name ~value =
-  Eager.Op.set_attr_float_list t.op name value;
-  t
-
-let set_attr_data_type t ~name ~value =
-  Eager.Op.set_attr_type t.op name value;
-  t
-
-let set_attr_data_type_list t ~name ~value =
-  Eager.Op.set_attr_type_list t.op name value;
-  t
-
-let set_attr_type t ~name ~value =
-  Eager.Op.set_attr_type t.op name (Operation.Type.P value |> Operation.Type.to_data_type);
-  t
-
-let set_attr_type_list t ~name ~value =
-  let value = List.map value ~f:Operation.Type.to_data_type in
-  Eager.Op.set_attr_type_list t.op name value;
-  t
-
-let set_attr_int t ~name ~value =
-  Eager.Op.set_attr_int t.op name (Int64.of_int value);
-  t
-
-let set_attr_int_list t ~name ~value =
-  Eager.Op.set_attr_int_list t.op name (List.map value ~f:Int64.of_int);
-  t
-
-let set_attr_shape t ~name ~value =
-  Eager.Op.set_attr_shape t.op name value |> Wrapper.Status.ok_exn;
-  t
-
-let set_attr_shape_list t ~name ~value =
-  Eager.Op.set_attr_shape_list t.op name value |> Wrapper.Status.ok_exn;
-  t
-
-let add_input t th =
-  Eager.Op.add_input t.op th.Tensor_handle.handle
-  |> Wrapper.Status.ok_exn;
-  { op = t.op; rev_inputs = Tensor_handle.P th :: t.rev_inputs }
+  List.iter inputs ~f:(fun (Tensor_handle.P th) ->
+    Eager.Op.add_input op th.Tensor_handle.handle
+    |> Wrapper.Status.ok_exn;
+  );
+  List.iter attrs ~f:(fun (name, attr) ->
+    match attr with
+    | `string value -> Eager.Op.set_attr_string op name value
+    | `bool value -> Eager.Op.set_attr_bool op name value
+    | `float value -> Eager.Op.set_attr_float op name value
+    | `list_float value -> Eager.Op.set_attr_float_list op name value
+    | `int value -> Eager.Op.set_attr_int op name (Int64.of_int value)
+    | `list_int value -> Eager.Op.set_attr_int_list op name (List.map value ~f:Int64.of_int)
+    | `type_ value -> Eager.Op.set_attr_type op name value
+    | `list_type value -> Eager.Op.set_attr_type_list op name value
+    | `list_type_p value ->
+        let value = List.map value ~f:Operation.Type.to_data_type in
+				Eager.Op.set_attr_type_list op name value
+    | `shape value -> Eager.Op.set_attr_shape op name value |> Wrapper.Status.ok_exn
+    | `list_shape value -> Eager.Op.set_attr_shape_list op name value |> Wrapper.Status.ok_exn
+  );
+  { op; inputs = [] }
 
 let create_handle t handle =
   let tape_info =
-    if List.exists t.rev_inputs ~f:(fun (Tensor_handle.P th) -> Option.is_some (th.tape_info))
+    if List.exists t.inputs ~f:(fun (Tensor_handle.P th) -> Option.is_some (th.tape_info))
     then Some (Tape_info.create ())
     else None
   in

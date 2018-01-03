@@ -7,6 +7,8 @@ module Name : Identifiable.S
 type t
 module Tensor_handle : sig
   type _ t
+  type p = P : _ t -> p
+
   val create_exn : Tensor.p -> _ t
 
   val resolve_exn : _ t -> Tensor.p
@@ -14,6 +16,7 @@ module Tensor_handle : sig
   val dims : _ t -> int list
 
   val data_type : _ t -> Wrapper.data_type
+  val data_type_p : p -> Wrapper.data_type
 
   val of_strings_exn : string list -> shape:int list -> [ `string ] t
 
@@ -39,22 +42,26 @@ type context
 
 val default_context : unit -> context
 
-val create : context -> Name.t -> t
+type attr =
+  [ `bool of bool
+  | `float of float
+  | `int of int
+  | `list_float of float list
+  | `list_int of int list
+  | `list_shape of int list list
+  | `list_type of Tf_core.Wrapper.data_type list
+  | `list_type_p of Operation.Type.p list
+  | `shape of int list
+  | `string of string
+  | `type_ of Tf_core.Wrapper.data_type
+  ]
 
-val set_attr_bool : t -> name:string -> value:bool -> t
-val set_attr_float : t -> name:string -> value:float -> t
-val set_attr_float_list : t -> name:string -> value:float list -> t
-val set_attr_int : t -> name:string -> value:int -> t
-val set_attr_int_list : t -> name:string -> value:int list -> t
-val set_attr_shape : t -> name:string -> value:int list -> t
-val set_attr_shape_list : t -> name:string -> value:int list list -> t
-val set_attr_string : t -> name:string -> value:string -> t
-val set_attr_type : t -> name:string -> value:_ Operation.Type.t -> t
-val set_attr_type_list : t -> name:string -> value:Operation.Type.p list -> t
-val set_attr_data_type : t -> name:string -> value:Wrapper.data_type -> t
-val set_attr_data_type_list : t -> name:string -> value:Wrapper.data_type list -> t
-
-val add_input : t -> _ Tensor_handle.t -> t
+val create
+  :  context
+  -> Name.t
+  -> Tensor_handle.p list
+  -> (string * attr) list
+  -> t
 
 val execute : t -> output_len:int -> _ Tensor_handle.t list
 
