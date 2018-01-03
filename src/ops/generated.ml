@@ -706,7 +706,7 @@ let abort
     ?(exit_without_error=false)
     ()
   =
-  Op.create context "Abort"
+  Op.create context Op_names.abort
   |> Op.set_attr_string ~name:"error_msg" ~value:error_msg
   |> Op.set_attr_bool ~name:"exit_without_error" ~value:exit_without_error
   |> Op.execute0
@@ -714,7 +714,7 @@ let abort
 let abs
     (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
   =
-  Op.create context "Abs"
+  Op.create context Op_names.abs
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -724,7 +724,7 @@ let accumulatorApplyGradient
     (local_step : [ `int64 ] t)
     (gradient : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
   =
-  Op.create context "AccumulatorApplyGradient"
+  Op.create context Op_names.accumulatorApplyGradient
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op local_step
   |> fun op -> Op.add_input op gradient
@@ -734,7 +734,7 @@ let accumulatorApplyGradient
 let accumulatorNumAccumulated
     (handle : [ `string ] t)
   =
-  Op.create context "AccumulatorNumAccumulated"
+  Op.create context Op_names.accumulatorNumAccumulated
   |> fun op -> Op.add_input op handle
   |> Op.execute1
 
@@ -742,7 +742,7 @@ let accumulatorSetGlobalStep
     (handle : [ `string ] t)
     (new_global_step : [ `int64 ] t)
   =
-  Op.create context "AccumulatorSetGlobalStep"
+  Op.create context Op_names.accumulatorSetGlobalStep
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op new_global_step
   |> Op.execute0
@@ -752,7 +752,7 @@ let accumulatorTakeGradient
     (handle : [ `string ] t)
     (num_required : [ `int32 ] t)
   =
-  Op.create context "AccumulatorTakeGradient"
+  Op.create context Op_names.accumulatorTakeGradient
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op num_required
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -761,7 +761,7 @@ let accumulatorTakeGradient
 let acos
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Acos"
+  Op.create context Op_names.acos
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -769,7 +769,7 @@ let acos
 let acosh
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Acosh"
+  Op.create context Op_names.acosh
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -778,7 +778,7 @@ let add
     (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string ] as 't) t)
     (y : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string ] as 't) t)
   =
-  Op.create context "Add"
+  Op.create context Op_names.add
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -791,7 +791,7 @@ let addManySparseToTensorsMap
     (sparse_values : 't t)
     (sparse_shape : [ `int64 ] t)
   =
-  Op.create context "AddManySparseToTensorsMap"
+  Op.create context Op_names.addManySparseToTensorsMap
   |> fun op -> Op.add_input op sparse_indices
   |> fun op -> Op.add_input op sparse_values
   |> fun op -> Op.add_input op sparse_shape
@@ -803,7 +803,7 @@ let addManySparseToTensorsMap
 let addN
     (inputs__ : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 | `variant ] as 't) t list)
   =
-  Op.create context "AddN"
+  Op.create context Op_names.addN
   |> fun init -> List.fold inputs__ ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn inputs__))
   |> Op.set_attr_int ~name:"N" ~value:(List.length inputs__)
@@ -816,7 +816,7 @@ let addSparseToTensorsMap
     (sparse_values : 't t)
     (sparse_shape : [ `int64 ] t)
   =
-  Op.create context "AddSparseToTensorsMap"
+  Op.create context Op_names.addSparseToTensorsMap
   |> fun op -> Op.add_input op sparse_indices
   |> fun op -> Op.add_input op sparse_values
   |> fun op -> Op.add_input op sparse_shape
@@ -831,7 +831,7 @@ let adjustContrast
     (min_value : [ `float ] t)
     (max_value : [ `float ] t)
   =
-  Op.create context "AdjustContrast"
+  Op.create context Op_names.adjustContrast
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op contrast_factor
   |> fun op -> Op.add_input op min_value
@@ -843,7 +843,7 @@ let adjustContrastv2
     (images : [ `float ] t)
     (contrast_factor : [ `float ] t)
   =
-  Op.create context "AdjustContrastv2"
+  Op.create context Op_names.adjustContrastv2
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op contrast_factor
   |> Op.execute1
@@ -852,7 +852,7 @@ let adjustHue
     (images : [ `float ] t)
     (delta : [ `float ] t)
   =
-  Op.create context "AdjustHue"
+  Op.create context Op_names.adjustHue
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op delta
   |> Op.execute1
@@ -861,7 +861,7 @@ let adjustSaturation
     (images : [ `float ] t)
     (scale : [ `float ] t)
   =
-  Op.create context "AdjustSaturation"
+  Op.create context Op_names.adjustSaturation
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op scale
   |> Op.execute1
@@ -871,7 +871,7 @@ let all
     (input : [ `bool ] t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "All"
+  Op.create context Op_names.all
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op reduction_indices
   |> Op.set_attr_data_type ~name:"Tidx" ~value:(Op.Tensor_handle.data_type reduction_indices)
@@ -886,7 +886,7 @@ let allCandidateSampler
     ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
-  Op.create context "AllCandidateSampler"
+  Op.create context Op_names.allCandidateSampler
   |> fun op -> Op.add_input op true_classes
   |> Op.set_attr_int ~name:"num_true" ~value:num_true
   |> Op.set_attr_int ~name:"num_sampled" ~value:num_sampled
@@ -899,7 +899,7 @@ let angle
     ~type_tout
     (input : ([< `complex64 ] as 't) t)
   =
-  Op.create context "Angle"
+  Op.create context Op_names.angle
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"Tout" ~value:Operation.Type.(to_data_type (P type_tout))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -910,7 +910,7 @@ let any
     (input : [ `bool ] t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "Any"
+  Op.create context Op_names.any
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op reduction_indices
   |> Op.set_attr_data_type ~name:"Tidx" ~value:(Op.Tensor_handle.data_type reduction_indices)
@@ -927,7 +927,7 @@ let applyAdadelta
     (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyAdadelta"
+  Op.create context Op_names.applyAdadelta
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op accum_update
@@ -946,7 +946,7 @@ let applyAdagrad
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyAdagrad"
+  Op.create context Op_names.applyAdagrad
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -966,7 +966,7 @@ let applyAdagradDA
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
-  Op.create context "ApplyAdagradDA"
+  Op.create context Op_names.applyAdagradDA
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op gradient_accumulator
   |> fun op -> Op.add_input op gradient_squared_accumulator
@@ -993,7 +993,7 @@ let applyAdam
     (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyAdam"
+  Op.create context Op_names.applyAdam
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op m
   |> fun op -> Op.add_input op v
@@ -1021,7 +1021,7 @@ let applyCenteredRMSProp
     (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyCenteredRMSProp"
+  Op.create context Op_names.applyCenteredRMSProp
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op mg
   |> fun op -> Op.add_input op ms
@@ -1046,7 +1046,7 @@ let applyFtrl
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyFtrl"
+  Op.create context Op_names.applyFtrl
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op linear
@@ -1071,7 +1071,7 @@ let applyFtrlV2
     (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyFtrlV2"
+  Op.create context Op_names.applyFtrlV2
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op linear
@@ -1091,7 +1091,7 @@ let applyGradientDescent
     (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyGradientDescent"
+  Op.create context Op_names.applyGradientDescent
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op alpha
   |> fun op -> Op.add_input op delta
@@ -1108,7 +1108,7 @@ let applyMomentum
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyMomentum"
+  Op.create context Op_names.applyMomentum
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -1128,7 +1128,7 @@ let applyProximalAdagrad
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyProximalAdagrad"
+  Op.create context Op_names.applyProximalAdagrad
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -1147,7 +1147,7 @@ let applyProximalGradientDescent
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyProximalGradientDescent"
+  Op.create context Op_names.applyProximalGradientDescent
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op alpha
   |> fun op -> Op.add_input op l1
@@ -1168,7 +1168,7 @@ let applyRMSProp
     (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApplyRMSProp"
+  Op.create context Op_names.applyRMSProp
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op ms
   |> fun op -> Op.add_input op mom
@@ -1186,7 +1186,7 @@ let approximateEqual
     (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ApproximateEqual"
+  Op.create context Op_names.approximateEqual
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -1198,7 +1198,7 @@ let argMax
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (dimension : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "ArgMax"
+  Op.create context Op_names.argMax
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op dimension
   |> Op.set_attr_data_type ~name:"output_type" ~value:Operation.Type.(to_data_type (P type_output_type))
@@ -1211,7 +1211,7 @@ let argMin
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (dimension : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "ArgMin"
+  Op.create context Op_names.argMin
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op dimension
   |> Op.set_attr_data_type ~name:"output_type" ~value:Operation.Type.(to_data_type (P type_output_type))
@@ -1227,7 +1227,7 @@ let asString
     ?(fill="")
     (input : ([< `int32 | `int64 | `complex64 | `float | `double | `bool ] as 't) t)
   =
-  Op.create context "AsString"
+  Op.create context Op_names.asString
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_int ~name:"precision" ~value:precision
@@ -1240,7 +1240,7 @@ let asString
 let asin
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Asin"
+  Op.create context Op_names.asin
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -1248,7 +1248,7 @@ let asin
 let asinh
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Asinh"
+  Op.create context Op_names.asinh
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -1259,7 +1259,7 @@ let assign
     (ref : 't t)
     (value : 't t)
   =
-  Op.create context "Assign"
+  Op.create context Op_names.assign
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type ref)
@@ -1272,7 +1272,7 @@ let assignAdd
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "AssignAdd"
+  Op.create context Op_names.assignAdd
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type ref)
@@ -1284,7 +1284,7 @@ let assignSub
     (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "AssignSub"
+  Op.create context Op_names.assignSub
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type ref)
@@ -1294,7 +1294,7 @@ let assignSub
 let atan
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Atan"
+  Op.create context Op_names.atan
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -1303,7 +1303,7 @@ let atan2
     (y : ([< `float | `double ] as 't) t)
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Atan2"
+  Op.create context Op_names.atan2
   |> fun op -> Op.add_input op y
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type y)
@@ -1312,7 +1312,7 @@ let atan2
 let atanh
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Atanh"
+  Op.create context Op_names.atanh
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -1323,7 +1323,7 @@ let audioSpectrogram
     ?(magnitude_squared=false)
     (input : [ `float ] t)
   =
-  Op.create context "AudioSpectrogram"
+  Op.create context Op_names.audioSpectrogram
   |> fun op -> Op.add_input op input
   |> Op.set_attr_int ~name:"window_size" ~value:window_size
   |> Op.set_attr_int ~name:"stride" ~value:stride
@@ -1336,7 +1336,7 @@ let audioSummary
     (tag : [ `string ] t)
     (tensor : [ `float ] t)
   =
-  Op.create context "AudioSummary"
+  Op.create context Op_names.audioSummary
   |> fun op -> Op.add_input op tag
   |> fun op -> Op.add_input op tensor
   |> Op.set_attr_float ~name:"sample_rate" ~value:sample_rate
@@ -1349,7 +1349,7 @@ let audioSummaryV2
     (tensor : [ `float ] t)
     (sample_rate : [ `float ] t)
   =
-  Op.create context "AudioSummaryV2"
+  Op.create context Op_names.audioSummaryV2
   |> fun op -> Op.add_input op tag
   |> fun op -> Op.add_input op tensor
   |> fun op -> Op.add_input op sample_rate
@@ -1363,7 +1363,7 @@ let avgPool
     ?(data_format="NHWC")
     (value : ([< `float | `double ] as 't) t)
   =
-  Op.create context "AvgPool"
+  Op.create context Op_names.avgPool
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
   |> Op.set_attr_int_list ~name:"ksize" ~value:ksize
@@ -1379,7 +1379,7 @@ let avgPool3D
     ?(data_format="NDHWC")
     (input : ([< `float | `double ] as 't) t)
   =
-  Op.create context "AvgPool3D"
+  Op.create context Op_names.avgPool3D
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_int_list ~name:"ksize" ~value:ksize
@@ -1396,7 +1396,7 @@ let avgPool3DGrad
     (orig_input_shape : [ `int32 ] t)
     (grad : ([< `float | `double ] as 't) t)
   =
-  Op.create context "AvgPool3DGrad"
+  Op.create context Op_names.avgPool3DGrad
   |> fun op -> Op.add_input op orig_input_shape
   |> fun op -> Op.add_input op grad
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type grad)
@@ -1414,7 +1414,7 @@ let avgPoolGrad
     (orig_input_shape : [ `int32 ] t)
     (grad : ([< `float | `double ] as 't) t)
   =
-  Op.create context "AvgPoolGrad"
+  Op.create context Op_names.avgPoolGrad
   |> fun op -> Op.add_input op orig_input_shape
   |> fun op -> Op.add_input op grad
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type grad)
@@ -1432,7 +1432,7 @@ let barrier
     ?(shared_name="")
     ()
   =
-  Op.create context "Barrier"
+  Op.create context Op_names.barrier
   |> Op.set_attr_type_list ~name:"component_types" ~value:component_types
   |> Op.set_attr_shape_list ~name:"shapes" ~value:shapes
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
@@ -1444,7 +1444,7 @@ let barrierClose
     ?(cancel_pending_enqueues=false)
     (handle : [ `string ] t)
   =
-  Op.create context "BarrierClose"
+  Op.create context Op_names.barrierClose
   |> fun op -> Op.add_input op handle
   |> Op.set_attr_bool ~name:"cancel_pending_enqueues" ~value:cancel_pending_enqueues
   |> Op.execute0
@@ -1452,7 +1452,7 @@ let barrierClose
 let barrierIncompleteSize
     (handle : [ `string ] t)
   =
-  Op.create context "BarrierIncompleteSize"
+  Op.create context Op_names.barrierIncompleteSize
   |> fun op -> Op.add_input op handle
   |> Op.execute1
 
@@ -1462,7 +1462,7 @@ let barrierInsertMany
     (keys : [ `string ] t)
     (values : 't t)
   =
-  Op.create context "BarrierInsertMany"
+  Op.create context Op_names.barrierInsertMany
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op keys
   |> fun op -> Op.add_input op values
@@ -1473,14 +1473,14 @@ let barrierInsertMany
 let barrierReadySize
     (handle : [ `string ] t)
   =
-  Op.create context "BarrierReadySize"
+  Op.create context Op_names.barrierReadySize
   |> fun op -> Op.add_input op handle
   |> Op.execute1
 
 let batchCholesky
     (input : ([< `double | `float ] as 't) t)
   =
-  Op.create context "BatchCholesky"
+  Op.create context Op_names.batchCholesky
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -1489,7 +1489,7 @@ let batchCholeskyGrad
     (l : ([< `float | `double ] as 't) t)
     (grad : ([< `float | `double ] as 't) t)
   =
-  Op.create context "BatchCholeskyGrad"
+  Op.create context Op_names.batchCholeskyGrad
   |> fun op -> Op.add_input op l
   |> fun op -> Op.add_input op grad
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type l)
@@ -1501,7 +1501,7 @@ let batchDataset
     (input_dataset : [ `variant ] t)
     (batch_size : [ `int64 ] t)
   =
-  Op.create context "BatchDataset"
+  Op.create context Op_names.batchDataset
   |> fun op -> Op.add_input op input_dataset
   |> fun op -> Op.add_input op batch_size
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
@@ -1511,42 +1511,42 @@ let batchDataset
 let batchFFT
     (input : [ `complex64 ] t)
   =
-  Op.create context "BatchFFT"
+  Op.create context Op_names.batchFFT
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
 let batchFFT2D
     (input : [ `complex64 ] t)
   =
-  Op.create context "BatchFFT2D"
+  Op.create context Op_names.batchFFT2D
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
 let batchFFT3D
     (input : [ `complex64 ] t)
   =
-  Op.create context "BatchFFT3D"
+  Op.create context Op_names.batchFFT3D
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
 let batchIFFT
     (input : [ `complex64 ] t)
   =
-  Op.create context "BatchIFFT"
+  Op.create context Op_names.batchIFFT
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
 let batchIFFT2D
     (input : [ `complex64 ] t)
   =
-  Op.create context "BatchIFFT2D"
+  Op.create context Op_names.batchIFFT2D
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
 let batchIFFT3D
     (input : [ `complex64 ] t)
   =
-  Op.create context "BatchIFFT3D"
+  Op.create context Op_names.batchIFFT3D
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
@@ -1556,7 +1556,7 @@ let batchMatMul
     (x : ([< `float | `double | `int32 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `int32 | `complex64 ] as 't) t)
   =
-  Op.create context "BatchMatMul"
+  Op.create context Op_names.batchMatMul
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -1569,7 +1569,7 @@ let batchMatrixBandPart
     (num_lower : [ `int64 ] t)
     (num_upper : [ `int64 ] t)
   =
-  Op.create context "BatchMatrixBandPart"
+  Op.create context Op_names.batchMatrixBandPart
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op num_lower
   |> fun op -> Op.add_input op num_upper
@@ -1579,7 +1579,7 @@ let batchMatrixBandPart
 let batchMatrixDeterminant
     (input : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "BatchMatrixDeterminant"
+  Op.create context Op_names.batchMatrixDeterminant
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -1587,7 +1587,7 @@ let batchMatrixDeterminant
 let batchMatrixDiag
     (diagonal : 't t)
   =
-  Op.create context "BatchMatrixDiag"
+  Op.create context Op_names.batchMatrixDiag
   |> fun op -> Op.add_input op diagonal
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type diagonal)
   |> Op.execute1
@@ -1595,7 +1595,7 @@ let batchMatrixDiag
 let batchMatrixDiagPart
     (input : 't t)
   =
-  Op.create context "BatchMatrixDiagPart"
+  Op.create context Op_names.batchMatrixDiagPart
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -1604,7 +1604,7 @@ let batchMatrixInverse
     ?(adjoint=false)
     (input : ([< `double | `float ] as 't) t)
   =
-  Op.create context "BatchMatrixInverse"
+  Op.create context Op_names.batchMatrixInverse
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_bool ~name:"adjoint" ~value:adjoint
@@ -1614,7 +1614,7 @@ let batchMatrixSetDiag
     (input : 't t)
     (diagonal : 't t)
   =
-  Op.create context "BatchMatrixSetDiag"
+  Op.create context Op_names.batchMatrixSetDiag
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op diagonal
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -1625,7 +1625,7 @@ let batchMatrixSolve
     (matrix : ([< `double | `float ] as 't) t)
     (rhs : ([< `double | `float ] as 't) t)
   =
-  Op.create context "BatchMatrixSolve"
+  Op.create context Op_names.batchMatrixSolve
   |> fun op -> Op.add_input op matrix
   |> fun op -> Op.add_input op rhs
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type matrix)
@@ -1638,7 +1638,7 @@ let batchMatrixSolveLs
     (rhs : ([< `double | `float ] as 't) t)
     (l2_regularizer : [ `double ] t)
   =
-  Op.create context "BatchMatrixSolveLs"
+  Op.create context Op_names.batchMatrixSolveLs
   |> fun op -> Op.add_input op matrix
   |> fun op -> Op.add_input op rhs
   |> fun op -> Op.add_input op l2_regularizer
@@ -1652,7 +1652,7 @@ let batchMatrixTriangularSolve
     (matrix : ([< `double | `float ] as 't) t)
     (rhs : ([< `double | `float ] as 't) t)
   =
-  Op.create context "BatchMatrixTriangularSolve"
+  Op.create context Op_names.batchMatrixTriangularSolve
   |> fun op -> Op.add_input op matrix
   |> fun op -> Op.add_input op rhs
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type matrix)
@@ -1669,7 +1669,7 @@ let batchNormWithGlobalNormalization
     (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (gamma : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "BatchNormWithGlobalNormalization"
+  Op.create context Op_names.batchNormWithGlobalNormalization
   |> fun op -> Op.add_input op t
   |> fun op -> Op.add_input op m
   |> fun op -> Op.add_input op v
@@ -1689,7 +1689,7 @@ let batchNormWithGlobalNormalizationGrad
     (gamma : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (backprop : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "BatchNormWithGlobalNormalizationGrad"
+  Op.create context Op_names.batchNormWithGlobalNormalizationGrad
   |> fun op -> Op.add_input op t
   |> fun op -> Op.add_input op m
   |> fun op -> Op.add_input op v
@@ -1703,7 +1703,7 @@ let batchNormWithGlobalNormalizationGrad
 let batchSelfAdjointEig
     (input : ([< `double | `float ] as 't) t)
   =
-  Op.create context "BatchSelfAdjointEig"
+  Op.create context Op_names.batchSelfAdjointEig
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -1712,7 +1712,7 @@ let batchSelfAdjointEigV2
     ?(compute_v=true)
     (input : ([< `double | `float ] as 't) t)
   =
-  Op.create context "BatchSelfAdjointEigV2"
+  Op.create context Op_names.batchSelfAdjointEigV2
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_bool ~name:"compute_v" ~value:compute_v
@@ -1723,7 +1723,7 @@ let batchSvd
     ?(full_matrices=false)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
-  Op.create context "BatchSvd"
+  Op.create context Op_names.batchSvd
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_bool ~name:"compute_uv" ~value:compute_uv
@@ -1735,7 +1735,7 @@ let batchToSpace
     (input : 't t)
     (crops : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "BatchToSpace"
+  Op.create context Op_names.batchToSpace
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op crops
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -1748,7 +1748,7 @@ let batchToSpaceND
     (block_shape : ([< `int32 | `int64 ] as 'tblock_shape) t)
     (crops : ([< `int32 | `int64 ] as 'tcrops) t)
   =
-  Op.create context "BatchToSpaceND"
+  Op.create context Op_names.batchToSpaceND
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op block_shape
   |> fun op -> Op.add_input op crops
@@ -1762,7 +1762,7 @@ let betainc
     (b : ([< `float | `double ] as 't) t)
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Betainc"
+  Op.create context Op_names.betainc
   |> fun op -> Op.add_input op a
   |> fun op -> Op.add_input op b
   |> fun op -> Op.add_input op x
@@ -1774,7 +1774,7 @@ let biasAdd
     (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (bias : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "BiasAdd"
+  Op.create context Op_names.biasAdd
   |> fun op -> Op.add_input op value
   |> fun op -> Op.add_input op bias
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
@@ -1785,7 +1785,7 @@ let biasAddGrad
     ?(data_format="NHWC")
     (out_backprop : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "BiasAddGrad"
+  Op.create context Op_names.biasAddGrad
   |> fun op -> Op.add_input op out_backprop
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type out_backprop)
   |> Op.set_attr_string ~name:"data_format" ~value:data_format
@@ -1795,7 +1795,7 @@ let biasAddV1
     (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (bias : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "BiasAddV1"
+  Op.create context Op_names.biasAddV1
   |> fun op -> Op.add_input op value
   |> fun op -> Op.add_input op bias
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
@@ -1806,7 +1806,7 @@ let bincount
     (size : [ `int32 ] t)
     (weights : ([< `int32 | `int64 | `float | `double ] as 't) t)
   =
-  Op.create context "Bincount"
+  Op.create context Op_names.bincount
   |> fun op -> Op.add_input op arr
   |> fun op -> Op.add_input op size
   |> fun op -> Op.add_input op weights
@@ -1817,7 +1817,7 @@ let bitcast
     ~type_type__
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "Bitcast"
+  Op.create context Op_names.bitcast
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"type" ~value:Operation.Type.(to_data_type (P type_type__))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -1827,7 +1827,7 @@ let bitwiseAnd
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (y : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "BitwiseAnd"
+  Op.create context Op_names.bitwiseAnd
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -1837,7 +1837,7 @@ let bitwiseOr
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (y : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "BitwiseOr"
+  Op.create context Op_names.bitwiseOr
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -1847,7 +1847,7 @@ let bitwiseXor
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (y : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "BitwiseXor"
+  Op.create context Op_names.bitwiseXor
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -1857,7 +1857,7 @@ let broadcastArgs
     (s0 : ([< `int32 | `int64 ] as 't) t)
     (s1 : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "BroadcastArgs"
+  Op.create context Op_names.broadcastArgs
   |> fun op -> Op.add_input op s0
   |> fun op -> Op.add_input op s1
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type s0)
@@ -1867,7 +1867,7 @@ let broadcastGradientArgs
     (s0 : ([< `int32 | `int64 ] as 't) t)
     (s1 : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "BroadcastGradientArgs"
+  Op.create context Op_names.broadcastGradientArgs
   |> fun op -> Op.add_input op s0
   |> fun op -> Op.add_input op s1
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type s0)
@@ -1877,7 +1877,7 @@ let bucketize
     ~boundaries
     (input : ([< `int32 | `int64 | `float | `double ] as 't) t)
   =
-  Op.create context "Bucketize"
+  Op.create context Op_names.bucketize
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_float_list ~name:"boundaries" ~value:boundaries
@@ -1888,7 +1888,7 @@ let cTCGreedyDecoder
     (inputs__ : [ `float ] t)
     (sequence_length : [ `int32 ] t)
   =
-  Op.create context "CTCGreedyDecoder"
+  Op.create context Op_names.cTCGreedyDecoder
   |> fun op -> Op.add_input op inputs__
   |> fun op -> Op.add_input op sequence_length
   |> Op.set_attr_bool ~name:"merge_repeated" ~value:merge_repeated
@@ -1903,7 +1903,7 @@ let cTCLoss
     (labels_values : [ `int32 ] t)
     (sequence_length : [ `int32 ] t)
   =
-  Op.create context "CTCLoss"
+  Op.create context Op_names.cTCLoss
   |> fun op -> Op.add_input op inputs__
   |> fun op -> Op.add_input op labels_indices
   |> fun op -> Op.add_input op labels_values
@@ -1919,7 +1919,7 @@ let cacheDataset
     (input_dataset : [ `variant ] t)
     (filename : [ `string ] t)
   =
-  Op.create context "CacheDataset"
+  Op.create context Op_names.cacheDataset
   |> fun op -> Op.add_input op input_dataset
   |> fun op -> Op.add_input op filename
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
@@ -1930,7 +1930,7 @@ let cast
     ~type_dstT
     (x : 'srcT t)
   =
-  Op.create context "Cast"
+  Op.create context Op_names.cast
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"DstT" ~value:Operation.Type.(to_data_type (P type_dstT))
   |> Op.set_attr_data_type ~name:"SrcT" ~value:(Op.Tensor_handle.data_type x)
@@ -1939,7 +1939,7 @@ let cast
 let ceil
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Ceil"
+  Op.create context Op_names.ceil
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -1948,7 +1948,7 @@ let checkNumerics
     ~message
     (tensor : ([< `float | `double ] as 't) t)
   =
-  Op.create context "CheckNumerics"
+  Op.create context Op_names.checkNumerics
   |> fun op -> Op.add_input op tensor
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type tensor)
   |> Op.set_attr_string ~name:"message" ~value:message
@@ -1957,7 +1957,7 @@ let checkNumerics
 let cholesky
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
-  Op.create context "Cholesky"
+  Op.create context Op_names.cholesky
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -1966,7 +1966,7 @@ let choleskyGrad
     (l : ([< `float | `double ] as 't) t)
     (grad : ([< `float | `double ] as 't) t)
   =
-  Op.create context "CholeskyGrad"
+  Op.create context Op_names.choleskyGrad
   |> fun op -> Op.add_input op l
   |> fun op -> Op.add_input op grad
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type l)
@@ -1976,7 +1976,7 @@ let compareAndBitpack
     (input : ([< `bool | `float | `double | `int32 | `int64 ] as 't) t)
     (threshold : ([< `bool | `float | `double | `int32 | `int64 ] as 't) t)
   =
-  Op.create context "CompareAndBitpack"
+  Op.create context Op_names.compareAndBitpack
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op threshold
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -1987,7 +1987,7 @@ let complex
     (real : ([< `float | `double ] as 't) t)
     (imag : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Complex"
+  Op.create context Op_names.complex
   |> fun op -> Op.add_input op real
   |> fun op -> Op.add_input op imag
   |> Op.set_attr_data_type ~name:"Tout" ~value:Operation.Type.(to_data_type (P type_tout))
@@ -1998,7 +1998,7 @@ let complexAbs
     ~type_tout
     (x : ([< `complex64 ] as 't) t)
   =
-  Op.create context "ComplexAbs"
+  Op.create context Op_names.complexAbs
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"Tout" ~value:Operation.Type.(to_data_type (P type_tout))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -2011,7 +2011,7 @@ let computeAccidentalHits
     (true_classes : [ `int64 ] t)
     (sampled_candidates : [ `int64 ] t)
   =
-  Op.create context "ComputeAccidentalHits"
+  Op.create context Op_names.computeAccidentalHits
   |> fun op -> Op.add_input op true_classes
   |> fun op -> Op.add_input op sampled_candidates
   |> Op.set_attr_int ~name:"num_true" ~value:num_true
@@ -2023,7 +2023,7 @@ let concat
     (concat_dim : [ `int32 ] t)
     (values : 't t list)
   =
-  Op.create context "Concat"
+  Op.create context Op_names.concat
   |> fun op -> Op.add_input op concat_dim
   |> fun init -> List.fold values ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn values))
@@ -2034,7 +2034,7 @@ let concatOffset
     (concat_dim : [ `int32 ] t)
     (shape : [ `int32 ] t list)
   =
-  Op.create context "ConcatOffset"
+  Op.create context Op_names.concatOffset
   |> fun op -> Op.add_input op concat_dim
   |> fun init -> List.fold shape ~init ~f:Op.add_input
   |> Op.set_attr_int ~name:"N" ~value:(List.length shape)
@@ -2044,7 +2044,7 @@ let concatV2
     (values : 't t list)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "ConcatV2"
+  Op.create context Op_names.concatV2
   |> fun init -> List.fold values ~init ~f:Op.add_input
   |> fun op -> Op.add_input op axis
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn values))
@@ -2058,7 +2058,7 @@ let concatenateDataset
     (input_dataset : [ `variant ] t)
     (another_dataset : [ `variant ] t)
   =
-  Op.create context "ConcatenateDataset"
+  Op.create context Op_names.concatenateDataset
   |> fun op -> Op.add_input op input_dataset
   |> fun op -> Op.add_input op another_dataset
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
@@ -2071,7 +2071,7 @@ let conditionalAccumulator
     ?(shared_name="")
     ()
   =
-  Op.create context "ConditionalAccumulator"
+  Op.create context Op_names.conditionalAccumulator
   |> Op.set_attr_shape ~name:"shape" ~value:shape
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
@@ -2080,7 +2080,7 @@ let conditionalAccumulator
 let conj
     (input : ([< `complex64 | `variant ] as 't) t)
   =
-  Op.create context "Conj"
+  Op.create context Op_names.conj
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -2088,7 +2088,7 @@ let conj
 let controlTrigger
     ()
   =
-  Op.create context "ControlTrigger"
+  Op.create context Op_names.controlTrigger
   |> Op.execute0
 
 let conv2D
@@ -2099,7 +2099,7 @@ let conv2D
     (input : ([< `float ] as 't) t)
     (filter : ([< `float ] as 't) t)
   =
-  Op.create context "Conv2D"
+  Op.create context Op_names.conv2D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -2118,7 +2118,7 @@ let conv2DBackpropFilter
     (filter_sizes : [ `int32 ] t)
     (out_backprop : ([< `float ] as 't) t)
   =
-  Op.create context "Conv2DBackpropFilter"
+  Op.create context Op_names.conv2DBackpropFilter
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter_sizes
   |> fun op -> Op.add_input op out_backprop
@@ -2138,7 +2138,7 @@ let conv2DBackpropInput
     (filter : ([< `float ] as 't) t)
     (out_backprop : ([< `float ] as 't) t)
   =
-  Op.create context "Conv2DBackpropInput"
+  Op.create context Op_names.conv2DBackpropInput
   |> fun op -> Op.add_input op input_sizes
   |> fun op -> Op.add_input op filter
   |> fun op -> Op.add_input op out_backprop
@@ -2156,7 +2156,7 @@ let conv3D
     (input : ([< `float | `double ] as 't) t)
     (filter : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Conv3D"
+  Op.create context Op_names.conv3D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -2172,7 +2172,7 @@ let conv3DBackpropFilter
     (filter : ([< `float | `double ] as 't) t)
     (out_backprop : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Conv3DBackpropFilter"
+  Op.create context Op_names.conv3DBackpropFilter
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter
   |> fun op -> Op.add_input op out_backprop
@@ -2189,7 +2189,7 @@ let conv3DBackpropFilterV2
     (filter_sizes : [ `int32 ] t)
     (out_backprop : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Conv3DBackpropFilterV2"
+  Op.create context Op_names.conv3DBackpropFilterV2
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter_sizes
   |> fun op -> Op.add_input op out_backprop
@@ -2206,7 +2206,7 @@ let conv3DBackpropInput
     (filter : ([< `float | `double ] as 't) t)
     (out_backprop : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Conv3DBackpropInput"
+  Op.create context Op_names.conv3DBackpropInput
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter
   |> fun op -> Op.add_input op out_backprop
@@ -2223,7 +2223,7 @@ let conv3DBackpropInputV2
     (filter : ([< `float | `double ] as 't) t)
     (out_backprop : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Conv3DBackpropInputV2"
+  Op.create context Op_names.conv3DBackpropInputV2
   |> fun op -> Op.add_input op input_sizes
   |> fun op -> Op.add_input op filter
   |> fun op -> Op.add_input op out_backprop
@@ -2237,7 +2237,7 @@ let copy
     ?(tensor_name="")
     (input : 't t)
   =
-  Op.create context "Copy"
+  Op.create context Op_names.copy
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_string ~name:"tensor_name" ~value:tensor_name
@@ -2247,7 +2247,7 @@ let copyHost
     ?(tensor_name="")
     (input : 't t)
   =
-  Op.create context "CopyHost"
+  Op.create context Op_names.copyHost
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_string ~name:"tensor_name" ~value:tensor_name
@@ -2256,7 +2256,7 @@ let copyHost
 let cos
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Cos"
+  Op.create context Op_names.cos
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -2264,7 +2264,7 @@ let cos
 let cosh
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Cosh"
+  Op.create context Op_names.cosh
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -2273,7 +2273,7 @@ let countUpTo
     ~limit
     (ref : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "CountUpTo"
+  Op.create context Op_names.countUpTo
   |> fun op -> Op.add_input op ref
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type ref)
   |> Op.set_attr_int ~name:"limit" ~value:limit
@@ -2287,7 +2287,7 @@ let cropAndResize
     (box_ind : [ `int32 ] t)
     (crop_size : [ `int32 ] t)
   =
-  Op.create context "CropAndResize"
+  Op.create context Op_names.cropAndResize
   |> fun op -> Op.add_input op image
   |> fun op -> Op.add_input op boxes
   |> fun op -> Op.add_input op box_ind
@@ -2304,7 +2304,7 @@ let cropAndResizeGradBoxes
     (boxes : [ `float ] t)
     (box_ind : [ `int32 ] t)
   =
-  Op.create context "CropAndResizeGradBoxes"
+  Op.create context Op_names.cropAndResizeGradBoxes
   |> fun op -> Op.add_input op grads
   |> fun op -> Op.add_input op image
   |> fun op -> Op.add_input op boxes
@@ -2321,7 +2321,7 @@ let cropAndResizeGradImage
     (box_ind : [ `int32 ] t)
     (image_size : [ `int32 ] t)
   =
-  Op.create context "CropAndResizeGradImage"
+  Op.create context Op_names.cropAndResizeGradImage
   |> fun op -> Op.add_input op grads
   |> fun op -> Op.add_input op boxes
   |> fun op -> Op.add_input op box_ind
@@ -2334,7 +2334,7 @@ let cross
     (a : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (b : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Cross"
+  Op.create context Op_names.cross
   |> fun op -> Op.add_input op a
   |> fun op -> Op.add_input op b
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type a)
@@ -2346,7 +2346,7 @@ let cumprod
     (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "Cumprod"
+  Op.create context Op_names.cumprod
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op axis
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -2361,7 +2361,7 @@ let cumsum
     (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "Cumsum"
+  Op.create context Op_names.cumsum
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op axis
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -2373,7 +2373,7 @@ let cumsum
 let debugGradientIdentity
     (input : 't t)
   =
-  Op.create context "DebugGradientIdentity"
+  Op.create context Op_names.debugGradientIdentity
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -2384,7 +2384,7 @@ let debugIdentity
     ?(gated_grpc=false)
     (input : 't t)
   =
-  Op.create context "DebugIdentity"
+  Op.create context Op_names.debugIdentity
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_string ~name:"device_name" ~value:device_name
@@ -2398,7 +2398,7 @@ let debugNanCount
     ?(gated_grpc=false)
     (input : 't t)
   =
-  Op.create context "DebugNanCount"
+  Op.create context Op_names.debugNanCount
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_string ~name:"device_name" ~value:device_name
@@ -2415,7 +2415,7 @@ let debugNumericSummary
     ?(gated_grpc=false)
     (input : 't t)
   =
-  Op.create context "DebugNumericSummary"
+  Op.create context Op_names.debugNumericSummary
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_string ~name:"device_name" ~value:device_name
@@ -2436,7 +2436,7 @@ let decodeAndCropJpeg
     (contents : [ `string ] t)
     (crop_window : [ `int32 ] t)
   =
-  Op.create context "DecodeAndCropJpeg"
+  Op.create context Op_names.decodeAndCropJpeg
   |> fun op -> Op.add_input op contents
   |> fun op -> Op.add_input op crop_window
   |> Op.set_attr_int ~name:"channels" ~value:channels
@@ -2450,7 +2450,7 @@ let decodeAndCropJpeg
 let decodeBase64
     (input : [ `string ] t)
   =
-  Op.create context "DecodeBase64"
+  Op.create context Op_names.decodeBase64
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
@@ -2458,7 +2458,7 @@ let decodeBmp
     ?(channels=0)
     (contents : [ `string ] t)
   =
-  Op.create context "DecodeBmp"
+  Op.create context Op_names.decodeBmp
   |> fun op -> Op.add_input op contents
   |> Op.set_attr_int ~name:"channels" ~value:channels
   |> Op.execute1
@@ -2466,14 +2466,14 @@ let decodeBmp
 let decodeGif
     (contents : [ `string ] t)
   =
-  Op.create context "DecodeGif"
+  Op.create context Op_names.decodeGif
   |> fun op -> Op.add_input op contents
   |> Op.execute1
 
 let decodeJSONExample
     (json_examples : [ `string ] t)
   =
-  Op.create context "DecodeJSONExample"
+  Op.create context Op_names.decodeJSONExample
   |> fun op -> Op.add_input op json_examples
   |> Op.execute1
 
@@ -2486,7 +2486,7 @@ let decodeJpeg
     ?(dct_method="")
     (contents : [ `string ] t)
   =
-  Op.create context "DecodeJpeg"
+  Op.create context Op_names.decodeJpeg
   |> fun op -> Op.add_input op contents
   |> Op.set_attr_int ~name:"channels" ~value:channels
   |> Op.set_attr_int ~name:"ratio" ~value:ratio
@@ -2501,7 +2501,7 @@ let decodePng
     ?(channels=0)
     (contents : [ `string ] t)
   =
-  Op.create context "DecodePng"
+  Op.create context Op_names.decodePng
   |> fun op -> Op.add_input op contents
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_int ~name:"channels" ~value:channels
@@ -2512,7 +2512,7 @@ let decodeRaw
     ?(little_endian=true)
     (bytes : [ `string ] t)
   =
-  Op.create context "DecodeRaw"
+  Op.create context Op_names.decodeRaw
   |> fun op -> Op.add_input op bytes
   |> Op.set_attr_data_type ~name:"out_type" ~value:Operation.Type.(to_data_type (P type_out_type))
   |> Op.set_attr_bool ~name:"little_endian" ~value:little_endian
@@ -2523,7 +2523,7 @@ let decodeWav
     ?(desired_samples=(-1))
     (contents : [ `string ] t)
   =
-  Op.create context "DecodeWav"
+  Op.create context Op_names.decodeWav
   |> fun op -> Op.add_input op contents
   |> Op.set_attr_int ~name:"desired_channels" ~value:desired_channels
   |> Op.set_attr_int ~name:"desired_samples" ~value:desired_samples
@@ -2532,7 +2532,7 @@ let decodeWav
 let deleteSessionTensor
     (handle : [ `string ] t)
   =
-  Op.create context "DeleteSessionTensor"
+  Op.create context Op_names.deleteSessionTensor
   |> fun op -> Op.add_input op handle
   |> Op.execute0
 
@@ -2542,7 +2542,7 @@ let denseToDenseSetOperation
     (set1 : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set2 : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
   =
-  Op.create context "DenseToDenseSetOperation"
+  Op.create context Op_names.denseToDenseSetOperation
   |> fun op -> Op.add_input op set1
   |> fun op -> Op.add_input op set2
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type set1)
@@ -2557,7 +2557,7 @@ let denseToSparseBatchDataset
     (batch_size : [ `int64 ] t)
     (row_shape : [ `int64 ] t)
   =
-  Op.create context "DenseToSparseBatchDataset"
+  Op.create context Op_names.denseToSparseBatchDataset
   |> fun op -> Op.add_input op input_dataset
   |> fun op -> Op.add_input op batch_size
   |> fun op -> Op.add_input op row_shape
@@ -2573,7 +2573,7 @@ let denseToSparseSetOperation
     (set2_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set2_shape : [ `int64 ] t)
   =
-  Op.create context "DenseToSparseSetOperation"
+  Op.create context Op_names.denseToSparseSetOperation
   |> fun op -> Op.add_input op set1
   |> fun op -> Op.add_input op set2_indices
   |> fun op -> Op.add_input op set2_values
@@ -2588,7 +2588,7 @@ let depthToSpace
     ?(data_format="NHWC")
     (input : 't t)
   =
-  Op.create context "DepthToSpace"
+  Op.create context Op_names.depthToSpace
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_int ~name:"block_size" ~value:block_size
@@ -2602,7 +2602,7 @@ let depthwiseConv2dNative
     (input : ([< `float | `double ] as 't) t)
     (filter : ([< `float | `double ] as 't) t)
   =
-  Op.create context "DepthwiseConv2dNative"
+  Op.create context Op_names.depthwiseConv2dNative
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -2619,7 +2619,7 @@ let depthwiseConv2dNativeBackpropFilter
     (filter_sizes : [ `int32 ] t)
     (out_backprop : ([< `float | `double ] as 't) t)
   =
-  Op.create context "DepthwiseConv2dNativeBackpropFilter"
+  Op.create context Op_names.depthwiseConv2dNativeBackpropFilter
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter_sizes
   |> fun op -> Op.add_input op out_backprop
@@ -2637,7 +2637,7 @@ let depthwiseConv2dNativeBackpropInput
     (filter : ([< `float | `double ] as 't) t)
     (out_backprop : ([< `float | `double ] as 't) t)
   =
-  Op.create context "DepthwiseConv2dNativeBackpropInput"
+  Op.create context Op_names.depthwiseConv2dNativeBackpropInput
   |> fun op -> Op.add_input op input_sizes
   |> fun op -> Op.add_input op filter
   |> fun op -> Op.add_input op out_backprop
@@ -2653,7 +2653,7 @@ let dequantize
     (min_range : [ `float ] t)
     (max_range : [ `float ] t)
   =
-  Op.create context "Dequantize"
+  Op.create context Op_names.dequantize
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op min_range
   |> fun op -> Op.add_input op max_range
@@ -2665,7 +2665,7 @@ let deserializeManySparse
     ~type_dtype
     (serialized_sparse : [ `string ] t)
   =
-  Op.create context "DeserializeManySparse"
+  Op.create context Op_names.deserializeManySparse
   |> fun op -> Op.add_input op serialized_sparse
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.execute3
@@ -2674,7 +2674,7 @@ let destroyTemporaryVariable
     ~var_name
     (ref : 't t)
   =
-  Op.create context "DestroyTemporaryVariable"
+  Op.create context Op_names.destroyTemporaryVariable
   |> fun op -> Op.add_input op ref
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type ref)
   |> Op.set_attr_string ~name:"var_name" ~value:var_name
@@ -2683,7 +2683,7 @@ let destroyTemporaryVariable
 let diag
     (diagonal : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Diag"
+  Op.create context Op_names.diag
   |> fun op -> Op.add_input op diagonal
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type diagonal)
   |> Op.execute1
@@ -2691,7 +2691,7 @@ let diag
 let diagPart
     (input : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "DiagPart"
+  Op.create context Op_names.diagPart
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -2699,7 +2699,7 @@ let diagPart
 let digamma
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Digamma"
+  Op.create context Op_names.digamma
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -2711,7 +2711,7 @@ let dilation2D
     (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (filter : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Dilation2D"
+  Op.create context Op_names.dilation2D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -2728,7 +2728,7 @@ let dilation2DBackpropFilter
     (filter : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (out_backprop : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Dilation2DBackpropFilter"
+  Op.create context Op_names.dilation2DBackpropFilter
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter
   |> fun op -> Op.add_input op out_backprop
@@ -2746,7 +2746,7 @@ let dilation2DBackpropInput
     (filter : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (out_backprop : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Dilation2DBackpropInput"
+  Op.create context Op_names.dilation2DBackpropInput
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter
   |> fun op -> Op.add_input op out_backprop
@@ -2760,7 +2760,7 @@ let div
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Div"
+  Op.create context Op_names.div
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -2770,7 +2770,7 @@ let drawBoundingBoxes
     (images : ([< `float ] as 't) t)
     (boxes : [ `float ] t)
   =
-  Op.create context "DrawBoundingBoxes"
+  Op.create context Op_names.drawBoundingBoxes
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op boxes
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type images)
@@ -2781,7 +2781,7 @@ let dynamicPartition
     (data : 't t)
     (partitions : [ `int32 ] t)
   =
-  Op.create context "DynamicPartition"
+  Op.create context Op_names.dynamicPartition
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op partitions
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
@@ -2792,7 +2792,7 @@ let dynamicStitch
     (indices : [ `int32 ] t list)
     (data : 't t list)
   =
-  Op.create context "DynamicStitch"
+  Op.create context Op_names.dynamicStitch
   |> fun init -> List.fold indices ~init ~f:Op.add_input
   |> fun init -> List.fold data ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn data))
@@ -2808,7 +2808,7 @@ let editDistance
     (truth_values : 't t)
     (truth_shape : [ `int64 ] t)
   =
-  Op.create context "EditDistance"
+  Op.create context Op_names.editDistance
   |> fun op -> Op.add_input op hypothesis_indices
   |> fun op -> Op.add_input op hypothesis_values
   |> fun op -> Op.add_input op hypothesis_shape
@@ -2822,7 +2822,7 @@ let editDistance
 let elu
     (features : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Elu"
+  Op.create context Op_names.elu
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type features)
   |> Op.execute1
@@ -2831,7 +2831,7 @@ let eluGrad
     (gradients : ([< `float | `double ] as 't) t)
     (outputs : ([< `float | `double ] as 't) t)
   =
-  Op.create context "EluGrad"
+  Op.create context Op_names.eluGrad
   |> fun op -> Op.add_input op gradients
   |> fun op -> Op.add_input op outputs
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type gradients)
@@ -2841,7 +2841,7 @@ let encodeBase64
     ?(pad=false)
     (input : [ `string ] t)
   =
-  Op.create context "EncodeBase64"
+  Op.create context Op_names.encodeBase64
   |> fun op -> Op.add_input op input
   |> Op.set_attr_bool ~name:"pad" ~value:pad
   |> Op.execute1
@@ -2858,7 +2858,7 @@ let encodeJpeg
     ?(xmp_metadata="")
     (image : [ `uInt8 ] t)
   =
-  Op.create context "EncodeJpeg"
+  Op.create context Op_names.encodeJpeg
   |> fun op -> Op.add_input op image
   |> Op.set_attr_string ~name:"format" ~value:format
   |> Op.set_attr_int ~name:"quality" ~value:quality
@@ -2875,7 +2875,7 @@ let encodePng
     ?(compression=(-1))
     (image : ([< `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "EncodePng"
+  Op.create context Op_names.encodePng
   |> fun op -> Op.add_input op image
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type image)
   |> Op.set_attr_int ~name:"compression" ~value:compression
@@ -2885,7 +2885,7 @@ let encodeWav
     (audio : [ `float ] t)
     (sample_rate : [ `int32 ] t)
   =
-  Op.create context "EncodeWav"
+  Op.create context Op_names.encodeWav
   |> fun op -> Op.add_input op audio
   |> fun op -> Op.add_input op sample_rate
   |> Op.execute1
@@ -2896,7 +2896,7 @@ let enter
     ?(parallel_iterations=10)
     (data : 't t)
   =
-  Op.create context "Enter"
+  Op.create context Op_names.enter
   |> fun op -> Op.add_input op data
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
   |> Op.set_attr_string ~name:"frame_name" ~value:frame_name
@@ -2908,7 +2908,7 @@ let equal
     (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
     (y : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
   =
-  Op.create context "Equal"
+  Op.create context Op_names.equal
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -2917,7 +2917,7 @@ let equal
 let erf
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Erf"
+  Op.create context Op_names.erf
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -2925,7 +2925,7 @@ let erf
 let erfc
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Erfc"
+  Op.create context Op_names.erfc
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -2933,7 +2933,7 @@ let erfc
 let exit
     (data : 't t)
   =
-  Op.create context "Exit"
+  Op.create context Op_names.exit
   |> fun op -> Op.add_input op data
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
   |> Op.execute1
@@ -2941,7 +2941,7 @@ let exit
 let exp
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Exp"
+  Op.create context Op_names.exp
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -2950,7 +2950,7 @@ let expandDims
     (input : 't t)
     (dim : ([< `int32 | `int64 ] as 'tdim) t)
   =
-  Op.create context "ExpandDims"
+  Op.create context Op_names.expandDims
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op dim
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -2960,7 +2960,7 @@ let expandDims
 let expm1
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Expm1"
+  Op.create context Op_names.expm1
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -2973,7 +2973,7 @@ let extractGlimpse
     (size : [ `int32 ] t)
     (offsets : [ `float ] t)
   =
-  Op.create context "ExtractGlimpse"
+  Op.create context Op_names.extractGlimpse
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op size
   |> fun op -> Op.add_input op offsets
@@ -2989,7 +2989,7 @@ let extractImagePatches
     ~padding
     (images : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "ExtractImagePatches"
+  Op.create context Op_names.extractImagePatches
   |> fun op -> Op.add_input op images
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type images)
   |> Op.set_attr_int_list ~name:"ksizes" ~value:ksizes
@@ -3002,7 +3002,7 @@ let extractJpegShape
     ~type_output_type
     (contents : [ `string ] t)
   =
-  Op.create context "ExtractJpegShape"
+  Op.create context Op_names.extractJpegShape
   |> fun op -> Op.add_input op contents
   |> Op.set_attr_data_type ~name:"output_type" ~value:Operation.Type.(to_data_type (P type_output_type))
   |> Op.execute1
@@ -3010,21 +3010,21 @@ let extractJpegShape
 let fFT
     (input : [ `complex64 ] t)
   =
-  Op.create context "FFT"
+  Op.create context Op_names.fFT
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
 let fFT2D
     (input : [ `complex64 ] t)
   =
-  Op.create context "FFT2D"
+  Op.create context Op_names.fFT2D
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
 let fFT3D
     (input : [ `complex64 ] t)
   =
-  Op.create context "FFT3D"
+  Op.create context Op_names.fFT3D
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
@@ -3036,7 +3036,7 @@ let fIFOQueue
     ?(shared_name="")
     ()
   =
-  Op.create context "FIFOQueue"
+  Op.create context Op_names.fIFOQueue
   |> Op.set_attr_type_list ~name:"component_types" ~value:component_types
   |> Op.set_attr_shape_list ~name:"shapes" ~value:shapes
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
@@ -3052,7 +3052,7 @@ let fIFOQueueV2
     ?(shared_name="")
     ()
   =
-  Op.create context "FIFOQueueV2"
+  Op.create context Op_names.fIFOQueueV2
   |> Op.set_attr_type_list ~name:"component_types" ~value:component_types
   |> Op.set_attr_shape_list ~name:"shapes" ~value:shapes
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
@@ -3063,7 +3063,7 @@ let fIFOQueueV2
 let fact
     ()
   =
-  Op.create context "Fact"
+  Op.create context Op_names.fact
   |> Op.execute1
 
 let fakeQuantWithMinMaxArgs
@@ -3073,7 +3073,7 @@ let fakeQuantWithMinMaxArgs
     ?(narrow_range=false)
     (inputs__ : [ `float ] t)
   =
-  Op.create context "FakeQuantWithMinMaxArgs"
+  Op.create context Op_names.fakeQuantWithMinMaxArgs
   |> fun op -> Op.add_input op inputs__
   |> Op.set_attr_float ~name:"min" ~value:min
   |> Op.set_attr_float ~name:"max" ~value:max
@@ -3089,7 +3089,7 @@ let fakeQuantWithMinMaxArgsGradient
     (gradients : [ `float ] t)
     (inputs__ : [ `float ] t)
   =
-  Op.create context "FakeQuantWithMinMaxArgsGradient"
+  Op.create context Op_names.fakeQuantWithMinMaxArgsGradient
   |> fun op -> Op.add_input op gradients
   |> fun op -> Op.add_input op inputs__
   |> Op.set_attr_float ~name:"min" ~value:min
@@ -3105,7 +3105,7 @@ let fakeQuantWithMinMaxVars
     (min : [ `float ] t)
     (max : [ `float ] t)
   =
-  Op.create context "FakeQuantWithMinMaxVars"
+  Op.create context Op_names.fakeQuantWithMinMaxVars
   |> fun op -> Op.add_input op inputs__
   |> fun op -> Op.add_input op min
   |> fun op -> Op.add_input op max
@@ -3121,7 +3121,7 @@ let fakeQuantWithMinMaxVarsGradient
     (min : [ `float ] t)
     (max : [ `float ] t)
   =
-  Op.create context "FakeQuantWithMinMaxVarsGradient"
+  Op.create context Op_names.fakeQuantWithMinMaxVarsGradient
   |> fun op -> Op.add_input op gradients
   |> fun op -> Op.add_input op inputs__
   |> fun op -> Op.add_input op min
@@ -3137,7 +3137,7 @@ let fakeQuantWithMinMaxVarsPerChannel
     (min : [ `float ] t)
     (max : [ `float ] t)
   =
-  Op.create context "FakeQuantWithMinMaxVarsPerChannel"
+  Op.create context Op_names.fakeQuantWithMinMaxVarsPerChannel
   |> fun op -> Op.add_input op inputs__
   |> fun op -> Op.add_input op min
   |> fun op -> Op.add_input op max
@@ -3153,7 +3153,7 @@ let fakeQuantWithMinMaxVarsPerChannelGradient
     (min : [ `float ] t)
     (max : [ `float ] t)
   =
-  Op.create context "FakeQuantWithMinMaxVarsPerChannelGradient"
+  Op.create context Op_names.fakeQuantWithMinMaxVarsPerChannelGradient
   |> fun op -> Op.add_input op gradients
   |> fun op -> Op.add_input op inputs__
   |> fun op -> Op.add_input op min
@@ -3165,7 +3165,7 @@ let fakeQuantWithMinMaxVarsPerChannelGradient
 let fakeQueue
     (resource : [ `resource ] t)
   =
-  Op.create context "FakeQueue"
+  Op.create context Op_names.fakeQueue
   |> fun op -> Op.add_input op resource
   |> Op.execute1
 
@@ -3173,7 +3173,7 @@ let fill
     (dims : [ `int32 ] t)
     (value : 't t)
   =
-  Op.create context "Fill"
+  Op.create context Op_names.fill
   |> fun op -> Op.add_input op dims
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
@@ -3186,7 +3186,7 @@ let fixedLengthRecordDataset
     (footer_bytes : [ `int64 ] t)
     (buffer_size : [ `int64 ] t)
   =
-  Op.create context "FixedLengthRecordDataset"
+  Op.create context Op_names.fixedLengthRecordDataset
   |> fun op -> Op.add_input op filenames
   |> fun op -> Op.add_input op header_bytes
   |> fun op -> Op.add_input op record_bytes
@@ -3203,7 +3203,7 @@ let fixedLengthRecordReader
     ?(shared_name="")
     ()
   =
-  Op.create context "FixedLengthRecordReader"
+  Op.create context Op_names.fixedLengthRecordReader
   |> Op.set_attr_int ~name:"header_bytes" ~value:header_bytes
   |> Op.set_attr_int ~name:"record_bytes" ~value:record_bytes
   |> Op.set_attr_int ~name:"footer_bytes" ~value:footer_bytes
@@ -3222,7 +3222,7 @@ let fixedLengthRecordReaderV2
     ?(encoding="")
     ()
   =
-  Op.create context "FixedLengthRecordReaderV2"
+  Op.create context Op_names.fixedLengthRecordReaderV2
   |> Op.set_attr_int ~name:"header_bytes" ~value:header_bytes
   |> Op.set_attr_int ~name:"record_bytes" ~value:record_bytes
   |> Op.set_attr_int ~name:"footer_bytes" ~value:footer_bytes
@@ -3247,7 +3247,7 @@ let fixedUnigramCandidateSampler
     ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
-  Op.create context "FixedUnigramCandidateSampler"
+  Op.create context Op_names.fixedUnigramCandidateSampler
   |> fun op -> Op.add_input op true_classes
   |> Op.set_attr_int ~name:"num_true" ~value:num_true
   |> Op.set_attr_int ~name:"num_sampled" ~value:num_sampled
@@ -3266,7 +3266,7 @@ let fixedUnigramCandidateSampler
 let floor
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Floor"
+  Op.create context Op_names.floor
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -3275,7 +3275,7 @@ let floorDiv
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "FloorDiv"
+  Op.create context Op_names.floorDiv
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -3285,7 +3285,7 @@ let floorMod
     (x : ([< `int32 | `int64 | `float | `double ] as 't) t)
     (y : ([< `int32 | `int64 | `float | `double ] as 't) t)
   =
-  Op.create context "FloorMod"
+  Op.create context Op_names.floorMod
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -3300,7 +3300,7 @@ let fractionalAvgPool
     ?(seed2=0)
     (value : ([< `float | `double | `int32 | `int64 ] as 't) t)
   =
-  Op.create context "FractionalAvgPool"
+  Op.create context Op_names.fractionalAvgPool
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
   |> Op.set_attr_float_list ~name:"pooling_ratio" ~value:pooling_ratio
@@ -3318,7 +3318,7 @@ let fractionalAvgPoolGrad
     (row_pooling_sequence : [ `int64 ] t)
     (col_pooling_sequence : [ `int64 ] t)
   =
-  Op.create context "FractionalAvgPoolGrad"
+  Op.create context Op_names.fractionalAvgPoolGrad
   |> fun op -> Op.add_input op orig_input_tensor_shape
   |> fun op -> Op.add_input op out_backprop
   |> fun op -> Op.add_input op row_pooling_sequence
@@ -3336,7 +3336,7 @@ let fractionalMaxPool
     ?(seed2=0)
     (value : ([< `float | `double | `int32 | `int64 ] as 't) t)
   =
-  Op.create context "FractionalMaxPool"
+  Op.create context Op_names.fractionalMaxPool
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
   |> Op.set_attr_float_list ~name:"pooling_ratio" ~value:pooling_ratio
@@ -3355,7 +3355,7 @@ let fractionalMaxPoolGrad
     (row_pooling_sequence : [ `int64 ] t)
     (col_pooling_sequence : [ `int64 ] t)
   =
-  Op.create context "FractionalMaxPoolGrad"
+  Op.create context Op_names.fractionalMaxPoolGrad
   |> fun op -> Op.add_input op orig_input
   |> fun op -> Op.add_input op orig_output
   |> fun op -> Op.add_input op out_backprop
@@ -3375,7 +3375,7 @@ let fusedBatchNorm
     (mean : ([< `float ] as 't) t)
     (variance : ([< `float ] as 't) t)
   =
-  Op.create context "FusedBatchNorm"
+  Op.create context Op_names.fusedBatchNorm
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op scale
   |> fun op -> Op.add_input op offset
@@ -3397,7 +3397,7 @@ let fusedBatchNormGrad
     (reserve_space_1 : ([< `float ] as 't) t)
     (reserve_space_2 : ([< `float ] as 't) t)
   =
-  Op.create context "FusedBatchNormGrad"
+  Op.create context Op_names.fusedBatchNormGrad
   |> fun op -> Op.add_input op y_backprop
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op scale
@@ -3419,7 +3419,7 @@ let fusedBatchNormGradV2
     (reserve_space_1 : ([< `float ] as 'u) t)
     (reserve_space_2 : ([< `float ] as 'u) t)
   =
-  Op.create context "FusedBatchNormGradV2"
+  Op.create context Op_names.fusedBatchNormGradV2
   |> fun op -> Op.add_input op y_backprop
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op scale
@@ -3442,7 +3442,7 @@ let fusedBatchNormV2
     (mean : ([< `float ] as 'u) t)
     (variance : ([< `float ] as 'u) t)
   =
-  Op.create context "FusedBatchNormV2"
+  Op.create context Op_names.fusedBatchNormV2
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op scale
   |> fun op -> Op.add_input op offset
@@ -3463,7 +3463,7 @@ let fusedPadConv2D
     (paddings : [ `int32 ] t)
     (filter : ([< `float ] as 't) t)
   =
-  Op.create context "FusedPadConv2D"
+  Op.create context Op_names.fusedPadConv2D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op paddings
   |> fun op -> Op.add_input op filter
@@ -3483,7 +3483,7 @@ let fusedResizeAndPadConv2D
     (paddings : [ `int32 ] t)
     (filter : ([< `float ] as 't) t)
   =
-  Op.create context "FusedResizeAndPadConv2D"
+  Op.create context Op_names.fusedResizeAndPadConv2D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op size
   |> fun op -> Op.add_input op paddings
@@ -3500,7 +3500,7 @@ let gather
     (params : 'tparams t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "Gather"
+  Op.create context Op_names.gather
   |> fun op -> Op.add_input op params
   |> fun op -> Op.add_input op indices
   |> Op.set_attr_data_type ~name:"Tparams" ~value:(Op.Tensor_handle.data_type params)
@@ -3512,7 +3512,7 @@ let gatherNd
     (params : 'tparams t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "GatherNd"
+  Op.create context Op_names.gatherNd
   |> fun op -> Op.add_input op params
   |> fun op -> Op.add_input op indices
   |> Op.set_attr_data_type ~name:"Tparams" ~value:(Op.Tensor_handle.data_type params)
@@ -3524,7 +3524,7 @@ let gatherV2
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (axis : ([< `int32 | `int64 ] as 'taxis) t)
   =
-  Op.create context "GatherV2"
+  Op.create context Op_names.gatherV2
   |> fun op -> Op.add_input op params
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op axis
@@ -3539,7 +3539,7 @@ let generateVocabRemapping
     (new_vocab_file : [ `string ] t)
     (old_vocab_file : [ `string ] t)
   =
-  Op.create context "GenerateVocabRemapping"
+  Op.create context Op_names.generateVocabRemapping
   |> fun op -> Op.add_input op new_vocab_file
   |> fun op -> Op.add_input op old_vocab_file
   |> Op.set_attr_int ~name:"new_vocab_offset" ~value:new_vocab_offset
@@ -3549,7 +3549,7 @@ let generateVocabRemapping
 let getSessionHandle
     (value : 't t)
   =
-  Op.create context "GetSessionHandle"
+  Op.create context Op_names.getSessionHandle
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
   |> Op.execute1
@@ -3557,7 +3557,7 @@ let getSessionHandle
 let getSessionHandleV2
     (value : 't t)
   =
-  Op.create context "GetSessionHandleV2"
+  Op.create context Op_names.getSessionHandleV2
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
   |> Op.execute1
@@ -3566,7 +3566,7 @@ let getSessionTensor
     ~type_dtype
     (handle : [ `string ] t)
   =
-  Op.create context "GetSessionTensor"
+  Op.create context Op_names.getSessionTensor
   |> fun op -> Op.add_input op handle
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.execute1
@@ -3575,7 +3575,7 @@ let greater
     (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Greater"
+  Op.create context Op_names.greater
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -3585,7 +3585,7 @@ let greaterEqual
     (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "GreaterEqual"
+  Op.create context Op_names.greaterEqual
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -3594,7 +3594,7 @@ let greaterEqual
 let hSVToRGB
     (images : ([< `float | `double ] as 't) t)
   =
-  Op.create context "HSVToRGB"
+  Op.create context Op_names.hSVToRGB
   |> fun op -> Op.add_input op images
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type images)
   |> Op.execute1
@@ -3605,7 +3605,7 @@ let hashTable
     ?(use_node_name_sharing=false)
     ()
   =
-  Op.create context "HashTable"
+  Op.create context Op_names.hashTable
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.set_attr_bool ~name:"use_node_name_sharing" ~value:use_node_name_sharing
@@ -3617,7 +3617,7 @@ let hashTableV2
     ?(use_node_name_sharing=false)
     ()
   =
-  Op.create context "HashTableV2"
+  Op.create context Op_names.hashTableV2
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.set_attr_bool ~name:"use_node_name_sharing" ~value:use_node_name_sharing
@@ -3627,7 +3627,7 @@ let histogramSummary
     (tag : [ `string ] t)
     (values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "HistogramSummary"
+  Op.create context Op_names.histogramSummary
   |> fun op -> Op.add_input op tag
   |> fun op -> Op.add_input op values
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type values)
@@ -3636,21 +3636,21 @@ let histogramSummary
 let iFFT
     (input : [ `complex64 ] t)
   =
-  Op.create context "IFFT"
+  Op.create context Op_names.iFFT
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
 let iFFT2D
     (input : [ `complex64 ] t)
   =
-  Op.create context "IFFT2D"
+  Op.create context Op_names.iFFT2D
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
 let iFFT3D
     (input : [ `complex64 ] t)
   =
-  Op.create context "IFFT3D"
+  Op.create context Op_names.iFFT3D
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
@@ -3658,7 +3658,7 @@ let iRFFT
     (input : [ `complex64 ] t)
     (fft_length : [ `int32 ] t)
   =
-  Op.create context "IRFFT"
+  Op.create context Op_names.iRFFT
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op fft_length
   |> Op.execute1
@@ -3667,7 +3667,7 @@ let iRFFT2D
     (input : [ `complex64 ] t)
     (fft_length : [ `int32 ] t)
   =
-  Op.create context "IRFFT2D"
+  Op.create context Op_names.iRFFT2D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op fft_length
   |> Op.execute1
@@ -3676,7 +3676,7 @@ let iRFFT3D
     (input : [ `complex64 ] t)
     (fft_length : [ `int32 ] t)
   =
-  Op.create context "IRFFT3D"
+  Op.create context Op_names.iRFFT3D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op fft_length
   |> Op.execute1
@@ -3684,7 +3684,7 @@ let iRFFT3D
 let identity
     (input : 't t)
   =
-  Op.create context "Identity"
+  Op.create context Op_names.identity
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -3694,7 +3694,7 @@ let identityReader
     ?(shared_name="")
     ()
   =
-  Op.create context "IdentityReader"
+  Op.create context Op_names.identityReader
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.execute1
@@ -3704,7 +3704,7 @@ let identityReaderV2
     ?(shared_name="")
     ()
   =
-  Op.create context "IdentityReaderV2"
+  Op.create context Op_names.identityReaderV2
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.execute1
@@ -3713,7 +3713,7 @@ let igamma
     (a : ([< `float | `double ] as 't) t)
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Igamma"
+  Op.create context Op_names.igamma
   |> fun op -> Op.add_input op a
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type a)
@@ -3723,7 +3723,7 @@ let igammac
     (a : ([< `float | `double ] as 't) t)
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Igammac"
+  Op.create context Op_names.igammac
   |> fun op -> Op.add_input op a
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type a)
@@ -3734,7 +3734,7 @@ let ignoreErrorsDataset
     ~output_shapes
     (input_dataset : [ `variant ] t)
   =
-  Op.create context "IgnoreErrorsDataset"
+  Op.create context Op_names.ignoreErrorsDataset
   |> fun op -> Op.add_input op input_dataset
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
   |> Op.set_attr_shape_list ~name:"output_shapes" ~value:output_shapes
@@ -3744,7 +3744,7 @@ let imag
     ~type_tout
     (input : ([< `complex64 ] as 't) t)
   =
-  Op.create context "Imag"
+  Op.create context Op_names.imag
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"Tout" ~value:Operation.Type.(to_data_type (P type_tout))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -3755,7 +3755,7 @@ let imageSummary
     (tag : [ `string ] t)
     (tensor : ([< `uInt8 | `float | `double ] as 't) t)
   =
-  Op.create context "ImageSummary"
+  Op.create context Op_names.imageSummary
   |> fun op -> Op.add_input op tag
   |> fun op -> Op.add_input op tensor
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type tensor)
@@ -3768,7 +3768,7 @@ let immutableConst
     ~memory_region_name
     ()
   =
-  Op.create context "ImmutableConst"
+  Op.create context Op_names.immutableConst
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_shape ~name:"shape" ~value:shape
   |> Op.set_attr_string ~name:"memory_region_name" ~value:memory_region_name
@@ -3779,7 +3779,7 @@ let inTopK
     (predictions : [ `float ] t)
     (targets : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "InTopK"
+  Op.create context Op_names.inTopK
   |> fun op -> Op.add_input op predictions
   |> fun op -> Op.add_input op targets
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type targets)
@@ -3791,7 +3791,7 @@ let inTopKV2
     (targets : ([< `int32 | `int64 ] as 't) t)
     (k : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "InTopKV2"
+  Op.create context Op_names.inTopKV2
   |> fun op -> Op.add_input op predictions
   |> fun op -> Op.add_input op targets
   |> fun op -> Op.add_input op k
@@ -3803,7 +3803,7 @@ let initializeTable
     (keys : 'tkey t)
     (values : 'tval t)
   =
-  Op.create context "InitializeTable"
+  Op.create context Op_names.initializeTable
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op keys
   |> fun op -> Op.add_input op values
@@ -3819,7 +3819,7 @@ let initializeTableFromTextFile
     (table_handle : [ `string ] t)
     (filename : [ `string ] t)
   =
-  Op.create context "InitializeTableFromTextFile"
+  Op.create context Op_names.initializeTableFromTextFile
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op filename
   |> Op.set_attr_int ~name:"key_index" ~value:key_index
@@ -3836,7 +3836,7 @@ let initializeTableFromTextFileV2
     (table_handle : [ `resource ] t)
     (filename : [ `string ] t)
   =
-  Op.create context "InitializeTableFromTextFileV2"
+  Op.create context Op_names.initializeTableFromTextFileV2
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op filename
   |> Op.set_attr_int ~name:"key_index" ~value:key_index
@@ -3850,7 +3850,7 @@ let initializeTableV2
     (keys : 'tkey t)
     (values : 'tval t)
   =
-  Op.create context "InitializeTableV2"
+  Op.create context Op_names.initializeTableV2
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op keys
   |> fun op -> Op.add_input op values
@@ -3861,7 +3861,7 @@ let initializeTableV2
 let inv
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Inv"
+  Op.create context Op_names.inv
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -3870,7 +3870,7 @@ let invGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
     (dy : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "InvGrad"
+  Op.create context Op_names.invGrad
   |> fun op -> Op.add_input op y
   |> fun op -> Op.add_input op dy
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type y)
@@ -3879,7 +3879,7 @@ let invGrad
 let invert
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Invert"
+  Op.create context Op_names.invert
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -3887,7 +3887,7 @@ let invert
 let invertPermutation
     (x : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "InvertPermutation"
+  Op.create context Op_names.invertPermutation
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -3895,7 +3895,7 @@ let invertPermutation
 let isFinite
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "IsFinite"
+  Op.create context Op_names.isFinite
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -3903,7 +3903,7 @@ let isFinite
 let isInf
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "IsInf"
+  Op.create context Op_names.isInf
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -3911,7 +3911,7 @@ let isInf
 let isNan
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "IsNan"
+  Op.create context Op_names.isNan
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -3919,7 +3919,7 @@ let isNan
 let isVariableInitialized
     (ref : 'dtype t)
   =
-  Op.create context "IsVariableInitialized"
+  Op.create context Op_names.isVariableInitialized
   |> fun op -> Op.add_input op ref
   |> Op.set_attr_data_type ~name:"dtype" ~value:(Op.Tensor_handle.data_type ref)
   |> Op.execute1
@@ -3931,7 +3931,7 @@ let iterator
     ~output_shapes
     ()
   =
-  Op.create context "Iterator"
+  Op.create context Op_names.iterator
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
@@ -3943,7 +3943,7 @@ let iteratorFromStringHandle
     ?(output_shapes=[])
     (string_handle : [ `string ] t)
   =
-  Op.create context "IteratorFromStringHandle"
+  Op.create context Op_names.iteratorFromStringHandle
   |> fun op -> Op.add_input op string_handle
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
   |> Op.set_attr_shape_list ~name:"output_shapes" ~value:output_shapes
@@ -3952,14 +3952,14 @@ let iteratorFromStringHandle
 let iteratorToStringHandle
     (resource_handle : [ `resource ] t)
   =
-  Op.create context "IteratorToStringHandle"
+  Op.create context Op_names.iteratorToStringHandle
   |> fun op -> Op.add_input op resource_handle
   |> Op.execute1
 
 let l2Loss
     (t : ([< `float | `double ] as 't) t)
   =
-  Op.create context "L2Loss"
+  Op.create context Op_names.l2Loss
   |> fun op -> Op.add_input op t
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type t)
   |> Op.execute1
@@ -3969,7 +3969,7 @@ let lMDBReader
     ?(shared_name="")
     ()
   =
-  Op.create context "LMDBReader"
+  Op.create context Op_names.lMDBReader
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.execute1
@@ -3981,7 +3981,7 @@ let lRN
     ?(beta=0.5)
     (input : ([< `float ] as 't) t)
   =
-  Op.create context "LRN"
+  Op.create context Op_names.lRN
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_int ~name:"depth_radius" ~value:depth_radius
@@ -3999,7 +3999,7 @@ let lRNGrad
     (input_image : ([< `float ] as 't) t)
     (output_image : ([< `float ] as 't) t)
   =
-  Op.create context "LRNGrad"
+  Op.create context Op_names.lRNGrad
   |> fun op -> Op.add_input op input_grads
   |> fun op -> Op.add_input op input_image
   |> fun op -> Op.add_input op output_image
@@ -4019,7 +4019,7 @@ let learnedUnigramCandidateSampler
     ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
-  Op.create context "LearnedUnigramCandidateSampler"
+  Op.create context Op_names.learnedUnigramCandidateSampler
   |> fun op -> Op.add_input op true_classes
   |> Op.set_attr_int ~name:"num_true" ~value:num_true
   |> Op.set_attr_int ~name:"num_sampled" ~value:num_sampled
@@ -4033,7 +4033,7 @@ let less
     (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Less"
+  Op.create context Op_names.less
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -4043,7 +4043,7 @@ let lessEqual
     (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "LessEqual"
+  Op.create context Op_names.lessEqual
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -4052,7 +4052,7 @@ let lessEqual
 let lgamma
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Lgamma"
+  Op.create context Op_names.lgamma
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -4062,7 +4062,7 @@ let linSpace
     (stop : ([< `float | `double ] as 't) t)
     (num : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "LinSpace"
+  Op.create context Op_names.linSpace
   |> fun op -> Op.add_input op start
   |> fun op -> Op.add_input op stop
   |> fun op -> Op.add_input op num
@@ -4075,7 +4075,7 @@ let listDiff
     (x : 't t)
     (y : 't t)
   =
-  Op.create context "ListDiff"
+  Op.create context Op_names.listDiff
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -4092,7 +4092,7 @@ let loadAndRemapMatrix
     (col_remapping : [ `int64 ] t)
     (initializing_values : [ `float ] t)
   =
-  Op.create context "LoadAndRemapMatrix"
+  Op.create context Op_names.loadAndRemapMatrix
   |> fun op -> Op.add_input op ckpt_path
   |> fun op -> Op.add_input op old_tensor_name
   |> fun op -> Op.add_input op row_remapping
@@ -4106,7 +4106,7 @@ let loadAndRemapMatrix
 let log
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Log"
+  Op.create context Op_names.log
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -4114,7 +4114,7 @@ let log
 let log1p
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Log1p"
+  Op.create context Op_names.log1p
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -4122,7 +4122,7 @@ let log1p
 let logMatrixDeterminant
     (input : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "LogMatrixDeterminant"
+  Op.create context Op_names.logMatrixDeterminant
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute2
@@ -4130,7 +4130,7 @@ let logMatrixDeterminant
 let logSoftmax
     (logits : ([< `float | `double ] as 't) t)
   =
-  Op.create context "LogSoftmax"
+  Op.create context Op_names.logSoftmax
   |> fun op -> Op.add_input op logits
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type logits)
   |> Op.execute1
@@ -4144,7 +4144,7 @@ let logUniformCandidateSampler
     ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
-  Op.create context "LogUniformCandidateSampler"
+  Op.create context Op_names.logUniformCandidateSampler
   |> fun op -> Op.add_input op true_classes
   |> Op.set_attr_int ~name:"num_true" ~value:num_true
   |> Op.set_attr_int ~name:"num_sampled" ~value:num_sampled
@@ -4158,7 +4158,7 @@ let logicalAnd
     (x : [ `bool ] t)
     (y : [ `bool ] t)
   =
-  Op.create context "LogicalAnd"
+  Op.create context Op_names.logicalAnd
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.execute1
@@ -4166,7 +4166,7 @@ let logicalAnd
 let logicalNot
     (x : [ `bool ] t)
   =
-  Op.create context "LogicalNot"
+  Op.create context Op_names.logicalNot
   |> fun op -> Op.add_input op x
   |> Op.execute1
 
@@ -4174,7 +4174,7 @@ let logicalOr
     (x : [ `bool ] t)
     (y : [ `bool ] t)
   =
-  Op.create context "LogicalOr"
+  Op.create context Op_names.logicalOr
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.execute1
@@ -4184,7 +4184,7 @@ let lookupTableExport
     ~type_tvalues
     (table_handle : [ `string ] t)
   =
-  Op.create context "LookupTableExport"
+  Op.create context Op_names.lookupTableExport
   |> fun op -> Op.add_input op table_handle
   |> Op.set_attr_data_type ~name:"Tkeys" ~value:Operation.Type.(to_data_type (P type_tkeys))
   |> Op.set_attr_data_type ~name:"Tvalues" ~value:Operation.Type.(to_data_type (P type_tvalues))
@@ -4195,7 +4195,7 @@ let lookupTableExportV2
     ~type_tvalues
     (table_handle : [ `resource ] t)
   =
-  Op.create context "LookupTableExportV2"
+  Op.create context Op_names.lookupTableExportV2
   |> fun op -> Op.add_input op table_handle
   |> Op.set_attr_data_type ~name:"Tkeys" ~value:Operation.Type.(to_data_type (P type_tkeys))
   |> Op.set_attr_data_type ~name:"Tvalues" ~value:Operation.Type.(to_data_type (P type_tvalues))
@@ -4206,7 +4206,7 @@ let lookupTableFind
     (keys : 'tin t)
     (default_value : 'tout t)
   =
-  Op.create context "LookupTableFind"
+  Op.create context Op_names.lookupTableFind
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op keys
   |> fun op -> Op.add_input op default_value
@@ -4219,7 +4219,7 @@ let lookupTableFindV2
     (keys : 'tin t)
     (default_value : 'tout t)
   =
-  Op.create context "LookupTableFindV2"
+  Op.create context Op_names.lookupTableFindV2
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op keys
   |> fun op -> Op.add_input op default_value
@@ -4232,7 +4232,7 @@ let lookupTableImport
     (keys : 'tin t)
     (values : 'tout t)
   =
-  Op.create context "LookupTableImport"
+  Op.create context Op_names.lookupTableImport
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op keys
   |> fun op -> Op.add_input op values
@@ -4245,7 +4245,7 @@ let lookupTableImportV2
     (keys : 'tin t)
     (values : 'tout t)
   =
-  Op.create context "LookupTableImportV2"
+  Op.create context Op_names.lookupTableImportV2
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op keys
   |> fun op -> Op.add_input op values
@@ -4258,7 +4258,7 @@ let lookupTableInsert
     (keys : 'tin t)
     (values : 'tout t)
   =
-  Op.create context "LookupTableInsert"
+  Op.create context Op_names.lookupTableInsert
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op keys
   |> fun op -> Op.add_input op values
@@ -4271,7 +4271,7 @@ let lookupTableInsertV2
     (keys : 'tin t)
     (values : 'tout t)
   =
-  Op.create context "LookupTableInsertV2"
+  Op.create context Op_names.lookupTableInsertV2
   |> fun op -> Op.add_input op table_handle
   |> fun op -> Op.add_input op keys
   |> fun op -> Op.add_input op values
@@ -4282,21 +4282,21 @@ let lookupTableInsertV2
 let lookupTableSize
     (table_handle : [ `string ] t)
   =
-  Op.create context "LookupTableSize"
+  Op.create context Op_names.lookupTableSize
   |> fun op -> Op.add_input op table_handle
   |> Op.execute1
 
 let lookupTableSizeV2
     (table_handle : [ `resource ] t)
   =
-  Op.create context "LookupTableSizeV2"
+  Op.create context Op_names.lookupTableSizeV2
   |> fun op -> Op.add_input op table_handle
   |> Op.execute1
 
 let loopCond
     (input : [ `bool ] t)
   =
-  Op.create context "LoopCond"
+  Op.create context Op_names.loopCond
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
@@ -4304,7 +4304,7 @@ let makeIterator
     (dataset : [ `variant ] t)
     (iterator : [ `resource ] t)
   =
-  Op.create context "MakeIterator"
+  Op.create context Op_names.makeIterator
   |> fun op -> Op.add_input op dataset
   |> fun op -> Op.add_input op iterator
   |> Op.execute0
@@ -4317,7 +4317,7 @@ let mapClear
     ?(shared_name="")
     ()
   =
-  Op.create context "MapClear"
+  Op.create context Op_names.mapClear
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
   |> Op.set_attr_int ~name:"memory_limit" ~value:memory_limit
   |> Op.set_attr_type_list ~name:"dtypes" ~value:dtypes
@@ -4333,7 +4333,7 @@ let mapIncompleteSize
     ?(shared_name="")
     ()
   =
-  Op.create context "MapIncompleteSize"
+  Op.create context Op_names.mapIncompleteSize
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
   |> Op.set_attr_int ~name:"memory_limit" ~value:memory_limit
   |> Op.set_attr_type_list ~name:"dtypes" ~value:dtypes
@@ -4349,7 +4349,7 @@ let mapSize
     ?(shared_name="")
     ()
   =
-  Op.create context "MapSize"
+  Op.create context Op_names.mapSize
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
   |> Op.set_attr_int ~name:"memory_limit" ~value:memory_limit
   |> Op.set_attr_type_list ~name:"dtypes" ~value:dtypes
@@ -4363,7 +4363,7 @@ let matMul
     (a : ([< `float | `double | `int32 | `complex64 ] as 't) t)
     (b : ([< `float | `double | `int32 | `complex64 ] as 't) t)
   =
-  Op.create context "MatMul"
+  Op.create context Op_names.matMul
   |> fun op -> Op.add_input op a
   |> fun op -> Op.add_input op b
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type a)
@@ -4374,7 +4374,7 @@ let matMul
 let matchingFiles
     (pattern : [ `string ] t)
   =
-  Op.create context "MatchingFiles"
+  Op.create context Op_names.matchingFiles
   |> fun op -> Op.add_input op pattern
   |> Op.execute1
 
@@ -4383,7 +4383,7 @@ let matrixBandPart
     (num_lower : [ `int64 ] t)
     (num_upper : [ `int64 ] t)
   =
-  Op.create context "MatrixBandPart"
+  Op.create context Op_names.matrixBandPart
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op num_lower
   |> fun op -> Op.add_input op num_upper
@@ -4393,7 +4393,7 @@ let matrixBandPart
 let matrixDeterminant
     (input : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "MatrixDeterminant"
+  Op.create context Op_names.matrixDeterminant
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -4401,7 +4401,7 @@ let matrixDeterminant
 let matrixDiag
     (diagonal : 't t)
   =
-  Op.create context "MatrixDiag"
+  Op.create context Op_names.matrixDiag
   |> fun op -> Op.add_input op diagonal
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type diagonal)
   |> Op.execute1
@@ -4409,7 +4409,7 @@ let matrixDiag
 let matrixDiagPart
     (input : 't t)
   =
-  Op.create context "MatrixDiagPart"
+  Op.create context Op_names.matrixDiagPart
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -4418,7 +4418,7 @@ let matrixInverse
     ?(adjoint=false)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
-  Op.create context "MatrixInverse"
+  Op.create context Op_names.matrixInverse
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_bool ~name:"adjoint" ~value:adjoint
@@ -4428,7 +4428,7 @@ let matrixSetDiag
     (input : 't t)
     (diagonal : 't t)
   =
-  Op.create context "MatrixSetDiag"
+  Op.create context Op_names.matrixSetDiag
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op diagonal
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -4439,7 +4439,7 @@ let matrixSolve
     (matrix : ([< `double | `float | `complex64 ] as 't) t)
     (rhs : ([< `double | `float | `complex64 ] as 't) t)
   =
-  Op.create context "MatrixSolve"
+  Op.create context Op_names.matrixSolve
   |> fun op -> Op.add_input op matrix
   |> fun op -> Op.add_input op rhs
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type matrix)
@@ -4452,7 +4452,7 @@ let matrixSolveLs
     (rhs : ([< `double | `float | `complex64 ] as 't) t)
     (l2_regularizer : [ `double ] t)
   =
-  Op.create context "MatrixSolveLs"
+  Op.create context Op_names.matrixSolveLs
   |> fun op -> Op.add_input op matrix
   |> fun op -> Op.add_input op rhs
   |> fun op -> Op.add_input op l2_regularizer
@@ -4466,7 +4466,7 @@ let matrixTriangularSolve
     (matrix : ([< `double | `float | `complex64 ] as 't) t)
     (rhs : ([< `double | `float | `complex64 ] as 't) t)
   =
-  Op.create context "MatrixTriangularSolve"
+  Op.create context Op_names.matrixTriangularSolve
   |> fun op -> Op.add_input op matrix
   |> fun op -> Op.add_input op rhs
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type matrix)
@@ -4479,7 +4479,7 @@ let max
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "Max"
+  Op.create context Op_names.max
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op reduction_indices
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -4494,7 +4494,7 @@ let maxPool
     ?(data_format="NHWC")
     (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "MaxPool"
+  Op.create context Op_names.maxPool
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_int_list ~name:"ksize" ~value:ksize
@@ -4510,7 +4510,7 @@ let maxPool3D
     ?(data_format="NDHWC")
     (input : ([< `float ] as 't) t)
   =
-  Op.create context "MaxPool3D"
+  Op.create context Op_names.maxPool3D
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_int_list ~name:"ksize" ~value:ksize
@@ -4528,7 +4528,7 @@ let maxPool3DGrad
     (orig_output : ([< `float ] as 'tInput) t)
     (grad : ([< `float ] as 't) t)
   =
-  Op.create context "MaxPool3DGrad"
+  Op.create context Op_names.maxPool3DGrad
   |> fun op -> Op.add_input op orig_input
   |> fun op -> Op.add_input op orig_output
   |> fun op -> Op.add_input op grad
@@ -4549,7 +4549,7 @@ let maxPool3DGradGrad
     (orig_output : ([< `float ] as 't) t)
     (grad : ([< `float ] as 't) t)
   =
-  Op.create context "MaxPool3DGradGrad"
+  Op.create context Op_names.maxPool3DGradGrad
   |> fun op -> Op.add_input op orig_input
   |> fun op -> Op.add_input op orig_output
   |> fun op -> Op.add_input op grad
@@ -4569,7 +4569,7 @@ let maxPoolGrad
     (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "MaxPoolGrad"
+  Op.create context Op_names.maxPoolGrad
   |> fun op -> Op.add_input op orig_input
   |> fun op -> Op.add_input op orig_output
   |> fun op -> Op.add_input op grad
@@ -4589,7 +4589,7 @@ let maxPoolGradGrad
     (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "MaxPoolGradGrad"
+  Op.create context Op_names.maxPoolGradGrad
   |> fun op -> Op.add_input op orig_input
   |> fun op -> Op.add_input op orig_output
   |> fun op -> Op.add_input op grad
@@ -4609,7 +4609,7 @@ let maxPoolGradGradV2
     (ksize : [ `int32 ] t)
     (strides : [ `int32 ] t)
   =
-  Op.create context "MaxPoolGradGradV2"
+  Op.create context Op_names.maxPoolGradGradV2
   |> fun op -> Op.add_input op orig_input
   |> fun op -> Op.add_input op orig_output
   |> fun op -> Op.add_input op grad
@@ -4628,7 +4628,7 @@ let maxPoolGradGradWithArgmax
     (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (argmax : ([< `int32 | `int64 ] as 'targmax) t)
   =
-  Op.create context "MaxPoolGradGradWithArgmax"
+  Op.create context Op_names.maxPoolGradGradWithArgmax
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op grad
   |> fun op -> Op.add_input op argmax
@@ -4648,7 +4648,7 @@ let maxPoolGradV2
     (ksize : [ `int32 ] t)
     (strides : [ `int32 ] t)
   =
-  Op.create context "MaxPoolGradV2"
+  Op.create context Op_names.maxPoolGradV2
   |> fun op -> Op.add_input op orig_input
   |> fun op -> Op.add_input op orig_output
   |> fun op -> Op.add_input op grad
@@ -4667,7 +4667,7 @@ let maxPoolGradWithArgmax
     (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (argmax : ([< `int32 | `int64 ] as 'targmax) t)
   =
-  Op.create context "MaxPoolGradWithArgmax"
+  Op.create context Op_names.maxPoolGradWithArgmax
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op grad
   |> fun op -> Op.add_input op argmax
@@ -4685,7 +4685,7 @@ let maxPoolV2
     (ksize : [ `int32 ] t)
     (strides : [ `int32 ] t)
   =
-  Op.create context "MaxPoolV2"
+  Op.create context Op_names.maxPoolV2
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op ksize
   |> fun op -> Op.add_input op strides
@@ -4701,7 +4701,7 @@ let maxPoolWithArgmax
     ~padding
     (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "MaxPoolWithArgmax"
+  Op.create context Op_names.maxPoolWithArgmax
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_data_type ~name:"Targmax" ~value:Operation.Type.(to_data_type (P type_targmax))
@@ -4714,7 +4714,7 @@ let maximum
     (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
     (y : ([< `float | `double | `int32 | `int64 ] as 't) t)
   =
-  Op.create context "Maximum"
+  Op.create context Op_names.maximum
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -4725,7 +4725,7 @@ let mean
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "Mean"
+  Op.create context Op_names.mean
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op reduction_indices
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -4736,7 +4736,7 @@ let mean
 let merge
     (inputs__ : 't t list)
   =
-  Op.create context "Merge"
+  Op.create context Op_names.merge
   |> fun init -> List.fold inputs__ ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn inputs__))
   |> Op.set_attr_int ~name:"N" ~value:(List.length inputs__)
@@ -4745,7 +4745,7 @@ let merge
 let mergeSummary
     (inputs__ : [ `string ] t list)
   =
-  Op.create context "MergeSummary"
+  Op.create context Op_names.mergeSummary
   |> fun init -> List.fold inputs__ ~init ~f:Op.add_input
   |> Op.set_attr_int ~name:"N" ~value:(List.length inputs__)
   |> Op.execute1
@@ -4755,7 +4755,7 @@ let mergeV2Checkpoints
     (checkpoint_prefixes : [ `string ] t)
     (destination_prefix : [ `string ] t)
   =
-  Op.create context "MergeV2Checkpoints"
+  Op.create context Op_names.mergeV2Checkpoints
   |> fun op -> Op.add_input op checkpoint_prefixes
   |> fun op -> Op.add_input op destination_prefix
   |> Op.set_attr_bool ~name:"delete_old_dirs" ~value:delete_old_dirs
@@ -4769,7 +4769,7 @@ let mfcc
     (spectrogram : [ `float ] t)
     (sample_rate : [ `int32 ] t)
   =
-  Op.create context "Mfcc"
+  Op.create context Op_names.mfcc
   |> fun op -> Op.add_input op spectrogram
   |> fun op -> Op.add_input op sample_rate
   |> Op.set_attr_float ~name:"upper_frequency_limit" ~value:upper_frequency_limit
@@ -4783,7 +4783,7 @@ let min
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "Min"
+  Op.create context Op_names.min
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op reduction_indices
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -4795,7 +4795,7 @@ let minimum
     (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
     (y : ([< `float | `double | `int32 | `int64 ] as 't) t)
   =
-  Op.create context "Minimum"
+  Op.create context Op_names.minimum
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -4806,7 +4806,7 @@ let mirrorPad
     (input : 't t)
     (paddings : ([< `int32 | `int64 ] as 'tpaddings) t)
   =
-  Op.create context "MirrorPad"
+  Op.create context Op_names.mirrorPad
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op paddings
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -4819,7 +4819,7 @@ let mirrorPadGrad
     (input : 't t)
     (paddings : ([< `int32 | `int64 ] as 'tpaddings) t)
   =
-  Op.create context "MirrorPadGrad"
+  Op.create context Op_names.mirrorPadGrad
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op paddings
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -4831,7 +4831,7 @@ let mod_
     (x : ([< `int32 | `int64 | `float | `double ] as 't) t)
     (y : ([< `int32 | `int64 | `float | `double ] as 't) t)
   =
-  Op.create context "Mod"
+  Op.create context Op_names.mod_
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -4841,7 +4841,7 @@ let mul
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Mul"
+  Op.create context Op_names.mul
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -4853,7 +4853,7 @@ let multinomial
     (logits : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (num_samples : [ `int32 ] t)
   =
-  Op.create context "Multinomial"
+  Op.create context Op_names.multinomial
   |> fun op -> Op.add_input op logits
   |> fun op -> Op.add_input op num_samples
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type logits)
@@ -4870,7 +4870,7 @@ let mutableDenseHashTable
     ?(max_load_factor=0.800000011920929)
     (empty_key : 'key_dtype t)
   =
-  Op.create context "MutableDenseHashTable"
+  Op.create context Op_names.mutableDenseHashTable
   |> fun op -> Op.add_input op empty_key
   |> Op.set_attr_data_type ~name:"key_dtype" ~value:(Op.Tensor_handle.data_type empty_key)
   |> Op.set_attr_string ~name:"container" ~value:container
@@ -4890,7 +4890,7 @@ let mutableDenseHashTableV2
     ?(max_load_factor=0.800000011920929)
     (empty_key : 'key_dtype t)
   =
-  Op.create context "MutableDenseHashTableV2"
+  Op.create context Op_names.mutableDenseHashTableV2
   |> fun op -> Op.add_input op empty_key
   |> Op.set_attr_data_type ~name:"key_dtype" ~value:(Op.Tensor_handle.data_type empty_key)
   |> Op.set_attr_string ~name:"container" ~value:container
@@ -4907,7 +4907,7 @@ let mutableHashTable
     ?(use_node_name_sharing=false)
     ()
   =
-  Op.create context "MutableHashTable"
+  Op.create context Op_names.mutableHashTable
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.set_attr_bool ~name:"use_node_name_sharing" ~value:use_node_name_sharing
@@ -4920,7 +4920,7 @@ let mutableHashTableOfTensors
     ?(value_shape=[])
     ()
   =
-  Op.create context "MutableHashTableOfTensors"
+  Op.create context Op_names.mutableHashTableOfTensors
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.set_attr_bool ~name:"use_node_name_sharing" ~value:use_node_name_sharing
@@ -4934,7 +4934,7 @@ let mutableHashTableOfTensorsV2
     ?(value_shape=[])
     ()
   =
-  Op.create context "MutableHashTableOfTensorsV2"
+  Op.create context Op_names.mutableHashTableOfTensorsV2
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.set_attr_bool ~name:"use_node_name_sharing" ~value:use_node_name_sharing
@@ -4947,7 +4947,7 @@ let mutableHashTableV2
     ?(use_node_name_sharing=false)
     ()
   =
-  Op.create context "MutableHashTableV2"
+  Op.create context Op_names.mutableHashTableV2
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.set_attr_bool ~name:"use_node_name_sharing" ~value:use_node_name_sharing
@@ -4956,7 +4956,7 @@ let mutableHashTableV2
 let neg
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Neg"
+  Op.create context Op_names.neg
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -4970,7 +4970,7 @@ let negTrain
     (labels : [ `int32 ] t)
     (lr : [ `float ] t)
   =
-  Op.create context "NegTrain"
+  Op.create context Op_names.negTrain
   |> fun op -> Op.add_input op w_in
   |> fun op -> Op.add_input op w_out
   |> fun op -> Op.add_input op examples
@@ -4983,7 +4983,7 @@ let negTrain
 let nextIteration
     (data : 't t)
   =
-  Op.create context "NextIteration"
+  Op.create context Op_names.nextIteration
   |> fun op -> Op.add_input op data
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
   |> Op.execute1
@@ -4991,7 +4991,7 @@ let nextIteration
 let noOp
     ()
   =
-  Op.create context "NoOp"
+  Op.create context Op_names.noOp
   |> Op.execute0
 
 let nonMaxSuppression
@@ -5000,7 +5000,7 @@ let nonMaxSuppression
     (scores : [ `float ] t)
     (max_output_size : [ `int32 ] t)
   =
-  Op.create context "NonMaxSuppression"
+  Op.create context Op_names.nonMaxSuppression
   |> fun op -> Op.add_input op boxes
   |> fun op -> Op.add_input op scores
   |> fun op -> Op.add_input op max_output_size
@@ -5013,7 +5013,7 @@ let nonMaxSuppressionV2
     (max_output_size : [ `int32 ] t)
     (iou_threshold : [ `float ] t)
   =
-  Op.create context "NonMaxSuppressionV2"
+  Op.create context Op_names.nonMaxSuppressionV2
   |> fun op -> Op.add_input op boxes
   |> fun op -> Op.add_input op scores
   |> fun op -> Op.add_input op max_output_size
@@ -5024,7 +5024,7 @@ let notEqual
     (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
     (y : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
   =
-  Op.create context "NotEqual"
+  Op.create context Op_names.notEqual
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -5037,7 +5037,7 @@ let oneHot
     (on_value : 't t)
     (off_value : 't t)
   =
-  Op.create context "OneHot"
+  Op.create context Op_names.oneHot
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op depth
   |> fun op -> Op.add_input op on_value
@@ -5054,7 +5054,7 @@ let oneShotIterator
     ?(shared_name="")
     ()
   =
-  Op.create context "OneShotIterator"
+  Op.create context Op_names.oneShotIterator
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
   |> Op.set_attr_shape_list ~name:"output_shapes" ~value:output_shapes
   |> Op.set_attr_string ~name:"container" ~value:container
@@ -5064,7 +5064,7 @@ let oneShotIterator
 let onesLike
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "OnesLike"
+  Op.create context Op_names.onesLike
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -5077,7 +5077,7 @@ let orderedMapClear
     ?(shared_name="")
     ()
   =
-  Op.create context "OrderedMapClear"
+  Op.create context Op_names.orderedMapClear
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
   |> Op.set_attr_int ~name:"memory_limit" ~value:memory_limit
   |> Op.set_attr_type_list ~name:"dtypes" ~value:dtypes
@@ -5093,7 +5093,7 @@ let orderedMapIncompleteSize
     ?(shared_name="")
     ()
   =
-  Op.create context "OrderedMapIncompleteSize"
+  Op.create context Op_names.orderedMapIncompleteSize
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
   |> Op.set_attr_int ~name:"memory_limit" ~value:memory_limit
   |> Op.set_attr_type_list ~name:"dtypes" ~value:dtypes
@@ -5109,7 +5109,7 @@ let orderedMapSize
     ?(shared_name="")
     ()
   =
-  Op.create context "OrderedMapSize"
+  Op.create context Op_names.orderedMapSize
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
   |> Op.set_attr_int ~name:"memory_limit" ~value:memory_limit
   |> Op.set_attr_type_list ~name:"dtypes" ~value:dtypes
@@ -5121,7 +5121,7 @@ let pack
     ?(axis=0)
     (values : 't t list)
   =
-  Op.create context "Pack"
+  Op.create context Op_names.pack
   |> fun init -> List.fold values ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn values))
   |> Op.set_attr_int ~name:"N" ~value:(List.length values)
@@ -5132,7 +5132,7 @@ let pad
     (input : 't t)
     (paddings : ([< `int32 | `int64 ] as 'tpaddings) t)
   =
-  Op.create context "Pad"
+  Op.create context Op_names.pad
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op paddings
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -5144,7 +5144,7 @@ let padV2
     (paddings : ([< `int32 | `int64 ] as 'tpaddings) t)
     (constant_values : 't t)
   =
-  Op.create context "PadV2"
+  Op.create context Op_names.padV2
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op paddings
   |> fun op -> Op.add_input op constant_values
@@ -5160,7 +5160,7 @@ let paddingFIFOQueue
     ?(shared_name="")
     ()
   =
-  Op.create context "PaddingFIFOQueue"
+  Op.create context Op_names.paddingFIFOQueue
   |> Op.set_attr_type_list ~name:"component_types" ~value:component_types
   |> Op.set_attr_shape_list ~name:"shapes" ~value:shapes
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
@@ -5176,7 +5176,7 @@ let paddingFIFOQueueV2
     ?(shared_name="")
     ()
   =
-  Op.create context "PaddingFIFOQueueV2"
+  Op.create context Op_names.paddingFIFOQueueV2
   |> Op.set_attr_type_list ~name:"component_types" ~value:component_types
   |> Op.set_attr_shape_list ~name:"shapes" ~value:shapes
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
@@ -5188,7 +5188,7 @@ let parallelConcat
     ~shape
     (values : 't t list)
   =
-  Op.create context "ParallelConcat"
+  Op.create context Op_names.parallelConcat
   |> fun init -> List.fold values ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn values))
   |> Op.set_attr_int ~name:"N" ~value:(List.length values)
@@ -5199,7 +5199,7 @@ let parallelDynamicStitch
     (indices : [ `int32 ] t list)
     (data : 't t list)
   =
-  Op.create context "ParallelDynamicStitch"
+  Op.create context Op_names.parallelDynamicStitch
   |> fun init -> List.fold indices ~init ~f:Op.add_input
   |> fun init -> List.fold data ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn data))
@@ -5215,7 +5215,7 @@ let parameterizedTruncatedNormal
     (minvals : ([< `float | `double ] as 'dtype) t)
     (maxvals : ([< `float | `double ] as 'dtype) t)
   =
-  Op.create context "ParameterizedTruncatedNormal"
+  Op.create context Op_names.parameterizedTruncatedNormal
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op means
   |> fun op -> Op.add_input op stdevs
@@ -5231,7 +5231,7 @@ let parseTensor
     ~type_out_type
     (serialized : [ `string ] t)
   =
-  Op.create context "ParseTensor"
+  Op.create context Op_names.parseTensor
   |> fun op -> Op.add_input op serialized
   |> Op.set_attr_data_type ~name:"out_type" ~value:Operation.Type.(to_data_type (P type_out_type))
   |> Op.execute1
@@ -5241,7 +5241,7 @@ let placeholder
     ?(shape=[])
     ()
   =
-  Op.create context "Placeholder"
+  Op.create context Op_names.placeholder
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_shape ~name:"shape" ~value:shape
   |> Op.execute1
@@ -5251,7 +5251,7 @@ let placeholderV2
     ~shape
     ()
   =
-  Op.create context "PlaceholderV2"
+  Op.create context Op_names.placeholderV2
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_shape ~name:"shape" ~value:shape
   |> Op.execute1
@@ -5260,7 +5260,7 @@ let placeholderWithDefault
     ~shape
     (input : 'dtype t)
   =
-  Op.create context "PlaceholderWithDefault"
+  Op.create context Op_names.placeholderWithDefault
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"dtype" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_shape ~name:"shape" ~value:shape
@@ -5270,7 +5270,7 @@ let polygamma
     (a : ([< `float | `double ] as 't) t)
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Polygamma"
+  Op.create context Op_names.polygamma
   |> fun op -> Op.add_input op a
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type a)
@@ -5279,7 +5279,7 @@ let polygamma
 let populationCount
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "PopulationCount"
+  Op.create context Op_names.populationCount
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -5288,7 +5288,7 @@ let pow
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Pow"
+  Op.create context Op_names.pow
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -5300,7 +5300,7 @@ let prefetchDataset
     (input_dataset : [ `variant ] t)
     (buffer_size : [ `int64 ] t)
   =
-  Op.create context "PrefetchDataset"
+  Op.create context Op_names.prefetchDataset
   |> fun op -> Op.add_input op input_dataset
   |> fun op -> Op.add_input op buffer_size
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
@@ -5311,7 +5311,7 @@ let preventGradient
     ?(message="")
     (input : 't t)
   =
-  Op.create context "PreventGradient"
+  Op.create context Op_names.preventGradient
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_string ~name:"message" ~value:message
@@ -5325,7 +5325,7 @@ let priorityQueue
     ?(shared_name="")
     ()
   =
-  Op.create context "PriorityQueue"
+  Op.create context Op_names.priorityQueue
   |> Op.set_attr_type_list ~name:"component_types" ~value:component_types
   |> Op.set_attr_shape_list ~name:"shapes" ~value:shapes
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
@@ -5341,7 +5341,7 @@ let priorityQueueV2
     ?(shared_name="")
     ()
   =
-  Op.create context "PriorityQueueV2"
+  Op.create context Op_names.priorityQueueV2
   |> Op.set_attr_type_list ~name:"component_types" ~value:component_types
   |> Op.set_attr_shape_list ~name:"shapes" ~value:shapes
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
@@ -5354,7 +5354,7 @@ let prod
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "Prod"
+  Op.create context Op_names.prod
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op reduction_indices
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -5366,7 +5366,7 @@ let qr
     ?(full_matrices=false)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
-  Op.create context "Qr"
+  Op.create context Op_names.qr
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_bool ~name:"full_matrices" ~value:full_matrices
@@ -5380,7 +5380,7 @@ let quantizeAndDequantize
     ?(input_max=0.)
     (input : ([< `float | `double ] as 't) t)
   =
-  Op.create context "QuantizeAndDequantize"
+  Op.create context Op_names.quantizeAndDequantize
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_bool ~name:"signed_input" ~value:signed_input
@@ -5398,7 +5398,7 @@ let quantizeAndDequantizeV2
     (input_min : ([< `float | `double ] as 't) t)
     (input_max : ([< `float | `double ] as 't) t)
   =
-  Op.create context "QuantizeAndDequantizeV2"
+  Op.create context Op_names.quantizeAndDequantizeV2
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op input_min
   |> fun op -> Op.add_input op input_max
@@ -5416,7 +5416,7 @@ let quantizeAndDequantizeV3
     (input_max : ([< `float | `double ] as 't) t)
     (num_bits : [ `int32 ] t)
   =
-  Op.create context "QuantizeAndDequantizeV3"
+  Op.create context Op_names.quantizeAndDequantizeV3
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op input_min
   |> fun op -> Op.add_input op input_max
@@ -5432,7 +5432,7 @@ let quantizeDownAndShrinkRange
     (input_min : [ `float ] t)
     (input_max : [ `float ] t)
   =
-  Op.create context "QuantizeDownAndShrinkRange"
+  Op.create context Op_names.quantizeDownAndShrinkRange
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op input_min
   |> fun op -> Op.add_input op input_max
@@ -5447,7 +5447,7 @@ let quantizeV2
     (min_range : [ `float ] t)
     (max_range : [ `float ] t)
   =
-  Op.create context "QuantizeV2"
+  Op.create context Op_names.quantizeV2
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op min_range
   |> fun op -> Op.add_input op max_range
@@ -5464,7 +5464,7 @@ let quantizedAdd
     (min_y : [ `float ] t)
     (max_y : [ `float ] t)
   =
-  Op.create context "QuantizedAdd"
+  Op.create context Op_names.quantizedAdd
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> fun op -> Op.add_input op min_x
@@ -5484,7 +5484,7 @@ let quantizedAvgPool
     (min_input : [ `float ] t)
     (max_input : [ `float ] t)
   =
-  Op.create context "QuantizedAvgPool"
+  Op.create context Op_names.quantizedAvgPool
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op min_input
   |> fun op -> Op.add_input op max_input
@@ -5514,7 +5514,7 @@ let quantizedBatchNormWithGlobalNormalization
     (gamma_min : [ `float ] t)
     (gamma_max : [ `float ] t)
   =
-  Op.create context "QuantizedBatchNormWithGlobalNormalization"
+  Op.create context Op_names.quantizedBatchNormWithGlobalNormalization
   |> fun op -> Op.add_input op t
   |> fun op -> Op.add_input op t_min
   |> fun op -> Op.add_input op t_max
@@ -5545,7 +5545,7 @@ let quantizedBiasAdd
     (min_bias : [ `float ] t)
     (max_bias : [ `float ] t)
   =
-  Op.create context "QuantizedBiasAdd"
+  Op.create context Op_names.quantizedBiasAdd
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op bias
   |> fun op -> Op.add_input op min_input
@@ -5563,7 +5563,7 @@ let quantizedConcat
     (input_mins : [ `float ] t list)
     (input_maxes : [ `float ] t list)
   =
-  Op.create context "QuantizedConcat"
+  Op.create context Op_names.quantizedConcat
   |> fun op -> Op.add_input op concat_dim
   |> fun init -> List.fold values ~init ~f:Op.add_input
   |> fun init -> List.fold input_mins ~init ~f:Op.add_input
@@ -5583,7 +5583,7 @@ let quantizedConv2D
     (min_filter : [ `float ] t)
     (max_filter : [ `float ] t)
   =
-  Op.create context "QuantizedConv2D"
+  Op.create context Op_names.quantizedConv2D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op filter
   |> fun op -> Op.add_input op min_input
@@ -5607,7 +5607,7 @@ let quantizedInstanceNorm
     (x_min : [ `float ] t)
     (x_max : [ `float ] t)
   =
-  Op.create context "QuantizedInstanceNorm"
+  Op.create context Op_names.quantizedInstanceNorm
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op x_min
   |> fun op -> Op.add_input op x_max
@@ -5630,7 +5630,7 @@ let quantizedMatMul
     (min_b : [ `float ] t)
     (max_b : [ `float ] t)
   =
-  Op.create context "QuantizedMatMul"
+  Op.create context Op_names.quantizedMatMul
   |> fun op -> Op.add_input op a
   |> fun op -> Op.add_input op b
   |> fun op -> Op.add_input op min_a
@@ -5652,7 +5652,7 @@ let quantizedMaxPool
     (min_input : [ `float ] t)
     (max_input : [ `float ] t)
   =
-  Op.create context "QuantizedMaxPool"
+  Op.create context Op_names.quantizedMaxPool
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op min_input
   |> fun op -> Op.add_input op max_input
@@ -5671,7 +5671,7 @@ let quantizedMul
     (min_y : [ `float ] t)
     (max_y : [ `float ] t)
   =
-  Op.create context "QuantizedMul"
+  Op.create context Op_names.quantizedMul
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> fun op -> Op.add_input op min_x
@@ -5689,7 +5689,7 @@ let quantizedRelu
     (min_features : [ `float ] t)
     (max_features : [ `float ] t)
   =
-  Op.create context "QuantizedRelu"
+  Op.create context Op_names.quantizedRelu
   |> fun op -> Op.add_input op features
   |> fun op -> Op.add_input op min_features
   |> fun op -> Op.add_input op max_features
@@ -5703,7 +5703,7 @@ let quantizedRelu6
     (min_features : [ `float ] t)
     (max_features : [ `float ] t)
   =
-  Op.create context "QuantizedRelu6"
+  Op.create context Op_names.quantizedRelu6
   |> fun op -> Op.add_input op features
   |> fun op -> Op.add_input op min_features
   |> fun op -> Op.add_input op max_features
@@ -5718,7 +5718,7 @@ let quantizedReluX
     (min_features : [ `float ] t)
     (max_features : [ `float ] t)
   =
-  Op.create context "QuantizedReluX"
+  Op.create context Op_names.quantizedReluX
   |> fun op -> Op.add_input op features
   |> fun op -> Op.add_input op max_value
   |> fun op -> Op.add_input op min_features
@@ -5733,7 +5733,7 @@ let quantizedReshape
     (input_min : [ `float ] t)
     (input_max : [ `float ] t)
   =
-  Op.create context "QuantizedReshape"
+  Op.create context Op_names.quantizedReshape
   |> fun op -> Op.add_input op tensor
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op input_min
@@ -5749,7 +5749,7 @@ let quantizedResizeBilinear
     (min : [ `float ] t)
     (max : [ `float ] t)
   =
-  Op.create context "QuantizedResizeBilinear"
+  Op.create context Op_names.quantizedResizeBilinear
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op size
   |> fun op -> Op.add_input op min
@@ -5762,7 +5762,7 @@ let queueClose
     ?(cancel_pending_enqueues=false)
     (handle : [ `string ] t)
   =
-  Op.create context "QueueClose"
+  Op.create context Op_names.queueClose
   |> fun op -> Op.add_input op handle
   |> Op.set_attr_bool ~name:"cancel_pending_enqueues" ~value:cancel_pending_enqueues
   |> Op.execute0
@@ -5771,7 +5771,7 @@ let queueCloseV2
     ?(cancel_pending_enqueues=false)
     (handle : [ `resource ] t)
   =
-  Op.create context "QueueCloseV2"
+  Op.create context Op_names.queueCloseV2
   |> fun op -> Op.add_input op handle
   |> Op.set_attr_bool ~name:"cancel_pending_enqueues" ~value:cancel_pending_enqueues
   |> Op.execute0
@@ -5779,28 +5779,28 @@ let queueCloseV2
 let queueIsClosed
     (handle : [ `string ] t)
   =
-  Op.create context "QueueIsClosed"
+  Op.create context Op_names.queueIsClosed
   |> fun op -> Op.add_input op handle
   |> Op.execute1
 
 let queueIsClosedV2
     (handle : [ `resource ] t)
   =
-  Op.create context "QueueIsClosedV2"
+  Op.create context Op_names.queueIsClosedV2
   |> fun op -> Op.add_input op handle
   |> Op.execute1
 
 let queueSize
     (handle : [ `string ] t)
   =
-  Op.create context "QueueSize"
+  Op.create context Op_names.queueSize
   |> fun op -> Op.add_input op handle
   |> Op.execute1
 
 let queueSizeV2
     (handle : [ `resource ] t)
   =
-  Op.create context "QueueSizeV2"
+  Op.create context Op_names.queueSizeV2
   |> fun op -> Op.add_input op handle
   |> Op.execute1
 
@@ -5808,7 +5808,7 @@ let rFFT
     (input : [ `float ] t)
     (fft_length : [ `int32 ] t)
   =
-  Op.create context "RFFT"
+  Op.create context Op_names.rFFT
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op fft_length
   |> Op.execute1
@@ -5817,7 +5817,7 @@ let rFFT2D
     (input : [ `float ] t)
     (fft_length : [ `int32 ] t)
   =
-  Op.create context "RFFT2D"
+  Op.create context Op_names.rFFT2D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op fft_length
   |> Op.execute1
@@ -5826,7 +5826,7 @@ let rFFT3D
     (input : [ `float ] t)
     (fft_length : [ `int32 ] t)
   =
-  Op.create context "RFFT3D"
+  Op.create context Op_names.rFFT3D
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op fft_length
   |> Op.execute1
@@ -5834,7 +5834,7 @@ let rFFT3D
 let rGBToHSV
     (images : ([< `float | `double ] as 't) t)
   =
-  Op.create context "RGBToHSV"
+  Op.create context Op_names.rGBToHSV
   |> fun op -> Op.add_input op images
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type images)
   |> Op.execute1
@@ -5845,7 +5845,7 @@ let randomCrop
     (image : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int64 ] t)
   =
-  Op.create context "RandomCrop"
+  Op.create context Op_names.randomCrop
   |> fun op -> Op.add_input op image
   |> fun op -> Op.add_input op size
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type image)
@@ -5859,7 +5859,7 @@ let randomGamma
     (shape : ([< `int32 | `int64 ] as 's) t)
     (alpha : ([< `float | `double ] as 't) t)
   =
-  Op.create context "RandomGamma"
+  Op.create context Op_names.randomGamma
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op alpha
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type alpha)
@@ -5874,7 +5874,7 @@ let randomPoisson
     (shape : ([< `int32 | `int64 ] as 's) t)
     (rate : ([< `float | `double ] as 'dtype) t)
   =
-  Op.create context "RandomPoisson"
+  Op.create context Op_names.randomPoisson
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op rate
   |> Op.set_attr_data_type ~name:"dtype" ~value:(Op.Tensor_handle.data_type rate)
@@ -5890,7 +5890,7 @@ let randomPoissonV2
     (shape : ([< `int32 | `int64 ] as 's) t)
     (rate : ([< `float | `double | `int32 | `int64 ] as 'r) t)
   =
-  Op.create context "RandomPoissonV2"
+  Op.create context Op_names.randomPoissonV2
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op rate
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -5905,7 +5905,7 @@ let randomShuffle
     ?(seed2=0)
     (value : 't t)
   =
-  Op.create context "RandomShuffle"
+  Op.create context Op_names.randomShuffle
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
   |> Op.set_attr_int ~name:"seed" ~value:seed
@@ -5923,7 +5923,7 @@ let randomShuffleQueue
     ?(shared_name="")
     ()
   =
-  Op.create context "RandomShuffleQueue"
+  Op.create context Op_names.randomShuffleQueue
   |> Op.set_attr_type_list ~name:"component_types" ~value:component_types
   |> Op.set_attr_shape_list ~name:"shapes" ~value:shapes
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
@@ -5945,7 +5945,7 @@ let randomShuffleQueueV2
     ?(shared_name="")
     ()
   =
-  Op.create context "RandomShuffleQueueV2"
+  Op.create context Op_names.randomShuffleQueueV2
   |> Op.set_attr_type_list ~name:"component_types" ~value:component_types
   |> Op.set_attr_shape_list ~name:"shapes" ~value:shapes
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
@@ -5962,7 +5962,7 @@ let randomStandardNormal
     ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "RandomStandardNormal"
+  Op.create context Op_names.randomStandardNormal
   |> fun op -> Op.add_input op shape
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type shape)
@@ -5976,7 +5976,7 @@ let randomUniform
     ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "RandomUniform"
+  Op.create context Op_names.randomUniform
   |> fun op -> Op.add_input op shape
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type shape)
@@ -5991,7 +5991,7 @@ let randomUniformInt
     (minval : ([< `int32 | `int64 ] as 'tout) t)
     (maxval : ([< `int32 | `int64 ] as 'tout) t)
   =
-  Op.create context "RandomUniformInt"
+  Op.create context Op_names.randomUniformInt
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op minval
   |> fun op -> Op.add_input op maxval
@@ -6006,7 +6006,7 @@ let range
     (limit : ([< `float | `double | `int32 | `int64 ] as 'tidx) t)
     (delta : ([< `float | `double | `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "Range"
+  Op.create context Op_names.range
   |> fun op -> Op.add_input op start
   |> fun op -> Op.add_input op limit
   |> fun op -> Op.add_input op delta
@@ -6020,7 +6020,7 @@ let rangeDataset
     (stop : [ `int64 ] t)
     (step : [ `int64 ] t)
   =
-  Op.create context "RangeDataset"
+  Op.create context Op_names.rangeDataset
   |> fun op -> Op.add_input op start
   |> fun op -> Op.add_input op stop
   |> fun op -> Op.add_input op step
@@ -6031,7 +6031,7 @@ let rangeDataset
 let rank
     (input : 't t)
   =
-  Op.create context "Rank"
+  Op.create context Op_names.rank
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -6039,35 +6039,35 @@ let rank
 let readFile
     (filename : [ `string ] t)
   =
-  Op.create context "ReadFile"
+  Op.create context Op_names.readFile
   |> fun op -> Op.add_input op filename
   |> Op.execute1
 
 let readerNumRecordsProduced
     (reader_handle : [ `string ] t)
   =
-  Op.create context "ReaderNumRecordsProduced"
+  Op.create context Op_names.readerNumRecordsProduced
   |> fun op -> Op.add_input op reader_handle
   |> Op.execute1
 
 let readerNumRecordsProducedV2
     (reader_handle : [ `resource ] t)
   =
-  Op.create context "ReaderNumRecordsProducedV2"
+  Op.create context Op_names.readerNumRecordsProducedV2
   |> fun op -> Op.add_input op reader_handle
   |> Op.execute1
 
 let readerNumWorkUnitsCompleted
     (reader_handle : [ `string ] t)
   =
-  Op.create context "ReaderNumWorkUnitsCompleted"
+  Op.create context Op_names.readerNumWorkUnitsCompleted
   |> fun op -> Op.add_input op reader_handle
   |> Op.execute1
 
 let readerNumWorkUnitsCompletedV2
     (reader_handle : [ `resource ] t)
   =
-  Op.create context "ReaderNumWorkUnitsCompletedV2"
+  Op.create context Op_names.readerNumWorkUnitsCompletedV2
   |> fun op -> Op.add_input op reader_handle
   |> Op.execute1
 
@@ -6075,7 +6075,7 @@ let readerRead
     (reader_handle : [ `string ] t)
     (queue_handle : [ `string ] t)
   =
-  Op.create context "ReaderRead"
+  Op.create context Op_names.readerRead
   |> fun op -> Op.add_input op reader_handle
   |> fun op -> Op.add_input op queue_handle
   |> Op.execute2
@@ -6085,7 +6085,7 @@ let readerReadUpTo
     (queue_handle : [ `string ] t)
     (num_records : [ `int64 ] t)
   =
-  Op.create context "ReaderReadUpTo"
+  Op.create context Op_names.readerReadUpTo
   |> fun op -> Op.add_input op reader_handle
   |> fun op -> Op.add_input op queue_handle
   |> fun op -> Op.add_input op num_records
@@ -6096,7 +6096,7 @@ let readerReadUpToV2
     (queue_handle : [ `resource ] t)
     (num_records : [ `int64 ] t)
   =
-  Op.create context "ReaderReadUpToV2"
+  Op.create context Op_names.readerReadUpToV2
   |> fun op -> Op.add_input op reader_handle
   |> fun op -> Op.add_input op queue_handle
   |> fun op -> Op.add_input op num_records
@@ -6106,7 +6106,7 @@ let readerReadV2
     (reader_handle : [ `resource ] t)
     (queue_handle : [ `resource ] t)
   =
-  Op.create context "ReaderReadV2"
+  Op.create context Op_names.readerReadV2
   |> fun op -> Op.add_input op reader_handle
   |> fun op -> Op.add_input op queue_handle
   |> Op.execute2
@@ -6114,14 +6114,14 @@ let readerReadV2
 let readerReset
     (reader_handle : [ `string ] t)
   =
-  Op.create context "ReaderReset"
+  Op.create context Op_names.readerReset
   |> fun op -> Op.add_input op reader_handle
   |> Op.execute0
 
 let readerResetV2
     (reader_handle : [ `resource ] t)
   =
-  Op.create context "ReaderResetV2"
+  Op.create context Op_names.readerResetV2
   |> fun op -> Op.add_input op reader_handle
   |> Op.execute0
 
@@ -6129,7 +6129,7 @@ let readerRestoreState
     (reader_handle : [ `string ] t)
     (state : [ `string ] t)
   =
-  Op.create context "ReaderRestoreState"
+  Op.create context Op_names.readerRestoreState
   |> fun op -> Op.add_input op reader_handle
   |> fun op -> Op.add_input op state
   |> Op.execute0
@@ -6138,7 +6138,7 @@ let readerRestoreStateV2
     (reader_handle : [ `resource ] t)
     (state : [ `string ] t)
   =
-  Op.create context "ReaderRestoreStateV2"
+  Op.create context Op_names.readerRestoreStateV2
   |> fun op -> Op.add_input op reader_handle
   |> fun op -> Op.add_input op state
   |> Op.execute0
@@ -6146,14 +6146,14 @@ let readerRestoreStateV2
 let readerSerializeState
     (reader_handle : [ `string ] t)
   =
-  Op.create context "ReaderSerializeState"
+  Op.create context Op_names.readerSerializeState
   |> fun op -> Op.add_input op reader_handle
   |> Op.execute1
 
 let readerSerializeStateV2
     (reader_handle : [ `resource ] t)
   =
-  Op.create context "ReaderSerializeStateV2"
+  Op.create context Op_names.readerSerializeStateV2
   |> fun op -> Op.add_input op reader_handle
   |> Op.execute1
 
@@ -6161,7 +6161,7 @@ let real
     ~type_tout
     (input : ([< `complex64 ] as 't) t)
   =
-  Op.create context "Real"
+  Op.create context Op_names.real
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"Tout" ~value:Operation.Type.(to_data_type (P type_tout))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -6171,7 +6171,7 @@ let realDiv
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "RealDiv"
+  Op.create context Op_names.realDiv
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -6180,7 +6180,7 @@ let realDiv
 let reciprocal
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Reciprocal"
+  Op.create context Op_names.reciprocal
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -6189,7 +6189,7 @@ let reciprocalGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
     (dy : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "ReciprocalGrad"
+  Op.create context Op_names.reciprocalGrad
   |> fun op -> Op.add_input op y
   |> fun op -> Op.add_input op dy
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type y)
@@ -6204,7 +6204,7 @@ let recordInput
     ?(batch_size=32)
     ()
   =
-  Op.create context "RecordInput"
+  Op.create context Op_names.recordInput
   |> Op.set_attr_string ~name:"file_pattern" ~value:file_pattern
   |> Op.set_attr_int ~name:"file_random_seed" ~value:file_random_seed
   |> Op.set_attr_float ~name:"file_shuffle_shift_ratio" ~value:file_shuffle_shift_ratio
@@ -6219,7 +6219,7 @@ let reduceJoin
     (inputs__ : [ `string ] t)
     (reduction_indices : [ `int32 ] t)
   =
-  Op.create context "ReduceJoin"
+  Op.create context Op_names.reduceJoin
   |> fun op -> Op.add_input op inputs__
   |> fun op -> Op.add_input op reduction_indices
   |> Op.set_attr_bool ~name:"keep_dims" ~value:keep_dims
@@ -6232,7 +6232,7 @@ let refEnter
     ?(parallel_iterations=10)
     (data : 't t)
   =
-  Op.create context "RefEnter"
+  Op.create context Op_names.refEnter
   |> fun op -> Op.add_input op data
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
   |> Op.set_attr_string ~name:"frame_name" ~value:frame_name
@@ -6243,7 +6243,7 @@ let refEnter
 let refExit
     (data : 't t)
   =
-  Op.create context "RefExit"
+  Op.create context Op_names.refExit
   |> fun op -> Op.add_input op data
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
   |> Op.execute1
@@ -6251,7 +6251,7 @@ let refExit
 let refIdentity
     (input : 't t)
   =
-  Op.create context "RefIdentity"
+  Op.create context Op_names.refIdentity
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -6259,7 +6259,7 @@ let refIdentity
 let refMerge
     (inputs__ : 't t list)
   =
-  Op.create context "RefMerge"
+  Op.create context Op_names.refMerge
   |> fun init -> List.fold inputs__ ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn inputs__))
   |> Op.set_attr_int ~name:"N" ~value:(List.length inputs__)
@@ -6268,7 +6268,7 @@ let refMerge
 let refNextIteration
     (data : 't t)
   =
-  Op.create context "RefNextIteration"
+  Op.create context Op_names.refNextIteration
   |> fun op -> Op.add_input op data
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
   |> Op.execute1
@@ -6277,7 +6277,7 @@ let refSelect
     (index : [ `int32 ] t)
     (inputs__ : 't t list)
   =
-  Op.create context "RefSelect"
+  Op.create context Op_names.refSelect
   |> fun op -> Op.add_input op index
   |> fun init -> List.fold inputs__ ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn inputs__))
@@ -6288,7 +6288,7 @@ let refSwitch
     (data : 't t)
     (pred : [ `bool ] t)
   =
-  Op.create context "RefSwitch"
+  Op.create context Op_names.refSwitch
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op pred
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
@@ -6297,7 +6297,7 @@ let refSwitch
 let relu
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Relu"
+  Op.create context Op_names.relu
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type features)
   |> Op.execute1
@@ -6305,7 +6305,7 @@ let relu
 let relu6
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Relu6"
+  Op.create context Op_names.relu6
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type features)
   |> Op.execute1
@@ -6314,7 +6314,7 @@ let relu6Grad
     (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Relu6Grad"
+  Op.create context Op_names.relu6Grad
   |> fun op -> Op.add_input op gradients
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type gradients)
@@ -6324,7 +6324,7 @@ let reluGrad
     (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "ReluGrad"
+  Op.create context Op_names.reluGrad
   |> fun op -> Op.add_input op gradients
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type gradients)
@@ -6336,7 +6336,7 @@ let repeatDataset
     (input_dataset : [ `variant ] t)
     (count : [ `int64 ] t)
   =
-  Op.create context "RepeatDataset"
+  Op.create context Op_names.repeatDataset
   |> fun op -> Op.add_input op input_dataset
   |> fun op -> Op.add_input op count
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
@@ -6348,7 +6348,7 @@ let requantizationRange
     (input_min : [ `float ] t)
     (input_max : [ `float ] t)
   =
-  Op.create context "RequantizationRange"
+  Op.create context Op_names.requantizationRange
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op input_min
   |> fun op -> Op.add_input op input_max
@@ -6363,7 +6363,7 @@ let requantize
     (requested_output_min : [ `float ] t)
     (requested_output_max : [ `float ] t)
   =
-  Op.create context "Requantize"
+  Op.create context Op_names.requantize
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op input_min
   |> fun op -> Op.add_input op input_max
@@ -6377,7 +6377,7 @@ let reshape
     (tensor : 't t)
     (shape : ([< `int32 | `int64 ] as 'tshape) t)
   =
-  Op.create context "Reshape"
+  Op.create context Op_names.reshape
   |> fun op -> Op.add_input op tensor
   |> fun op -> Op.add_input op shape
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type tensor)
@@ -6389,7 +6389,7 @@ let resizeArea
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
-  Op.create context "ResizeArea"
+  Op.create context Op_names.resizeArea
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op size
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type images)
@@ -6401,7 +6401,7 @@ let resizeBicubic
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
-  Op.create context "ResizeBicubic"
+  Op.create context Op_names.resizeBicubic
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op size
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type images)
@@ -6413,7 +6413,7 @@ let resizeBicubicGrad
     (grads : [ `float ] t)
     (original_image : ([< `float | `double ] as 't) t)
   =
-  Op.create context "ResizeBicubicGrad"
+  Op.create context Op_names.resizeBicubicGrad
   |> fun op -> Op.add_input op grads
   |> fun op -> Op.add_input op original_image
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type original_image)
@@ -6425,7 +6425,7 @@ let resizeBilinear
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
-  Op.create context "ResizeBilinear"
+  Op.create context Op_names.resizeBilinear
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op size
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type images)
@@ -6437,7 +6437,7 @@ let resizeBilinearGrad
     (grads : [ `float ] t)
     (original_image : ([< `float | `double ] as 't) t)
   =
-  Op.create context "ResizeBilinearGrad"
+  Op.create context Op_names.resizeBilinearGrad
   |> fun op -> Op.add_input op grads
   |> fun op -> Op.add_input op original_image
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type original_image)
@@ -6449,7 +6449,7 @@ let resizeNearestNeighbor
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
-  Op.create context "ResizeNearestNeighbor"
+  Op.create context Op_names.resizeNearestNeighbor
   |> fun op -> Op.add_input op images
   |> fun op -> Op.add_input op size
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type images)
@@ -6461,7 +6461,7 @@ let resizeNearestNeighborGrad
     (grads : ([< `uInt8 | `int32 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
-  Op.create context "ResizeNearestNeighborGrad"
+  Op.create context Op_names.resizeNearestNeighborGrad
   |> fun op -> Op.add_input op grads
   |> fun op -> Op.add_input op size
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type grads)
@@ -6478,7 +6478,7 @@ let resourceApplyAdadelta
     (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyAdadelta"
+  Op.create context Op_names.resourceApplyAdadelta
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op accum_update
@@ -6497,7 +6497,7 @@ let resourceApplyAdagrad
     (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyAdagrad"
+  Op.create context Op_names.resourceApplyAdagrad
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -6517,7 +6517,7 @@ let resourceApplyAdagradDA
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
-  Op.create context "ResourceApplyAdagradDA"
+  Op.create context Op_names.resourceApplyAdagradDA
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op gradient_accumulator
   |> fun op -> Op.add_input op gradient_squared_accumulator
@@ -6544,7 +6544,7 @@ let resourceApplyAdam
     (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyAdam"
+  Op.create context Op_names.resourceApplyAdam
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op m
   |> fun op -> Op.add_input op v
@@ -6572,7 +6572,7 @@ let resourceApplyCenteredRMSProp
     (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyCenteredRMSProp"
+  Op.create context Op_names.resourceApplyCenteredRMSProp
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op mg
   |> fun op -> Op.add_input op ms
@@ -6597,7 +6597,7 @@ let resourceApplyFtrl
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyFtrl"
+  Op.create context Op_names.resourceApplyFtrl
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op linear
@@ -6622,7 +6622,7 @@ let resourceApplyFtrlV2
     (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyFtrlV2"
+  Op.create context Op_names.resourceApplyFtrlV2
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op linear
@@ -6642,7 +6642,7 @@ let resourceApplyGradientDescent
     (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyGradientDescent"
+  Op.create context Op_names.resourceApplyGradientDescent
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op alpha
   |> fun op -> Op.add_input op delta
@@ -6659,7 +6659,7 @@ let resourceApplyMomentum
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyMomentum"
+  Op.create context Op_names.resourceApplyMomentum
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -6679,7 +6679,7 @@ let resourceApplyProximalAdagrad
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyProximalAdagrad"
+  Op.create context Op_names.resourceApplyProximalAdagrad
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -6698,7 +6698,7 @@ let resourceApplyProximalGradientDescent
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyProximalGradientDescent"
+  Op.create context Op_names.resourceApplyProximalGradientDescent
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op alpha
   |> fun op -> Op.add_input op l1
@@ -6719,7 +6719,7 @@ let resourceApplyRMSProp
     (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceApplyRMSProp"
+  Op.create context Op_names.resourceApplyRMSProp
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op ms
   |> fun op -> Op.add_input op mom
@@ -6743,7 +6743,7 @@ let resourceSparseApplyAdadelta
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "ResourceSparseApplyAdadelta"
+  Op.create context Op_names.resourceSparseApplyAdadelta
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op accum_update
@@ -6765,7 +6765,7 @@ let resourceSparseApplyAdagrad
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "ResourceSparseApplyAdagrad"
+  Op.create context Op_names.resourceSparseApplyAdagrad
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -6788,7 +6788,7 @@ let resourceSparseApplyAdagradDA
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
-  Op.create context "ResourceSparseApplyAdagradDA"
+  Op.create context Op_names.resourceSparseApplyAdagradDA
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op gradient_accumulator
   |> fun op -> Op.add_input op gradient_squared_accumulator
@@ -6816,7 +6816,7 @@ let resourceSparseApplyCenteredRMSProp
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "ResourceSparseApplyCenteredRMSProp"
+  Op.create context Op_names.resourceSparseApplyCenteredRMSProp
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op mg
   |> fun op -> Op.add_input op ms
@@ -6844,7 +6844,7 @@ let resourceSparseApplyFtrl
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceSparseApplyFtrl"
+  Op.create context Op_names.resourceSparseApplyFtrl
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op linear
@@ -6872,7 +6872,7 @@ let resourceSparseApplyFtrlV2
     (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceSparseApplyFtrlV2"
+  Op.create context Op_names.resourceSparseApplyFtrlV2
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op linear
@@ -6898,7 +6898,7 @@ let resourceSparseApplyMomentum
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ResourceSparseApplyMomentum"
+  Op.create context Op_names.resourceSparseApplyMomentum
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -6921,7 +6921,7 @@ let resourceSparseApplyProximalAdagrad
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "ResourceSparseApplyProximalAdagrad"
+  Op.create context Op_names.resourceSparseApplyProximalAdagrad
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -6943,7 +6943,7 @@ let resourceSparseApplyProximalGradientDescent
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "ResourceSparseApplyProximalGradientDescent"
+  Op.create context Op_names.resourceSparseApplyProximalGradientDescent
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op alpha
   |> fun op -> Op.add_input op l1
@@ -6967,7 +6967,7 @@ let resourceSparseApplyRMSProp
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "ResourceSparseApplyRMSProp"
+  Op.create context Op_names.resourceSparseApplyRMSProp
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op ms
   |> fun op -> Op.add_input op mom
@@ -6994,7 +6994,7 @@ let resourceStridedSliceAssign
     (strides : ([< `int32 | `int64 ] as 'index) t)
     (value : 't t)
   =
-  Op.create context "ResourceStridedSliceAssign"
+  Op.create context Op_names.resourceStridedSliceAssign
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op begin__
   |> fun op -> Op.add_input op end__
@@ -7015,7 +7015,7 @@ let restore
     (file_pattern : [ `string ] t)
     (tensor_name : [ `string ] t)
   =
-  Op.create context "Restore"
+  Op.create context Op_names.restore
   |> fun op -> Op.add_input op file_pattern
   |> fun op -> Op.add_input op tensor_name
   |> Op.set_attr_data_type ~name:"dt" ~value:Operation.Type.(to_data_type (P type_dt))
@@ -7026,7 +7026,7 @@ let restoreIterator
     (iterator : [ `resource ] t)
     (path : [ `string ] t)
   =
-  Op.create context "RestoreIterator"
+  Op.create context Op_names.restoreIterator
   |> fun op -> Op.add_input op iterator
   |> fun op -> Op.add_input op path
   |> Op.execute0
@@ -7038,7 +7038,7 @@ let restoreSlice
     (tensor_name : [ `string ] t)
     (shape_and_slice : [ `string ] t)
   =
-  Op.create context "RestoreSlice"
+  Op.create context Op_names.restoreSlice
   |> fun op -> Op.add_input op file_pattern
   |> fun op -> Op.add_input op tensor_name
   |> fun op -> Op.add_input op shape_and_slice
@@ -7050,7 +7050,7 @@ let reverse
     (tensor : ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t)
     (dims : [ `bool ] t)
   =
-  Op.create context "Reverse"
+  Op.create context Op_names.reverse
   |> fun op -> Op.add_input op tensor
   |> fun op -> Op.add_input op dims
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type tensor)
@@ -7062,7 +7062,7 @@ let reverseSequence
     (input : 't t)
     (seq_lengths : ([< `int32 | `int64 ] as 'tlen) t)
   =
-  Op.create context "ReverseSequence"
+  Op.create context Op_names.reverseSequence
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op seq_lengths
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -7075,7 +7075,7 @@ let reverseV2
     (tensor : ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "ReverseV2"
+  Op.create context Op_names.reverseV2
   |> fun op -> Op.add_input op tensor
   |> fun op -> Op.add_input op axis
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type tensor)
@@ -7085,7 +7085,7 @@ let reverseV2
 let rint
     (x : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Rint"
+  Op.create context Op_names.rint
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -7093,7 +7093,7 @@ let rint
 let round
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Round"
+  Op.create context Op_names.round
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -7101,7 +7101,7 @@ let round
 let rsqrt
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Rsqrt"
+  Op.create context Op_names.rsqrt
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -7110,7 +7110,7 @@ let rsqrtGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
     (dy : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "RsqrtGrad"
+  Op.create context Op_names.rsqrtGrad
   |> fun op -> Op.add_input op y
   |> fun op -> Op.add_input op dy
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type y)
@@ -7120,7 +7120,7 @@ let saveIterator
     (iterator : [ `resource ] t)
     (path : [ `string ] t)
   =
-  Op.create context "SaveIterator"
+  Op.create context Op_names.saveIterator
   |> fun op -> Op.add_input op iterator
   |> fun op -> Op.add_input op path
   |> Op.execute0
@@ -7129,7 +7129,7 @@ let scalarSummary
     (tags : [ `string ] t)
     (values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "ScalarSummary"
+  Op.create context Op_names.scalarSummary
   |> fun op -> Op.add_input op tags
   |> fun op -> Op.add_input op values
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type values)
@@ -7141,7 +7141,7 @@ let scatterAdd
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ScatterAdd"
+  Op.create context Op_names.scatterAdd
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
@@ -7156,7 +7156,7 @@ let scatterDiv
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ScatterDiv"
+  Op.create context Op_names.scatterDiv
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
@@ -7171,7 +7171,7 @@ let scatterMul
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ScatterMul"
+  Op.create context Op_names.scatterMul
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
@@ -7185,7 +7185,7 @@ let scatterNd
     (updates : 't t)
     (shape : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "ScatterNd"
+  Op.create context Op_names.scatterNd
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
   |> fun op -> Op.add_input op shape
@@ -7199,7 +7199,7 @@ let scatterNdAdd
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ScatterNdAdd"
+  Op.create context Op_names.scatterNdAdd
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
@@ -7213,7 +7213,7 @@ let scatterNdNonAliasingAdd
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ScatterNdNonAliasingAdd"
+  Op.create context Op_names.scatterNdNonAliasingAdd
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
@@ -7227,7 +7227,7 @@ let scatterNdSub
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ScatterNdSub"
+  Op.create context Op_names.scatterNdSub
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
@@ -7242,7 +7242,7 @@ let scatterNdUpdate
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : 't t)
   =
-  Op.create context "ScatterNdUpdate"
+  Op.create context Op_names.scatterNdUpdate
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
@@ -7257,7 +7257,7 @@ let scatterSub
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "ScatterSub"
+  Op.create context Op_names.scatterSub
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
@@ -7272,7 +7272,7 @@ let scatterUpdate
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (updates : 't t)
   =
-  Op.create context "ScatterUpdate"
+  Op.create context Op_names.scatterUpdate
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op updates
@@ -7284,7 +7284,7 @@ let scatterUpdate
 let sdcaFprint
     (input : [ `string ] t)
   =
-  Op.create context "SdcaFprint"
+  Op.create context Op_names.sdcaFprint
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
@@ -7293,7 +7293,7 @@ let sdcaShrinkL1
     ~l2
     (weights : [ `float ] t list)
   =
-  Op.create context "SdcaShrinkL1"
+  Op.create context Op_names.sdcaShrinkL1
   |> fun init -> List.fold weights ~init ~f:Op.add_input
   |> Op.set_attr_int ~name:"num_features" ~value:(List.length weights)
   |> Op.set_attr_float ~name:"l1" ~value:l1
@@ -7304,7 +7304,7 @@ let segmentMax
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SegmentMax"
+  Op.create context Op_names.segmentMax
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op segment_ids
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
@@ -7315,7 +7315,7 @@ let segmentMean
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SegmentMean"
+  Op.create context Op_names.segmentMean
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op segment_ids
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
@@ -7326,7 +7326,7 @@ let segmentMin
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SegmentMin"
+  Op.create context Op_names.segmentMin
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op segment_ids
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
@@ -7337,7 +7337,7 @@ let segmentProd
     (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SegmentProd"
+  Op.create context Op_names.segmentProd
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op segment_ids
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
@@ -7348,7 +7348,7 @@ let segmentSum
     (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SegmentSum"
+  Op.create context Op_names.segmentSum
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op segment_ids
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
@@ -7360,7 +7360,7 @@ let select
     (t : 't t)
     (e : 't t)
   =
-  Op.create context "Select"
+  Op.create context Op_names.select
   |> fun op -> Op.add_input op condition
   |> fun op -> Op.add_input op t
   |> fun op -> Op.add_input op e
@@ -7370,7 +7370,7 @@ let select
 let selfAdjointEig
     (input : ([< `double | `float ] as 't) t)
   =
-  Op.create context "SelfAdjointEig"
+  Op.create context Op_names.selfAdjointEig
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -7379,7 +7379,7 @@ let selfAdjointEigV2
     ?(compute_v=true)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
-  Op.create context "SelfAdjointEigV2"
+  Op.create context Op_names.selfAdjointEigV2
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_bool ~name:"compute_v" ~value:compute_v
@@ -7388,7 +7388,7 @@ let selfAdjointEigV2
 let selu
     (features : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Selu"
+  Op.create context Op_names.selu
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type features)
   |> Op.execute1
@@ -7397,7 +7397,7 @@ let seluGrad
     (gradients : ([< `float | `double ] as 't) t)
     (outputs : ([< `float | `double ] as 't) t)
   =
-  Op.create context "SeluGrad"
+  Op.create context Op_names.seluGrad
   |> fun op -> Op.add_input op gradients
   |> fun op -> Op.add_input op outputs
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type gradients)
@@ -7408,7 +7408,7 @@ let serializeManySparse
     (sparse_values : 't t)
     (sparse_shape : [ `int64 ] t)
   =
-  Op.create context "SerializeManySparse"
+  Op.create context Op_names.serializeManySparse
   |> fun op -> Op.add_input op sparse_indices
   |> fun op -> Op.add_input op sparse_values
   |> fun op -> Op.add_input op sparse_shape
@@ -7420,7 +7420,7 @@ let serializeSparse
     (sparse_values : 't t)
     (sparse_shape : [ `int64 ] t)
   =
-  Op.create context "SerializeSparse"
+  Op.create context Op_names.serializeSparse
   |> fun op -> Op.add_input op sparse_indices
   |> fun op -> Op.add_input op sparse_values
   |> fun op -> Op.add_input op sparse_shape
@@ -7430,7 +7430,7 @@ let serializeSparse
 let serializeTensor
     (tensor : 't t)
   =
-  Op.create context "SerializeTensor"
+  Op.create context Op_names.serializeTensor
   |> fun op -> Op.add_input op tensor
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type tensor)
   |> Op.execute1
@@ -7441,7 +7441,7 @@ let setSize
     (set_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set_shape : [ `int64 ] t)
   =
-  Op.create context "SetSize"
+  Op.create context Op_names.setSize
   |> fun op -> Op.add_input op set_indices
   |> fun op -> Op.add_input op set_values
   |> fun op -> Op.add_input op set_shape
@@ -7453,7 +7453,7 @@ let shape
     ~type_out_type
     (input : 't t)
   =
-  Op.create context "Shape"
+  Op.create context Op_names.shape
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"out_type" ~value:Operation.Type.(to_data_type (P type_out_type))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -7463,7 +7463,7 @@ let shapeN
     ~type_out_type
     (input : 't t list)
   =
-  Op.create context "ShapeN"
+  Op.create context Op_names.shapeN
   |> fun init -> List.fold input ~init ~f:Op.add_input
   |> Op.set_attr_data_type ~name:"out_type" ~value:Operation.Type.(to_data_type (P type_out_type))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type (List.hd_exn input))
@@ -7475,7 +7475,7 @@ let shardedFilename
     (shard : [ `int32 ] t)
     (num_shards : [ `int32 ] t)
   =
-  Op.create context "ShardedFilename"
+  Op.create context Op_names.shardedFilename
   |> fun op -> Op.add_input op basename
   |> fun op -> Op.add_input op shard
   |> fun op -> Op.add_input op num_shards
@@ -7485,7 +7485,7 @@ let shardedFilespec
     (basename : [ `string ] t)
     (num_shards : [ `int32 ] t)
   =
-  Op.create context "ShardedFilespec"
+  Op.create context Op_names.shardedFilespec
   |> fun op -> Op.add_input op basename
   |> fun op -> Op.add_input op num_shards
   |> Op.execute1
@@ -7499,7 +7499,7 @@ let shuffleDataset
     (seed : [ `int64 ] t)
     (seed2 : [ `int64 ] t)
   =
-  Op.create context "ShuffleDataset"
+  Op.create context Op_names.shuffleDataset
   |> fun op -> Op.add_input op input_dataset
   |> fun op -> Op.add_input op buffer_size
   |> fun op -> Op.add_input op seed
@@ -7512,7 +7512,7 @@ let shuffleDataset
 let sigmoid
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Sigmoid"
+  Op.create context Op_names.sigmoid
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -7521,7 +7521,7 @@ let sigmoidGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
     (dy : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "SigmoidGrad"
+  Op.create context Op_names.sigmoidGrad
   |> fun op -> Op.add_input op y
   |> fun op -> Op.add_input op dy
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type y)
@@ -7530,7 +7530,7 @@ let sigmoidGrad
 let sign
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Sign"
+  Op.create context Op_names.sign
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -7538,7 +7538,7 @@ let sign
 let sin
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Sin"
+  Op.create context Op_names.sin
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -7546,7 +7546,7 @@ let sin
 let sinh
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Sinh"
+  Op.create context Op_names.sinh
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -7555,7 +7555,7 @@ let size
     ~type_out_type
     (input : 't t)
   =
-  Op.create context "Size"
+  Op.create context Op_names.size
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"out_type" ~value:Operation.Type.(to_data_type (P type_out_type))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -7567,7 +7567,7 @@ let skipDataset
     (input_dataset : [ `variant ] t)
     (count : [ `int64 ] t)
   =
-  Op.create context "SkipDataset"
+  Op.create context Op_names.skipDataset
   |> fun op -> Op.add_input op input_dataset
   |> fun op -> Op.add_input op count
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
@@ -7582,7 +7582,7 @@ let skipgram
     ?(subsample=0.0010000000474974513)
     ()
   =
-  Op.create context "Skipgram"
+  Op.create context Op_names.skipgram
   |> Op.set_attr_string ~name:"filename" ~value:filename
   |> Op.set_attr_int ~name:"batch_size" ~value:batch_size
   |> Op.set_attr_int ~name:"window_size" ~value:window_size
@@ -7595,7 +7595,7 @@ let slice
     (begin__ : ([< `int32 | `int64 ] as 'index) t)
     (size : ([< `int32 | `int64 ] as 'index) t)
   =
-  Op.create context "Slice"
+  Op.create context Op_names.slice
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op begin__
   |> fun op -> Op.add_input op size
@@ -7606,7 +7606,7 @@ let slice
 let softmax
     (logits : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Softmax"
+  Op.create context Op_names.softmax
   |> fun op -> Op.add_input op logits
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type logits)
   |> Op.execute1
@@ -7615,7 +7615,7 @@ let softmaxCrossEntropyWithLogits
     (features : ([< `float | `double ] as 't) t)
     (labels : ([< `float | `double ] as 't) t)
   =
-  Op.create context "SoftmaxCrossEntropyWithLogits"
+  Op.create context Op_names.softmaxCrossEntropyWithLogits
   |> fun op -> Op.add_input op features
   |> fun op -> Op.add_input op labels
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type features)
@@ -7624,7 +7624,7 @@ let softmaxCrossEntropyWithLogits
 let softplus
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Softplus"
+  Op.create context Op_names.softplus
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type features)
   |> Op.execute1
@@ -7633,7 +7633,7 @@ let softplusGrad
     (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "SoftplusGrad"
+  Op.create context Op_names.softplusGrad
   |> fun op -> Op.add_input op gradients
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type gradients)
@@ -7642,7 +7642,7 @@ let softplusGrad
 let softsign
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "Softsign"
+  Op.create context Op_names.softsign
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type features)
   |> Op.execute1
@@ -7651,7 +7651,7 @@ let softsignGrad
     (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "SoftsignGrad"
+  Op.create context Op_names.softsignGrad
   |> fun op -> Op.add_input op gradients
   |> fun op -> Op.add_input op features
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type gradients)
@@ -7662,7 +7662,7 @@ let spaceToBatch
     (input : 't t)
     (paddings : ([< `int32 | `int64 ] as 'tpaddings) t)
   =
-  Op.create context "SpaceToBatch"
+  Op.create context Op_names.spaceToBatch
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op paddings
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -7675,7 +7675,7 @@ let spaceToBatchND
     (block_shape : ([< `int32 | `int64 ] as 'tblock_shape) t)
     (paddings : ([< `int32 | `int64 ] as 'tpaddings) t)
   =
-  Op.create context "SpaceToBatchND"
+  Op.create context Op_names.spaceToBatchND
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op block_shape
   |> fun op -> Op.add_input op paddings
@@ -7689,7 +7689,7 @@ let spaceToDepth
     ?(data_format="NHWC")
     (input : 't t)
   =
-  Op.create context "SpaceToDepth"
+  Op.create context Op_names.spaceToDepth
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_int ~name:"block_size" ~value:block_size
@@ -7704,7 +7704,7 @@ let sparseAccumulatorApplyGradient
     (gradient_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
     (gradient_shape : [ `int64 ] t)
   =
-  Op.create context "SparseAccumulatorApplyGradient"
+  Op.create context Op_names.sparseAccumulatorApplyGradient
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op local_step
   |> fun op -> Op.add_input op gradient_indices
@@ -7719,7 +7719,7 @@ let sparseAccumulatorTakeGradient
     (handle : [ `string ] t)
     (num_required : [ `int32 ] t)
   =
-  Op.create context "SparseAccumulatorTakeGradient"
+  Op.create context Op_names.sparseAccumulatorTakeGradient
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op num_required
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -7734,7 +7734,7 @@ let sparseAdd
     (b_shape : [ `int64 ] t)
     (thresh : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 'treal) t)
   =
-  Op.create context "SparseAdd"
+  Op.create context Op_names.sparseAdd
   |> fun op -> Op.add_input op a_indices
   |> fun op -> Op.add_input op a_values
   |> fun op -> Op.add_input op a_shape
@@ -7752,7 +7752,7 @@ let sparseAddGrad
     (b_indices : [ `int64 ] t)
     (sum_indices : [ `int64 ] t)
   =
-  Op.create context "SparseAddGrad"
+  Op.create context Op_names.sparseAddGrad
   |> fun op -> Op.add_input op backprop_val_grad
   |> fun op -> Op.add_input op a_indices
   |> fun op -> Op.add_input op b_indices
@@ -7771,7 +7771,7 @@ let sparseApplyAdadelta
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SparseApplyAdadelta"
+  Op.create context Op_names.sparseApplyAdadelta
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op accum_update
@@ -7793,7 +7793,7 @@ let sparseApplyAdagrad
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SparseApplyAdagrad"
+  Op.create context Op_names.sparseApplyAdagrad
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -7816,7 +7816,7 @@ let sparseApplyAdagradDA
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
-  Op.create context "SparseApplyAdagradDA"
+  Op.create context Op_names.sparseApplyAdagradDA
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op gradient_accumulator
   |> fun op -> Op.add_input op gradient_squared_accumulator
@@ -7844,7 +7844,7 @@ let sparseApplyCenteredRMSProp
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SparseApplyCenteredRMSProp"
+  Op.create context Op_names.sparseApplyCenteredRMSProp
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op mg
   |> fun op -> Op.add_input op ms
@@ -7872,7 +7872,7 @@ let sparseApplyFtrl
     (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "SparseApplyFtrl"
+  Op.create context Op_names.sparseApplyFtrl
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op linear
@@ -7900,7 +7900,7 @@ let sparseApplyFtrlV2
     (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "SparseApplyFtrlV2"
+  Op.create context Op_names.sparseApplyFtrlV2
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op linear
@@ -7926,7 +7926,7 @@ let sparseApplyMomentum
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
     (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "SparseApplyMomentum"
+  Op.create context Op_names.sparseApplyMomentum
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -7949,7 +7949,7 @@ let sparseApplyProximalAdagrad
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SparseApplyProximalAdagrad"
+  Op.create context Op_names.sparseApplyProximalAdagrad
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op accum
   |> fun op -> Op.add_input op lr
@@ -7971,7 +7971,7 @@ let sparseApplyProximalGradientDescent
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SparseApplyProximalGradientDescent"
+  Op.create context Op_names.sparseApplyProximalGradientDescent
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op alpha
   |> fun op -> Op.add_input op l1
@@ -7995,7 +7995,7 @@ let sparseApplyRMSProp
     (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
-  Op.create context "SparseApplyRMSProp"
+  Op.create context Op_names.sparseApplyRMSProp
   |> fun op -> Op.add_input op var
   |> fun op -> Op.add_input op ms
   |> fun op -> Op.add_input op mom
@@ -8016,7 +8016,7 @@ let sparseConcat
     (values : 't t list)
     (shapes : [ `int64 ] t list)
   =
-  Op.create context "SparseConcat"
+  Op.create context Op_names.sparseConcat
   |> fun init -> List.fold indices ~init ~f:Op.add_input
   |> fun init -> List.fold values ~init ~f:Op.add_input
   |> fun init -> List.fold shapes ~init ~f:Op.add_input
@@ -8031,7 +8031,7 @@ let sparseConditionalAccumulator
     ?(shared_name="")
     ()
   =
-  Op.create context "SparseConditionalAccumulator"
+  Op.create context Op_names.sparseConditionalAccumulator
   |> Op.set_attr_shape ~name:"shape" ~value:shape
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
@@ -8043,7 +8043,7 @@ let sparseDenseCwiseAdd
     (sp_shape : [ `int64 ] t)
     (dense : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "SparseDenseCwiseAdd"
+  Op.create context Op_names.sparseDenseCwiseAdd
   |> fun op -> Op.add_input op sp_indices
   |> fun op -> Op.add_input op sp_values
   |> fun op -> Op.add_input op sp_shape
@@ -8057,7 +8057,7 @@ let sparseDenseCwiseDiv
     (sp_shape : [ `int64 ] t)
     (dense : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "SparseDenseCwiseDiv"
+  Op.create context Op_names.sparseDenseCwiseDiv
   |> fun op -> Op.add_input op sp_indices
   |> fun op -> Op.add_input op sp_values
   |> fun op -> Op.add_input op sp_shape
@@ -8071,7 +8071,7 @@ let sparseDenseCwiseMul
     (sp_shape : [ `int64 ] t)
     (dense : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "SparseDenseCwiseMul"
+  Op.create context Op_names.sparseDenseCwiseMul
   |> fun op -> Op.add_input op sp_indices
   |> fun op -> Op.add_input op sp_values
   |> fun op -> Op.add_input op sp_shape
@@ -8085,7 +8085,7 @@ let sparseFillEmptyRows
     (dense_shape : [ `int64 ] t)
     (default_value : 't t)
   =
-  Op.create context "SparseFillEmptyRows"
+  Op.create context Op_names.sparseFillEmptyRows
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op values
   |> fun op -> Op.add_input op dense_shape
@@ -8097,7 +8097,7 @@ let sparseFillEmptyRowsGrad
     (reverse_index_map : [ `int64 ] t)
     (grad_values : 't t)
   =
-  Op.create context "SparseFillEmptyRowsGrad"
+  Op.create context Op_names.sparseFillEmptyRowsGrad
   |> fun op -> Op.add_input op reverse_index_map
   |> fun op -> Op.add_input op grad_values
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type grad_values)
@@ -8111,7 +8111,7 @@ let sparseMatMul
     (a : ([< `float ] as 'ta) t)
     (b : ([< `float ] as 'tb) t)
   =
-  Op.create context "SparseMatMul"
+  Op.create context Op_names.sparseMatMul
   |> fun op -> Op.add_input op a
   |> fun op -> Op.add_input op b
   |> Op.set_attr_data_type ~name:"Ta" ~value:(Op.Tensor_handle.data_type a)
@@ -8129,7 +8129,7 @@ let sparseReduceMax
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
-  Op.create context "SparseReduceMax"
+  Op.create context Op_names.sparseReduceMax
   |> fun op -> Op.add_input op input_indices
   |> fun op -> Op.add_input op input_values
   |> fun op -> Op.add_input op input_shape
@@ -8145,7 +8145,7 @@ let sparseReduceMaxSparse
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
-  Op.create context "SparseReduceMaxSparse"
+  Op.create context Op_names.sparseReduceMaxSparse
   |> fun op -> Op.add_input op input_indices
   |> fun op -> Op.add_input op input_values
   |> fun op -> Op.add_input op input_shape
@@ -8161,7 +8161,7 @@ let sparseReduceSum
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
-  Op.create context "SparseReduceSum"
+  Op.create context Op_names.sparseReduceSum
   |> fun op -> Op.add_input op input_indices
   |> fun op -> Op.add_input op input_values
   |> fun op -> Op.add_input op input_shape
@@ -8177,7 +8177,7 @@ let sparseReduceSumSparse
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
-  Op.create context "SparseReduceSumSparse"
+  Op.create context Op_names.sparseReduceSumSparse
   |> fun op -> Op.add_input op input_indices
   |> fun op -> Op.add_input op input_values
   |> fun op -> Op.add_input op input_shape
@@ -8191,7 +8191,7 @@ let sparseReorder
     (input_values : 't t)
     (input_shape : [ `int64 ] t)
   =
-  Op.create context "SparseReorder"
+  Op.create context Op_names.sparseReorder
   |> fun op -> Op.add_input op input_indices
   |> fun op -> Op.add_input op input_values
   |> fun op -> Op.add_input op input_shape
@@ -8203,7 +8203,7 @@ let sparseReshape
     (input_shape : [ `int64 ] t)
     (new_shape : [ `int64 ] t)
   =
-  Op.create context "SparseReshape"
+  Op.create context Op_names.sparseReshape
   |> fun op -> Op.add_input op input_indices
   |> fun op -> Op.add_input op input_shape
   |> fun op -> Op.add_input op new_shape
@@ -8214,7 +8214,7 @@ let sparseSegmentMean
     (indices : ([< `int32 | `int64 ] as 'tidx) t)
     (segment_ids : [ `int32 ] t)
   =
-  Op.create context "SparseSegmentMean"
+  Op.create context Op_names.sparseSegmentMean
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op segment_ids
@@ -8228,7 +8228,7 @@ let sparseSegmentMeanGrad
     (segment_ids : [ `int32 ] t)
     (output_dim0 : [ `int32 ] t)
   =
-  Op.create context "SparseSegmentMeanGrad"
+  Op.create context Op_names.sparseSegmentMeanGrad
   |> fun op -> Op.add_input op grad
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op segment_ids
@@ -8242,7 +8242,7 @@ let sparseSegmentSqrtN
     (indices : ([< `int32 | `int64 ] as 'tidx) t)
     (segment_ids : [ `int32 ] t)
   =
-  Op.create context "SparseSegmentSqrtN"
+  Op.create context Op_names.sparseSegmentSqrtN
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op segment_ids
@@ -8256,7 +8256,7 @@ let sparseSegmentSqrtNGrad
     (segment_ids : [ `int32 ] t)
     (output_dim0 : [ `int32 ] t)
   =
-  Op.create context "SparseSegmentSqrtNGrad"
+  Op.create context Op_names.sparseSegmentSqrtNGrad
   |> fun op -> Op.add_input op grad
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op segment_ids
@@ -8270,7 +8270,7 @@ let sparseSegmentSum
     (indices : ([< `int32 | `int64 ] as 'tidx) t)
     (segment_ids : [ `int32 ] t)
   =
-  Op.create context "SparseSegmentSum"
+  Op.create context Op_names.sparseSegmentSum
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op segment_ids
@@ -8285,7 +8285,7 @@ let sparseSlice
     (start : [ `int64 ] t)
     (size : [ `int64 ] t)
   =
-  Op.create context "SparseSlice"
+  Op.create context Op_names.sparseSlice
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op values
   |> fun op -> Op.add_input op shape
@@ -8299,7 +8299,7 @@ let sparseSoftmax
     (sp_values : ([< `float | `double ] as 't) t)
     (sp_shape : [ `int64 ] t)
   =
-  Op.create context "SparseSoftmax"
+  Op.create context Op_names.sparseSoftmax
   |> fun op -> Op.add_input op sp_indices
   |> fun op -> Op.add_input op sp_values
   |> fun op -> Op.add_input op sp_shape
@@ -8310,7 +8310,7 @@ let sparseSoftmaxCrossEntropyWithLogits
     (features : ([< `float | `double ] as 't) t)
     (labels : ([< `int32 | `int64 ] as 'tlabels) t)
   =
-  Op.create context "SparseSoftmaxCrossEntropyWithLogits"
+  Op.create context Op_names.sparseSoftmaxCrossEntropyWithLogits
   |> fun op -> Op.add_input op features
   |> fun op -> Op.add_input op labels
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type features)
@@ -8325,7 +8325,7 @@ let sparseSparseMaximum
     (b_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (b_shape : [ `int64 ] t)
   =
-  Op.create context "SparseSparseMaximum"
+  Op.create context Op_names.sparseSparseMaximum
   |> fun op -> Op.add_input op a_indices
   |> fun op -> Op.add_input op a_values
   |> fun op -> Op.add_input op a_shape
@@ -8343,7 +8343,7 @@ let sparseSparseMinimum
     (b_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (b_shape : [ `int64 ] t)
   =
-  Op.create context "SparseSparseMinimum"
+  Op.create context Op_names.sparseSparseMinimum
   |> fun op -> Op.add_input op a_indices
   |> fun op -> Op.add_input op a_values
   |> fun op -> Op.add_input op a_shape
@@ -8359,7 +8359,7 @@ let sparseTensorDenseAdd
     (a_shape : ([< `int32 | `int64 ] as 'tindices) t)
     (b : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
   =
-  Op.create context "SparseTensorDenseAdd"
+  Op.create context Op_names.sparseTensorDenseAdd
   |> fun op -> Op.add_input op a_indices
   |> fun op -> Op.add_input op a_values
   |> fun op -> Op.add_input op a_shape
@@ -8376,7 +8376,7 @@ let sparseTensorDenseMatMul
     (a_shape : [ `int64 ] t)
     (b : 't t)
   =
-  Op.create context "SparseTensorDenseMatMul"
+  Op.create context Op_names.sparseTensorDenseMatMul
   |> fun op -> Op.add_input op a_indices
   |> fun op -> Op.add_input op a_values
   |> fun op -> Op.add_input op a_shape
@@ -8392,7 +8392,7 @@ let sparseTensorSliceDataset
     (values : 'tvalues t)
     (dense_shape : [ `int64 ] t)
   =
-  Op.create context "SparseTensorSliceDataset"
+  Op.create context Op_names.sparseTensorSliceDataset
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op values
   |> fun op -> Op.add_input op dense_shape
@@ -8406,7 +8406,7 @@ let sparseToDense
     (sparse_values : 't t)
     (default_value : 't t)
   =
-  Op.create context "SparseToDense"
+  Op.create context Op_names.sparseToDense
   |> fun op -> Op.add_input op sparse_indices
   |> fun op -> Op.add_input op output_shape
   |> fun op -> Op.add_input op sparse_values
@@ -8426,7 +8426,7 @@ let sparseToSparseSetOperation
     (set2_values : ([< `int32 | `int64 | `uInt8 | `uInt16 | `string ] as 't) t)
     (set2_shape : [ `int64 ] t)
   =
-  Op.create context "SparseToSparseSetOperation"
+  Op.create context Op_names.sparseToSparseSetOperation
   |> fun op -> Op.add_input op set1_indices
   |> fun op -> Op.add_input op set1_values
   |> fun op -> Op.add_input op set1_shape
@@ -8443,7 +8443,7 @@ let split
     (split_dim : [ `int32 ] t)
     (value : 't t)
   =
-  Op.create context "Split"
+  Op.create context Op_names.split
   |> fun op -> Op.add_input op split_dim
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
@@ -8456,7 +8456,7 @@ let splitV
     (size_splits : ([< `int32 | `int64 ] as 'tlen) t)
     (split_dim : [ `int32 ] t)
   =
-  Op.create context "SplitV"
+  Op.create context Op_names.splitV
   |> fun op -> Op.add_input op value
   |> fun op -> Op.add_input op size_splits
   |> fun op -> Op.add_input op split_dim
@@ -8472,7 +8472,7 @@ let sqlDataset
     (data_source_name : [ `string ] t)
     (query : [ `string ] t)
   =
-  Op.create context "SqlDataset"
+  Op.create context Op_names.sqlDataset
   |> fun op -> Op.add_input op driver_name
   |> fun op -> Op.add_input op data_source_name
   |> fun op -> Op.add_input op query
@@ -8483,7 +8483,7 @@ let sqlDataset
 let sqrt
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Sqrt"
+  Op.create context Op_names.sqrt
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -8492,7 +8492,7 @@ let sqrtGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
     (dy : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "SqrtGrad"
+  Op.create context Op_names.sqrtGrad
   |> fun op -> Op.add_input op y
   |> fun op -> Op.add_input op dy
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type y)
@@ -8501,7 +8501,7 @@ let sqrtGrad
 let square
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Square"
+  Op.create context Op_names.square
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -8510,7 +8510,7 @@ let squaredDifference
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "SquaredDifference"
+  Op.create context Op_names.squaredDifference
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -8520,7 +8520,7 @@ let squeeze
     ?(squeeze_dims=[])
     (input : 't t)
   =
-  Op.create context "Squeeze"
+  Op.create context Op_names.squeeze
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_int_list ~name:"squeeze_dims" ~value:squeeze_dims
@@ -8530,21 +8530,21 @@ let stack
     ?(stack_name="")
     ()
   =
-  Op.create context "Stack"
+  Op.create context Op_names.stack
   |> Op.set_attr_string ~name:"stack_name" ~value:stack_name
   |> Op.execute1
 
 let stackClose
     (handle : [ `string ] t)
   =
-  Op.create context "StackClose"
+  Op.create context Op_names.stackClose
   |> fun op -> Op.add_input op handle
   |> Op.execute0
 
 let stackCloseV2
     (handle : [ `resource ] t)
   =
-  Op.create context "StackCloseV2"
+  Op.create context Op_names.stackCloseV2
   |> fun op -> Op.add_input op handle
   |> Op.execute0
 
@@ -8552,7 +8552,7 @@ let stackPop
     ~type_elem_type
     (handle : [ `string ] t)
   =
-  Op.create context "StackPop"
+  Op.create context Op_names.stackPop
   |> fun op -> Op.add_input op handle
   |> Op.set_attr_data_type ~name:"elem_type" ~value:Operation.Type.(to_data_type (P type_elem_type))
   |> Op.execute1
@@ -8561,7 +8561,7 @@ let stackPopV2
     ~type_elem_type
     (handle : [ `resource ] t)
   =
-  Op.create context "StackPopV2"
+  Op.create context Op_names.stackPopV2
   |> fun op -> Op.add_input op handle
   |> Op.set_attr_data_type ~name:"elem_type" ~value:Operation.Type.(to_data_type (P type_elem_type))
   |> Op.execute1
@@ -8571,7 +8571,7 @@ let stackPush
     (handle : [ `string ] t)
     (elem : 't t)
   =
-  Op.create context "StackPush"
+  Op.create context Op_names.stackPush
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op elem
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type elem)
@@ -8583,7 +8583,7 @@ let stackPushV2
     (handle : [ `resource ] t)
     (elem : 't t)
   =
-  Op.create context "StackPushV2"
+  Op.create context Op_names.stackPushV2
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op elem
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type elem)
@@ -8594,7 +8594,7 @@ let stackV2
     ?(stack_name="")
     (max_size : [ `int32 ] t)
   =
-  Op.create context "StackV2"
+  Op.create context Op_names.stackV2
   |> fun op -> Op.add_input op max_size
   |> Op.set_attr_string ~name:"stack_name" ~value:stack_name
   |> Op.execute1
@@ -8607,7 +8607,7 @@ let stageClear
     ?(shared_name="")
     ()
   =
-  Op.create context "StageClear"
+  Op.create context Op_names.stageClear
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
   |> Op.set_attr_int ~name:"memory_limit" ~value:memory_limit
   |> Op.set_attr_type_list ~name:"dtypes" ~value:dtypes
@@ -8623,7 +8623,7 @@ let stageSize
     ?(shared_name="")
     ()
   =
-  Op.create context "StageSize"
+  Op.create context Op_names.stageSize
   |> Op.set_attr_int ~name:"capacity" ~value:capacity
   |> Op.set_attr_int ~name:"memory_limit" ~value:memory_limit
   |> Op.set_attr_type_list ~name:"dtypes" ~value:dtypes
@@ -8636,7 +8636,7 @@ let statelessRandomNormal
     (shape : ([< `int32 | `int64 ] as 't) t)
     (seed : [ `int64 ] t)
   =
-  Op.create context "StatelessRandomNormal"
+  Op.create context Op_names.statelessRandomNormal
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op seed
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -8648,7 +8648,7 @@ let statelessRandomUniform
     (shape : ([< `int32 | `int64 ] as 't) t)
     (seed : [ `int64 ] t)
   =
-  Op.create context "StatelessRandomUniform"
+  Op.create context Op_names.statelessRandomUniform
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op seed
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -8660,7 +8660,7 @@ let statelessTruncatedNormal
     (shape : ([< `int32 | `int64 ] as 't) t)
     (seed : [ `int64 ] t)
   =
-  Op.create context "StatelessTruncatedNormal"
+  Op.create context Op_names.statelessTruncatedNormal
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op seed
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -8670,7 +8670,7 @@ let statelessTruncatedNormal
 let stopGradient
     (input : 't t)
   =
-  Op.create context "StopGradient"
+  Op.create context Op_names.stopGradient
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.execute1
@@ -8686,7 +8686,7 @@ let stridedSlice
     (end__ : ([< `int32 | `int64 ] as 'index) t)
     (strides : ([< `int32 | `int64 ] as 'index) t)
   =
-  Op.create context "StridedSlice"
+  Op.create context Op_names.stridedSlice
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op begin__
   |> fun op -> Op.add_input op end__
@@ -8712,7 +8712,7 @@ let stridedSliceAssign
     (strides : ([< `int32 | `int64 ] as 'index) t)
     (value : 't t)
   =
-  Op.create context "StridedSliceAssign"
+  Op.create context Op_names.stridedSliceAssign
   |> fun op -> Op.add_input op ref
   |> fun op -> Op.add_input op begin__
   |> fun op -> Op.add_input op end__
@@ -8739,7 +8739,7 @@ let stridedSliceGrad
     (strides : ([< `int32 | `int64 ] as 'index) t)
     (dy : 't t)
   =
-  Op.create context "StridedSliceGrad"
+  Op.create context Op_names.stridedSliceGrad
   |> fun op -> Op.add_input op shape
   |> fun op -> Op.add_input op begin__
   |> fun op -> Op.add_input op end__
@@ -8758,7 +8758,7 @@ let stringJoin
     ?(separator="")
     (inputs__ : [ `string ] t list)
   =
-  Op.create context "StringJoin"
+  Op.create context Op_names.stringJoin
   |> fun init -> List.fold inputs__ ~init ~f:Op.add_input
   |> Op.set_attr_int ~name:"N" ~value:(List.length inputs__)
   |> Op.set_attr_string ~name:"separator" ~value:separator
@@ -8769,7 +8769,7 @@ let stringSplit
     (input : [ `string ] t)
     (delimiter : [ `string ] t)
   =
-  Op.create context "StringSplit"
+  Op.create context Op_names.stringSplit
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op delimiter
   |> Op.set_attr_bool ~name:"skip_empty" ~value:skip_empty
@@ -8779,7 +8779,7 @@ let stringToHashBucket
     ~num_buckets
     (string_tensor : [ `string ] t)
   =
-  Op.create context "StringToHashBucket"
+  Op.create context Op_names.stringToHashBucket
   |> fun op -> Op.add_input op string_tensor
   |> Op.set_attr_int ~name:"num_buckets" ~value:num_buckets
   |> Op.execute1
@@ -8788,7 +8788,7 @@ let stringToHashBucketFast
     ~num_buckets
     (input : [ `string ] t)
   =
-  Op.create context "StringToHashBucketFast"
+  Op.create context Op_names.stringToHashBucketFast
   |> fun op -> Op.add_input op input
   |> Op.set_attr_int ~name:"num_buckets" ~value:num_buckets
   |> Op.execute1
@@ -8798,7 +8798,7 @@ let stringToHashBucketStrong
     ~key
     (input : [ `string ] t)
   =
-  Op.create context "StringToHashBucketStrong"
+  Op.create context Op_names.stringToHashBucketStrong
   |> fun op -> Op.add_input op input
   |> Op.set_attr_int ~name:"num_buckets" ~value:num_buckets
   |> Op.set_attr_int_list ~name:"key" ~value:key
@@ -8808,7 +8808,7 @@ let stringToNumber
     ~type_out_type
     (string_tensor : [ `string ] t)
   =
-  Op.create context "StringToNumber"
+  Op.create context Op_names.stringToNumber
   |> fun op -> Op.add_input op string_tensor
   |> Op.set_attr_data_type ~name:"out_type" ~value:Operation.Type.(to_data_type (P type_out_type))
   |> Op.execute1
@@ -8817,7 +8817,7 @@ let sub
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Sub"
+  Op.create context Op_names.sub
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -8828,7 +8828,7 @@ let substr
     (pos : ([< `int32 | `int64 ] as 't) t)
     (len : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "Substr"
+  Op.create context Op_names.substr
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op pos
   |> fun op -> Op.add_input op len
@@ -8840,7 +8840,7 @@ let sum
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
-  Op.create context "Sum"
+  Op.create context Op_names.sum
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op reduction_indices
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -8853,7 +8853,7 @@ let svd
     ?(full_matrices=false)
     (input : ([< `double | `float | `complex64 ] as 't) t)
   =
-  Op.create context "Svd"
+  Op.create context Op_names.svd
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_bool ~name:"compute_uv" ~value:compute_uv
@@ -8864,7 +8864,7 @@ let switch
     (data : 't t)
     (pred : [ `bool ] t)
   =
-  Op.create context "Switch"
+  Op.create context Op_names.switch
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op pred
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type data)
@@ -8875,7 +8875,7 @@ let tFRecordDataset
     (compression_type : [ `string ] t)
     (buffer_size : [ `int64 ] t)
   =
-  Op.create context "TFRecordDataset"
+  Op.create context Op_names.tFRecordDataset
   |> fun op -> Op.add_input op filenames
   |> fun op -> Op.add_input op compression_type
   |> fun op -> Op.add_input op buffer_size
@@ -8887,7 +8887,7 @@ let tFRecordReader
     ?(compression_type="")
     ()
   =
-  Op.create context "TFRecordReader"
+  Op.create context Op_names.tFRecordReader
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.set_attr_string ~name:"compression_type" ~value:compression_type
@@ -8899,7 +8899,7 @@ let tFRecordReaderV2
     ?(compression_type="")
     ()
   =
-  Op.create context "TFRecordReaderV2"
+  Op.create context Op_names.tFRecordReaderV2
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.set_attr_string ~name:"compression_type" ~value:compression_type
@@ -8911,7 +8911,7 @@ let takeDataset
     (input_dataset : [ `variant ] t)
     (count : [ `int64 ] t)
   =
-  Op.create context "TakeDataset"
+  Op.create context Op_names.takeDataset
   |> fun op -> Op.add_input op input_dataset
   |> fun op -> Op.add_input op count
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
@@ -8924,7 +8924,7 @@ let takeManySparseFromTensorsMap
     ?(shared_name="")
     (sparse_handles : [ `int64 ] t)
   =
-  Op.create context "TakeManySparseFromTensorsMap"
+  Op.create context Op_names.takeManySparseFromTensorsMap
   |> fun op -> Op.add_input op sparse_handles
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_string ~name:"container" ~value:container
@@ -8934,7 +8934,7 @@ let takeManySparseFromTensorsMap
 let tan
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "Tan"
+  Op.create context Op_names.tan
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -8942,7 +8942,7 @@ let tan
 let tanh
     (x : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "Tanh"
+  Op.create context Op_names.tanh
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -8951,7 +8951,7 @@ let tanhGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
     (dy : ([< `float | `double | `complex64 ] as 't) t)
   =
-  Op.create context "TanhGrad"
+  Op.create context Op_names.tanhGrad
   |> fun op -> Op.add_input op y
   |> fun op -> Op.add_input op dy
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type y)
@@ -8963,7 +8963,7 @@ let temporaryVariable
     ?(var_name="")
     ()
   =
-  Op.create context "TemporaryVariable"
+  Op.create context Op_names.temporaryVariable
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_shape ~name:"shape" ~value:shape
   |> Op.set_attr_string ~name:"var_name" ~value:var_name
@@ -8976,7 +8976,7 @@ let tensorArray
     ?(element_shape=[])
     (size : [ `int32 ] t)
   =
-  Op.create context "TensorArray"
+  Op.create context Op_names.tensorArray
   |> fun op -> Op.add_input op size
   |> Op.set_attr_bool ~name:"dynamic_size" ~value:dynamic_size
   |> Op.set_attr_bool ~name:"clear_after_read" ~value:clear_after_read
@@ -8987,21 +8987,21 @@ let tensorArray
 let tensorArrayClose
     (handle : [ `string ] t)
   =
-  Op.create context "TensorArrayClose"
+  Op.create context Op_names.tensorArrayClose
   |> fun op -> Op.add_input op handle
   |> Op.execute0
 
 let tensorArrayCloseV2
     (handle : [ `string ] t)
   =
-  Op.create context "TensorArrayCloseV2"
+  Op.create context Op_names.tensorArrayCloseV2
   |> fun op -> Op.add_input op handle
   |> Op.execute0
 
 let tensorArrayCloseV3
     (handle : [ `resource ] t)
   =
-  Op.create context "TensorArrayCloseV3"
+  Op.create context Op_names.tensorArrayCloseV3
   |> fun op -> Op.add_input op handle
   |> Op.execute0
 
@@ -9011,7 +9011,7 @@ let tensorArrayConcat
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayConcat"
+  Op.create context Op_names.tensorArrayConcat
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -9024,7 +9024,7 @@ let tensorArrayConcatV2
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayConcatV2"
+  Op.create context Op_names.tensorArrayConcatV2
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -9037,7 +9037,7 @@ let tensorArrayConcatV3
     (handle : [ `resource ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayConcatV3"
+  Op.create context Op_names.tensorArrayConcatV3
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -9051,7 +9051,7 @@ let tensorArrayGather
     (indices : [ `int32 ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayGather"
+  Op.create context Op_names.tensorArrayGather
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op flow_in
@@ -9066,7 +9066,7 @@ let tensorArrayGatherV2
     (indices : [ `int32 ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayGatherV2"
+  Op.create context Op_names.tensorArrayGatherV2
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op flow_in
@@ -9081,7 +9081,7 @@ let tensorArrayGatherV3
     (indices : [ `int32 ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayGatherV3"
+  Op.create context Op_names.tensorArrayGatherV3
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op flow_in
@@ -9094,7 +9094,7 @@ let tensorArrayGrad
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayGrad"
+  Op.create context Op_names.tensorArrayGrad
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.set_attr_string ~name:"source" ~value:source
@@ -9105,7 +9105,7 @@ let tensorArrayGradV2
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayGradV2"
+  Op.create context Op_names.tensorArrayGradV2
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.set_attr_string ~name:"source" ~value:source
@@ -9116,7 +9116,7 @@ let tensorArrayGradV3
     (handle : [ `resource ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayGradV3"
+  Op.create context Op_names.tensorArrayGradV3
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.set_attr_string ~name:"source" ~value:source
@@ -9128,7 +9128,7 @@ let tensorArrayPack
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayPack"
+  Op.create context Op_names.tensorArrayPack
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
@@ -9141,7 +9141,7 @@ let tensorArrayRead
     (index : [ `int32 ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayRead"
+  Op.create context Op_names.tensorArrayRead
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op index
   |> fun op -> Op.add_input op flow_in
@@ -9154,7 +9154,7 @@ let tensorArrayReadV2
     (index : [ `int32 ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayReadV2"
+  Op.create context Op_names.tensorArrayReadV2
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op index
   |> fun op -> Op.add_input op flow_in
@@ -9167,7 +9167,7 @@ let tensorArrayReadV3
     (index : [ `int32 ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayReadV3"
+  Op.create context Op_names.tensorArrayReadV3
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op index
   |> fun op -> Op.add_input op flow_in
@@ -9180,7 +9180,7 @@ let tensorArrayScatter
     (value : 't t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayScatter"
+  Op.create context Op_names.tensorArrayScatter
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op value
@@ -9194,7 +9194,7 @@ let tensorArrayScatterV2
     (value : 't t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayScatterV2"
+  Op.create context Op_names.tensorArrayScatterV2
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op value
@@ -9208,7 +9208,7 @@ let tensorArrayScatterV3
     (value : 't t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayScatterV3"
+  Op.create context Op_names.tensorArrayScatterV3
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op indices
   |> fun op -> Op.add_input op value
@@ -9220,7 +9220,7 @@ let tensorArraySize
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArraySize"
+  Op.create context Op_names.tensorArraySize
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.execute1
@@ -9229,7 +9229,7 @@ let tensorArraySizeV2
     (handle : [ `string ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArraySizeV2"
+  Op.create context Op_names.tensorArraySizeV2
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.execute1
@@ -9238,7 +9238,7 @@ let tensorArraySizeV3
     (handle : [ `resource ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArraySizeV3"
+  Op.create context Op_names.tensorArraySizeV3
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op flow_in
   |> Op.execute1
@@ -9249,7 +9249,7 @@ let tensorArraySplit
     (lengths : [ `int64 ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArraySplit"
+  Op.create context Op_names.tensorArraySplit
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op value
   |> fun op -> Op.add_input op lengths
@@ -9263,7 +9263,7 @@ let tensorArraySplitV2
     (lengths : [ `int64 ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArraySplitV2"
+  Op.create context Op_names.tensorArraySplitV2
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op value
   |> fun op -> Op.add_input op lengths
@@ -9277,7 +9277,7 @@ let tensorArraySplitV3
     (lengths : [ `int64 ] t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArraySplitV3"
+  Op.create context Op_names.tensorArraySplitV3
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op value
   |> fun op -> Op.add_input op lengths
@@ -9290,7 +9290,7 @@ let tensorArrayUnpack
     (value : 't t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayUnpack"
+  Op.create context Op_names.tensorArrayUnpack
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op value
   |> fun op -> Op.add_input op flow_in
@@ -9304,7 +9304,7 @@ let tensorArrayV2
     ?(tensor_array_name="")
     (size : [ `int32 ] t)
   =
-  Op.create context "TensorArrayV2"
+  Op.create context Op_names.tensorArrayV2
   |> fun op -> Op.add_input op size
   |> Op.set_attr_shape ~name:"element_shape" ~value:element_shape
   |> Op.set_attr_bool ~name:"dynamic_size" ~value:dynamic_size
@@ -9319,7 +9319,7 @@ let tensorArrayV3
     ?(tensor_array_name="")
     (size : [ `int32 ] t)
   =
-  Op.create context "TensorArrayV3"
+  Op.create context Op_names.tensorArrayV3
   |> fun op -> Op.add_input op size
   |> Op.set_attr_shape ~name:"element_shape" ~value:element_shape
   |> Op.set_attr_bool ~name:"dynamic_size" ~value:dynamic_size
@@ -9333,7 +9333,7 @@ let tensorArrayWrite
     (value : 't t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayWrite"
+  Op.create context Op_names.tensorArrayWrite
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op index
   |> fun op -> Op.add_input op value
@@ -9347,7 +9347,7 @@ let tensorArrayWriteV2
     (value : 't t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayWriteV2"
+  Op.create context Op_names.tensorArrayWriteV2
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op index
   |> fun op -> Op.add_input op value
@@ -9361,7 +9361,7 @@ let tensorArrayWriteV3
     (value : 't t)
     (flow_in : [ `float ] t)
   =
-  Op.create context "TensorArrayWriteV3"
+  Op.create context Op_names.tensorArrayWriteV3
   |> fun op -> Op.add_input op handle
   |> fun op -> Op.add_input op index
   |> fun op -> Op.add_input op value
@@ -9374,7 +9374,7 @@ let tensorSummary
     ?(display_name="")
     (tensor : 't t)
   =
-  Op.create context "TensorSummary"
+  Op.create context Op_names.tensorSummary
   |> fun op -> Op.add_input op tensor
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type tensor)
   |> Op.set_attr_string ~name:"description" ~value:description
@@ -9386,7 +9386,7 @@ let tensorSummaryV2
     (tensor : 't t)
     (serialized_summary_metadata : [ `string ] t)
   =
-  Op.create context "TensorSummaryV2"
+  Op.create context Op_names.tensorSummaryV2
   |> fun op -> Op.add_input op tag
   |> fun op -> Op.add_input op tensor
   |> fun op -> Op.add_input op serialized_summary_metadata
@@ -9398,7 +9398,7 @@ let textLineDataset
     (compression_type : [ `string ] t)
     (buffer_size : [ `int64 ] t)
   =
-  Op.create context "TextLineDataset"
+  Op.create context Op_names.textLineDataset
   |> fun op -> Op.add_input op filenames
   |> fun op -> Op.add_input op compression_type
   |> fun op -> Op.add_input op buffer_size
@@ -9410,7 +9410,7 @@ let textLineReader
     ?(shared_name="")
     ()
   =
-  Op.create context "TextLineReader"
+  Op.create context Op_names.textLineReader
   |> Op.set_attr_int ~name:"skip_header_lines" ~value:skip_header_lines
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
@@ -9422,7 +9422,7 @@ let textLineReaderV2
     ?(shared_name="")
     ()
   =
-  Op.create context "TextLineReaderV2"
+  Op.create context Op_names.textLineReaderV2
   |> Op.set_attr_int ~name:"skip_header_lines" ~value:skip_header_lines
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
@@ -9437,7 +9437,7 @@ let threadUnsafeUnigramCandidateSampler
     ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
-  Op.create context "ThreadUnsafeUnigramCandidateSampler"
+  Op.create context Op_names.threadUnsafeUnigramCandidateSampler
   |> fun op -> Op.add_input op true_classes
   |> Op.set_attr_int ~name:"num_true" ~value:num_true
   |> Op.set_attr_int ~name:"num_sampled" ~value:num_sampled
@@ -9451,7 +9451,7 @@ let tile
     (input : 't t)
     (multiples : ([< `int32 | `int64 ] as 'tmultiples) t)
   =
-  Op.create context "Tile"
+  Op.create context Op_names.tile
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op multiples
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -9462,7 +9462,7 @@ let tileGrad
     (input : 't t)
     (multiples : [ `int32 ] t)
   =
-  Op.create context "TileGrad"
+  Op.create context Op_names.tileGrad
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op multiples
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -9473,7 +9473,7 @@ let topK
     ?(sorted=true)
     (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
   =
-  Op.create context "TopK"
+  Op.create context Op_names.topK
   |> fun op -> Op.add_input op input
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
   |> Op.set_attr_int ~name:"k" ~value:k
@@ -9485,7 +9485,7 @@ let topKV2
     (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (k : [ `int32 ] t)
   =
-  Op.create context "TopKV2"
+  Op.create context Op_names.topKV2
   |> fun op -> Op.add_input op input
   |> fun op -> Op.add_input op k
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type input)
@@ -9496,7 +9496,7 @@ let transpose
     (x : 't t)
     (perm : ([< `int32 | `int64 ] as 'tperm) t)
   =
-  Op.create context "Transpose"
+  Op.create context Op_names.transpose
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op perm
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -9507,7 +9507,7 @@ let truncateDiv
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
     (y : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
   =
-  Op.create context "TruncateDiv"
+  Op.create context Op_names.truncateDiv
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -9517,7 +9517,7 @@ let truncateMod
     (x : ([< `int32 | `int64 | `float | `double ] as 't) t)
     (y : ([< `int32 | `int64 | `float | `double ] as 't) t)
   =
-  Op.create context "TruncateMod"
+  Op.create context Op_names.truncateMod
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op y
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -9529,7 +9529,7 @@ let truncatedNormal
     ?(seed2=0)
     (shape : ([< `int32 | `int64 ] as 't) t)
   =
-  Op.create context "TruncatedNormal"
+  Op.create context Op_names.truncatedNormal
   |> fun op -> Op.add_input op shape
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type shape)
@@ -9546,7 +9546,7 @@ let uniformCandidateSampler
     ?(seed2=0)
     (true_classes : [ `int64 ] t)
   =
-  Op.create context "UniformCandidateSampler"
+  Op.create context Op_names.uniformCandidateSampler
   |> fun op -> Op.add_input op true_classes
   |> Op.set_attr_int ~name:"num_true" ~value:num_true
   |> Op.set_attr_int ~name:"num_sampled" ~value:num_sampled
@@ -9560,7 +9560,7 @@ let unique
     ~type_out_idx
     (x : 't t)
   =
-  Op.create context "Unique"
+  Op.create context Op_names.unique
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.set_attr_data_type ~name:"out_idx" ~value:Operation.Type.(to_data_type (P type_out_idx))
@@ -9570,7 +9570,7 @@ let uniqueWithCounts
     ~type_out_idx
     (x : 't t)
   =
-  Op.create context "UniqueWithCounts"
+  Op.create context Op_names.uniqueWithCounts
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.set_attr_data_type ~name:"out_idx" ~value:Operation.Type.(to_data_type (P type_out_idx))
@@ -9581,7 +9581,7 @@ let unpack
     ?(axis=0)
     (value : 't t)
   =
-  Op.create context "Unpack"
+  Op.create context Op_names.unpack
   |> fun op -> Op.add_input op value
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type value)
   |> Op.set_attr_int ~name:"num" ~value:num
@@ -9593,7 +9593,7 @@ let unsortedSegmentMax
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
     (num_segments : [ `int32 ] t)
   =
-  Op.create context "UnsortedSegmentMax"
+  Op.create context Op_names.unsortedSegmentMax
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op segment_ids
   |> fun op -> Op.add_input op num_segments
@@ -9606,7 +9606,7 @@ let unsortedSegmentSum
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
     (num_segments : [ `int32 ] t)
   =
-  Op.create context "UnsortedSegmentSum"
+  Op.create context Op_names.unsortedSegmentSum
   |> fun op -> Op.add_input op data
   |> fun op -> Op.add_input op segment_ids
   |> fun op -> Op.add_input op num_segments
@@ -9621,7 +9621,7 @@ let variable
     ?(shared_name="")
     ()
   =
-  Op.create context "Variable"
+  Op.create context Op_names.variable
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_shape ~name:"shape" ~value:shape
   |> Op.set_attr_string ~name:"container" ~value:container
@@ -9635,7 +9635,7 @@ let variableV2
     ?(shared_name="")
     ()
   =
-  Op.create context "VariableV2"
+  Op.create context Op_names.variableV2
   |> Op.set_attr_data_type ~name:"dtype" ~value:Operation.Type.(to_data_type (P type_dtype))
   |> Op.set_attr_shape ~name:"shape" ~value:shape
   |> Op.set_attr_string ~name:"container" ~value:container
@@ -9645,7 +9645,7 @@ let variableV2
 let where
     (input : [ `bool ] t)
   =
-  Op.create context "Where"
+  Op.create context Op_names.where
   |> fun op -> Op.add_input op input
   |> Op.execute1
 
@@ -9654,7 +9654,7 @@ let wholeFileReader
     ?(shared_name="")
     ()
   =
-  Op.create context "WholeFileReader"
+  Op.create context Op_names.wholeFileReader
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.execute1
@@ -9664,7 +9664,7 @@ let wholeFileReaderV2
     ?(shared_name="")
     ()
   =
-  Op.create context "WholeFileReaderV2"
+  Op.create context Op_names.wholeFileReaderV2
   |> Op.set_attr_string ~name:"container" ~value:container
   |> Op.set_attr_string ~name:"shared_name" ~value:shared_name
   |> Op.execute1
@@ -9673,7 +9673,7 @@ let writeFile
     (filename : [ `string ] t)
     (contents : [ `string ] t)
   =
-  Op.create context "WriteFile"
+  Op.create context Op_names.writeFile
   |> fun op -> Op.add_input op filename
   |> fun op -> Op.add_input op contents
   |> Op.execute0
@@ -9681,7 +9681,7 @@ let writeFile
 let zerosLike
     (x : 't t)
   =
-  Op.create context "ZerosLike"
+  Op.create context Op_names.zerosLike
   |> fun op -> Op.add_input op x
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
   |> Op.execute1
@@ -9690,7 +9690,7 @@ let zeta
     (x : ([< `float | `double ] as 't) t)
     (q : ([< `float | `double ] as 't) t)
   =
-  Op.create context "Zeta"
+  Op.create context Op_names.zeta
   |> fun op -> Op.add_input op x
   |> fun op -> Op.add_input op q
   |> Op.set_attr_data_type ~name:"T" ~value:(Op.Tensor_handle.data_type x)
@@ -9701,7 +9701,7 @@ let zipDataset
     ~output_shapes
     (input_datasets : [ `variant ] t list)
   =
-  Op.create context "ZipDataset"
+  Op.create context Op_names.zipDataset
   |> fun init -> List.fold input_datasets ~init ~f:Op.add_input
   |> Op.set_attr_type_list ~name:"output_types" ~value:output_types
   |> Op.set_attr_shape_list ~name:"output_shapes" ~value:output_shapes

@@ -387,7 +387,7 @@ let handle_one_op (op : Op.t) out_channel =
   if List.is_empty op.inputs
   then p "    ()";
   p "  =";
-  p "  Op.create context \"%s\"" op.name;
+  p "  Op.create context Op_names.%s" (Op.caml_name op);
   List.iter op.inputs ~f:(fun input ->
     if Option.is_some input.number_attr
     then p "  |> fun init -> List.fold %s ~init ~f:Op.add_input" (Input.caml_name input)

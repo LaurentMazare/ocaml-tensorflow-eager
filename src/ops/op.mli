@@ -39,7 +39,7 @@ type context
 
 val default_context : unit -> context
 
-val create : context -> string -> t
+val create : context -> Name.t -> t
 
 val set_attr_bool : t -> name:string -> value:bool -> t
 val set_attr_float : t -> name:string -> value:float -> t

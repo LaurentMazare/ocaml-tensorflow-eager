@@ -95,7 +95,7 @@ let default_context () =
   |> Wrapper.Status.ok_exn
 
 let create context name =
-  let op = Eager.Op.create context name |> Wrapper.Status.ok_exn in
+  let op = Eager.Op.create context (Name.to_string name) |> Wrapper.Status.ok_exn in
   { op; rev_inputs = [] }
 
 let set_attr_string t ~name ~value =

@@ -9,7 +9,7 @@ let context = Op.default_context ()
 
 let print ?(summarize=20) ?(message = "") tensor_handle =
   let data_type = Op.Tensor_handle.data_type tensor_handle in
-  Op.create context "Print"
+  Op.create context (Op.Name.of_string "Print")
   |> fun op -> Op.add_input op tensor_handle
   |> fun op -> Op.add_input op tensor_handle
   |> Op.set_attr_data_type ~name:"T" ~value:data_type
