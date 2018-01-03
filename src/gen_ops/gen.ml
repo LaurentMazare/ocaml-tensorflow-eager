@@ -361,6 +361,10 @@ let gen_mli ops =
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
   p "";
+  p "module Op_names : sig";
+  List.iter ops ~f:(fun op -> p "  val %s : Op.Name.t" (Op.caml_name op));
+  p "end";
+  p "";
   List.iter ops ~f:handle_one_op;
   Out_channel.close out_channel
 
@@ -428,6 +432,11 @@ let gen_ml ops =
   p "type 'a t = 'a Op.Tensor_handle.t";
   p "module Dim = Operation.Dim";
   p "module Type = Operation.Type";
+  p "";
+  p "module Op_names = struct";
+  List.iter ops ~f:(fun op ->
+    p "  let %s = Op.Name.of_string \"%s\"" (Op.caml_name op) op.name);
+  p "end";
   p "";
   p "let context = Op.default_context ()";
   p "";

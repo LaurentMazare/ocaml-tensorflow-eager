@@ -2,6 +2,8 @@
 open Base
 open Tf_core
 
+module Name : Identifiable.S
+
 type t
 module Tensor_handle : sig
   type _ t

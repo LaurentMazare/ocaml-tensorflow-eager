@@ -1,7 +1,7 @@
 open Base
 open Tf_core
 
-type t = Eager.Op.t
+module Name : Identifiable.S = String
 
 module Tape_info : sig
   type t
@@ -18,6 +18,8 @@ module Tensor_handle = struct
     { handle : 'a Eager.Tensor_handle.t
     ; tape_info : Tape_info.t option
     }
+
+  type p = P : _ t -> p
 
   let create_no_tape_info handle =
     { handle; tape_info = None }
@@ -81,6 +83,11 @@ module Tensor_handle = struct
     { t with tape_info = Some (Tape_info.create ()) }
 end
 
+type t =
+  { op : Eager.Op.t
+  ; rev_inputs : Tensor_handle.p list
+  }
+
 type context = Eager.Context.t
 
 let default_context () =
@@ -88,118 +95,127 @@ let default_context () =
   |> Wrapper.Status.ok_exn
 
 let create context name =
-  Eager.Op.create context name
-  |> Wrapper.Status.ok_exn
+  let op = Eager.Op.create context name |> Wrapper.Status.ok_exn in
+  { op; rev_inputs = [] }
 
 let set_attr_string t ~name ~value =
-  Eager.Op.set_attr_string t name value;
+  Eager.Op.set_attr_string t.op name value;
   t
 
 let set_attr_bool t ~name ~value =
-  Eager.Op.set_attr_bool t name value;
+  Eager.Op.set_attr_bool t.op name value;
   t
 
 let set_attr_float t ~name ~value =
-  Eager.Op.set_attr_float t name value;
+  Eager.Op.set_attr_float t.op name value;
   t
 
 let set_attr_float_list t ~name ~value =
-  Eager.Op.set_attr_float_list t name value;
+  Eager.Op.set_attr_float_list t.op name value;
   t
 
 let set_attr_data_type t ~name ~value =
-  Eager.Op.set_attr_type t name value;
+  Eager.Op.set_attr_type t.op name value;
   t
 
 let set_attr_data_type_list t ~name ~value =
-  Eager.Op.set_attr_type_list t name value;
+  Eager.Op.set_attr_type_list t.op name value;
   t
 
-
 let set_attr_type t ~name ~value =
-  Eager.Op.set_attr_type t name (Operation.Type.P value |> Operation.Type.to_data_type);
+  Eager.Op.set_attr_type t.op name (Operation.Type.P value |> Operation.Type.to_data_type);
   t
 
 let set_attr_type_list t ~name ~value =
   let value = List.map value ~f:Operation.Type.to_data_type in
-  Eager.Op.set_attr_type_list t name value;
+  Eager.Op.set_attr_type_list t.op name value;
   t
 
 let set_attr_int t ~name ~value =
-  Eager.Op.set_attr_int t name (Int64.of_int value);
+  Eager.Op.set_attr_int t.op name (Int64.of_int value);
   t
 
 let set_attr_int_list t ~name ~value =
-  Eager.Op.set_attr_int_list t name (List.map value ~f:Int64.of_int);
+  Eager.Op.set_attr_int_list t.op name (List.map value ~f:Int64.of_int);
   t
 
 let set_attr_shape t ~name ~value =
-  Eager.Op.set_attr_shape t name value |> Wrapper.Status.ok_exn;
+  Eager.Op.set_attr_shape t.op name value |> Wrapper.Status.ok_exn;
   t
 
 let set_attr_shape_list t ~name ~value =
-  Eager.Op.set_attr_shape_list t name value |> Wrapper.Status.ok_exn;
+  Eager.Op.set_attr_shape_list t.op name value |> Wrapper.Status.ok_exn;
   t
 
 let add_input t th =
-  Eager.Op.add_input t th.Tensor_handle.handle
+  Eager.Op.add_input t.op th.Tensor_handle.handle
   |> Wrapper.Status.ok_exn;
-  t
+  { op = t.op; rev_inputs = Tensor_handle.P th :: t.rev_inputs }
+
+let create_handle t handle =
+  let tape_info =
+    if List.exists t.rev_inputs ~f:(fun (Tensor_handle.P th) -> Option.is_some (th.tape_info))
+    then Some (Tape_info.create ())
+    else None
+  in
+  { Tensor_handle.handle
+  ; tape_info
+  }
 
 let execute t ~output_len =
-  Eager.execute_exn t ~output_len
-  |> List.map ~f:Tensor_handle.create_no_tape_info
+  Eager.execute_exn t.op ~output_len
+  |> List.map ~f:(create_handle t)
 
 let execute0 t =
-  Eager.execute0_exn t
+  Eager.execute0_exn t.op
 
 let execute1 t =
-  let th1 = Eager.execute1_exn t in
-  Tensor_handle.create_no_tape_info th1
+  let th1 = Eager.execute1_exn t.op in
+  create_handle t th1
 
 let execute2 t =
-  let th1, th2 = Eager.execute2_exn t in
-  Tensor_handle.create_no_tape_info th1,
-  Tensor_handle.create_no_tape_info th2
+  let th1, th2 = Eager.execute2_exn t.op in
+  create_handle t th1,
+  create_handle t th2
 
 let execute3 t =
-  let th1, th2, th3 = Eager.execute3_exn t in
-  Tensor_handle.create_no_tape_info th1,
-  Tensor_handle.create_no_tape_info th2,
-  Tensor_handle.create_no_tape_info th3
+  let th1, th2, th3 = Eager.execute3_exn t.op in
+  create_handle t th1,
+  create_handle t th2,
+  create_handle t th3
 
 let execute4 t =
-  let th1, th2, th3, th4 = Eager.execute4_exn t in
-  Tensor_handle.create_no_tape_info th1,
-  Tensor_handle.create_no_tape_info th2,
-  Tensor_handle.create_no_tape_info th3,
-  Tensor_handle.create_no_tape_info th4
+  let th1, th2, th3, th4 = Eager.execute4_exn t.op in
+  create_handle t th1,
+  create_handle t th2,
+  create_handle t th3,
+  create_handle t th4
 
 let execute5 t =
-  let th1, th2, th3, th4, th5 = Eager.execute5_exn t in
-  Tensor_handle.create_no_tape_info th1,
-  Tensor_handle.create_no_tape_info th2,
-  Tensor_handle.create_no_tape_info th3,
-  Tensor_handle.create_no_tape_info th4,
-  Tensor_handle.create_no_tape_info th5
+  let th1, th2, th3, th4, th5 = Eager.execute5_exn t.op in
+  create_handle t th1,
+  create_handle t th2,
+  create_handle t th3,
+  create_handle t th4,
+  create_handle t th5
 
 let execute6 t =
-  let th1, th2, th3, th4, th5, th6 = Eager.execute6_exn t in
-  Tensor_handle.create_no_tape_info th1,
-  Tensor_handle.create_no_tape_info th2,
-  Tensor_handle.create_no_tape_info th3,
-  Tensor_handle.create_no_tape_info th4,
-  Tensor_handle.create_no_tape_info th5,
-  Tensor_handle.create_no_tape_info th6
+  let th1, th2, th3, th4, th5, th6 = Eager.execute6_exn t.op in
+  create_handle t th1,
+  create_handle t th2,
+  create_handle t th3,
+  create_handle t th4,
+  create_handle t th5,
+  create_handle t th6
 
 let execute7 t =
-  let th1, th2, th3, th4, th5, th6, th7 = Eager.execute7_exn t in
-  Tensor_handle.create_no_tape_info th1,
-  Tensor_handle.create_no_tape_info th2,
-  Tensor_handle.create_no_tape_info th3,
-  Tensor_handle.create_no_tape_info th4,
-  Tensor_handle.create_no_tape_info th5,
-  Tensor_handle.create_no_tape_info th6,
-  Tensor_handle.create_no_tape_info th7
+  let th1, th2, th3, th4, th5, th6, th7 = Eager.execute7_exn t.op in
+  create_handle t th1,
+  create_handle t th2,
+  create_handle t th3,
+  create_handle t th4,
+  create_handle t th5,
+  create_handle t th6,
+  create_handle t th7
 
 type 'a binary = 'a Tensor_handle.t -> 'a Tensor_handle.t -> 'a Tensor_handle.t
