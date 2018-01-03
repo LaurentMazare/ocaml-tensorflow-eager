@@ -388,12 +388,24 @@ let handle_one_op (op : Op.t) out_channel =
   then p "    ()";
   p "  =";
   let inputs =
-    List.map op.inputs ~f:(fun input ->
-      if Option.is_some input.number_attr
-      then Printf.sprintf "  ] @ List.map %s ~f:(fun x -> Op.Tensor_handle.P x) @ [" (Input.caml_name input)
-      else Printf.sprintf "Op.Tensor_handle.P %s; " (Input.caml_name input))
+    match op.inputs with
+    | [] -> "[]"
+    | _ :: _ as inputs ->
+      List.group inputs ~break:(fun l r ->
+        Option.is_some l.number_attr || Option.is_some r.number_attr)
+      |> List.map ~f:(function
+        | [] -> assert false
+        | [ input ] when Option.is_some input.Input.number_attr ->
+            Printf.sprintf "List.map %s ~f:(fun x -> Op.Tensor_handle.P x)" (Input.caml_name input)
+        | otherwise ->
+          List.map otherwise ~f:(fun input ->
+            Printf.sprintf "Op.Tensor_handle.P %s" (Input.caml_name input))
+          |> String.concat ~sep:"; "
+          |> Printf.sprintf "[%s]"
+      )
+      |> String.concat ~sep:"@"
   in
-  p "  let inputs = [ %s ] in" (String.concat inputs ~sep:"");
+  p "  let inputs = %s in" inputs;
   let attr_names = Hash_set.create (module String) () in
   p "  let attrs = [";
   List.iter op.output_types ~f:(fun output_type ->
