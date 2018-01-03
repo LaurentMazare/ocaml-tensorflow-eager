@@ -137,7 +137,7 @@ module Attribute = struct
   let ml_apply t out_channel =
     let p s = p out_channel s in
     let caml_name = caml_eval_name t in
-    p "  Op.%s op \"%s\" %s;" (setter t.attr_type) t.name caml_name
+    p "  |> Op.%s ~name:\"%s\" ~value:%s" (setter t.attr_type) t.name caml_name
 end
 
 module Op = struct
@@ -383,13 +383,11 @@ let handle_one_op (op : Op.t) out_channel =
   if List.is_empty op.inputs
   then p "    ()";
   p "  =";
-  p "  let op =";
-  p "    Op.create context \"%s\"" op.name;
+  p "  Op.create context \"%s\"" op.name;
   List.iter op.inputs ~f:(fun input ->
     if Option.is_some input.number_attr
-    then p "    |> fun init -> List.fold %s ~init ~f:Op.add_input" (Input.caml_name input)
-    else p "    |> fun op -> Op.add_input op %s" (Input.caml_name input));
-  p "  in";
+    then p "  |> fun init -> List.fold %s ~init ~f:Op.add_input" (Input.caml_name input)
+    else p "  |> fun op -> Op.add_input op %s" (Input.caml_name input));
   let attr_names = Hash_set.create (module String) () in
   List.iter op.output_types ~f:(fun output_type ->
     Option.iter output_type.name ~f:(fun output_type_name ->
@@ -397,7 +395,7 @@ let handle_one_op (op : Op.t) out_channel =
       if not (Hash_set.mem attr_names output_type_name)
       then begin
         Hash_set.add attr_names output_type_name;
-        p "  Op.set_attr_data_type op \"%s\" %s;" output_type_name output_type_string
+        p "  |> Op.set_attr_data_type ~name:\"%s\" ~value:%s" output_type_name output_type_string
       end));
   List.iter op.inputs ~f:(fun (input : Input.t) ->
     Option.iter input.type_name ~f:(fun type_name ->
@@ -406,7 +404,7 @@ let handle_one_op (op : Op.t) out_channel =
       if not (Hash_set.mem attr_names type_name)
       then begin
         Hash_set.add attr_names type_name;
-        p "  Op.set_attr_data_type op \"%s\" %s;" type_name type_string
+        p "  |> Op.set_attr_data_type ~name:\"%s\" ~value:%s" type_name type_string
       end));
   List.iter op.attributes ~f:(fun attribute -> Attribute.ml_apply attribute out_channel);
   begin
@@ -415,8 +413,8 @@ let handle_one_op (op : Op.t) out_channel =
       let attr =
         List.find_exn op.attributes ~f:(fun attribute -> String.(=) attribute.name attr)
       in
-      p "  Op.execute op ~output_len:%s" (Attribute.caml_eval_name attr)
-    | _ -> p "  Op.execute%d op" (List.length op.output_types)
+      p "  |> Op.execute ~output_len:%s" (Attribute.caml_eval_name attr)
+    | _ -> p "  |> Op.execute%d" (List.length op.output_types)
   end;
   p ""
 

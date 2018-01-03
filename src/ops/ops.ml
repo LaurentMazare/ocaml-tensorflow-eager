@@ -8,17 +8,15 @@ let (/) = div
 let context = Op.default_context ()
 
 let print ?(summarize=20) ?(message = "") tensor_handle =
-  let op =
-    Op.create context "Print"
-    |> fun op -> Op.add_input op tensor_handle
-    |> fun op -> Op.add_input op tensor_handle
-  in
   let data_type = Op.Tensor_handle.data_type tensor_handle in
-  Op.set_attr_data_type op "T" data_type;
-  Op.set_attr_data_type_list op "U" [data_type];
-  Op.set_attr_string op "message" message;
-  Op.set_attr_int op "summarize" summarize;
-  Op.set_attr_int op "first_n" (-1);
-  Op.execute0 op
+  Op.create context "Print"
+  |> fun op -> Op.add_input op tensor_handle
+  |> fun op -> Op.add_input op tensor_handle
+  |> Op.set_attr_data_type ~name:"T" ~value:data_type
+  |> Op.set_attr_data_type_list ~name:"U" ~value:[data_type]
+  |> Op.set_attr_string ~name:"message" ~value:message
+  |> Op.set_attr_int ~name:"summarize" ~value:summarize
+  |> Op.set_attr_int ~name:"first_n" ~value:(-1)
+  |> Op.execute0
 
 let mm = matMul

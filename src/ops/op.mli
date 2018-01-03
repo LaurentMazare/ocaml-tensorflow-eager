@@ -39,18 +39,18 @@ val default_context : unit -> context
 
 val create : context -> string -> t
 
-val set_attr_bool : t -> string -> bool -> unit
-val set_attr_float : t -> string -> float -> unit
-val set_attr_float_list : t -> string -> float list -> unit
-val set_attr_int : t -> string -> int -> unit
-val set_attr_int_list : t -> string -> int list -> unit
-val set_attr_shape : t -> string -> int list -> unit
-val set_attr_shape_list : t -> string -> int list list -> unit
-val set_attr_string : t -> string -> string -> unit
-val set_attr_type : t -> string -> _ Operation.Type.t -> unit
-val set_attr_type_list : t -> string -> Operation.Type.p list -> unit
-val set_attr_data_type : t -> string -> Wrapper.data_type -> unit
-val set_attr_data_type_list : t -> string -> Wrapper.data_type list -> unit
+val set_attr_bool : t -> name:string -> value:bool -> t
+val set_attr_float : t -> name:string -> value:float -> t
+val set_attr_float_list : t -> name:string -> value:float list -> t
+val set_attr_int : t -> name:string -> value:int -> t
+val set_attr_int_list : t -> name:string -> value:int list -> t
+val set_attr_shape : t -> name:string -> value:int list -> t
+val set_attr_shape_list : t -> name:string -> value:int list list -> t
+val set_attr_string : t -> name:string -> value:string -> t
+val set_attr_type : t -> name:string -> value:_ Operation.Type.t -> t
+val set_attr_type_list : t -> name:string -> value:Operation.Type.p list -> t
+val set_attr_data_type : t -> name:string -> value:Wrapper.data_type -> t
+val set_attr_data_type_list : t -> name:string -> value:Wrapper.data_type list -> t
 
 val add_input : t -> _ Tensor_handle.t -> t
 
