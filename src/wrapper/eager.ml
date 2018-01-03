@@ -82,39 +82,6 @@ module Tensor_handle = struct
 
   let of_string string = of_strings [ string ] ~shape:[]
   let of_string_exn string = of_strings_exn [ string ] ~shape:[]
-
-  let scalar_exn type_ value =
-    let tensor = Tensor.create type_ [||] in
-    Tensor.set tensor [||] value;
-    create_exn (Tensor.P tensor)
-
-  let scalar_i32_exn int = scalar_exn Int32 (Int32.of_int int)
-  let scalar_f32_exn = scalar_exn Float32
-  let scalar_f64_exn = scalar_exn Float64
-
-  let vec_exn type_ list =
-    let tensor = Tensor.create type_ [| List.length list |] in
-    Tensor.copy_elt_list tensor list;
-    create_exn (Tensor.P tensor)
-
-  let vec_i32_exn list = vec_exn Int32 (List.map Int32.of_int list)
-  let vec_f32_exn = vec_exn Float32
-  let vec_f64_exn = vec_exn Float64
-
-  let resolve_scalar_float_exn t =
-    let output_tensor = resolve_exn t in
-    match Tensor.float32 output_tensor with
-    | Some tensor -> Tensor.get tensor [||]
-    | None ->
-      match Tensor.float64 output_tensor with
-      | Some tensor -> Tensor.get tensor [||]
-      | None -> failwith "not a float32/float64 tensor"
-
-  let resolve_vec_float_exn t =
-    resolve_exn t |> Tensor.to_float_list
-
-  let resolve_vec_int_exn t =
-    resolve_exn t |> Tensor.to_int_list
 end
 
 module Op = struct

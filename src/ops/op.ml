@@ -34,35 +34,46 @@ module Tensor_handle = struct
     Eager.Tensor_handle.of_string_exn str
     |> create_no_tape_info
 
-  let scalar_i32_exn i =
-    Eager.Tensor_handle.scalar_i32_exn i
+  let scalar_exn type_ value =
+    let tensor = Tensor.create type_ [||] in
+    Tensor.set tensor [||] value;
+    Eager.Tensor_handle.create_exn (Tensor.P tensor)
     |> create_no_tape_info
 
-  let scalar_f32_exn f =
-    Eager.Tensor_handle.scalar_f32_exn f
+  let vec_exn type_ list =
+    let tensor = Tensor.create type_ [| List.length list |] in
+    Tensor.copy_elt_list tensor list;
+    Eager.Tensor_handle.create_exn (Tensor.P tensor)
     |> create_no_tape_info
 
-  let scalar_f64_exn f =
-    Eager.Tensor_handle.scalar_f64_exn f
-    |> create_no_tape_info
+  let scalar_i32_exn i = scalar_exn Int32 (Int32.of_int_exn i)
 
-  let vec_i32_exn i =
-    Eager.Tensor_handle.vec_i32_exn i
-    |> create_no_tape_info
+  let scalar_f32_exn f = scalar_exn Float32 f
 
-  let vec_f32_exn f =
-    Eager.Tensor_handle.vec_f32_exn f
-    |> create_no_tape_info
+  let scalar_f64_exn f = scalar_exn Float64 f
 
-  let vec_f64_exn f =
-    Eager.Tensor_handle.vec_f64_exn f
-    |> create_no_tape_info
+  let vec_i32_exn i = vec_exn Int32 (List.map ~f:Int32.of_int_exn i)
 
+  let vec_f32_exn f = vec_exn Float32 f
+
+  let vec_f64_exn f = vec_exn Float64 f
 
   let resolve_exn t = Eager.Tensor_handle.resolve_exn t.handle
-  let resolve_scalar_float_exn t = Eager.Tensor_handle.resolve_scalar_float_exn t.handle
-  let resolve_vec_float_exn t = Eager.Tensor_handle.resolve_vec_float_exn t.handle
-  let resolve_vec_int_exn t = Eager.Tensor_handle.resolve_vec_int_exn t.handle
+  let resolve_scalar_float_exn t =
+    let output_tensor = resolve_exn t in
+    match Tensor.float32 output_tensor with
+    | Some tensor -> Tensor.get tensor [||]
+    | None ->
+      match Tensor.float64 output_tensor with
+      | Some tensor -> Tensor.get tensor [||]
+      | None -> failwith "not a float32/float64 tensor"
+
+  let resolve_vec_float_exn t =
+    resolve_exn t |> Tensor.to_float_list
+
+  let resolve_vec_int_exn t =
+    resolve_exn t |> Tensor.to_int_list
+
   let dims t = Eager.Tensor_handle.dims t.handle
   let data_type t = Eager.Tensor_handle.data_type t.handle
 
