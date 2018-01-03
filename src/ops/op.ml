@@ -110,7 +110,8 @@ let set_attr_shape_list t name values =
 
 let add_input t th =
   Eager.Op.add_input t th.Tensor_handle.handle
-  |> Wrapper.Status.ok_exn
+  |> Wrapper.Status.ok_exn;
+  t
 
 let execute t ~output_len =
   Eager.execute_exn t ~output_len

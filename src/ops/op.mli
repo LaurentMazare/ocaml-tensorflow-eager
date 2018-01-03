@@ -52,7 +52,7 @@ val set_attr_type_list : t -> string -> Operation.Type.p list -> unit
 val set_attr_data_type : t -> string -> Wrapper.data_type -> unit
 val set_attr_data_type_list : t -> string -> Wrapper.data_type list -> unit
 
-val add_input : t -> _ Tensor_handle.t -> unit
+val add_input : t -> _ Tensor_handle.t -> t
 
 val execute : t -> output_len:int -> _ Tensor_handle.t list
 

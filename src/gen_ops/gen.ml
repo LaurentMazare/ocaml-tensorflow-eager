@@ -383,11 +383,13 @@ let handle_one_op (op : Op.t) out_channel =
   if List.is_empty op.inputs
   then p "    ()";
   p "  =";
-  p "  let op = Op.create context \"%s\" in" op.name;
+  p "  let op =";
+  p "    Op.create context \"%s\"" op.name;
   List.iter op.inputs ~f:(fun input ->
     if Option.is_some input.number_attr
-    then p "  List.iter %s ~f:(Op.add_input op);" (Input.caml_name input)
-    else p "  Op.add_input op %s;" (Input.caml_name input));
+    then p "    |> fun init -> List.fold %s ~init ~f:Op.add_input" (Input.caml_name input)
+    else p "    |> fun op -> Op.add_input op %s" (Input.caml_name input));
+  p "  in";
   let attr_names = Hash_set.create (module String) () in
   List.iter op.output_types ~f:(fun output_type ->
     Option.iter output_type.name ~f:(fun output_type_name ->
