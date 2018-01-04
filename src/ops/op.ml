@@ -84,17 +84,6 @@ module Tensor_handle = struct
     { t with tape_info = Some (Tape_info.create ()) }
 end
 
-type t =
-  { op : Eager.Op.t
-  ; inputs : Tensor_handle.p list
-  }
-
-type context = Eager.Context.t
-
-let default_context () =
-  Eager.Context.create ()
-  |> Wrapper.Status.ok_exn
-
 type attr =
   [ `bool of bool
   | `float of float
@@ -108,6 +97,19 @@ type attr =
   | `string of string
   | `type_ of Tf_core.Wrapper.data_type
   ]
+
+type t =
+  { op : Eager.Op.t
+  ; name : Name.t
+  ; inputs : Tensor_handle.p list
+  ; attrs : (string * attr) list
+  }
+
+type context = Eager.Context.t
+
+let default_context () =
+  Eager.Context.create ()
+  |> Wrapper.Status.ok_exn
 
 let create context name inputs attrs =
   let op = Eager.Op.create context (Name.to_string name) |> Wrapper.Status.ok_exn in
@@ -131,7 +133,7 @@ let create context name inputs attrs =
     | `shape value -> Eager.Op.set_attr_shape op name value |> Wrapper.Status.ok_exn
     | `list_shape value -> Eager.Op.set_attr_shape_list op name value |> Wrapper.Status.ok_exn
   );
-  { op; inputs = [] }
+  { op; name; inputs; attrs }
 
 let create_handle t handle =
   let tape_info =
