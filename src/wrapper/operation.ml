@@ -44,6 +44,20 @@ module Type = struct
     | `dt_variant -> Some (P Variant)
     | _ -> None
 
+  let of_data_type = function
+    | Wrapper.TF_FLOAT -> Some (P Float)
+    | TF_DOUBLE -> Some (P Double)
+    | TF_UINT8 -> Some (P UInt8)
+    | TF_UINT16 -> Some (P UInt16)
+    | TF_INT32 -> Some (P Int32)
+    | TF_INT64 -> Some (P Int64)
+    | TF_COMPLEX -> Some (P Complex64)
+    | TF_BOOL -> Some (P Bool)
+    | TF_STRING -> Some (P String)
+    | TF_RESOURCE -> Some (P Resource)
+    | TF_VARIANT -> Some (P Variant)
+    | _ -> None
+
   let to_data_type = function
     | P Unit -> assert false
     | P Float -> Wrapper.TF_FLOAT

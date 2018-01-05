@@ -48,6 +48,7 @@ module Type : sig
        ]
 
   val to_data_type : p -> Wrapper.data_type
+  val of_data_type : Wrapper.data_type -> p option
 end
 
 module Tensor_attr : sig
