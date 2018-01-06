@@ -14,6 +14,7 @@ module Tape_info : sig
 end
 
 module Tensor_handle : sig
+  module Id : Identifiable.S
   type _ t
   type p = P : _ t -> p
 
@@ -46,6 +47,7 @@ module Tensor_handle : sig
   (* Tape/gradient related operations. *)
   val tape_info : 'a t -> [ `none | `leaf | `node of p Tape_info.t ]
   val watch : 'a t -> 'a t
+  val id : _ t -> Id.t
 end
 
 type context

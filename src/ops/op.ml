@@ -38,14 +38,29 @@ end = struct
 end
 
 module Tensor_handle = struct
+  module Id : sig
+    include Identifiable.S
+    val create : unit -> t
+  end = struct
+    include Int
+    let create =
+      let counter = ref 0 in
+      fun () ->
+        incr counter;
+        !counter
+  end
+
   type 'a t =
-    { handle : 'a Eager.Tensor_handle.t
+    { id : Id.t
+    ; handle : 'a Eager.Tensor_handle.t
     ; tape_info : [ `none | `leaf | `node of p Tape_info.t ]
     }
   and p = P : _ t -> p
 
-  let create_no_tape_info handle = { handle; tape_info = `none }
+  let create_no_tape_info handle =
+    { id = Id.create(); handle; tape_info = `none }
 
+  let id t = t.id
   let tape_info t = t.tape_info
 
   let create_exn tensor =
@@ -105,7 +120,7 @@ module Tensor_handle = struct
   let data_type_p (P t) = Eager.Tensor_handle.data_type t.handle
 
   let watch t =
-    { t with tape_info = `leaf }
+    { handle = t.handle; id = Id.create (); tape_info = `leaf }
 
   let is_watched (P t) =
     match t.tape_info with
@@ -156,7 +171,8 @@ let create_handle t handle =
     then `node (Tape_info.create t.name t.inputs t.attrs)
     else `none
   in
-  { Tensor_handle.handle
+  { Tensor_handle.id = Tensor_handle.Id.create ()
+  ; handle
   ; tape_info
   }
 
