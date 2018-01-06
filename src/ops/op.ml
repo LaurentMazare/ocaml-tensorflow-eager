@@ -3,26 +3,44 @@ open Tf_core
 
 module Name : Identifiable.S = String
 
-module Tape_info : sig
-  type t
-  val create : unit -> t
-end = struct
-  (* TODO *)
-  type t = unit
+type attr =
+  [ `bool of bool
+  | `float of float
+  | `int of int
+  | `list_float of float list
+  | `list_int of int list
+  | `list_shape of int list list
+  | `list_type of Tf_core.Wrapper.data_type list
+  | `list_type_p of Operation.Type.p list
+  | `shape of int list
+  | `string of string
+  | `type_ of Tf_core.Wrapper.data_type
+  ]
 
-  let create () = ()
+
+module Tape_info : sig
+  type 'a t
+  val create : Name.t -> 'a list -> (string * attr) list -> 'a t
+end = struct
+  type 'a t =
+    { op_name : Name.t
+    ; inputs : 'a list
+    ; attrs : (string * attr) list
+    }
+
+  let create op_name inputs attrs =
+    { op_name; inputs; attrs }
 end
 
 module Tensor_handle = struct
   type 'a t =
     { handle : 'a Eager.Tensor_handle.t
-    ; tape_info : Tape_info.t option
+    ; tape_info : [ `none | `leaf | `node of p Tape_info.t ]
     }
-
-  type p = P : _ t -> p
+  and p = P : _ t -> p
 
   let create_no_tape_info handle =
-    { handle; tape_info = None }
+    { handle; tape_info = `none }
 
   let create_exn tensor =
     Eager.Tensor_handle.create_exn tensor
@@ -81,22 +99,13 @@ module Tensor_handle = struct
   let data_type_p (P t) = Eager.Tensor_handle.data_type t.handle
 
   let watch t =
-    { t with tape_info = Some (Tape_info.create ()) }
-end
+    { t with tape_info = `leaf }
 
-type attr =
-  [ `bool of bool
-  | `float of float
-  | `int of int
-  | `list_float of float list
-  | `list_int of int list
-  | `list_shape of int list list
-  | `list_type of Tf_core.Wrapper.data_type list
-  | `list_type_p of Operation.Type.p list
-  | `shape of int list
-  | `string of string
-  | `type_ of Tf_core.Wrapper.data_type
-  ]
+  let is_watched (P t) =
+    match t.tape_info with
+    | `none -> false
+    | `leaf | `node _ -> true
+end
 
 type t =
   { op : Eager.Op.t
@@ -137,9 +146,9 @@ let create context name inputs attrs =
 
 let create_handle t handle =
   let tape_info =
-    if List.exists t.inputs ~f:(fun (Tensor_handle.P th) -> Option.is_some (th.tape_info))
-    then Some (Tape_info.create ())
-    else None
+    if List.exists t.inputs ~f:(fun p -> Tensor_handle.is_watched p)
+    then `node (Tape_info.create t.name t.inputs t.attrs)
+    else `none
   in
   { Tensor_handle.handle
   ; tape_info
