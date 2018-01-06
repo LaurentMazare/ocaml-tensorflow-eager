@@ -11,6 +11,7 @@ module Tape_info : sig
 
   val op_name : _ t -> Name.t
   val inputs : 'a t -> 'a list
+  val output_idx : 'a t -> int option
 end
 
 module Tensor_handle : sig

@@ -23,6 +23,7 @@ module Tape_info : sig
   val create : Name.t -> 'a list -> (string * attr) list -> 'a t
   val op_name : _ t -> Name.t
   val inputs : 'a t -> 'a list
+  val output_idx : 'a t -> int option
 end = struct
   type 'a t =
     { op_name : Name.t
@@ -35,6 +36,7 @@ end = struct
 
   let op_name t = t.op_name
   let inputs t = t.inputs
+  let output_idx _ = None (* TODO *)
 end
 
 module Tensor_handle = struct
