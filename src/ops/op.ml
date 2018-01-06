@@ -62,6 +62,7 @@ module Tensor_handle = struct
 
   let id t = t.id
   let tape_info t = t.tape_info
+  let type_ t = Eager.Tensor_handle.type_ t.handle
 
   let create_exn tensor =
     Eager.Tensor_handle.create_exn tensor

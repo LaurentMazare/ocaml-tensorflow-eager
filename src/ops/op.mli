@@ -48,6 +48,7 @@ module Tensor_handle : sig
   val tape_info : 'a t -> [ `none | `leaf | `node of p Tape_info.t ]
   val watch : 'a t -> 'a t
   val id : _ t -> Id.t
+  val type_ : 'a t -> 'a Operation.Type.t
 end
 
 type context

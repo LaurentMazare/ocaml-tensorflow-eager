@@ -30,6 +30,8 @@ module Tensor_handle : sig
 
   val of_string : string -> [ `string ] t Status.result
   val of_string_exn : string -> [ `string ] t
+
+  val type_ : 'a t -> 'a Operation.Type.t
 end
 
 module Op : sig

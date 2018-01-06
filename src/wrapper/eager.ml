@@ -63,6 +63,13 @@ module Tensor_handle = struct
     Tfe_tensor_handle.tfe_tensorhandledatatype t
     |> Wrapper.int_to_data_type
 
+  let type_ t =
+    data_type t
+    |> Operation.Type.of_data_type
+    (* TODO: this is a very nasty hack, we should properly store the type
+       information in t. *)
+    |> fun (Operation.Type.P type_) -> Obj.magic type_
+
   let of_strings strings ~shape =
     let status = Status.create () in
     let status_ptr = Status.to_ptr status in

@@ -45,18 +45,19 @@ module Type = struct
     | _ -> None
 
   let of_data_type = function
-    | Wrapper.TF_FLOAT -> Some (P Float)
-    | TF_DOUBLE -> Some (P Double)
-    | TF_UINT8 -> Some (P UInt8)
-    | TF_UINT16 -> Some (P UInt16)
-    | TF_INT32 -> Some (P Int32)
-    | TF_INT64 -> Some (P Int64)
-    | TF_COMPLEX -> Some (P Complex64)
-    | TF_BOOL -> Some (P Bool)
-    | TF_STRING -> Some (P String)
-    | TF_RESOURCE -> Some (P Resource)
-    | TF_VARIANT -> Some (P Variant)
-    | _ -> None
+    | Wrapper.TF_FLOAT -> P Float
+    | TF_DOUBLE -> P Double
+    | TF_UINT8 -> P UInt8
+    | TF_UINT16 -> P UInt16
+    | TF_INT32 -> P Int32
+    | TF_INT64 -> P Int64
+    | TF_COMPLEX -> P Complex64
+    | TF_BOOL -> P Bool
+    | TF_STRING -> P String
+    | TF_RESOURCE -> P Resource
+    | TF_VARIANT -> P Variant
+    (* Use variant for unknown types. *)
+    | _ -> P Variant
 
   let to_data_type = function
     | P Unit -> assert false
