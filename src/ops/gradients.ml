@@ -2,20 +2,6 @@ open Base
 module T = Op.Tensor_handle
 module Type = Tf_core.Operation.Type
 
-module Registered_gradients : sig
-  val find
-    :  Op.Name.t
-    -> (self:T.p -> gradient:T.p -> T.p option list) option
-  val find_multi
-    :  Op.Name.t
-    -> (self:T.p -> gradients:T.p Map.M(Int).t -> T.p option list) option
-end = struct
-  let find _ = failwith "TODO"
-  let find_multi _ = failwith "TODO"
-end
-
-exception No_derivative_for_op of Op.Name.t
-
 let extract : type a . T.p -> a Type.t -> a T.t option = fun p type_ ->
   let T.P t = p in
   match T.type_ t, type_ with
@@ -28,6 +14,62 @@ let extract : type a . T.p -> a Type.t -> a T.t option = fun p type_ ->
   | Type.Float, Type.Float -> Some t
   | Type.Double, Type.Double -> Some t
   | _, _ -> None
+
+module Registered_gradients = struct
+  let table = Hashtbl.create (module Op.Name) ()
+
+  type t =
+    { f : 'a .
+            (  self:([< `float | `double] as 'a) T.t
+            -> gradient:'a T.t
+            -> T.p option list)
+    }
+
+  let add op t =
+    let f ~self:(T.P self) ~gradient:(T.P gradient) =
+      match T.type_ self, T.type_ gradient with
+      | Type.Double, Type.Double -> t.f ~self ~gradient
+      | Type.Float, Type.Float -> t.f ~self ~gradient
+      | _, _ ->
+        Printf.failwithf "Inconsistent types %s" (Op.Name.to_string op) ()
+    in
+    Hashtbl.set table ~key:op ~data:f
+
+  let find = Hashtbl.find table
+
+  let table_multi = Hashtbl.create (module Op.Name) ()
+
+  type multi =
+    { g : 'a .
+            (  self:([< `float | `double] as 'a) T.t
+            -> gradients:'a T.t Map.M(Int).t
+            -> T.p option list)
+    }
+
+  let add_multi op t =
+    let f ~self:(T.P self) ~gradients =
+      match T.type_ self with
+      | Type.Double ->
+        let gradients =
+          Map.map gradients ~f:(fun gradient ->
+            Option.value_exn (extract gradient Double))
+        in
+        t.g ~self ~gradients
+      | Type.Float ->
+        let gradients =
+          Map.map gradients ~f:(fun gradient ->
+            Option.value_exn (extract gradient Float))
+        in
+        t.g ~self ~gradients
+      | _ ->
+        Printf.failwithf "Inconsistent types %s" (Op.Name.to_string op) ()
+    in
+    Hashtbl.set table_multi ~key:op ~data:f
+
+  let find_multi = Hashtbl.find table_multi
+end
+
+exception No_derivative_for_op of Op.Name.t
 
 (* Return a table mapping 'useful node' names to the number of times they
    appear as input of other useful nodes.
