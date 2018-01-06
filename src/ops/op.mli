@@ -5,6 +5,14 @@ open Tf_core
 module Name : Identifiable.S
 
 type t
+
+module Tape_info : sig
+  type _ t
+
+  val op_name : _ t -> Name.t
+  val inputs : 'a t -> 'a list
+end
+
 module Tensor_handle : sig
   type _ t
   type p = P : _ t -> p
@@ -35,6 +43,8 @@ module Tensor_handle : sig
 
   val resolve_vec_int_exn : [< `int32 | `int64 ] t -> int list
 
+  (* Tape/gradient related operations. *)
+  val tape_info : 'a t -> [ `none | `leaf | `node of p Tape_info.t ]
   val watch : 'a t -> 'a t
 end
 

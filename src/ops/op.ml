@@ -19,8 +19,10 @@ type attr =
 
 
 module Tape_info : sig
-  type 'a t
+  type _ t
   val create : Name.t -> 'a list -> (string * attr) list -> 'a t
+  val op_name : _ t -> Name.t
+  val inputs : 'a t -> 'a list
 end = struct
   type 'a t =
     { op_name : Name.t
@@ -30,6 +32,9 @@ end = struct
 
   let create op_name inputs attrs =
     { op_name; inputs; attrs }
+
+  let op_name t = t.op_name
+  let inputs t = t.inputs
 end
 
 module Tensor_handle = struct
@@ -39,8 +44,9 @@ module Tensor_handle = struct
     }
   and p = P : _ t -> p
 
-  let create_no_tape_info handle =
-    { handle; tape_info = `none }
+  let create_no_tape_info handle = { handle; tape_info = `none }
+
+  let tape_info t = t.tape_info
 
   let create_exn tensor =
     Eager.Tensor_handle.create_exn tensor
