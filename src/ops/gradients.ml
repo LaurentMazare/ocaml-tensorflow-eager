@@ -86,26 +86,27 @@ let uses_per_id th =
       | Type.Double -> true
       | _ -> false
     in
-    if is_real
+    let current_uses = Hashtbl.find uses_per_id id |> Option.value ~default:0 in
+    if not is_real
     then false
     else
       match T.tape_info th with
       | `none -> false
-      | `leaf -> true
+      | `leaf ->
+        Hashtbl.set uses_per_id ~key:id ~data:(1 + current_uses);
+        true
       | `node tape_info ->
         let inputs = Op.Tape_info.inputs tape_info in
         (* The [is_useful] function should be applied recursively to children only once.
            It should also apply to all children, hence the List.map ... |> List.exists below.
         *)
-        let current_uses = Hashtbl.find uses_per_id id in
         let is_useful =
-          (  Option.is_some current_uses
+          (  current_uses > 0
           || List.map inputs ~f:is_useful |> List.exists ~f:Fn.id)
         in
         if is_useful
         then begin
-          let use_count = Option.value current_uses ~default:0 in
-          Hashtbl.set uses_per_id ~key:id ~data:(1 + use_count)
+          Hashtbl.set uses_per_id ~key:id ~data:(1 + current_uses)
         end;
         is_useful
   in
@@ -146,27 +147,31 @@ let compute th =
   let output_gradients = Hashtbl.create (module T.Id) () in
   let rec add_contribution (T.P th) ~gradient =
     let id = T.id th in
-    let gradients = Hashtbl.find contributions id in
-    match T.tape_info th with
-    | `none -> ()
-    | `leaf ->
-      let gradient =
-        Option.map gradients ~f:(fun gradients ->
-          List.map gradients ~f:snd |> aggregate_contributions)
-      in
-      Hashtbl.add_exn output_gradients ~key:id ~data:gradient
-    | `node tape_info ->
-      match Hashtbl.find uses_per_id id with
-      | None -> ()
-      | Some uses ->
-        assert (uses > 0);
-        Option.iter gradient ~f:(fun gradient ->
-          Hashtbl.add_multi contributions ~key:id
-            ~data:(Op.Tape_info.output_idx tape_info, gradient));
-        let uses = uses - 1 in
-        Hashtbl.set uses_per_id ~key:id ~data:uses;
-        if uses = 0
-        then
+    match Hashtbl.find uses_per_id id with
+    | None -> ()
+    | Some uses ->
+      assert (uses > 0);
+      Option.iter gradient ~f:(fun gradient ->
+        let output_idx =
+          match T.tape_info th with
+          | `none | `leaf -> None
+          | `node tape_info -> Op.Tape_info.output_idx tape_info
+        in
+        Hashtbl.add_multi contributions ~key:id ~data:(output_idx, gradient));
+      let uses = uses - 1 in
+      Hashtbl.set uses_per_id ~key:id ~data:uses;
+      if uses = 0
+      then begin
+        let gradients = Hashtbl.find contributions id in
+        match T.tape_info th with
+        | `none -> ()
+        | `leaf ->
+          let gradient =
+            Option.map gradients ~f:(fun gradients ->
+              List.map gradients ~f:snd |> aggregate_contributions)
+          in
+          Hashtbl.add_exn output_gradients ~key:id ~data:gradient
+        | `node tape_info ->
           let op_name = Op.Tape_info.op_name tape_info in
           let inputs = Op.Tape_info.inputs tape_info in
           match gradients with
@@ -195,6 +200,7 @@ let compute th =
                   ~f:(fun gradient input -> add_contribution input ~gradient)
               with
               | exn -> Exn.reraise exn (Op.Name.to_string op_name)
+      end
   in
   let one = ones_like th in
   add_contribution (P th) ~gradient:(Some one);
