@@ -219,11 +219,9 @@ let compute th =
         match T.tape_info th with
         | `none -> ()
         | `leaf ->
-          let gradient =
-            Option.map gradients ~f:(fun gradients ->
-              List.map gradients ~f:snd |> aggregate_contributions)
-          in
-          Hashtbl.add_exn output_gradients ~key:id ~data:gradient
+          Option.iter gradients ~f:(fun gradients ->
+            let gradient = List.map gradients ~f:snd |> aggregate_contributions in
+            Hashtbl.add_exn output_gradients ~key:id ~data:gradient)
         | `node tape_info ->
           let op_name = Op.Tape_info.op_name tape_info in
           let inputs = Op.Tape_info.inputs tape_info in
