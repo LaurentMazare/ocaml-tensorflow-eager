@@ -7,11 +7,14 @@ let () =
   let x = Tensor_handle.scalar_f32_exn 2. in
   let x = Tensor_handle.watch x in
   let x_square_plus_one = Ops.(x * x + x) in
-  Ops.print x_square_plus_one;
-  let gradients = Tf_ops.Gradients.compute x_square_plus_one in
-  Hashtbl.iteri gradients ~f:(fun ~key ~data ->
-    printf "%s:\n" (Tensor_handle.Id.to_string key);
+  let x_value = Tensor_handle.resolve_scalar_float_exn x_square_plus_one in
+  printf "f(x) = %f\n%!" x_value;
+  Tf_ops.Gradients.compute x_square_plus_one
+  |> Hashtbl.iteri ~f:(fun ~key ~data ->
+    printf "df/d%s(x) = " (Tensor_handle.Id.to_string key);
     match data with
-    | None -> printf "none\n"
-    | Some (Tensor_handle.P value) -> Ops.print value
+    | None -> printf "none\n%!"
+    | Some value ->
+      let value = Tensor_handle.unpack_exn value Float in
+      printf "%f\n%!" (Tensor_handle.resolve_scalar_float_exn value)
   )

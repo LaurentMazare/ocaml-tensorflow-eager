@@ -45,11 +45,14 @@ module Tensor_handle : sig
 
   val resolve_vec_int_exn : [< `int32 | `int64 ] t -> int list
 
+  val id : _ t -> Id.t
+  val type_ : 'a t -> 'a Operation.Type.t
+  val unpack : p -> 'a Operation.Type.t -> 'a t option
+  val unpack_exn : p -> 'a Operation.Type.t -> 'a t
+
   (* Tape/gradient related operations. *)
   val tape_info : 'a t -> [ `none | `leaf | `node of p Tape_info.t ]
   val watch : 'a t -> 'a t
-  val id : _ t -> Id.t
-  val type_ : 'a t -> 'a Operation.Type.t
 end
 
 type context

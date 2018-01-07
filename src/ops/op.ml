@@ -66,6 +66,34 @@ module Tensor_handle = struct
   let tape_info t = t.tape_info
   let type_ t = Eager.Tensor_handle.type_ t.handle
 
+  let unpack : type a . p -> a Operation.Type.t -> a t option = fun (P t) target_type ->
+    match type_ t, target_type with
+    (* TODO: move this pattern matching to an equality witness ? *)
+    | Operation.Type.Unit, Operation.Type.Unit -> Some t
+    | Operation.Type.Float, Operation.Type.Float -> Some t
+    | Operation.Type.Double, Operation.Type.Double -> Some t
+    | Operation.Type.UInt8, Operation.Type.UInt8 -> Some t
+    | Operation.Type.UInt16, Operation.Type.UInt16 -> Some t
+    | Operation.Type.Int32, Operation.Type.Int32 -> Some t
+    | Operation.Type.Int64, Operation.Type.Int64 -> Some t
+    | Operation.Type.Complex64, Operation.Type.Complex64 -> Some t
+    | Operation.Type.Bool, Operation.Type.Bool -> Some t
+    | Operation.Type.String, Operation.Type.String -> Some t
+    | Operation.Type.Resource, Operation.Type.Resource -> Some t
+    | Operation.Type.Variant, Operation.Type.Variant -> Some t
+    | _, _ -> None
+
+  let unpack_exn : type a . p -> a Operation.Type.t -> a t = fun p target_type ->
+    match unpack p target_type with
+    | Some t -> t
+    | None ->
+      let P t = p in
+      let tensor_type = type_ t in
+      Printf.failwithf "type mismatch in unpack_exn, tensor: %s target: %s"
+        Operation.Type.(to_string (P tensor_type))
+        Operation.Type.(to_string (P target_type))
+        ()
+
   let create_exn tensor =
     Eager.Tensor_handle.create_exn tensor
     |> create_no_tape_info
