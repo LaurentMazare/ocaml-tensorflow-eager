@@ -47,7 +47,7 @@ df/d2(x) = 5.000000
 
 In order to build this on linux, download the [TensorFlow 1.4.0 binaries](https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.4.0.tar.gz). If this is unpacked at `TFPATH` compiling can be done via:
 ```bash
-LIBRARY_PATH=$TFPATH/lib:$LIBRARY_PATH C_INCLUDE_PATH=$TFPATH/include:$C_INCLUDE_PATH make all
+LD_LIBRARY_PATH=$TFPATH/lib:$LD_LIBRARY_PATH LIBRARY_PATH=$TFPATH/lib:$LIBRARY_PATH make all
 ```
 
 For the [VGG-19 example](https://github.com/LaurentMazare/ocaml-tf/tree/master/examples/vgg19.ml), the weights are available [here](http://download.tensorflow.org/models/vgg_19_2016_08_28.tar.gz).
