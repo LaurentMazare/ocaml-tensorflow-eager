@@ -1,9 +1,8 @@
-module Ops = Tf_ops.Ops
-module Tensor_handle = Tf_ops.Op.Tensor_handle
+module O = Tf_ops.Ops
 
 let () =
-  let twenty_one = Tensor_handle.scalar_f32_exn 21. in
-  let forty_two = Ops.(twenty_one + twenty_one) in
-  Ops.print forty_two;
-  let forty_two = Tensor_handle.to_float_exn forty_two in
+  let twenty_one = O.f32 21. in
+  let forty_two = O.(twenty_one + twenty_one) in
+  O.print forty_two;
+  let forty_two = O.to_float forty_two in
   Printf.printf "Hello World %f!\n" forty_two

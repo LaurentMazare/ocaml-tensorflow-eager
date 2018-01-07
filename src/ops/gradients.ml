@@ -188,8 +188,8 @@ let aggregate_contributions_multi gradients =
 let ones_like (type a) (th : a T.t) =
     let shape_as v = T.P (Ops.fill (Ops.shape th ~type_out_type:Int32) v) in
     match T.type_ th with
-    | Type.Float -> T.scalar_f32_exn 1. |> shape_as
-    | Type.Double -> T.scalar_f64_exn 1. |> shape_as
+    | Type.Float -> Ops.f32 1. |> shape_as
+    | Type.Double -> Ops.f64 1. |> shape_as
     | _ -> assert false
 
 (* Compute the gradients of [th] with respect to leafs using backpropagation.

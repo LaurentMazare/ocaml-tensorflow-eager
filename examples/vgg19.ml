@@ -7,10 +7,10 @@ module Tensor_handle = Tf_ops.Op.Tensor_handle
 module Type = Tf_core.Operation.Type
 
 (* The weights can be found here: http://download.tensorflow.org/models/vgg_19_2016_08_28.tar.gz *)
-let ckpt_file = Tensor_handle.of_string_exn "vgg_19.ckpt"
+let ckpt_file = Ops.of_string "vgg_19.ckpt"
 
 let restore ~name ~shape:_ =
-  Ops.restore ckpt_file (Tensor_handle.of_string_exn name)
+  Ops.restore ckpt_file (Ops.of_string name)
     ~type_dt:Type.Float
 
 let conv2d th ~in_channels ~out_channels ~name =
@@ -21,7 +21,7 @@ let conv2d th ~in_channels ~out_channels ~name =
 
 let max_pool th = Ops.maxPool th ~ksize:[1; 2; 2; 1] ~strides:[1; 2; 2; 1] ~padding:"SAME"
 
-let reshape th ~shape = Ops.reshape th (Tensor_handle.vec_i32_exn shape)
+let reshape th ~shape = Ops.reshape th (Ops.vec_i32 shape)
 
 let dense ~name out_dims th =
   let in_dims = Tensor_handle.dims th |> List.tl_exn in

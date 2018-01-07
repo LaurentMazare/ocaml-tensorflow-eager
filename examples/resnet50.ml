@@ -5,11 +5,11 @@ module O = Tf_ops.Ops
 module T = Tf_ops.Op.Tensor_handle
 module Type = Tf_core.Operation.Type
 
-let ckpt_file = T.of_string_exn "resnet_v1_50.ckpt"
+let ckpt_file = O.of_string "resnet_v1_50.ckpt"
 
 let restore ~name ~shape =
   let name = Printf.sprintf "resnet_v1_50/%s" name in
-  let restore = O.restore ckpt_file (T.of_string_exn name) ~type_dt:Type.Float in
+  let restore = O.restore ckpt_file (O.of_string name) ~type_dt:Type.Float in
   let dims = T.dims restore |> List.tl_exn in
   if List.equal dims shape ~equal:Int.equal
   then
@@ -74,7 +74,7 @@ let dense ~name out_dims th =
   *)
   O.(conv2D th w ~strides:[1; 1; 1; 1] ~padding:"VALID" + b)
 
-let reshape th ~shape = O.reshape th (T.vec_i32_exn shape)
+let reshape th ~shape = O.reshape th (O.vec_i32 shape)
 
 let resnet filename =
   Imagenet_helper.read_image filename

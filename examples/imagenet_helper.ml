@@ -6,11 +6,11 @@ module Type = Tf_core.Operation.Type
 
 let img_dim = 224
 
-let reshape th ~shape = Ops.reshape th (Tensor_handle.vec_i32_exn shape)
+let reshape th ~shape = Ops.reshape th (Ops.vec_i32 shape)
 
 let read_image filename =
   let image =
-    Tensor_handle.of_string_exn filename
+    Ops.of_string filename
     |> Ops.readFile
     |> Ops.decodePng ~type_dtype:Type.UInt8 ~channels:3
   in
@@ -21,12 +21,12 @@ let read_image filename =
   in
   let min_edge = Int.min height width in
   Ops.slice image
-    (Tensor_handle.vec_i32_exn [ (height - min_edge)/2; (width - min_edge)/2; 0 ])
-    (Tensor_handle.vec_i32_exn [ min_edge; min_edge; 3 ])
+    (Ops.vec_i32 [ (height - min_edge)/2; (width - min_edge)/2; 0 ])
+    (Ops.vec_i32 [ min_edge; min_edge; 3 ])
   |> reshape ~shape:[1; min_edge; min_edge; 3]
-  |> fun th -> Ops.resizeBicubic th (Tensor_handle.vec_i32_exn [ img_dim; img_dim ])
-  |> fun th -> Ops.reverseV2 th (Tensor_handle.vec_i32_exn [-1]) (* Switch from RGB to BGR. *)
-  |> fun th -> Ops.(-) th (Tensor_handle.vec_f32_exn [ 103.939; 116.779; 123.68 ])
+  |> fun th -> Ops.resizeBicubic th (Ops.vec_i32 [ img_dim; img_dim ])
+  |> fun th -> Ops.reverseV2 th (Ops.vec_i32 [-1]) (* Switch from RGB to BGR. *)
+  |> fun th -> Ops.(-) th (Ops.vec_f32 [ 103.939; 116.779; 123.68 ])
 
 let categories =
   [| "tench, Tinca tinca"
@@ -1033,7 +1033,7 @@ let categories =
 
 let print_top_k_from_logits logits ~k =
   let prs = Ops.softmax logits in
-  let prs, tops = Ops.topKV2 prs (Tensor_handle.scalar_i32_exn k) in
-  List.zip_exn (Tensor_handle.to_float_list_exn prs) (Tensor_handle.to_int_list_exn tops)
+  let prs, tops = Ops.topKV2 prs (Ops.i32 k) in
+  List.zip_exn (Ops.to_float_list prs) (Ops.to_int_list tops)
   |> List.iteri ~f:(fun idx (pr, category_idx) ->
     printf "%d %5.2f%% %s\n" (1+idx) (100. *. pr) categories.(category_idx))
