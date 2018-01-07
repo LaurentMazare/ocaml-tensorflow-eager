@@ -40,10 +40,13 @@ module Tensor_handle : sig
   val vec_f32_exn : float list -> [ `float ] t
   val vec_f64_exn : float list -> [ `double ] t
 
-  val resolve_scalar_float_exn : [< `float | `double ] t -> float
-  val resolve_vec_float_exn : [< `float | `double ] t -> float list
+  val to_float_exn : [< `float | `double ] t -> float
+  val to_float_list_exn : [< `float | `double ] t -> float list
+  val to_int_list_exn : [< `int32 | `int64 ] t -> int list
 
-  val resolve_vec_int_exn : [< `int32 | `int64 ] t -> int list
+  val packed_to_float_exn : p -> float
+  val packed_to_float_list_exn : p -> float list
+  val packed_to_int_list_exn : p -> int list
 
   val id : _ t -> Id.t
   val type_ : 'a t -> 'a Operation.Type.t

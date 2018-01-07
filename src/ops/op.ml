@@ -131,7 +131,7 @@ module Tensor_handle = struct
   let vec_f64_exn f = vec_exn Float64 f
 
   let resolve_exn t = Eager.Tensor_handle.resolve_exn t.handle
-  let resolve_scalar_float_exn t =
+  let to_float_exn t =
     let output_tensor = resolve_exn t in
     match Tensor.float32 output_tensor with
     | Some tensor -> Tensor.get tensor [||]
@@ -140,11 +140,15 @@ module Tensor_handle = struct
       | Some tensor -> Tensor.get tensor [||]
       | None -> failwith "not a float32/float64 tensor"
 
-  let resolve_vec_float_exn t =
+  let to_float_list_exn t =
     resolve_exn t |> Tensor.to_float_list
 
-  let resolve_vec_int_exn t =
+  let to_int_list_exn t =
     resolve_exn t |> Tensor.to_int_list
+
+  let packed_to_float_exn (P t) = to_float_exn t
+  let packed_to_float_list_exn (P t) = to_float_list_exn t
+  let packed_to_int_list_exn (P t) = to_int_list_exn t
 
   let dims t = Eager.Tensor_handle.dims t.handle
   let data_type t = Eager.Tensor_handle.data_type t.handle

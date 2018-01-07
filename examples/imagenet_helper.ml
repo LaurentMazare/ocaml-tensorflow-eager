@@ -1034,6 +1034,6 @@ let categories =
 let print_top_k_from_logits logits ~k =
   let prs = Ops.softmax logits in
   let prs, tops = Ops.topKV2 prs (Tensor_handle.scalar_i32_exn k) in
-  List.zip_exn (Tensor_handle.resolve_vec_float_exn prs) (Tensor_handle.resolve_vec_int_exn tops)
+  List.zip_exn (Tensor_handle.to_float_list_exn prs) (Tensor_handle.to_int_list_exn tops)
   |> List.iteri ~f:(fun idx (pr, category_idx) ->
     printf "%d %5.2f%% %s\n" (1+idx) (100. *. pr) categories.(category_idx))
