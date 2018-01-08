@@ -1,4 +1,3 @@
-(* TODO: Consider functorizing generated ops over this signature ? *)
 open Base
 open Tf_core
 
@@ -11,7 +10,7 @@ module Tape_info : sig
 
   val op_name : _ t -> Name.t
   val inputs : 'a t -> 'a list
-  val output_idx : 'a t -> int option
+  val output_idx : 'a t -> int
 end
 
 module Tensor_handle : sig
@@ -20,6 +19,7 @@ module Tensor_handle : sig
   type p = P : _ t -> p
 
   val of_c : Eager.Tensor_handle.t -> 'a Operation.Type.t -> 'a t
+  (* TODO: better shadow type handling when converting to/from a tensor. *)
   val create : Tensor.p -> 'a Operation.Type.t -> 'a t
 
   val resolve : _ t -> Tensor.p

@@ -208,7 +208,7 @@ let compute th =
         let output_idx =
           match T.tape_info th with
           | `none | `leaf -> None
-          | `node tape_info -> Op.Tape_info.output_idx tape_info
+          | `node tape_info -> Some (Op.Tape_info.output_idx tape_info)
         in
         Hashtbl.add_multi contributions ~key:id ~data:(output_idx, gradient));
       let uses = uses - 1 in

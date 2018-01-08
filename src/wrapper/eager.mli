@@ -12,7 +12,6 @@ end
 module Tensor_handle : sig
   type t
 
-  (* TODO: better shadow type handling when converting to/from a tensor. *)
   val create : Tensor.p -> t Status.result
 
   val create_exn : Tensor.p -> t

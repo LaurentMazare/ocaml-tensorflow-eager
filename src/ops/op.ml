@@ -20,23 +20,29 @@ type attr =
 
 module Tape_info : sig
   type _ t
-  val create : Name.t -> 'a list -> (string * attr) list -> 'a t
+  val create
+    :  Name.t
+    -> inputs:'a list
+    -> attrs:(string * attr) list
+    -> output_idx:int
+    -> 'a t
   val op_name : _ t -> Name.t
   val inputs : 'a t -> 'a list
-  val output_idx : 'a t -> int option
+  val output_idx : 'a t -> int
 end = struct
   type 'a t =
     { op_name : Name.t
     ; inputs : 'a list
     ; attrs : (string * attr) list
+    ; output_idx : int
     }
 
-  let create op_name inputs attrs =
-    { op_name; inputs; attrs }
+  let create op_name ~inputs ~attrs ~output_idx =
+    { op_name; inputs; attrs; output_idx }
 
   let op_name t = t.op_name
   let inputs t = t.inputs
-  let output_idx _ = None (* TODO *)
+  let output_idx t = t.output_idx
 end
 
 module Tensor_handle = struct
@@ -154,10 +160,17 @@ let create context name inputs attrs =
   );
   { op; name; inputs; attrs }
 
-let create_handle t handle type_ =
+let create_handle t handle type_ ~output_idx =
   let tape_info =
     if List.exists t.inputs ~f:(fun p -> Tensor_handle.is_watched p)
-    then `node (Tape_info.create t.name t.inputs t.attrs)
+    then
+      let tape_info =
+        Tape_info.create t.name
+          ~inputs:t.inputs
+          ~attrs:t.attrs
+          ~output_idx
+      in
+      `node tape_info
     else `none
   in
   { Tensor_handle.id = Tensor_handle.Id.create ()
@@ -168,7 +181,8 @@ let create_handle t handle type_ =
 
 let execute t type_ ~output_len =
   Eager.execute_exn t.op ~output_len
-  |> List.map ~f:(fun handle -> create_handle t handle type_)
+  |> List.mapi ~f:(fun output_idx handle ->
+      create_handle t handle type_ ~output_idx)
 
 let execute0 t =
   match Eager.execute_exn t.op ~output_len:0 with
@@ -182,7 +196,7 @@ let execute0 t =
 let execute1 t t1 =
   match Eager.execute_exn t.op ~output_len:1 with
   | [ h1 ] ->
-    create_handle t h1 t1
+    create_handle t h1 t1 ~output_idx:0
   | otherwise ->
     Printf.failwithf
       "inconsistent number of returned arguments %d"
@@ -192,8 +206,8 @@ let execute1 t t1 =
 let execute2 t t1 t2 =
   match Eager.execute_exn t.op ~output_len:2 with
   | [ h1; h2 ] ->
-    create_handle t h1 t1,
-    create_handle t h2 t2
+    create_handle t h1 t1 ~output_idx:0,
+    create_handle t h2 t2 ~output_idx:1
   | otherwise ->
     Printf.failwithf
       "inconsistent number of returned arguments %d"
@@ -203,9 +217,9 @@ let execute2 t t1 t2 =
 let execute3 t t1 t2 t3 =
   match Eager.execute_exn t.op ~output_len:3 with
   | [h1; h2; h3] ->
-    create_handle t h1 t1,
-    create_handle t h2 t2,
-    create_handle t h3 t3
+    create_handle t h1 t1 ~output_idx:0,
+    create_handle t h2 t2 ~output_idx:1,
+    create_handle t h3 t3 ~output_idx:2
   | otherwise ->
     Printf.failwithf
       "inconsistent number of returned arguments %d"
@@ -215,10 +229,10 @@ let execute3 t t1 t2 t3 =
 let execute4 t t1 t2 t3 t4 =
   match Eager.execute_exn t.op ~output_len:4 with
   | [h1; h2; h3; h4] ->
-    create_handle t h1 t1,
-    create_handle t h2 t2,
-    create_handle t h3 t3,
-    create_handle t h4 t4
+    create_handle t h1 t1 ~output_idx:0,
+    create_handle t h2 t2 ~output_idx:1,
+    create_handle t h3 t3 ~output_idx:2,
+    create_handle t h4 t4 ~output_idx:3
   | otherwise ->
     Printf.failwithf
       "inconsistent number of returned arguments %d"
@@ -228,11 +242,11 @@ let execute4 t t1 t2 t3 t4 =
 let execute5 t t1 t2 t3 t4 t5 =
   match Eager.execute_exn t.op ~output_len:5 with
   | [h1; h2; h3; h4; h5] ->
-    create_handle t h1 t1,
-    create_handle t h2 t2,
-    create_handle t h3 t3,
-    create_handle t h4 t4,
-    create_handle t h5 t5
+    create_handle t h1 t1 ~output_idx:0,
+    create_handle t h2 t2 ~output_idx:1,
+    create_handle t h3 t3 ~output_idx:2,
+    create_handle t h4 t4 ~output_idx:3,
+    create_handle t h5 t5 ~output_idx:4
   | otherwise ->
     Printf.failwithf
       "inconsistent number of returned arguments %d"
@@ -242,12 +256,12 @@ let execute5 t t1 t2 t3 t4 t5 =
 let execute6 t t1 t2 t3 t4 t5 t6 =
   match Eager.execute_exn t.op ~output_len:6 with
   | [h1; h2; h3; h4; h5; h6 ] ->
-    create_handle t h1 t1,
-    create_handle t h2 t2,
-    create_handle t h3 t3,
-    create_handle t h4 t4,
-    create_handle t h5 t5,
-    create_handle t h6 t6
+    create_handle t h1 t1 ~output_idx:0,
+    create_handle t h2 t2 ~output_idx:1,
+    create_handle t h3 t3 ~output_idx:2,
+    create_handle t h4 t4 ~output_idx:3,
+    create_handle t h5 t5 ~output_idx:4,
+    create_handle t h6 t6 ~output_idx:5
   | otherwise ->
     Printf.failwithf
       "inconsistent number of returned arguments %d"
@@ -257,13 +271,13 @@ let execute6 t t1 t2 t3 t4 t5 t6 =
 let execute7 t t1 t2 t3 t4 t5 t6 t7 =
   match Eager.execute_exn t.op ~output_len:7 with
   | [h1; h2; h3; h4; h5; h6; h7 ] ->
-    create_handle t h1 t1,
-    create_handle t h2 t2,
-    create_handle t h3 t3,
-    create_handle t h4 t4,
-    create_handle t h5 t5,
-    create_handle t h6 t6,
-    create_handle t h7 t7
+    create_handle t h1 t1 ~output_idx:0,
+    create_handle t h2 t2 ~output_idx:1,
+    create_handle t h3 t3 ~output_idx:2,
+    create_handle t h4 t4 ~output_idx:3,
+    create_handle t h5 t5 ~output_idx:4,
+    create_handle t h6 t6 ~output_idx:5,
+    create_handle t h7 t7 ~output_idx:6
   | otherwise ->
     Printf.failwithf
       "inconsistent number of returned arguments %d"
