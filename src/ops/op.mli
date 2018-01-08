@@ -19,8 +19,8 @@ module Tensor_handle : sig
   type _ t
   type p = P : _ t -> p
 
-  val of_c : 'a Eager.Tensor_handle.t -> 'a t
-  val create : Tensor.p -> _ t
+  val of_c : Eager.Tensor_handle.t -> 'a Operation.Type.t -> 'a t
+  val create : Tensor.p -> 'a Operation.Type.t -> 'a t
 
   val resolve : _ t -> Tensor.p
 
@@ -64,15 +64,63 @@ val create
   -> (string * attr) list
   -> t
 
-val execute : t -> output_len:int -> _ Tensor_handle.t list
+val execute : t -> 'a Operation.Type.t -> output_len:int -> 'a Tensor_handle.t list
 
 val execute0 : t -> unit
-val execute1 : t -> _ Tensor_handle.t
-val execute2 : t -> _ Tensor_handle.t * _ Tensor_handle.t
-val execute3 : t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
-val execute4 : t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
-val execute5 : t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
-val execute6 : t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
-val execute7 : t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
+val execute1
+  :  t
+  -> 'a1 Operation.Type.t
+  -> 'a1 Tensor_handle.t
+
+val execute2
+  :  t
+  -> 'a1 Operation.Type.t
+  -> 'a2 Operation.Type.t
+  -> 'a1 Tensor_handle.t * 'a2 Tensor_handle.t
+
+val execute3
+  :  t
+  -> 'a1 Operation.Type.t
+  -> 'a2 Operation.Type.t
+  -> 'a3 Operation.Type.t
+  -> 'a1 Tensor_handle.t * 'a2 Tensor_handle.t * 'a3 Tensor_handle.t
+
+val execute4
+  :  t
+  -> 'a1 Operation.Type.t
+  -> 'a2 Operation.Type.t
+  -> 'a3 Operation.Type.t
+  -> 'a4 Operation.Type.t
+  -> 'a1 Tensor_handle.t * 'a2 Tensor_handle.t * 'a3 Tensor_handle.t * 'a4 Tensor_handle.t
+
+val execute5
+  :  t
+  -> 'a1 Operation.Type.t
+  -> 'a2 Operation.Type.t
+  -> 'a3 Operation.Type.t
+  -> 'a4 Operation.Type.t
+  -> 'a5 Operation.Type.t
+  -> 'a1 Tensor_handle.t * 'a2 Tensor_handle.t * 'a3 Tensor_handle.t * 'a4 Tensor_handle.t * 'a5 Tensor_handle.t
+
+val execute6
+  :  t
+  -> 'a1 Operation.Type.t
+  -> 'a2 Operation.Type.t
+  -> 'a3 Operation.Type.t
+  -> 'a4 Operation.Type.t
+  -> 'a5 Operation.Type.t
+  -> 'a6 Operation.Type.t
+  -> 'a1 Tensor_handle.t * 'a2 Tensor_handle.t * 'a3 Tensor_handle.t * 'a4 Tensor_handle.t * 'a5 Tensor_handle.t * 'a6 Tensor_handle.t
+
+val execute7
+  :  t
+  -> 'a1 Operation.Type.t
+  -> 'a2 Operation.Type.t
+  -> 'a3 Operation.Type.t
+  -> 'a4 Operation.Type.t
+  -> 'a5 Operation.Type.t
+  -> 'a6 Operation.Type.t
+  -> 'a7 Operation.Type.t
+  -> 'a1 Tensor_handle.t * 'a2 Tensor_handle.t * 'a3 Tensor_handle.t * 'a4 Tensor_handle.t * 'a5 Tensor_handle.t * 'a6 Tensor_handle.t * 'a7 Tensor_handle.t
 
 type 'a binary = 'a Tensor_handle.t -> 'a Tensor_handle.t -> 'a Tensor_handle.t

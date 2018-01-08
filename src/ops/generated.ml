@@ -713,7 +713,7 @@ let abort
   ]
   in
   Op.create context Op_names.abort inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let abs
     (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
@@ -724,7 +724,8 @@ let abs
   ]
   in
   Op.create context Op_names.abs inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let accumulatorApplyGradient
     (handle : [ `string ] t)
@@ -737,7 +738,7 @@ let accumulatorApplyGradient
   ]
   in
   Op.create context Op_names.accumulatorApplyGradient inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let accumulatorNumAccumulated
     (handle : [ `string ] t)
@@ -747,7 +748,8 @@ let accumulatorNumAccumulated
   ]
   in
   Op.create context Op_names.accumulatorNumAccumulated inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let accumulatorSetGlobalStep
     (handle : [ `string ] t)
@@ -758,7 +760,7 @@ let accumulatorSetGlobalStep
   ]
   in
   Op.create context Op_names.accumulatorSetGlobalStep inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let accumulatorTakeGradient
     ~type_dtype
@@ -771,7 +773,8 @@ let accumulatorTakeGradient
   ]
   in
   Op.create context Op_names.accumulatorTakeGradient inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let acos
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -782,7 +785,8 @@ let acos
   ]
   in
   Op.create context Op_names.acos inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let acosh
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -793,7 +797,8 @@ let acosh
   ]
   in
   Op.create context Op_names.acosh inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let add
     (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string ] as 't) t)
@@ -805,7 +810,8 @@ let add
   ]
   in
   Op.create context Op_names.add inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let addManySparseToTensorsMap
     ?(container="")
@@ -822,7 +828,8 @@ let addManySparseToTensorsMap
   ]
   in
   Op.create context Op_names.addManySparseToTensorsMap inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let addN
     (inputs__ : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 | `variant ] as 't) t list)
@@ -834,7 +841,8 @@ let addN
   ]
   in
   Op.create context Op_names.addN inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ (List.hd_exn inputs__))
 
 let addSparseToTensorsMap
     ?(container="")
@@ -851,7 +859,8 @@ let addSparseToTensorsMap
   ]
   in
   Op.create context Op_names.addSparseToTensorsMap inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let adjustContrast
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
@@ -865,7 +874,8 @@ let adjustContrast
   ]
   in
   Op.create context Op_names.adjustContrast inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let adjustContrastv2
     (images : [ `float ] t)
@@ -876,7 +886,8 @@ let adjustContrastv2
   ]
   in
   Op.create context Op_names.adjustContrastv2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let adjustHue
     (images : [ `float ] t)
@@ -887,7 +898,8 @@ let adjustHue
   ]
   in
   Op.create context Op_names.adjustHue inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let adjustSaturation
     (images : [ `float ] t)
@@ -898,7 +910,8 @@ let adjustSaturation
   ]
   in
   Op.create context Op_names.adjustSaturation inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let all
     ?(keep_dims=false)
@@ -912,7 +925,8 @@ let all
   ]
   in
   Op.create context Op_names.all inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let allCandidateSampler
     ~num_true
@@ -932,7 +946,10 @@ let allCandidateSampler
   ]
   in
   Op.create context Op_names.allCandidateSampler inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    Type.Float
+    Type.Float
 
 let angle
     ~type_tout
@@ -945,7 +962,8 @@ let angle
   ]
   in
   Op.create context Op_names.angle inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_tout
 
 let any
     ?(keep_dims=false)
@@ -959,7 +977,8 @@ let any
   ]
   in
   Op.create context Op_names.any inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let applyAdadelta
     ?(use_locking=false)
@@ -978,7 +997,8 @@ let applyAdadelta
   ]
   in
   Op.create context Op_names.applyAdadelta inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyAdagrad
     ?(use_locking=false)
@@ -994,7 +1014,8 @@ let applyAdagrad
   ]
   in
   Op.create context Op_names.applyAdagrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyAdagradDA
     ?(use_locking=false)
@@ -1014,7 +1035,8 @@ let applyAdagradDA
   ]
   in
   Op.create context Op_names.applyAdagradDA inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyAdam
     ?(use_locking=false)
@@ -1038,7 +1060,8 @@ let applyAdam
   ]
   in
   Op.create context Op_names.applyAdam inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyCenteredRMSProp
     ?(use_locking=false)
@@ -1059,7 +1082,8 @@ let applyCenteredRMSProp
   ]
   in
   Op.create context Op_names.applyCenteredRMSProp inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyFtrl
     ?(use_locking=false)
@@ -1079,7 +1103,8 @@ let applyFtrl
   ]
   in
   Op.create context Op_names.applyFtrl inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyFtrlV2
     ?(use_locking=false)
@@ -1100,7 +1125,8 @@ let applyFtrlV2
   ]
   in
   Op.create context Op_names.applyFtrlV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyGradientDescent
     ?(use_locking=false)
@@ -1115,7 +1141,8 @@ let applyGradientDescent
   ]
   in
   Op.create context Op_names.applyGradientDescent inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyMomentum
     ?(use_locking=false)
@@ -1134,7 +1161,8 @@ let applyMomentum
   ]
   in
   Op.create context Op_names.applyMomentum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyProximalAdagrad
     ?(use_locking=false)
@@ -1152,7 +1180,8 @@ let applyProximalAdagrad
   ]
   in
   Op.create context Op_names.applyProximalAdagrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyProximalGradientDescent
     ?(use_locking=false)
@@ -1169,7 +1198,8 @@ let applyProximalGradientDescent
   ]
   in
   Op.create context Op_names.applyProximalGradientDescent inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let applyRMSProp
     ?(use_locking=false)
@@ -1189,7 +1219,8 @@ let applyRMSProp
   ]
   in
   Op.create context Op_names.applyRMSProp inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let approximateEqual
     ?(tolerance=9.9999997473787516e-06)
@@ -1203,7 +1234,8 @@ let approximateEqual
   ]
   in
   Op.create context Op_names.approximateEqual inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let argMax
     ~type_output_type
@@ -1218,7 +1250,8 @@ let argMax
   ]
   in
   Op.create context Op_names.argMax inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_output_type
 
 let argMin
     ~type_output_type
@@ -1233,7 +1266,8 @@ let argMin
   ]
   in
   Op.create context Op_names.argMin inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_output_type
 
 let asString
     ?(precision=(-1))
@@ -1254,7 +1288,8 @@ let asString
   ]
   in
   Op.create context Op_names.asString inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let asin
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -1265,7 +1300,8 @@ let asin
   ]
   in
   Op.create context Op_names.asin inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let asinh
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -1276,7 +1312,8 @@ let asinh
   ]
   in
   Op.create context Op_names.asinh inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let assign
     ?(validate_shape=true)
@@ -1292,7 +1329,8 @@ let assign
   ]
   in
   Op.create context Op_names.assign inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let assignAdd
     ?(use_locking=false)
@@ -1306,7 +1344,8 @@ let assignAdd
   ]
   in
   Op.create context Op_names.assignAdd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let assignSub
     ?(use_locking=false)
@@ -1320,7 +1359,8 @@ let assignSub
   ]
   in
   Op.create context Op_names.assignSub inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let atan
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -1331,7 +1371,8 @@ let atan
   ]
   in
   Op.create context Op_names.atan inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let atan2
     (y : ([< `float | `double ] as 't) t)
@@ -1343,7 +1384,8 @@ let atan2
   ]
   in
   Op.create context Op_names.atan2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ y)
 
 let atanh
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -1354,7 +1396,8 @@ let atanh
   ]
   in
   Op.create context Op_names.atanh inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let audioSpectrogram
     ~window_size
@@ -1370,7 +1413,8 @@ let audioSpectrogram
   ]
   in
   Op.create context Op_names.audioSpectrogram inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let audioSummary
     ~sample_rate
@@ -1385,7 +1429,8 @@ let audioSummary
   ]
   in
   Op.create context Op_names.audioSummary inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let audioSummaryV2
     ?(max_outputs=3)
@@ -1399,7 +1444,8 @@ let audioSummaryV2
   ]
   in
   Op.create context Op_names.audioSummaryV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let avgPool
     ~ksize
@@ -1418,7 +1464,8 @@ let avgPool
   ]
   in
   Op.create context Op_names.avgPool inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ value)
 
 let avgPool3D
     ~ksize
@@ -1437,7 +1484,8 @@ let avgPool3D
   ]
   in
   Op.create context Op_names.avgPool3D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let avgPool3DGrad
     ~ksize
@@ -1457,7 +1505,8 @@ let avgPool3DGrad
   ]
   in
   Op.create context Op_names.avgPool3DGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ grad)
 
 let avgPoolGrad
     ~ksize
@@ -1477,7 +1526,8 @@ let avgPoolGrad
   ]
   in
   Op.create context Op_names.avgPoolGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ grad)
 
 let barrier
     ~component_types
@@ -1497,7 +1547,8 @@ let barrier
   ]
   in
   Op.create context Op_names.barrier inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let barrierClose
     ?(cancel_pending_enqueues=false)
@@ -1509,7 +1560,7 @@ let barrierClose
   ]
   in
   Op.create context Op_names.barrierClose inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let barrierIncompleteSize
     (handle : [ `string ] t)
@@ -1519,7 +1570,8 @@ let barrierIncompleteSize
   ]
   in
   Op.create context Op_names.barrierIncompleteSize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let barrierInsertMany
     ~component_index
@@ -1534,7 +1586,7 @@ let barrierInsertMany
   ]
   in
   Op.create context Op_names.barrierInsertMany inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let barrierReadySize
     (handle : [ `string ] t)
@@ -1544,7 +1596,8 @@ let barrierReadySize
   ]
   in
   Op.create context Op_names.barrierReadySize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let batchCholesky
     (input : ([< `double | `float ] as 't) t)
@@ -1555,7 +1608,8 @@ let batchCholesky
   ]
   in
   Op.create context Op_names.batchCholesky inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let batchCholeskyGrad
     (l : ([< `float | `double ] as 't) t)
@@ -1567,7 +1621,8 @@ let batchCholeskyGrad
   ]
   in
   Op.create context Op_names.batchCholeskyGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ l)
 
 let batchDataset
     ~output_types
@@ -1582,7 +1637,8 @@ let batchDataset
   ]
   in
   Op.create context Op_names.batchDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let batchFFT
     (input : [ `complex64 ] t)
@@ -1592,7 +1648,8 @@ let batchFFT
   ]
   in
   Op.create context Op_names.batchFFT inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let batchFFT2D
     (input : [ `complex64 ] t)
@@ -1602,7 +1659,8 @@ let batchFFT2D
   ]
   in
   Op.create context Op_names.batchFFT2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let batchFFT3D
     (input : [ `complex64 ] t)
@@ -1612,7 +1670,8 @@ let batchFFT3D
   ]
   in
   Op.create context Op_names.batchFFT3D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let batchIFFT
     (input : [ `complex64 ] t)
@@ -1622,7 +1681,8 @@ let batchIFFT
   ]
   in
   Op.create context Op_names.batchIFFT inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let batchIFFT2D
     (input : [ `complex64 ] t)
@@ -1632,7 +1692,8 @@ let batchIFFT2D
   ]
   in
   Op.create context Op_names.batchIFFT2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let batchIFFT3D
     (input : [ `complex64 ] t)
@@ -1642,7 +1703,8 @@ let batchIFFT3D
   ]
   in
   Op.create context Op_names.batchIFFT3D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let batchMatMul
     ?(adj_x=false)
@@ -1658,7 +1720,8 @@ let batchMatMul
   ]
   in
   Op.create context Op_names.batchMatMul inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let batchMatrixBandPart
     (input : 't t)
@@ -1671,7 +1734,8 @@ let batchMatrixBandPart
   ]
   in
   Op.create context Op_names.batchMatrixBandPart inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let batchMatrixDeterminant
     (input : ([< `float | `double | `complex64 ] as 't) t)
@@ -1682,7 +1746,8 @@ let batchMatrixDeterminant
   ]
   in
   Op.create context Op_names.batchMatrixDeterminant inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let batchMatrixDiag
     (diagonal : 't t)
@@ -1693,7 +1758,8 @@ let batchMatrixDiag
   ]
   in
   Op.create context Op_names.batchMatrixDiag inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ diagonal)
 
 let batchMatrixDiagPart
     (input : 't t)
@@ -1704,7 +1770,8 @@ let batchMatrixDiagPart
   ]
   in
   Op.create context Op_names.batchMatrixDiagPart inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let batchMatrixInverse
     ?(adjoint=false)
@@ -1717,7 +1784,8 @@ let batchMatrixInverse
   ]
   in
   Op.create context Op_names.batchMatrixInverse inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let batchMatrixSetDiag
     (input : 't t)
@@ -1729,7 +1797,8 @@ let batchMatrixSetDiag
   ]
   in
   Op.create context Op_names.batchMatrixSetDiag inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let batchMatrixSolve
     ?(adjoint=false)
@@ -1743,7 +1812,8 @@ let batchMatrixSolve
   ]
   in
   Op.create context Op_names.batchMatrixSolve inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ matrix)
 
 let batchMatrixSolveLs
     ?(fast=true)
@@ -1758,7 +1828,8 @@ let batchMatrixSolveLs
   ]
   in
   Op.create context Op_names.batchMatrixSolveLs inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ matrix)
 
 let batchMatrixTriangularSolve
     ?(lower=true)
@@ -1774,7 +1845,8 @@ let batchMatrixTriangularSolve
   ]
   in
   Op.create context Op_names.batchMatrixTriangularSolve inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ matrix)
 
 let batchNormWithGlobalNormalization
     ~variance_epsilon
@@ -1793,7 +1865,8 @@ let batchNormWithGlobalNormalization
   ]
   in
   Op.create context Op_names.batchNormWithGlobalNormalization inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ t)
 
 let batchNormWithGlobalNormalizationGrad
     ~variance_epsilon
@@ -1812,7 +1885,12 @@ let batchNormWithGlobalNormalizationGrad
   ]
   in
   Op.create context Op_names.batchNormWithGlobalNormalizationGrad inputs attrs
-  |> Op.execute5
+  |> fun op -> Op.execute5 op
+    (Op.Tensor_handle.type_ t)
+    (Op.Tensor_handle.type_ t)
+    (Op.Tensor_handle.type_ t)
+    (Op.Tensor_handle.type_ t)
+    (Op.Tensor_handle.type_ t)
 
 let batchSelfAdjointEig
     (input : ([< `double | `float ] as 't) t)
@@ -1823,7 +1901,8 @@ let batchSelfAdjointEig
   ]
   in
   Op.create context Op_names.batchSelfAdjointEig inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let batchSelfAdjointEigV2
     ?(compute_v=true)
@@ -1836,7 +1915,9 @@ let batchSelfAdjointEigV2
   ]
   in
   Op.create context Op_names.batchSelfAdjointEigV2 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ input)
+    (Op.Tensor_handle.type_ input)
 
 let batchSvd
     ?(compute_uv=true)
@@ -1851,7 +1932,10 @@ let batchSvd
   ]
   in
   Op.create context Op_names.batchSvd inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ input)
+    (Op.Tensor_handle.type_ input)
+    (Op.Tensor_handle.type_ input)
 
 let batchToSpace
     ~block_size
@@ -1866,7 +1950,8 @@ let batchToSpace
   ]
   in
   Op.create context Op_names.batchToSpace inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let batchToSpaceND
     (input : 't t)
@@ -1881,7 +1966,8 @@ let batchToSpaceND
   ]
   in
   Op.create context Op_names.batchToSpaceND inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let betainc
     (a : ([< `float | `double ] as 't) t)
@@ -1894,7 +1980,8 @@ let betainc
   ]
   in
   Op.create context Op_names.betainc inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ a)
 
 let biasAdd
     ?(data_format="NHWC")
@@ -1908,7 +1995,8 @@ let biasAdd
   ]
   in
   Op.create context Op_names.biasAdd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ value)
 
 let biasAddGrad
     ?(data_format="NHWC")
@@ -1921,7 +2009,8 @@ let biasAddGrad
   ]
   in
   Op.create context Op_names.biasAddGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ out_backprop)
 
 let biasAddV1
     (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -1933,7 +2022,8 @@ let biasAddV1
   ]
   in
   Op.create context Op_names.biasAddV1 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ value)
 
 let bincount
     (arr : [ `int32 ] t)
@@ -1946,7 +2036,8 @@ let bincount
   ]
   in
   Op.create context Op_names.bincount inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ weights)
 
 let bitcast
     ~type_type__
@@ -1959,7 +2050,8 @@ let bitcast
   ]
   in
   Op.create context Op_names.bitcast inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_type__
 
 let bitwiseAnd
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -1971,7 +2063,8 @@ let bitwiseAnd
   ]
   in
   Op.create context Op_names.bitwiseAnd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let bitwiseOr
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -1983,7 +2076,8 @@ let bitwiseOr
   ]
   in
   Op.create context Op_names.bitwiseOr inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let bitwiseXor
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -1995,7 +2089,8 @@ let bitwiseXor
   ]
   in
   Op.create context Op_names.bitwiseXor inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let broadcastArgs
     (s0 : ([< `int32 | `int64 ] as 't) t)
@@ -2007,7 +2102,8 @@ let broadcastArgs
   ]
   in
   Op.create context Op_names.broadcastArgs inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ s0)
 
 let broadcastGradientArgs
     (s0 : ([< `int32 | `int64 ] as 't) t)
@@ -2019,7 +2115,9 @@ let broadcastGradientArgs
   ]
   in
   Op.create context Op_names.broadcastGradientArgs inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ s0)
+    (Op.Tensor_handle.type_ s0)
 
 let bucketize
     ~boundaries
@@ -2032,7 +2130,8 @@ let bucketize
   ]
   in
   Op.create context Op_names.bucketize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let cTCGreedyDecoder
     ?(merge_repeated=false)
@@ -2045,7 +2144,11 @@ let cTCGreedyDecoder
   ]
   in
   Op.create context Op_names.cTCGreedyDecoder inputs attrs
-  |> Op.execute4
+  |> fun op -> Op.execute4 op
+    Type.Int64
+    Type.Int64
+    Type.Int64
+    Type.Float
 
 let cTCLoss
     ?(preprocess_collapse_repeated=false)
@@ -2064,7 +2167,9 @@ let cTCLoss
   ]
   in
   Op.create context Op_names.cTCLoss inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Float
+    Type.Float
 
 let cacheDataset
     ~output_types
@@ -2079,7 +2184,8 @@ let cacheDataset
   ]
   in
   Op.create context Op_names.cacheDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let cast
     ~type_dstT
@@ -2092,7 +2198,8 @@ let cast
   ]
   in
   Op.create context Op_names.cast inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dstT
 
 let ceil
     (x : ([< `float | `double ] as 't) t)
@@ -2103,7 +2210,8 @@ let ceil
   ]
   in
   Op.create context Op_names.ceil inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let checkNumerics
     ~message
@@ -2116,7 +2224,8 @@ let checkNumerics
   ]
   in
   Op.create context Op_names.checkNumerics inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ tensor)
 
 let cholesky
     (input : ([< `double | `float | `complex64 ] as 't) t)
@@ -2127,7 +2236,8 @@ let cholesky
   ]
   in
   Op.create context Op_names.cholesky inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let choleskyGrad
     (l : ([< `float | `double ] as 't) t)
@@ -2139,7 +2249,8 @@ let choleskyGrad
   ]
   in
   Op.create context Op_names.choleskyGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ l)
 
 let compareAndBitpack
     (input : ([< `bool | `float | `double | `int32 | `int64 ] as 't) t)
@@ -2151,7 +2262,8 @@ let compareAndBitpack
   ]
   in
   Op.create context Op_names.compareAndBitpack inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.UInt8
 
 let complex
     ~type_tout
@@ -2165,7 +2277,8 @@ let complex
   ]
   in
   Op.create context Op_names.complex inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_tout
 
 let complexAbs
     ~type_tout
@@ -2178,7 +2291,8 @@ let complexAbs
   ]
   in
   Op.create context Op_names.complexAbs inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_tout
 
 let computeAccidentalHits
     ~num_true
@@ -2195,7 +2309,10 @@ let computeAccidentalHits
   ]
   in
   Op.create context Op_names.computeAccidentalHits inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int32
+    Type.Int64
+    Type.Float
 
 let concat
     (concat_dim : [ `int32 ] t)
@@ -2208,7 +2325,8 @@ let concat
   ]
   in
   Op.create context Op_names.concat inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ (List.hd_exn values))
 
 let concatOffset
     (concat_dim : [ `int32 ] t)
@@ -2220,7 +2338,7 @@ let concatOffset
   ]
   in
   Op.create context Op_names.concatOffset inputs attrs
-  |> Op.execute ~output_len:(List.length shape)
+  |> fun op -> Op.execute op (failwith "TODO") ~output_len:(List.length shape)
 
 let concatV2
     (values : 't t list)
@@ -2234,7 +2352,8 @@ let concatV2
   ]
   in
   Op.create context Op_names.concatV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ (List.hd_exn values))
 
 let concatenateDataset
     ~output_types
@@ -2249,7 +2368,8 @@ let concatenateDataset
   ]
   in
   Op.create context Op_names.concatenateDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let conditionalAccumulator
     ~shape
@@ -2265,7 +2385,8 @@ let conditionalAccumulator
   ]
   in
   Op.create context Op_names.conditionalAccumulator inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let conj
     (input : ([< `complex64 | `variant ] as 't) t)
@@ -2276,7 +2397,8 @@ let conj
   ]
   in
   Op.create context Op_names.conj inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let controlTrigger
     ()
@@ -2286,7 +2408,7 @@ let controlTrigger
   ]
   in
   Op.create context Op_names.controlTrigger inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let conv2D
     ~strides
@@ -2306,7 +2428,8 @@ let conv2D
   ]
   in
   Op.create context Op_names.conv2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let conv2DBackpropFilter
     ~strides
@@ -2327,7 +2450,8 @@ let conv2DBackpropFilter
   ]
   in
   Op.create context Op_names.conv2DBackpropFilter inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let conv2DBackpropInput
     ~strides
@@ -2348,7 +2472,8 @@ let conv2DBackpropInput
   ]
   in
   Op.create context Op_names.conv2DBackpropInput inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ filter)
 
 let conv3D
     ~strides
@@ -2366,7 +2491,8 @@ let conv3D
   ]
   in
   Op.create context Op_names.conv3D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let conv3DBackpropFilter
     ~strides
@@ -2383,7 +2509,8 @@ let conv3DBackpropFilter
   ]
   in
   Op.create context Op_names.conv3DBackpropFilter inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let conv3DBackpropFilterV2
     ~strides
@@ -2402,7 +2529,8 @@ let conv3DBackpropFilterV2
   ]
   in
   Op.create context Op_names.conv3DBackpropFilterV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let conv3DBackpropInput
     ~strides
@@ -2419,7 +2547,8 @@ let conv3DBackpropInput
   ]
   in
   Op.create context Op_names.conv3DBackpropInput inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let conv3DBackpropInputV2
     ~strides
@@ -2438,7 +2567,8 @@ let conv3DBackpropInputV2
   ]
   in
   Op.create context Op_names.conv3DBackpropInputV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ filter)
 
 let copy
     ?(tensor_name="")
@@ -2451,7 +2581,8 @@ let copy
   ]
   in
   Op.create context Op_names.copy inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let copyHost
     ?(tensor_name="")
@@ -2464,7 +2595,8 @@ let copyHost
   ]
   in
   Op.create context Op_names.copyHost inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let cos
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -2475,7 +2607,8 @@ let cos
   ]
   in
   Op.create context Op_names.cos inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let cosh
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -2486,7 +2619,8 @@ let cosh
   ]
   in
   Op.create context Op_names.cosh inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let countUpTo
     ~limit
@@ -2499,7 +2633,8 @@ let countUpTo
   ]
   in
   Op.create context Op_names.countUpTo inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let cropAndResize
     ?(method_="bilinear")
@@ -2517,7 +2652,8 @@ let cropAndResize
   ]
   in
   Op.create context Op_names.cropAndResize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let cropAndResizeGradBoxes
     ?(method_="bilinear")
@@ -2533,7 +2669,8 @@ let cropAndResizeGradBoxes
   ]
   in
   Op.create context Op_names.cropAndResizeGradBoxes inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let cropAndResizeGradImage
     ~type_t
@@ -2550,7 +2687,8 @@ let cropAndResizeGradImage
   ]
   in
   Op.create context Op_names.cropAndResizeGradImage inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_t
 
 let cross
     (a : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -2562,7 +2700,8 @@ let cross
   ]
   in
   Op.create context Op_names.cross inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ a)
 
 let cumprod
     ?(exclusive=false)
@@ -2579,7 +2718,8 @@ let cumprod
   ]
   in
   Op.create context Op_names.cumprod inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let cumsum
     ?(exclusive=false)
@@ -2596,7 +2736,8 @@ let cumsum
   ]
   in
   Op.create context Op_names.cumsum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let debugGradientIdentity
     (input : 't t)
@@ -2607,7 +2748,8 @@ let debugGradientIdentity
   ]
   in
   Op.create context Op_names.debugGradientIdentity inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let debugIdentity
     ?(device_name="")
@@ -2624,7 +2766,8 @@ let debugIdentity
   ]
   in
   Op.create context Op_names.debugIdentity inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let debugNanCount
     ?(device_name="")
@@ -2641,7 +2784,8 @@ let debugNanCount
   ]
   in
   Op.create context Op_names.debugNanCount inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let debugNumericSummary
     ?(device_name="")
@@ -2664,7 +2808,8 @@ let debugNumericSummary
   ]
   in
   Op.create context Op_names.debugNumericSummary inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Double
 
 let decodeAndCropJpeg
     ?(channels=0)
@@ -2687,7 +2832,8 @@ let decodeAndCropJpeg
   ]
   in
   Op.create context Op_names.decodeAndCropJpeg inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.UInt8
 
 let decodeBase64
     (input : [ `string ] t)
@@ -2697,7 +2843,8 @@ let decodeBase64
   ]
   in
   Op.create context Op_names.decodeBase64 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let decodeBmp
     ?(channels=0)
@@ -2709,7 +2856,8 @@ let decodeBmp
   ]
   in
   Op.create context Op_names.decodeBmp inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.UInt8
 
 let decodeGif
     (contents : [ `string ] t)
@@ -2719,7 +2867,8 @@ let decodeGif
   ]
   in
   Op.create context Op_names.decodeGif inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.UInt8
 
 let decodeJSONExample
     (json_examples : [ `string ] t)
@@ -2729,7 +2878,8 @@ let decodeJSONExample
   ]
   in
   Op.create context Op_names.decodeJSONExample inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let decodeJpeg
     ?(channels=0)
@@ -2751,7 +2901,8 @@ let decodeJpeg
   ]
   in
   Op.create context Op_names.decodeJpeg inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.UInt8
 
 let decodePng
     ~type_dtype
@@ -2765,7 +2916,8 @@ let decodePng
   ]
   in
   Op.create context Op_names.decodePng inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let decodeRaw
     ~type_out_type
@@ -2779,7 +2931,8 @@ let decodeRaw
   ]
   in
   Op.create context Op_names.decodeRaw inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_out_type
 
 let decodeWav
     ?(desired_channels=(-1))
@@ -2793,7 +2946,9 @@ let decodeWav
   ]
   in
   Op.create context Op_names.decodeWav inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Float
+    Type.Int32
 
 let deleteSessionTensor
     (handle : [ `string ] t)
@@ -2803,7 +2958,7 @@ let deleteSessionTensor
   ]
   in
   Op.create context Op_names.deleteSessionTensor inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let denseToDenseSetOperation
     ~set_operation
@@ -2819,7 +2974,10 @@ let denseToDenseSetOperation
   ]
   in
   Op.create context Op_names.denseToDenseSetOperation inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    (Op.Tensor_handle.type_ set1)
+    Type.Int64
 
 let denseToSparseBatchDataset
     ~output_types
@@ -2835,7 +2993,8 @@ let denseToSparseBatchDataset
   ]
   in
   Op.create context Op_names.denseToSparseBatchDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let denseToSparseSetOperation
     ~set_operation
@@ -2853,7 +3012,10 @@ let denseToSparseSetOperation
   ]
   in
   Op.create context Op_names.denseToSparseSetOperation inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    (Op.Tensor_handle.type_ set1)
+    Type.Int64
 
 let depthToSpace
     ~block_size
@@ -2868,7 +3030,8 @@ let depthToSpace
   ]
   in
   Op.create context Op_names.depthToSpace inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let depthwiseConv2dNative
     ~strides
@@ -2886,7 +3049,8 @@ let depthwiseConv2dNative
   ]
   in
   Op.create context Op_names.depthwiseConv2dNative inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let depthwiseConv2dNativeBackpropFilter
     ~strides
@@ -2905,7 +3069,8 @@ let depthwiseConv2dNativeBackpropFilter
   ]
   in
   Op.create context Op_names.depthwiseConv2dNativeBackpropFilter inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let depthwiseConv2dNativeBackpropInput
     ~strides
@@ -2924,7 +3089,8 @@ let depthwiseConv2dNativeBackpropInput
   ]
   in
   Op.create context Op_names.depthwiseConv2dNativeBackpropInput inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ filter)
 
 let dequantize
     ?(mode="MIN_COMBINED")
@@ -2939,7 +3105,8 @@ let dequantize
   ]
   in
   Op.create context Op_names.dequantize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let deserializeManySparse
     ~type_dtype
@@ -2951,7 +3118,10 @@ let deserializeManySparse
   ]
   in
   Op.create context Op_names.deserializeManySparse inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    type_dtype
+    Type.Int64
 
 let destroyTemporaryVariable
     ~var_name
@@ -2964,7 +3134,8 @@ let destroyTemporaryVariable
   ]
   in
   Op.create context Op_names.destroyTemporaryVariable inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let diag
     (diagonal : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -2975,7 +3146,8 @@ let diag
   ]
   in
   Op.create context Op_names.diag inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ diagonal)
 
 let diagPart
     (input : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -2986,7 +3158,8 @@ let diagPart
   ]
   in
   Op.create context Op_names.diagPart inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let digamma
     (x : ([< `float | `double ] as 't) t)
@@ -2997,7 +3170,8 @@ let digamma
   ]
   in
   Op.create context Op_names.digamma inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let dilation2D
     ~strides
@@ -3015,7 +3189,8 @@ let dilation2D
   ]
   in
   Op.create context Op_names.dilation2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let dilation2DBackpropFilter
     ~strides
@@ -3034,7 +3209,8 @@ let dilation2DBackpropFilter
   ]
   in
   Op.create context Op_names.dilation2DBackpropFilter inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let dilation2DBackpropInput
     ~strides
@@ -3053,7 +3229,8 @@ let dilation2DBackpropInput
   ]
   in
   Op.create context Op_names.dilation2DBackpropInput inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let div
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
@@ -3065,7 +3242,8 @@ let div
   ]
   in
   Op.create context Op_names.div inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let drawBoundingBoxes
     (images : ([< `float ] as 't) t)
@@ -3077,7 +3255,8 @@ let drawBoundingBoxes
   ]
   in
   Op.create context Op_names.drawBoundingBoxes inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ images)
 
 let dynamicPartition
     ~num_partitions
@@ -3091,7 +3270,7 @@ let dynamicPartition
   ]
   in
   Op.create context Op_names.dynamicPartition inputs attrs
-  |> Op.execute ~output_len:num_partitions
+  |> fun op -> Op.execute op (failwith "TODO") ~output_len:num_partitions
 
 let dynamicStitch
     (indices : [ `int32 ] t list)
@@ -3104,7 +3283,8 @@ let dynamicStitch
   ]
   in
   Op.create context Op_names.dynamicStitch inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ (List.hd_exn data))
 
 let editDistance
     ?(normalize=true)
@@ -3122,7 +3302,8 @@ let editDistance
   ]
   in
   Op.create context Op_names.editDistance inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let elu
     (features : ([< `float | `double ] as 't) t)
@@ -3133,7 +3314,8 @@ let elu
   ]
   in
   Op.create context Op_names.elu inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ features)
 
 let eluGrad
     (gradients : ([< `float | `double ] as 't) t)
@@ -3145,7 +3327,8 @@ let eluGrad
   ]
   in
   Op.create context Op_names.eluGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ gradients)
 
 let encodeBase64
     ?(pad=false)
@@ -3157,7 +3340,8 @@ let encodeBase64
   ]
   in
   Op.create context Op_names.encodeBase64 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let encodeJpeg
     ?(format="")
@@ -3185,7 +3369,8 @@ let encodeJpeg
   ]
   in
   Op.create context Op_names.encodeJpeg inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let encodePng
     ?(compression=(-1))
@@ -3198,7 +3383,8 @@ let encodePng
   ]
   in
   Op.create context Op_names.encodePng inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let encodeWav
     (audio : [ `float ] t)
@@ -3209,7 +3395,8 @@ let encodeWav
   ]
   in
   Op.create context Op_names.encodeWav inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let enter
     ~frame_name
@@ -3226,7 +3413,8 @@ let enter
   ]
   in
   Op.create context Op_names.enter inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let equal
     (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
@@ -3238,7 +3426,8 @@ let equal
   ]
   in
   Op.create context Op_names.equal inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let erf
     (x : ([< `float | `double ] as 't) t)
@@ -3249,7 +3438,8 @@ let erf
   ]
   in
   Op.create context Op_names.erf inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let erfc
     (x : ([< `float | `double ] as 't) t)
@@ -3260,7 +3450,8 @@ let erfc
   ]
   in
   Op.create context Op_names.erfc inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let exit
     (data : 't t)
@@ -3271,7 +3462,8 @@ let exit
   ]
   in
   Op.create context Op_names.exit inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let exp
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -3282,7 +3474,8 @@ let exp
   ]
   in
   Op.create context Op_names.exp inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let expandDims
     (input : 't t)
@@ -3295,7 +3488,8 @@ let expandDims
   ]
   in
   Op.create context Op_names.expandDims inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let expm1
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -3306,7 +3500,8 @@ let expm1
   ]
   in
   Op.create context Op_names.expm1 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let extractGlimpse
     ?(centered=true)
@@ -3324,7 +3519,8 @@ let extractGlimpse
   ]
   in
   Op.create context Op_names.extractGlimpse inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let extractImagePatches
     ~ksizes
@@ -3343,7 +3539,8 @@ let extractImagePatches
   ]
   in
   Op.create context Op_names.extractImagePatches inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ images)
 
 let extractJpegShape
     ~type_output_type
@@ -3355,7 +3552,8 @@ let extractJpegShape
   ]
   in
   Op.create context Op_names.extractJpegShape inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_output_type
 
 let fFT
     (input : [ `complex64 ] t)
@@ -3365,7 +3563,8 @@ let fFT
   ]
   in
   Op.create context Op_names.fFT inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let fFT2D
     (input : [ `complex64 ] t)
@@ -3375,7 +3574,8 @@ let fFT2D
   ]
   in
   Op.create context Op_names.fFT2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let fFT3D
     (input : [ `complex64 ] t)
@@ -3385,7 +3585,8 @@ let fFT3D
   ]
   in
   Op.create context Op_names.fFT3D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let fIFOQueue
     ~component_types
@@ -3405,7 +3606,8 @@ let fIFOQueue
   ]
   in
   Op.create context Op_names.fIFOQueue inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let fIFOQueueV2
     ~component_types
@@ -3425,7 +3627,8 @@ let fIFOQueueV2
   ]
   in
   Op.create context Op_names.fIFOQueueV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let fact
     ()
@@ -3435,7 +3638,8 @@ let fact
   ]
   in
   Op.create context Op_names.fact inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let fakeQuantWithMinMaxArgs
     ?(min=(-6.))
@@ -3453,7 +3657,8 @@ let fakeQuantWithMinMaxArgs
   ]
   in
   Op.create context Op_names.fakeQuantWithMinMaxArgs inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let fakeQuantWithMinMaxArgsGradient
     ?(min=(-6.))
@@ -3472,7 +3677,8 @@ let fakeQuantWithMinMaxArgsGradient
   ]
   in
   Op.create context Op_names.fakeQuantWithMinMaxArgsGradient inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let fakeQuantWithMinMaxVars
     ?(num_bits=8)
@@ -3488,7 +3694,8 @@ let fakeQuantWithMinMaxVars
   ]
   in
   Op.create context Op_names.fakeQuantWithMinMaxVars inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let fakeQuantWithMinMaxVarsGradient
     ?(num_bits=8)
@@ -3505,7 +3712,10 @@ let fakeQuantWithMinMaxVarsGradient
   ]
   in
   Op.create context Op_names.fakeQuantWithMinMaxVarsGradient inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Float
+    Type.Float
+    Type.Float
 
 let fakeQuantWithMinMaxVarsPerChannel
     ?(num_bits=8)
@@ -3521,7 +3731,8 @@ let fakeQuantWithMinMaxVarsPerChannel
   ]
   in
   Op.create context Op_names.fakeQuantWithMinMaxVarsPerChannel inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let fakeQuantWithMinMaxVarsPerChannelGradient
     ?(num_bits=8)
@@ -3538,7 +3749,10 @@ let fakeQuantWithMinMaxVarsPerChannelGradient
   ]
   in
   Op.create context Op_names.fakeQuantWithMinMaxVarsPerChannelGradient inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Float
+    Type.Float
+    Type.Float
 
 let fakeQueue
     (resource : [ `resource ] t)
@@ -3548,7 +3762,8 @@ let fakeQueue
   ]
   in
   Op.create context Op_names.fakeQueue inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let fill
     (dims : [ `int32 ] t)
@@ -3560,7 +3775,8 @@ let fill
   ]
   in
   Op.create context Op_names.fill inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ value)
 
 let fixedLengthRecordDataset
     (filenames : [ `string ] t)
@@ -3574,7 +3790,8 @@ let fixedLengthRecordDataset
   ]
   in
   Op.create context Op_names.fixedLengthRecordDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let fixedLengthRecordReader
     ?(header_bytes=0)
@@ -3596,7 +3813,8 @@ let fixedLengthRecordReader
   ]
   in
   Op.create context Op_names.fixedLengthRecordReader inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let fixedLengthRecordReaderV2
     ?(header_bytes=0)
@@ -3620,7 +3838,8 @@ let fixedLengthRecordReaderV2
   ]
   in
   Op.create context Op_names.fixedLengthRecordReaderV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let fixedUnigramCandidateSampler
     ~num_true
@@ -3654,7 +3873,10 @@ let fixedUnigramCandidateSampler
   ]
   in
   Op.create context Op_names.fixedUnigramCandidateSampler inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    Type.Float
+    Type.Float
 
 let floor
     (x : ([< `float | `double ] as 't) t)
@@ -3665,7 +3887,8 @@ let floor
   ]
   in
   Op.create context Op_names.floor inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let floorDiv
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
@@ -3677,7 +3900,8 @@ let floorDiv
   ]
   in
   Op.create context Op_names.floorDiv inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let floorMod
     (x : ([< `int32 | `int64 | `float | `double ] as 't) t)
@@ -3689,7 +3913,8 @@ let floorMod
   ]
   in
   Op.create context Op_names.floorMod inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let fractionalAvgPool
     ~pooling_ratio
@@ -3712,7 +3937,10 @@ let fractionalAvgPool
   ]
   in
   Op.create context Op_names.fractionalAvgPool inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ value)
+    Type.Int64
+    Type.Int64
 
 let fractionalAvgPoolGrad
     ?(overlapping=false)
@@ -3728,7 +3956,8 @@ let fractionalAvgPoolGrad
   ]
   in
   Op.create context Op_names.fractionalAvgPoolGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ out_backprop)
 
 let fractionalMaxPool
     ~pooling_ratio
@@ -3751,7 +3980,10 @@ let fractionalMaxPool
   ]
   in
   Op.create context Op_names.fractionalMaxPool inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ value)
+    Type.Int64
+    Type.Int64
 
 let fractionalMaxPoolGrad
     ?(overlapping=false)
@@ -3768,7 +4000,8 @@ let fractionalMaxPoolGrad
   ]
   in
   Op.create context Op_names.fractionalMaxPoolGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ orig_input)
 
 let fusedBatchNorm
     ?(epsilon=9.9999997473787516e-05)
@@ -3789,7 +4022,12 @@ let fusedBatchNorm
   ]
   in
   Op.create context Op_names.fusedBatchNorm inputs attrs
-  |> Op.execute5
+  |> fun op -> Op.execute5 op
+    (Op.Tensor_handle.type_ x)
+    (Op.Tensor_handle.type_ x)
+    (Op.Tensor_handle.type_ x)
+    (Op.Tensor_handle.type_ x)
+    (Op.Tensor_handle.type_ x)
 
 let fusedBatchNormGrad
     ?(epsilon=9.9999997473787516e-05)
@@ -3810,7 +4048,12 @@ let fusedBatchNormGrad
   ]
   in
   Op.create context Op_names.fusedBatchNormGrad inputs attrs
-  |> Op.execute5
+  |> fun op -> Op.execute5 op
+    (Op.Tensor_handle.type_ y_backprop)
+    (Op.Tensor_handle.type_ y_backprop)
+    (Op.Tensor_handle.type_ y_backprop)
+    (Op.Tensor_handle.type_ y_backprop)
+    (Op.Tensor_handle.type_ y_backprop)
 
 let fusedBatchNormGradV2
     ?(epsilon=9.9999997473787516e-05)
@@ -3832,7 +4075,12 @@ let fusedBatchNormGradV2
   ]
   in
   Op.create context Op_names.fusedBatchNormGradV2 inputs attrs
-  |> Op.execute5
+  |> fun op -> Op.execute5 op
+    (Op.Tensor_handle.type_ y_backprop)
+    (Op.Tensor_handle.type_ reserve_space_1)
+    (Op.Tensor_handle.type_ reserve_space_1)
+    (Op.Tensor_handle.type_ reserve_space_1)
+    (Op.Tensor_handle.type_ reserve_space_1)
 
 let fusedBatchNormV2
     ?(epsilon=9.9999997473787516e-05)
@@ -3854,7 +4102,12 @@ let fusedBatchNormV2
   ]
   in
   Op.create context Op_names.fusedBatchNormV2 inputs attrs
-  |> Op.execute5
+  |> fun op -> Op.execute5 op
+    (Op.Tensor_handle.type_ x)
+    (Op.Tensor_handle.type_ scale)
+    (Op.Tensor_handle.type_ scale)
+    (Op.Tensor_handle.type_ scale)
+    (Op.Tensor_handle.type_ scale)
 
 let fusedPadConv2D
     ~mode
@@ -3873,7 +4126,8 @@ let fusedPadConv2D
   ]
   in
   Op.create context Op_names.fusedPadConv2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let fusedResizeAndPadConv2D
     ?(resize_align_corners=false)
@@ -3895,7 +4149,8 @@ let fusedResizeAndPadConv2D
   ]
   in
   Op.create context Op_names.fusedResizeAndPadConv2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let gather
     ?(validate_indices=true)
@@ -3910,7 +4165,8 @@ let gather
   ]
   in
   Op.create context Op_names.gather inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ params)
 
 let gatherNd
     (params : 'tparams t)
@@ -3923,7 +4179,8 @@ let gatherNd
   ]
   in
   Op.create context Op_names.gatherNd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ params)
 
 let gatherV2
     (params : 'tparams t)
@@ -3938,7 +4195,8 @@ let gatherV2
   ]
   in
   Op.create context Op_names.gatherV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ params)
 
 let generateVocabRemapping
     ~new_vocab_offset
@@ -3953,7 +4211,9 @@ let generateVocabRemapping
   ]
   in
   Op.create context Op_names.generateVocabRemapping inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Int64
+    Type.Int32
 
 let getSessionHandle
     (value : 't t)
@@ -3964,7 +4224,8 @@ let getSessionHandle
   ]
   in
   Op.create context Op_names.getSessionHandle inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let getSessionHandleV2
     (value : 't t)
@@ -3975,7 +4236,8 @@ let getSessionHandleV2
   ]
   in
   Op.create context Op_names.getSessionHandleV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let getSessionTensor
     ~type_dtype
@@ -3987,7 +4249,8 @@ let getSessionTensor
   ]
   in
   Op.create context Op_names.getSessionTensor inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let greater
     (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -3999,7 +4262,8 @@ let greater
   ]
   in
   Op.create context Op_names.greater inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let greaterEqual
     (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -4011,7 +4275,8 @@ let greaterEqual
   ]
   in
   Op.create context Op_names.greaterEqual inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let hSVToRGB
     (images : ([< `float | `double ] as 't) t)
@@ -4022,7 +4287,8 @@ let hSVToRGB
   ]
   in
   Op.create context Op_names.hSVToRGB inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ images)
 
 let hashTable
     ?(container="")
@@ -4038,7 +4304,8 @@ let hashTable
   ]
   in
   Op.create context Op_names.hashTable inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let hashTableV2
     ?(container="")
@@ -4054,7 +4321,8 @@ let hashTableV2
   ]
   in
   Op.create context Op_names.hashTableV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let histogramSummary
     (tag : [ `string ] t)
@@ -4066,7 +4334,8 @@ let histogramSummary
   ]
   in
   Op.create context Op_names.histogramSummary inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let iFFT
     (input : [ `complex64 ] t)
@@ -4076,7 +4345,8 @@ let iFFT
   ]
   in
   Op.create context Op_names.iFFT inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let iFFT2D
     (input : [ `complex64 ] t)
@@ -4086,7 +4356,8 @@ let iFFT2D
   ]
   in
   Op.create context Op_names.iFFT2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let iFFT3D
     (input : [ `complex64 ] t)
@@ -4096,7 +4367,8 @@ let iFFT3D
   ]
   in
   Op.create context Op_names.iFFT3D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let iRFFT
     (input : [ `complex64 ] t)
@@ -4107,7 +4379,8 @@ let iRFFT
   ]
   in
   Op.create context Op_names.iRFFT inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let iRFFT2D
     (input : [ `complex64 ] t)
@@ -4118,7 +4391,8 @@ let iRFFT2D
   ]
   in
   Op.create context Op_names.iRFFT2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let iRFFT3D
     (input : [ `complex64 ] t)
@@ -4129,7 +4403,8 @@ let iRFFT3D
   ]
   in
   Op.create context Op_names.iRFFT3D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let identity
     (input : 't t)
@@ -4140,7 +4415,8 @@ let identity
   ]
   in
   Op.create context Op_names.identity inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let identityReader
     ?(container="")
@@ -4154,7 +4430,8 @@ let identityReader
   ]
   in
   Op.create context Op_names.identityReader inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let identityReaderV2
     ?(container="")
@@ -4168,7 +4445,8 @@ let identityReaderV2
   ]
   in
   Op.create context Op_names.identityReaderV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let igamma
     (a : ([< `float | `double ] as 't) t)
@@ -4180,7 +4458,8 @@ let igamma
   ]
   in
   Op.create context Op_names.igamma inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ a)
 
 let igammac
     (a : ([< `float | `double ] as 't) t)
@@ -4192,7 +4471,8 @@ let igammac
   ]
   in
   Op.create context Op_names.igammac inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ a)
 
 let ignoreErrorsDataset
     ~output_types
@@ -4206,7 +4486,8 @@ let ignoreErrorsDataset
   ]
   in
   Op.create context Op_names.ignoreErrorsDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let imag
     ~type_tout
@@ -4219,7 +4500,8 @@ let imag
   ]
   in
   Op.create context Op_names.imag inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_tout
 
 let imageSummary
     ?(max_images=3)
@@ -4233,7 +4515,8 @@ let imageSummary
   ]
   in
   Op.create context Op_names.imageSummary inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let immutableConst
     ~type_dtype
@@ -4249,7 +4532,8 @@ let immutableConst
   ]
   in
   Op.create context Op_names.immutableConst inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let inTopK
     ~k
@@ -4263,7 +4547,8 @@ let inTopK
   ]
   in
   Op.create context Op_names.inTopK inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let inTopKV2
     (predictions : [ `float ] t)
@@ -4276,7 +4561,8 @@ let inTopKV2
   ]
   in
   Op.create context Op_names.inTopKV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let initializeTable
     (table_handle : [ `string ] t)
@@ -4290,7 +4576,7 @@ let initializeTable
   ]
   in
   Op.create context Op_names.initializeTable inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let initializeTableFromTextFile
     ~key_index
@@ -4309,7 +4595,7 @@ let initializeTableFromTextFile
   ]
   in
   Op.create context Op_names.initializeTableFromTextFile inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let initializeTableFromTextFileV2
     ~key_index
@@ -4328,7 +4614,7 @@ let initializeTableFromTextFileV2
   ]
   in
   Op.create context Op_names.initializeTableFromTextFileV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let initializeTableV2
     (table_handle : [ `resource ] t)
@@ -4342,7 +4628,7 @@ let initializeTableV2
   ]
   in
   Op.create context Op_names.initializeTableV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let inv
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -4353,7 +4639,8 @@ let inv
   ]
   in
   Op.create context Op_names.inv inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let invGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
@@ -4365,7 +4652,8 @@ let invGrad
   ]
   in
   Op.create context Op_names.invGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ y)
 
 let invert
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -4376,7 +4664,8 @@ let invert
   ]
   in
   Op.create context Op_names.invert inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let invertPermutation
     (x : ([< `int32 | `int64 ] as 't) t)
@@ -4387,7 +4676,8 @@ let invertPermutation
   ]
   in
   Op.create context Op_names.invertPermutation inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let isFinite
     (x : ([< `float | `double ] as 't) t)
@@ -4398,7 +4688,8 @@ let isFinite
   ]
   in
   Op.create context Op_names.isFinite inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let isInf
     (x : ([< `float | `double ] as 't) t)
@@ -4409,7 +4700,8 @@ let isInf
   ]
   in
   Op.create context Op_names.isInf inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let isNan
     (x : ([< `float | `double ] as 't) t)
@@ -4420,7 +4712,8 @@ let isNan
   ]
   in
   Op.create context Op_names.isNan inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let isVariableInitialized
     (ref : 'dtype t)
@@ -4431,7 +4724,8 @@ let isVariableInitialized
   ]
   in
   Op.create context Op_names.isVariableInitialized inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let iterator
     ~shared_name
@@ -4449,7 +4743,8 @@ let iterator
   ]
   in
   Op.create context Op_names.iterator inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let iteratorFromStringHandle
     ?(output_types=[])
@@ -4463,7 +4758,8 @@ let iteratorFromStringHandle
   ]
   in
   Op.create context Op_names.iteratorFromStringHandle inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let iteratorToStringHandle
     (resource_handle : [ `resource ] t)
@@ -4473,7 +4769,8 @@ let iteratorToStringHandle
   ]
   in
   Op.create context Op_names.iteratorToStringHandle inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let l2Loss
     (t : ([< `float | `double ] as 't) t)
@@ -4484,7 +4781,8 @@ let l2Loss
   ]
   in
   Op.create context Op_names.l2Loss inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ t)
 
 let lMDBReader
     ?(container="")
@@ -4498,7 +4796,8 @@ let lMDBReader
   ]
   in
   Op.create context Op_names.lMDBReader inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let lRN
     ?(depth_radius=5)
@@ -4517,7 +4816,8 @@ let lRN
   ]
   in
   Op.create context Op_names.lRN inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let lRNGrad
     ?(depth_radius=5)
@@ -4538,7 +4838,8 @@ let lRNGrad
   ]
   in
   Op.create context Op_names.lRNGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input_grads)
 
 let learnedUnigramCandidateSampler
     ~num_true
@@ -4560,7 +4861,10 @@ let learnedUnigramCandidateSampler
   ]
   in
   Op.create context Op_names.learnedUnigramCandidateSampler inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    Type.Float
+    Type.Float
 
 let less
     (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -4572,7 +4876,8 @@ let less
   ]
   in
   Op.create context Op_names.less inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let lessEqual
     (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -4584,7 +4889,8 @@ let lessEqual
   ]
   in
   Op.create context Op_names.lessEqual inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let lgamma
     (x : ([< `float | `double ] as 't) t)
@@ -4595,7 +4901,8 @@ let lgamma
   ]
   in
   Op.create context Op_names.lgamma inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let linSpace
     (start : ([< `float | `double ] as 't) t)
@@ -4609,7 +4916,8 @@ let linSpace
   ]
   in
   Op.create context Op_names.linSpace inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ start)
 
 let listDiff
     ~type_out_idx
@@ -4623,7 +4931,9 @@ let listDiff
   ]
   in
   Op.create context Op_names.listDiff inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ x)
+    type_out_idx
 
 let loadAndRemapMatrix
     ~num_rows
@@ -4643,7 +4953,8 @@ let loadAndRemapMatrix
   ]
   in
   Op.create context Op_names.loadAndRemapMatrix inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let log
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -4654,7 +4965,8 @@ let log
   ]
   in
   Op.create context Op_names.log inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let log1p
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -4665,7 +4977,8 @@ let log1p
   ]
   in
   Op.create context Op_names.log1p inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let logMatrixDeterminant
     (input : ([< `float | `double | `complex64 ] as 't) t)
@@ -4676,7 +4989,9 @@ let logMatrixDeterminant
   ]
   in
   Op.create context Op_names.logMatrixDeterminant inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ input)
+    (Op.Tensor_handle.type_ input)
 
 let logSoftmax
     (logits : ([< `float | `double ] as 't) t)
@@ -4687,7 +5002,8 @@ let logSoftmax
   ]
   in
   Op.create context Op_names.logSoftmax inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ logits)
 
 let logUniformCandidateSampler
     ~num_true
@@ -4709,7 +5025,10 @@ let logUniformCandidateSampler
   ]
   in
   Op.create context Op_names.logUniformCandidateSampler inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    Type.Float
+    Type.Float
 
 let logicalAnd
     (x : [ `bool ] t)
@@ -4720,7 +5039,8 @@ let logicalAnd
   ]
   in
   Op.create context Op_names.logicalAnd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let logicalNot
     (x : [ `bool ] t)
@@ -4730,7 +5050,8 @@ let logicalNot
   ]
   in
   Op.create context Op_names.logicalNot inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let logicalOr
     (x : [ `bool ] t)
@@ -4741,7 +5062,8 @@ let logicalOr
   ]
   in
   Op.create context Op_names.logicalOr inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let lookupTableExport
     ~type_tkeys
@@ -4755,7 +5077,9 @@ let lookupTableExport
   ]
   in
   Op.create context Op_names.lookupTableExport inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    type_tkeys
+    type_tvalues
 
 let lookupTableExportV2
     ~type_tkeys
@@ -4769,7 +5093,9 @@ let lookupTableExportV2
   ]
   in
   Op.create context Op_names.lookupTableExportV2 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    type_tkeys
+    type_tvalues
 
 let lookupTableFind
     (table_handle : [ `string ] t)
@@ -4783,7 +5109,8 @@ let lookupTableFind
   ]
   in
   Op.create context Op_names.lookupTableFind inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ default_value)
 
 let lookupTableFindV2
     (table_handle : [ `resource ] t)
@@ -4797,7 +5124,8 @@ let lookupTableFindV2
   ]
   in
   Op.create context Op_names.lookupTableFindV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ default_value)
 
 let lookupTableImport
     (table_handle : [ `string ] t)
@@ -4811,7 +5139,7 @@ let lookupTableImport
   ]
   in
   Op.create context Op_names.lookupTableImport inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let lookupTableImportV2
     (table_handle : [ `resource ] t)
@@ -4825,7 +5153,7 @@ let lookupTableImportV2
   ]
   in
   Op.create context Op_names.lookupTableImportV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let lookupTableInsert
     (table_handle : [ `string ] t)
@@ -4839,7 +5167,7 @@ let lookupTableInsert
   ]
   in
   Op.create context Op_names.lookupTableInsert inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let lookupTableInsertV2
     (table_handle : [ `resource ] t)
@@ -4853,7 +5181,7 @@ let lookupTableInsertV2
   ]
   in
   Op.create context Op_names.lookupTableInsertV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let lookupTableSize
     (table_handle : [ `string ] t)
@@ -4863,7 +5191,8 @@ let lookupTableSize
   ]
   in
   Op.create context Op_names.lookupTableSize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let lookupTableSizeV2
     (table_handle : [ `resource ] t)
@@ -4873,7 +5202,8 @@ let lookupTableSizeV2
   ]
   in
   Op.create context Op_names.lookupTableSizeV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let loopCond
     (input : [ `bool ] t)
@@ -4883,7 +5213,8 @@ let loopCond
   ]
   in
   Op.create context Op_names.loopCond inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let makeIterator
     (dataset : [ `variant ] t)
@@ -4894,7 +5225,7 @@ let makeIterator
   ]
   in
   Op.create context Op_names.makeIterator inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let mapClear
     ?(capacity=0)
@@ -4914,7 +5245,7 @@ let mapClear
   ]
   in
   Op.create context Op_names.mapClear inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let mapIncompleteSize
     ?(capacity=0)
@@ -4934,7 +5265,8 @@ let mapIncompleteSize
   ]
   in
   Op.create context Op_names.mapIncompleteSize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let mapSize
     ?(capacity=0)
@@ -4954,7 +5286,8 @@ let mapSize
   ]
   in
   Op.create context Op_names.mapSize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let matMul
     ?(transpose_a=false)
@@ -4970,7 +5303,8 @@ let matMul
   ]
   in
   Op.create context Op_names.matMul inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ a)
 
 let matchingFiles
     (pattern : [ `string ] t)
@@ -4980,7 +5314,8 @@ let matchingFiles
   ]
   in
   Op.create context Op_names.matchingFiles inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let matrixBandPart
     (input : 't t)
@@ -4993,7 +5328,8 @@ let matrixBandPart
   ]
   in
   Op.create context Op_names.matrixBandPart inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let matrixDeterminant
     (input : ([< `float | `double | `complex64 ] as 't) t)
@@ -5004,7 +5340,8 @@ let matrixDeterminant
   ]
   in
   Op.create context Op_names.matrixDeterminant inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let matrixDiag
     (diagonal : 't t)
@@ -5015,7 +5352,8 @@ let matrixDiag
   ]
   in
   Op.create context Op_names.matrixDiag inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ diagonal)
 
 let matrixDiagPart
     (input : 't t)
@@ -5026,7 +5364,8 @@ let matrixDiagPart
   ]
   in
   Op.create context Op_names.matrixDiagPart inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let matrixInverse
     ?(adjoint=false)
@@ -5039,7 +5378,8 @@ let matrixInverse
   ]
   in
   Op.create context Op_names.matrixInverse inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let matrixSetDiag
     (input : 't t)
@@ -5051,7 +5391,8 @@ let matrixSetDiag
   ]
   in
   Op.create context Op_names.matrixSetDiag inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let matrixSolve
     ?(adjoint=false)
@@ -5065,7 +5406,8 @@ let matrixSolve
   ]
   in
   Op.create context Op_names.matrixSolve inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ matrix)
 
 let matrixSolveLs
     ?(fast=true)
@@ -5080,7 +5422,8 @@ let matrixSolveLs
   ]
   in
   Op.create context Op_names.matrixSolveLs inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ matrix)
 
 let matrixTriangularSolve
     ?(lower=true)
@@ -5096,7 +5439,8 @@ let matrixTriangularSolve
   ]
   in
   Op.create context Op_names.matrixTriangularSolve inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ matrix)
 
 let max
     ?(keep_dims=false)
@@ -5111,7 +5455,8 @@ let max
   ]
   in
   Op.create context Op_names.max inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let maxPool
     ~ksize
@@ -5130,7 +5475,8 @@ let maxPool
   ]
   in
   Op.create context Op_names.maxPool inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let maxPool3D
     ~ksize
@@ -5149,7 +5495,8 @@ let maxPool3D
   ]
   in
   Op.create context Op_names.maxPool3D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let maxPool3DGrad
     ~ksize
@@ -5171,7 +5518,8 @@ let maxPool3DGrad
   ]
   in
   Op.create context Op_names.maxPool3DGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ grad)
 
 let maxPool3DGradGrad
     ~ksize
@@ -5192,7 +5540,8 @@ let maxPool3DGradGrad
   ]
   in
   Op.create context Op_names.maxPool3DGradGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ orig_input)
 
 let maxPoolGrad
     ~ksize
@@ -5213,7 +5562,8 @@ let maxPoolGrad
   ]
   in
   Op.create context Op_names.maxPoolGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ orig_input)
 
 let maxPoolGradGrad
     ~ksize
@@ -5234,7 +5584,8 @@ let maxPoolGradGrad
   ]
   in
   Op.create context Op_names.maxPoolGradGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ orig_input)
 
 let maxPoolGradGradV2
     ~padding
@@ -5253,7 +5604,8 @@ let maxPoolGradGradV2
   ]
   in
   Op.create context Op_names.maxPoolGradGradV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ orig_input)
 
 let maxPoolGradGradWithArgmax
     ~ksize
@@ -5273,7 +5625,8 @@ let maxPoolGradGradWithArgmax
   ]
   in
   Op.create context Op_names.maxPoolGradGradWithArgmax inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let maxPoolGradV2
     ~padding
@@ -5292,7 +5645,8 @@ let maxPoolGradV2
   ]
   in
   Op.create context Op_names.maxPoolGradV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ orig_input)
 
 let maxPoolGradWithArgmax
     ~ksize
@@ -5312,7 +5666,8 @@ let maxPoolGradWithArgmax
   ]
   in
   Op.create context Op_names.maxPoolGradWithArgmax inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let maxPoolV2
     ~padding
@@ -5329,7 +5684,8 @@ let maxPoolV2
   ]
   in
   Op.create context Op_names.maxPoolV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let maxPoolWithArgmax
     ~type_targmax
@@ -5348,7 +5704,9 @@ let maxPoolWithArgmax
   ]
   in
   Op.create context Op_names.maxPoolWithArgmax inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ input)
+    type_targmax
 
 let maximum
     (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
@@ -5360,7 +5718,8 @@ let maximum
   ]
   in
   Op.create context Op_names.maximum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let mean
     ?(keep_dims=false)
@@ -5375,7 +5734,8 @@ let mean
   ]
   in
   Op.create context Op_names.mean inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let merge
     (inputs__ : 't t list)
@@ -5387,7 +5747,9 @@ let merge
   ]
   in
   Op.create context Op_names.merge inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ (List.hd_exn inputs__))
+    Type.Int32
 
 let mergeSummary
     (inputs__ : [ `string ] t list)
@@ -5398,7 +5760,8 @@ let mergeSummary
   ]
   in
   Op.create context Op_names.mergeSummary inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let mergeV2Checkpoints
     ?(delete_old_dirs=true)
@@ -5411,7 +5774,7 @@ let mergeV2Checkpoints
   ]
   in
   Op.create context Op_names.mergeV2Checkpoints inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let mfcc
     ?(upper_frequency_limit=4000.)
@@ -5430,7 +5793,8 @@ let mfcc
   ]
   in
   Op.create context Op_names.mfcc inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let min
     ?(keep_dims=false)
@@ -5445,7 +5809,8 @@ let min
   ]
   in
   Op.create context Op_names.min inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let minimum
     (x : ([< `float | `double | `int32 | `int64 ] as 't) t)
@@ -5457,7 +5822,8 @@ let minimum
   ]
   in
   Op.create context Op_names.minimum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let mirrorPad
     ~mode
@@ -5472,7 +5838,8 @@ let mirrorPad
   ]
   in
   Op.create context Op_names.mirrorPad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let mirrorPadGrad
     ~mode
@@ -5487,7 +5854,8 @@ let mirrorPadGrad
   ]
   in
   Op.create context Op_names.mirrorPadGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let mod_
     (x : ([< `int32 | `int64 | `float | `double ] as 't) t)
@@ -5499,7 +5867,8 @@ let mod_
   ]
   in
   Op.create context Op_names.mod_ inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let mul
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
@@ -5511,7 +5880,8 @@ let mul
   ]
   in
   Op.create context Op_names.mul inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let multinomial
     ?(seed=0)
@@ -5527,7 +5897,8 @@ let multinomial
   ]
   in
   Op.create context Op_names.multinomial inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let mutableDenseHashTable
     ?(container="")
@@ -5550,7 +5921,8 @@ let mutableDenseHashTable
   ]
   in
   Op.create context Op_names.mutableDenseHashTable inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let mutableDenseHashTableV2
     ?(container="")
@@ -5573,7 +5945,8 @@ let mutableDenseHashTableV2
   ]
   in
   Op.create context Op_names.mutableDenseHashTableV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let mutableHashTable
     ?(container="")
@@ -5589,7 +5962,8 @@ let mutableHashTable
   ]
   in
   Op.create context Op_names.mutableHashTable inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let mutableHashTableOfTensors
     ?(container="")
@@ -5607,7 +5981,8 @@ let mutableHashTableOfTensors
   ]
   in
   Op.create context Op_names.mutableHashTableOfTensors inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let mutableHashTableOfTensorsV2
     ?(container="")
@@ -5625,7 +6000,8 @@ let mutableHashTableOfTensorsV2
   ]
   in
   Op.create context Op_names.mutableHashTableOfTensorsV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let mutableHashTableV2
     ?(container="")
@@ -5641,7 +6017,8 @@ let mutableHashTableV2
   ]
   in
   Op.create context Op_names.mutableHashTableV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let neg
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -5652,7 +6029,8 @@ let neg
   ]
   in
   Op.create context Op_names.neg inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let negTrain
     ~vocab_count
@@ -5670,7 +6048,7 @@ let negTrain
   ]
   in
   Op.create context Op_names.negTrain inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let nextIteration
     (data : 't t)
@@ -5681,7 +6059,8 @@ let nextIteration
   ]
   in
   Op.create context Op_names.nextIteration inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let noOp
     ()
@@ -5691,7 +6070,7 @@ let noOp
   ]
   in
   Op.create context Op_names.noOp inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let nonMaxSuppression
     ?(iou_threshold=0.5)
@@ -5705,7 +6084,8 @@ let nonMaxSuppression
   ]
   in
   Op.create context Op_names.nonMaxSuppression inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let nonMaxSuppressionV2
     (boxes : [ `float ] t)
@@ -5718,7 +6098,8 @@ let nonMaxSuppressionV2
   ]
   in
   Op.create context Op_names.nonMaxSuppressionV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let notEqual
     (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 | `string | `bool ] as 't) t)
@@ -5730,7 +6111,8 @@ let notEqual
   ]
   in
   Op.create context Op_names.notEqual inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let oneHot
     ?(axis=(-1))
@@ -5747,7 +6129,8 @@ let oneHot
   ]
   in
   Op.create context Op_names.oneHot inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ on_value)
 
 let oneShotIterator
     ~output_types
@@ -5765,7 +6148,8 @@ let oneShotIterator
   ]
   in
   Op.create context Op_names.oneShotIterator inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let onesLike
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -5776,7 +6160,8 @@ let onesLike
   ]
   in
   Op.create context Op_names.onesLike inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let orderedMapClear
     ?(capacity=0)
@@ -5796,7 +6181,7 @@ let orderedMapClear
   ]
   in
   Op.create context Op_names.orderedMapClear inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let orderedMapIncompleteSize
     ?(capacity=0)
@@ -5816,7 +6201,8 @@ let orderedMapIncompleteSize
   ]
   in
   Op.create context Op_names.orderedMapIncompleteSize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let orderedMapSize
     ?(capacity=0)
@@ -5836,7 +6222,8 @@ let orderedMapSize
   ]
   in
   Op.create context Op_names.orderedMapSize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let pack
     ?(axis=0)
@@ -5850,7 +6237,8 @@ let pack
   ]
   in
   Op.create context Op_names.pack inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ (List.hd_exn values))
 
 let pad
     (input : 't t)
@@ -5863,7 +6251,8 @@ let pad
   ]
   in
   Op.create context Op_names.pad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let padV2
     (input : 't t)
@@ -5877,7 +6266,8 @@ let padV2
   ]
   in
   Op.create context Op_names.padV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let paddingFIFOQueue
     ~component_types
@@ -5897,7 +6287,8 @@ let paddingFIFOQueue
   ]
   in
   Op.create context Op_names.paddingFIFOQueue inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let paddingFIFOQueueV2
     ~component_types
@@ -5917,7 +6308,8 @@ let paddingFIFOQueueV2
   ]
   in
   Op.create context Op_names.paddingFIFOQueueV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let parallelConcat
     ~shape
@@ -5931,7 +6323,8 @@ let parallelConcat
   ]
   in
   Op.create context Op_names.parallelConcat inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ (List.hd_exn values))
 
 let parallelDynamicStitch
     (indices : [ `int32 ] t list)
@@ -5944,7 +6337,8 @@ let parallelDynamicStitch
   ]
   in
   Op.create context Op_names.parallelDynamicStitch inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ (List.hd_exn data))
 
 let parameterizedTruncatedNormal
     ?(seed=0)
@@ -5964,7 +6358,8 @@ let parameterizedTruncatedNormal
   ]
   in
   Op.create context Op_names.parameterizedTruncatedNormal inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ means)
 
 let parseTensor
     ~type_out_type
@@ -5976,7 +6371,8 @@ let parseTensor
   ]
   in
   Op.create context Op_names.parseTensor inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_out_type
 
 let placeholder
     ~type_dtype
@@ -5990,7 +6386,8 @@ let placeholder
   ]
   in
   Op.create context Op_names.placeholder inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let placeholderV2
     ~type_dtype
@@ -6004,7 +6401,8 @@ let placeholderV2
   ]
   in
   Op.create context Op_names.placeholderV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let placeholderWithDefault
     ~shape
@@ -6017,7 +6415,8 @@ let placeholderWithDefault
   ]
   in
   Op.create context Op_names.placeholderWithDefault inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let polygamma
     (a : ([< `float | `double ] as 't) t)
@@ -6029,7 +6428,8 @@ let polygamma
   ]
   in
   Op.create context Op_names.polygamma inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ a)
 
 let populationCount
     (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -6040,7 +6440,8 @@ let populationCount
   ]
   in
   Op.create context Op_names.populationCount inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.UInt8
 
 let pow
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -6052,7 +6453,8 @@ let pow
   ]
   in
   Op.create context Op_names.pow inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let prefetchDataset
     ~output_types
@@ -6067,7 +6469,8 @@ let prefetchDataset
   ]
   in
   Op.create context Op_names.prefetchDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let preventGradient
     ?(message="")
@@ -6080,7 +6483,8 @@ let preventGradient
   ]
   in
   Op.create context Op_names.preventGradient inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let priorityQueue
     ?(component_types=[])
@@ -6100,7 +6504,8 @@ let priorityQueue
   ]
   in
   Op.create context Op_names.priorityQueue inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let priorityQueueV2
     ?(component_types=[])
@@ -6120,7 +6525,8 @@ let priorityQueueV2
   ]
   in
   Op.create context Op_names.priorityQueueV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let prod
     ?(keep_dims=false)
@@ -6135,7 +6541,8 @@ let prod
   ]
   in
   Op.create context Op_names.prod inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let qr
     ?(full_matrices=false)
@@ -6148,7 +6555,9 @@ let qr
   ]
   in
   Op.create context Op_names.qr inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ input)
+    (Op.Tensor_handle.type_ input)
 
 let quantizeAndDequantize
     ?(signed_input=true)
@@ -6169,7 +6578,8 @@ let quantizeAndDequantize
   ]
   in
   Op.create context Op_names.quantizeAndDequantize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let quantizeAndDequantizeV2
     ?(signed_input=true)
@@ -6188,7 +6598,8 @@ let quantizeAndDequantizeV2
   ]
   in
   Op.create context Op_names.quantizeAndDequantizeV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let quantizeAndDequantizeV3
     ?(signed_input=true)
@@ -6206,7 +6617,8 @@ let quantizeAndDequantizeV3
   ]
   in
   Op.create context Op_names.quantizeAndDequantizeV3 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let quantizeDownAndShrinkRange
     ~type_out_type
@@ -6221,7 +6633,10 @@ let quantizeDownAndShrinkRange
   ]
   in
   Op.create context Op_names.quantizeDownAndShrinkRange inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_out_type
+    Type.Float
+    Type.Float
 
 let quantizeV2
     ~type_t
@@ -6237,7 +6652,10 @@ let quantizeV2
   ]
   in
   Op.create context Op_names.quantizeV2 inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_t
+    Type.Float
+    Type.Float
 
 let quantizedAdd
     ~type_toutput
@@ -6256,7 +6674,10 @@ let quantizedAdd
   ]
   in
   Op.create context Op_names.quantizedAdd inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_toutput
+    Type.Float
+    Type.Float
 
 let quantizedAvgPool
     ~ksize
@@ -6275,7 +6696,10 @@ let quantizedAvgPool
   ]
   in
   Op.create context Op_names.quantizedAvgPool inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ input)
+    Type.Float
+    Type.Float
 
 let quantizedBatchNormWithGlobalNormalization
     ~type_out_type
@@ -6306,7 +6730,10 @@ let quantizedBatchNormWithGlobalNormalization
   ]
   in
   Op.create context Op_names.quantizedBatchNormWithGlobalNormalization inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_out_type
+    Type.Float
+    Type.Float
 
 let quantizedBiasAdd
     ~type_out_type
@@ -6325,7 +6752,10 @@ let quantizedBiasAdd
   ]
   in
   Op.create context Op_names.quantizedBiasAdd inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_out_type
+    Type.Float
+    Type.Float
 
 let quantizedConcat
     (concat_dim : [ `int32 ] t)
@@ -6340,7 +6770,10 @@ let quantizedConcat
   ]
   in
   Op.create context Op_names.quantizedConcat inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ (List.hd_exn values))
+    Type.Float
+    Type.Float
 
 let quantizedConv2D
     ~type_out_type
@@ -6363,7 +6796,10 @@ let quantizedConv2D
   ]
   in
   Op.create context Op_names.quantizedConv2D inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_out_type
+    Type.Float
+    Type.Float
 
 let quantizedInstanceNorm
     ?(output_range_given=false)
@@ -6386,7 +6822,10 @@ let quantizedInstanceNorm
   ]
   in
   Op.create context Op_names.quantizedInstanceNorm inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ x)
+    Type.Float
+    Type.Float
 
 let quantizedMatMul
     ~type_toutput
@@ -6409,7 +6848,10 @@ let quantizedMatMul
   ]
   in
   Op.create context Op_names.quantizedMatMul inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_toutput
+    Type.Float
+    Type.Float
 
 let quantizedMaxPool
     ~ksize
@@ -6428,7 +6870,10 @@ let quantizedMaxPool
   ]
   in
   Op.create context Op_names.quantizedMaxPool inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ input)
+    Type.Float
+    Type.Float
 
 let quantizedMul
     ~type_toutput
@@ -6447,7 +6892,10 @@ let quantizedMul
   ]
   in
   Op.create context Op_names.quantizedMul inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_toutput
+    Type.Float
+    Type.Float
 
 let quantizedRelu
     ~type_out_type
@@ -6462,7 +6910,10 @@ let quantizedRelu
   ]
   in
   Op.create context Op_names.quantizedRelu inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_out_type
+    Type.Float
+    Type.Float
 
 let quantizedRelu6
     ~type_out_type
@@ -6477,7 +6928,10 @@ let quantizedRelu6
   ]
   in
   Op.create context Op_names.quantizedRelu6 inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_out_type
+    Type.Float
+    Type.Float
 
 let quantizedReluX
     ~type_out_type
@@ -6493,7 +6947,10 @@ let quantizedReluX
   ]
   in
   Op.create context Op_names.quantizedReluX inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_out_type
+    Type.Float
+    Type.Float
 
 let quantizedReshape
     (tensor : 't t)
@@ -6508,7 +6965,10 @@ let quantizedReshape
   ]
   in
   Op.create context Op_names.quantizedReshape inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ tensor)
+    Type.Float
+    Type.Float
 
 let quantizedResizeBilinear
     ?(align_corners=false)
@@ -6524,7 +6984,10 @@ let quantizedResizeBilinear
   ]
   in
   Op.create context Op_names.quantizedResizeBilinear inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ images)
+    Type.Float
+    Type.Float
 
 let queueClose
     ?(cancel_pending_enqueues=false)
@@ -6536,7 +6999,7 @@ let queueClose
   ]
   in
   Op.create context Op_names.queueClose inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let queueCloseV2
     ?(cancel_pending_enqueues=false)
@@ -6548,7 +7011,7 @@ let queueCloseV2
   ]
   in
   Op.create context Op_names.queueCloseV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let queueIsClosed
     (handle : [ `string ] t)
@@ -6558,7 +7021,8 @@ let queueIsClosed
   ]
   in
   Op.create context Op_names.queueIsClosed inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let queueIsClosedV2
     (handle : [ `resource ] t)
@@ -6568,7 +7032,8 @@ let queueIsClosedV2
   ]
   in
   Op.create context Op_names.queueIsClosedV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Bool
 
 let queueSize
     (handle : [ `string ] t)
@@ -6578,7 +7043,8 @@ let queueSize
   ]
   in
   Op.create context Op_names.queueSize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let queueSizeV2
     (handle : [ `resource ] t)
@@ -6588,7 +7054,8 @@ let queueSizeV2
   ]
   in
   Op.create context Op_names.queueSizeV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let rFFT
     (input : [ `float ] t)
@@ -6599,7 +7066,8 @@ let rFFT
   ]
   in
   Op.create context Op_names.rFFT inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let rFFT2D
     (input : [ `float ] t)
@@ -6610,7 +7078,8 @@ let rFFT2D
   ]
   in
   Op.create context Op_names.rFFT2D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let rFFT3D
     (input : [ `float ] t)
@@ -6621,7 +7090,8 @@ let rFFT3D
   ]
   in
   Op.create context Op_names.rFFT3D inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Complex64
 
 let rGBToHSV
     (images : ([< `float | `double ] as 't) t)
@@ -6632,7 +7102,8 @@ let rGBToHSV
   ]
   in
   Op.create context Op_names.rGBToHSV inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ images)
 
 let randomCrop
     ?(seed=0)
@@ -6648,7 +7119,8 @@ let randomCrop
   ]
   in
   Op.create context Op_names.randomCrop inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ image)
 
 let randomGamma
     ?(seed=0)
@@ -6665,7 +7137,8 @@ let randomGamma
   ]
   in
   Op.create context Op_names.randomGamma inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ alpha)
 
 let randomPoisson
     ?(seed=0)
@@ -6682,7 +7155,8 @@ let randomPoisson
   ]
   in
   Op.create context Op_names.randomPoisson inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ rate)
 
 let randomPoissonV2
     ~type_dtype
@@ -6701,7 +7175,8 @@ let randomPoissonV2
   ]
   in
   Op.create context Op_names.randomPoissonV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let randomShuffle
     ?(seed=0)
@@ -6716,7 +7191,8 @@ let randomShuffle
   ]
   in
   Op.create context Op_names.randomShuffle inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ value)
 
 let randomShuffleQueue
     ~component_types
@@ -6742,7 +7218,8 @@ let randomShuffleQueue
   ]
   in
   Op.create context Op_names.randomShuffleQueue inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let randomShuffleQueueV2
     ~component_types
@@ -6768,7 +7245,8 @@ let randomShuffleQueueV2
   ]
   in
   Op.create context Op_names.randomShuffleQueueV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let randomStandardNormal
     ~type_dtype
@@ -6785,7 +7263,8 @@ let randomStandardNormal
   ]
   in
   Op.create context Op_names.randomStandardNormal inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let randomUniform
     ~type_dtype
@@ -6802,7 +7281,8 @@ let randomUniform
   ]
   in
   Op.create context Op_names.randomUniform inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let randomUniformInt
     ?(seed=0)
@@ -6820,7 +7300,8 @@ let randomUniformInt
   ]
   in
   Op.create context Op_names.randomUniformInt inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ minval)
 
 let range
     (start : ([< `float | `double | `int32 | `int64 ] as 'tidx) t)
@@ -6833,7 +7314,8 @@ let range
   ]
   in
   Op.create context Op_names.range inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ start)
 
 let rangeDataset
     ~output_types
@@ -6849,7 +7331,8 @@ let rangeDataset
   ]
   in
   Op.create context Op_names.rangeDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let rank
     (input : 't t)
@@ -6860,7 +7343,8 @@ let rank
   ]
   in
   Op.create context Op_names.rank inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let readFile
     (filename : [ `string ] t)
@@ -6870,7 +7354,8 @@ let readFile
   ]
   in
   Op.create context Op_names.readFile inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let readerNumRecordsProduced
     (reader_handle : [ `string ] t)
@@ -6880,7 +7365,8 @@ let readerNumRecordsProduced
   ]
   in
   Op.create context Op_names.readerNumRecordsProduced inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let readerNumRecordsProducedV2
     (reader_handle : [ `resource ] t)
@@ -6890,7 +7376,8 @@ let readerNumRecordsProducedV2
   ]
   in
   Op.create context Op_names.readerNumRecordsProducedV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let readerNumWorkUnitsCompleted
     (reader_handle : [ `string ] t)
@@ -6900,7 +7387,8 @@ let readerNumWorkUnitsCompleted
   ]
   in
   Op.create context Op_names.readerNumWorkUnitsCompleted inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let readerNumWorkUnitsCompletedV2
     (reader_handle : [ `resource ] t)
@@ -6910,7 +7398,8 @@ let readerNumWorkUnitsCompletedV2
   ]
   in
   Op.create context Op_names.readerNumWorkUnitsCompletedV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let readerRead
     (reader_handle : [ `string ] t)
@@ -6921,7 +7410,9 @@ let readerRead
   ]
   in
   Op.create context Op_names.readerRead inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.String
+    Type.String
 
 let readerReadUpTo
     (reader_handle : [ `string ] t)
@@ -6933,7 +7424,9 @@ let readerReadUpTo
   ]
   in
   Op.create context Op_names.readerReadUpTo inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.String
+    Type.String
 
 let readerReadUpToV2
     (reader_handle : [ `resource ] t)
@@ -6945,7 +7438,9 @@ let readerReadUpToV2
   ]
   in
   Op.create context Op_names.readerReadUpToV2 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.String
+    Type.String
 
 let readerReadV2
     (reader_handle : [ `resource ] t)
@@ -6956,7 +7451,9 @@ let readerReadV2
   ]
   in
   Op.create context Op_names.readerReadV2 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.String
+    Type.String
 
 let readerReset
     (reader_handle : [ `string ] t)
@@ -6966,7 +7463,7 @@ let readerReset
   ]
   in
   Op.create context Op_names.readerReset inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let readerResetV2
     (reader_handle : [ `resource ] t)
@@ -6976,7 +7473,7 @@ let readerResetV2
   ]
   in
   Op.create context Op_names.readerResetV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let readerRestoreState
     (reader_handle : [ `string ] t)
@@ -6987,7 +7484,7 @@ let readerRestoreState
   ]
   in
   Op.create context Op_names.readerRestoreState inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let readerRestoreStateV2
     (reader_handle : [ `resource ] t)
@@ -6998,7 +7495,7 @@ let readerRestoreStateV2
   ]
   in
   Op.create context Op_names.readerRestoreStateV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let readerSerializeState
     (reader_handle : [ `string ] t)
@@ -7008,7 +7505,8 @@ let readerSerializeState
   ]
   in
   Op.create context Op_names.readerSerializeState inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let readerSerializeStateV2
     (reader_handle : [ `resource ] t)
@@ -7018,7 +7516,8 @@ let readerSerializeStateV2
   ]
   in
   Op.create context Op_names.readerSerializeStateV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let real
     ~type_tout
@@ -7031,7 +7530,8 @@ let real
   ]
   in
   Op.create context Op_names.real inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_tout
 
 let realDiv
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
@@ -7043,7 +7543,8 @@ let realDiv
   ]
   in
   Op.create context Op_names.realDiv inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let reciprocal
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -7054,7 +7555,8 @@ let reciprocal
   ]
   in
   Op.create context Op_names.reciprocal inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let reciprocalGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
@@ -7066,7 +7568,8 @@ let reciprocalGrad
   ]
   in
   Op.create context Op_names.reciprocalGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ y)
 
 let recordInput
     ~file_pattern
@@ -7088,7 +7591,8 @@ let recordInput
   ]
   in
   Op.create context Op_names.recordInput inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let reduceJoin
     ?(keep_dims=false)
@@ -7103,7 +7607,8 @@ let reduceJoin
   ]
   in
   Op.create context Op_names.reduceJoin inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let refEnter
     ~frame_name
@@ -7120,7 +7625,8 @@ let refEnter
   ]
   in
   Op.create context Op_names.refEnter inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let refExit
     (data : 't t)
@@ -7131,7 +7637,8 @@ let refExit
   ]
   in
   Op.create context Op_names.refExit inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let refIdentity
     (input : 't t)
@@ -7142,7 +7649,8 @@ let refIdentity
   ]
   in
   Op.create context Op_names.refIdentity inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let refMerge
     (inputs__ : 't t list)
@@ -7154,7 +7662,9 @@ let refMerge
   ]
   in
   Op.create context Op_names.refMerge inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ (List.hd_exn inputs__))
+    Type.Int32
 
 let refNextIteration
     (data : 't t)
@@ -7165,7 +7675,8 @@ let refNextIteration
   ]
   in
   Op.create context Op_names.refNextIteration inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let refSelect
     (index : [ `int32 ] t)
@@ -7178,7 +7689,8 @@ let refSelect
   ]
   in
   Op.create context Op_names.refSelect inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ (List.hd_exn inputs__))
 
 let refSwitch
     (data : 't t)
@@ -7190,7 +7702,9 @@ let refSwitch
   ]
   in
   Op.create context Op_names.refSwitch inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ data)
+    (Op.Tensor_handle.type_ data)
 
 let relu
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -7201,7 +7715,8 @@ let relu
   ]
   in
   Op.create context Op_names.relu inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ features)
 
 let relu6
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -7212,7 +7727,8 @@ let relu6
   ]
   in
   Op.create context Op_names.relu6 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ features)
 
 let relu6Grad
     (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -7224,7 +7740,8 @@ let relu6Grad
   ]
   in
   Op.create context Op_names.relu6Grad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ gradients)
 
 let reluGrad
     (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -7236,7 +7753,8 @@ let reluGrad
   ]
   in
   Op.create context Op_names.reluGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ gradients)
 
 let repeatDataset
     ~output_types
@@ -7251,7 +7769,8 @@ let repeatDataset
   ]
   in
   Op.create context Op_names.repeatDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let requantizationRange
     (input : 'tinput t)
@@ -7264,7 +7783,9 @@ let requantizationRange
   ]
   in
   Op.create context Op_names.requantizationRange inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Float
+    Type.Float
 
 let requantize
     ~type_out_type
@@ -7281,7 +7802,10 @@ let requantize
   ]
   in
   Op.create context Op_names.requantize inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    type_out_type
+    Type.Float
+    Type.Float
 
 let reshape
     (tensor : 't t)
@@ -7294,7 +7818,8 @@ let reshape
   ]
   in
   Op.create context Op_names.reshape inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ tensor)
 
 let resizeArea
     ?(align_corners=false)
@@ -7308,7 +7833,8 @@ let resizeArea
   ]
   in
   Op.create context Op_names.resizeArea inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let resizeBicubic
     ?(align_corners=false)
@@ -7322,7 +7848,8 @@ let resizeBicubic
   ]
   in
   Op.create context Op_names.resizeBicubic inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let resizeBicubicGrad
     ?(align_corners=false)
@@ -7336,7 +7863,8 @@ let resizeBicubicGrad
   ]
   in
   Op.create context Op_names.resizeBicubicGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ original_image)
 
 let resizeBilinear
     ?(align_corners=false)
@@ -7350,7 +7878,8 @@ let resizeBilinear
   ]
   in
   Op.create context Op_names.resizeBilinear inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let resizeBilinearGrad
     ?(align_corners=false)
@@ -7364,7 +7893,8 @@ let resizeBilinearGrad
   ]
   in
   Op.create context Op_names.resizeBilinearGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ original_image)
 
 let resizeNearestNeighbor
     ?(align_corners=false)
@@ -7378,7 +7908,8 @@ let resizeNearestNeighbor
   ]
   in
   Op.create context Op_names.resizeNearestNeighbor inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ images)
 
 let resizeNearestNeighborGrad
     ?(align_corners=false)
@@ -7392,7 +7923,8 @@ let resizeNearestNeighborGrad
   ]
   in
   Op.create context Op_names.resizeNearestNeighborGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ grads)
 
 let resourceApplyAdadelta
     ?(use_locking=false)
@@ -7411,7 +7943,7 @@ let resourceApplyAdadelta
   ]
   in
   Op.create context Op_names.resourceApplyAdadelta inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyAdagrad
     ?(use_locking=false)
@@ -7427,7 +7959,7 @@ let resourceApplyAdagrad
   ]
   in
   Op.create context Op_names.resourceApplyAdagrad inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyAdagradDA
     ?(use_locking=false)
@@ -7447,7 +7979,7 @@ let resourceApplyAdagradDA
   ]
   in
   Op.create context Op_names.resourceApplyAdagradDA inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyAdam
     ?(use_locking=false)
@@ -7471,7 +8003,7 @@ let resourceApplyAdam
   ]
   in
   Op.create context Op_names.resourceApplyAdam inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyCenteredRMSProp
     ?(use_locking=false)
@@ -7492,7 +8024,7 @@ let resourceApplyCenteredRMSProp
   ]
   in
   Op.create context Op_names.resourceApplyCenteredRMSProp inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyFtrl
     ?(use_locking=false)
@@ -7512,7 +8044,7 @@ let resourceApplyFtrl
   ]
   in
   Op.create context Op_names.resourceApplyFtrl inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyFtrlV2
     ?(use_locking=false)
@@ -7533,7 +8065,7 @@ let resourceApplyFtrlV2
   ]
   in
   Op.create context Op_names.resourceApplyFtrlV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyGradientDescent
     ?(use_locking=false)
@@ -7548,7 +8080,7 @@ let resourceApplyGradientDescent
   ]
   in
   Op.create context Op_names.resourceApplyGradientDescent inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyMomentum
     ?(use_locking=false)
@@ -7567,7 +8099,7 @@ let resourceApplyMomentum
   ]
   in
   Op.create context Op_names.resourceApplyMomentum inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyProximalAdagrad
     ?(use_locking=false)
@@ -7585,7 +8117,7 @@ let resourceApplyProximalAdagrad
   ]
   in
   Op.create context Op_names.resourceApplyProximalAdagrad inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyProximalGradientDescent
     ?(use_locking=false)
@@ -7602,7 +8134,7 @@ let resourceApplyProximalGradientDescent
   ]
   in
   Op.create context Op_names.resourceApplyProximalGradientDescent inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceApplyRMSProp
     ?(use_locking=false)
@@ -7622,7 +8154,7 @@ let resourceApplyRMSProp
   ]
   in
   Op.create context Op_names.resourceApplyRMSProp inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyAdadelta
     ?(use_locking=false)
@@ -7643,7 +8175,7 @@ let resourceSparseApplyAdadelta
   ]
   in
   Op.create context Op_names.resourceSparseApplyAdadelta inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyAdagrad
     ?(use_locking=false)
@@ -7661,7 +8193,7 @@ let resourceSparseApplyAdagrad
   ]
   in
   Op.create context Op_names.resourceSparseApplyAdagrad inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyAdagradDA
     ?(use_locking=false)
@@ -7683,7 +8215,7 @@ let resourceSparseApplyAdagradDA
   ]
   in
   Op.create context Op_names.resourceSparseApplyAdagradDA inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyCenteredRMSProp
     ?(use_locking=false)
@@ -7706,7 +8238,7 @@ let resourceSparseApplyCenteredRMSProp
   ]
   in
   Op.create context Op_names.resourceSparseApplyCenteredRMSProp inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyFtrl
     ?(use_locking=false)
@@ -7728,7 +8260,7 @@ let resourceSparseApplyFtrl
   ]
   in
   Op.create context Op_names.resourceSparseApplyFtrl inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyFtrlV2
     ?(use_locking=false)
@@ -7751,7 +8283,7 @@ let resourceSparseApplyFtrlV2
   ]
   in
   Op.create context Op_names.resourceSparseApplyFtrlV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyMomentum
     ?(use_locking=false)
@@ -7772,7 +8304,7 @@ let resourceSparseApplyMomentum
   ]
   in
   Op.create context Op_names.resourceSparseApplyMomentum inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyProximalAdagrad
     ?(use_locking=false)
@@ -7792,7 +8324,7 @@ let resourceSparseApplyProximalAdagrad
   ]
   in
   Op.create context Op_names.resourceSparseApplyProximalAdagrad inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyProximalGradientDescent
     ?(use_locking=false)
@@ -7811,7 +8343,7 @@ let resourceSparseApplyProximalGradientDescent
   ]
   in
   Op.create context Op_names.resourceSparseApplyProximalGradientDescent inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceSparseApplyRMSProp
     ?(use_locking=false)
@@ -7833,7 +8365,7 @@ let resourceSparseApplyRMSProp
   ]
   in
   Op.create context Op_names.resourceSparseApplyRMSProp inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let resourceStridedSliceAssign
     ?(begin_mask=0)
@@ -7859,7 +8391,7 @@ let resourceStridedSliceAssign
   ]
   in
   Op.create context Op_names.resourceStridedSliceAssign inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let restore
     ~type_dt
@@ -7874,7 +8406,8 @@ let restore
   ]
   in
   Op.create context Op_names.restore inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dt
 
 let restoreIterator
     (iterator : [ `resource ] t)
@@ -7885,7 +8418,7 @@ let restoreIterator
   ]
   in
   Op.create context Op_names.restoreIterator inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let restoreSlice
     ~type_dt
@@ -7901,7 +8434,8 @@ let restoreSlice
   ]
   in
   Op.create context Op_names.restoreSlice inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dt
 
 let reverse
     (tensor : ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t)
@@ -7913,7 +8447,8 @@ let reverse
   ]
   in
   Op.create context Op_names.reverse inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ tensor)
 
 let reverseSequence
     ~seq_dim
@@ -7930,7 +8465,8 @@ let reverseSequence
   ]
   in
   Op.create context Op_names.reverseSequence inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let reverseV2
     (tensor : ([< `uInt8 | `uInt16 | `int32 | `int64 | `bool | `float | `double | `complex64 | `string ] as 't) t)
@@ -7943,7 +8479,8 @@ let reverseV2
   ]
   in
   Op.create context Op_names.reverseV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ tensor)
 
 let rint
     (x : ([< `float | `double ] as 't) t)
@@ -7954,7 +8491,8 @@ let rint
   ]
   in
   Op.create context Op_names.rint inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let round
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -7965,7 +8503,8 @@ let round
   ]
   in
   Op.create context Op_names.round inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let rsqrt
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -7976,7 +8515,8 @@ let rsqrt
   ]
   in
   Op.create context Op_names.rsqrt inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let rsqrtGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
@@ -7988,7 +8528,8 @@ let rsqrtGrad
   ]
   in
   Op.create context Op_names.rsqrtGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ y)
 
 let saveIterator
     (iterator : [ `resource ] t)
@@ -7999,7 +8540,7 @@ let saveIterator
   ]
   in
   Op.create context Op_names.saveIterator inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let scalarSummary
     (tags : [ `string ] t)
@@ -8011,7 +8552,8 @@ let scalarSummary
   ]
   in
   Op.create context Op_names.scalarSummary inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let scatterAdd
     ?(use_locking=false)
@@ -8027,7 +8569,8 @@ let scatterAdd
   ]
   in
   Op.create context Op_names.scatterAdd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let scatterDiv
     ?(use_locking=false)
@@ -8043,7 +8586,8 @@ let scatterDiv
   ]
   in
   Op.create context Op_names.scatterDiv inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let scatterMul
     ?(use_locking=false)
@@ -8059,7 +8603,8 @@ let scatterMul
   ]
   in
   Op.create context Op_names.scatterMul inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let scatterNd
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
@@ -8073,7 +8618,8 @@ let scatterNd
   ]
   in
   Op.create context Op_names.scatterNd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ updates)
 
 let scatterNdAdd
     ?(use_locking=false)
@@ -8089,7 +8635,8 @@ let scatterNdAdd
   ]
   in
   Op.create context Op_names.scatterNdAdd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let scatterNdNonAliasingAdd
     (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8103,7 +8650,8 @@ let scatterNdNonAliasingAdd
   ]
   in
   Op.create context Op_names.scatterNdNonAliasingAdd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let scatterNdSub
     ?(use_locking=false)
@@ -8119,7 +8667,8 @@ let scatterNdSub
   ]
   in
   Op.create context Op_names.scatterNdSub inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let scatterNdUpdate
     ?(use_locking=true)
@@ -8135,7 +8684,8 @@ let scatterNdUpdate
   ]
   in
   Op.create context Op_names.scatterNdUpdate inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let scatterSub
     ?(use_locking=false)
@@ -8151,7 +8701,8 @@ let scatterSub
   ]
   in
   Op.create context Op_names.scatterSub inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let scatterUpdate
     ?(use_locking=true)
@@ -8167,7 +8718,8 @@ let scatterUpdate
   ]
   in
   Op.create context Op_names.scatterUpdate inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let sdcaFprint
     (input : [ `string ] t)
@@ -8177,7 +8729,8 @@ let sdcaFprint
   ]
   in
   Op.create context Op_names.sdcaFprint inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let sdcaShrinkL1
     ~l1
@@ -8192,7 +8745,7 @@ let sdcaShrinkL1
   ]
   in
   Op.create context Op_names.sdcaShrinkL1 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let segmentMax
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -8205,7 +8758,8 @@ let segmentMax
   ]
   in
   Op.create context Op_names.segmentMax inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let segmentMean
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -8218,7 +8772,8 @@ let segmentMean
   ]
   in
   Op.create context Op_names.segmentMean inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let segmentMin
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -8231,7 +8786,8 @@ let segmentMin
   ]
   in
   Op.create context Op_names.segmentMin inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let segmentProd
     (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8244,7 +8800,8 @@ let segmentProd
   ]
   in
   Op.create context Op_names.segmentProd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let segmentSum
     (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8257,7 +8814,8 @@ let segmentSum
   ]
   in
   Op.create context Op_names.segmentSum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let select
     (condition : [ `bool ] t)
@@ -8270,7 +8828,8 @@ let select
   ]
   in
   Op.create context Op_names.select inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ t)
 
 let selfAdjointEig
     (input : ([< `double | `float ] as 't) t)
@@ -8281,7 +8840,8 @@ let selfAdjointEig
   ]
   in
   Op.create context Op_names.selfAdjointEig inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let selfAdjointEigV2
     ?(compute_v=true)
@@ -8294,7 +8854,9 @@ let selfAdjointEigV2
   ]
   in
   Op.create context Op_names.selfAdjointEigV2 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ input)
+    (Op.Tensor_handle.type_ input)
 
 let selu
     (features : ([< `float | `double ] as 't) t)
@@ -8305,7 +8867,8 @@ let selu
   ]
   in
   Op.create context Op_names.selu inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ features)
 
 let seluGrad
     (gradients : ([< `float | `double ] as 't) t)
@@ -8317,7 +8880,8 @@ let seluGrad
   ]
   in
   Op.create context Op_names.seluGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ gradients)
 
 let serializeManySparse
     (sparse_indices : [ `int64 ] t)
@@ -8330,7 +8894,8 @@ let serializeManySparse
   ]
   in
   Op.create context Op_names.serializeManySparse inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let serializeSparse
     (sparse_indices : [ `int64 ] t)
@@ -8343,7 +8908,8 @@ let serializeSparse
   ]
   in
   Op.create context Op_names.serializeSparse inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let serializeTensor
     (tensor : 't t)
@@ -8354,7 +8920,8 @@ let serializeTensor
   ]
   in
   Op.create context Op_names.serializeTensor inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let setSize
     ?(validate_indices=true)
@@ -8369,7 +8936,8 @@ let setSize
   ]
   in
   Op.create context Op_names.setSize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let shape
     ~type_out_type
@@ -8382,7 +8950,8 @@ let shape
   ]
   in
   Op.create context Op_names.shape inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_out_type
 
 let shapeN
     ~type_out_type
@@ -8396,7 +8965,7 @@ let shapeN
   ]
   in
   Op.create context Op_names.shapeN inputs attrs
-  |> Op.execute ~output_len:(List.length input)
+  |> fun op -> Op.execute op (failwith "TODO") ~output_len:(List.length input)
 
 let shardedFilename
     (basename : [ `string ] t)
@@ -8408,7 +8977,8 @@ let shardedFilename
   ]
   in
   Op.create context Op_names.shardedFilename inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let shardedFilespec
     (basename : [ `string ] t)
@@ -8419,7 +8989,8 @@ let shardedFilespec
   ]
   in
   Op.create context Op_names.shardedFilespec inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let shuffleDataset
     ?(reshuffle_each_iteration=true)
@@ -8438,7 +9009,8 @@ let shuffleDataset
   ]
   in
   Op.create context Op_names.shuffleDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let sigmoid
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -8449,7 +9021,8 @@ let sigmoid
   ]
   in
   Op.create context Op_names.sigmoid inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let sigmoidGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
@@ -8461,7 +9034,8 @@ let sigmoidGrad
   ]
   in
   Op.create context Op_names.sigmoidGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ y)
 
 let sign
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -8472,7 +9046,8 @@ let sign
   ]
   in
   Op.create context Op_names.sign inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let sin
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -8483,7 +9058,8 @@ let sin
   ]
   in
   Op.create context Op_names.sin inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let sinh
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -8494,7 +9070,8 @@ let sinh
   ]
   in
   Op.create context Op_names.sinh inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let size
     ~type_out_type
@@ -8507,7 +9084,8 @@ let size
   ]
   in
   Op.create context Op_names.size inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_out_type
 
 let skipDataset
     ~output_types
@@ -8522,7 +9100,8 @@ let skipDataset
   ]
   in
   Op.create context Op_names.skipDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let skipgram
     ~filename
@@ -8542,7 +9121,14 @@ let skipgram
   ]
   in
   Op.create context Op_names.skipgram inputs attrs
-  |> Op.execute7
+  |> fun op -> Op.execute7 op
+    Type.String
+    Type.Int32
+    Type.Int64
+    Type.Int32
+    Type.Int64
+    Type.Int32
+    Type.Int32
 
 let slice
     (input : 't t)
@@ -8556,7 +9142,8 @@ let slice
   ]
   in
   Op.create context Op_names.slice inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let softmax
     (logits : ([< `float | `double ] as 't) t)
@@ -8567,7 +9154,8 @@ let softmax
   ]
   in
   Op.create context Op_names.softmax inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ logits)
 
 let softmaxCrossEntropyWithLogits
     (features : ([< `float | `double ] as 't) t)
@@ -8579,7 +9167,9 @@ let softmaxCrossEntropyWithLogits
   ]
   in
   Op.create context Op_names.softmaxCrossEntropyWithLogits inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ features)
+    (Op.Tensor_handle.type_ features)
 
 let softplus
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -8590,7 +9180,8 @@ let softplus
   ]
   in
   Op.create context Op_names.softplus inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ features)
 
 let softplusGrad
     (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -8602,7 +9193,8 @@ let softplusGrad
   ]
   in
   Op.create context Op_names.softplusGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ gradients)
 
 let softsign
     (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -8613,7 +9205,8 @@ let softsign
   ]
   in
   Op.create context Op_names.softsign inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ features)
 
 let softsignGrad
     (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -8625,7 +9218,8 @@ let softsignGrad
   ]
   in
   Op.create context Op_names.softsignGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ gradients)
 
 let spaceToBatch
     ~block_size
@@ -8640,7 +9234,8 @@ let spaceToBatch
   ]
   in
   Op.create context Op_names.spaceToBatch inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let spaceToBatchND
     (input : 't t)
@@ -8655,7 +9250,8 @@ let spaceToBatchND
   ]
   in
   Op.create context Op_names.spaceToBatchND inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let spaceToDepth
     ~block_size
@@ -8670,7 +9266,8 @@ let spaceToDepth
   ]
   in
   Op.create context Op_names.spaceToDepth inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let sparseAccumulatorApplyGradient
     ~has_known_shape
@@ -8687,7 +9284,7 @@ let sparseAccumulatorApplyGradient
   ]
   in
   Op.create context Op_names.sparseAccumulatorApplyGradient inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let sparseAccumulatorTakeGradient
     ~type_dtype
@@ -8700,7 +9297,10 @@ let sparseAccumulatorTakeGradient
   ]
   in
   Op.create context Op_names.sparseAccumulatorTakeGradient inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    type_dtype
+    Type.Int64
 
 let sparseAdd
     (a_indices : [ `int64 ] t)
@@ -8718,7 +9318,10 @@ let sparseAdd
   ]
   in
   Op.create context Op_names.sparseAdd inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    (Op.Tensor_handle.type_ a_values)
+    Type.Int64
 
 let sparseAddGrad
     (backprop_val_grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -8732,7 +9335,9 @@ let sparseAddGrad
   ]
   in
   Op.create context Op_names.sparseAddGrad inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ backprop_val_grad)
+    (Op.Tensor_handle.type_ backprop_val_grad)
 
 let sparseApplyAdadelta
     ?(use_locking=false)
@@ -8753,7 +9358,8 @@ let sparseApplyAdadelta
   ]
   in
   Op.create context Op_names.sparseApplyAdadelta inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseApplyAdagrad
     ?(use_locking=false)
@@ -8771,7 +9377,8 @@ let sparseApplyAdagrad
   ]
   in
   Op.create context Op_names.sparseApplyAdagrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseApplyAdagradDA
     ?(use_locking=false)
@@ -8793,7 +9400,8 @@ let sparseApplyAdagradDA
   ]
   in
   Op.create context Op_names.sparseApplyAdagradDA inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseApplyCenteredRMSProp
     ?(use_locking=false)
@@ -8816,7 +9424,8 @@ let sparseApplyCenteredRMSProp
   ]
   in
   Op.create context Op_names.sparseApplyCenteredRMSProp inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseApplyFtrl
     ?(use_locking=false)
@@ -8838,7 +9447,8 @@ let sparseApplyFtrl
   ]
   in
   Op.create context Op_names.sparseApplyFtrl inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseApplyFtrlV2
     ?(use_locking=false)
@@ -8861,7 +9471,8 @@ let sparseApplyFtrlV2
   ]
   in
   Op.create context Op_names.sparseApplyFtrlV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseApplyMomentum
     ?(use_locking=false)
@@ -8882,7 +9493,8 @@ let sparseApplyMomentum
   ]
   in
   Op.create context Op_names.sparseApplyMomentum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseApplyProximalAdagrad
     ?(use_locking=false)
@@ -8902,7 +9514,8 @@ let sparseApplyProximalAdagrad
   ]
   in
   Op.create context Op_names.sparseApplyProximalAdagrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseApplyProximalGradientDescent
     ?(use_locking=false)
@@ -8921,7 +9534,8 @@ let sparseApplyProximalGradientDescent
   ]
   in
   Op.create context Op_names.sparseApplyProximalGradientDescent inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseApplyRMSProp
     ?(use_locking=false)
@@ -8943,7 +9557,8 @@ let sparseApplyRMSProp
   ]
   in
   Op.create context Op_names.sparseApplyRMSProp inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
 
 let sparseConcat
     ~concat_dim
@@ -8959,7 +9574,10 @@ let sparseConcat
   ]
   in
   Op.create context Op_names.sparseConcat inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    (Op.Tensor_handle.type_ (List.hd_exn values))
+    Type.Int64
 
 let sparseConditionalAccumulator
     ~shape
@@ -8975,7 +9593,8 @@ let sparseConditionalAccumulator
   ]
   in
   Op.create context Op_names.sparseConditionalAccumulator inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let sparseDenseCwiseAdd
     (sp_indices : [ `int64 ] t)
@@ -8989,7 +9608,8 @@ let sparseDenseCwiseAdd
   ]
   in
   Op.create context Op_names.sparseDenseCwiseAdd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ sp_values)
 
 let sparseDenseCwiseDiv
     (sp_indices : [ `int64 ] t)
@@ -9003,7 +9623,8 @@ let sparseDenseCwiseDiv
   ]
   in
   Op.create context Op_names.sparseDenseCwiseDiv inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ sp_values)
 
 let sparseDenseCwiseMul
     (sp_indices : [ `int64 ] t)
@@ -9017,7 +9638,8 @@ let sparseDenseCwiseMul
   ]
   in
   Op.create context Op_names.sparseDenseCwiseMul inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ sp_values)
 
 let sparseFillEmptyRows
     (indices : [ `int64 ] t)
@@ -9031,7 +9653,11 @@ let sparseFillEmptyRows
   ]
   in
   Op.create context Op_names.sparseFillEmptyRows inputs attrs
-  |> Op.execute4
+  |> fun op -> Op.execute4 op
+    Type.Int64
+    (Op.Tensor_handle.type_ values)
+    Type.Bool
+    Type.Int64
 
 let sparseFillEmptyRowsGrad
     (reverse_index_map : [ `int64 ] t)
@@ -9043,7 +9669,9 @@ let sparseFillEmptyRowsGrad
   ]
   in
   Op.create context Op_names.sparseFillEmptyRowsGrad inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ grad_values)
+    (Op.Tensor_handle.type_ grad_values)
 
 let sparseMatMul
     ?(transpose_a=false)
@@ -9064,7 +9692,8 @@ let sparseMatMul
   ]
   in
   Op.create context Op_names.sparseMatMul inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let sparseReduceMax
     ?(keep_dims=false)
@@ -9080,7 +9709,8 @@ let sparseReduceMax
   ]
   in
   Op.create context Op_names.sparseReduceMax inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input_values)
 
 let sparseReduceMaxSparse
     ?(keep_dims=false)
@@ -9096,7 +9726,10 @@ let sparseReduceMaxSparse
   ]
   in
   Op.create context Op_names.sparseReduceMaxSparse inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    (Op.Tensor_handle.type_ input_values)
+    Type.Int64
 
 let sparseReduceSum
     ?(keep_dims=false)
@@ -9112,7 +9745,8 @@ let sparseReduceSum
   ]
   in
   Op.create context Op_names.sparseReduceSum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input_values)
 
 let sparseReduceSumSparse
     ?(keep_dims=false)
@@ -9128,7 +9762,10 @@ let sparseReduceSumSparse
   ]
   in
   Op.create context Op_names.sparseReduceSumSparse inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    (Op.Tensor_handle.type_ input_values)
+    Type.Int64
 
 let sparseReorder
     (input_indices : [ `int64 ] t)
@@ -9141,7 +9778,9 @@ let sparseReorder
   ]
   in
   Op.create context Op_names.sparseReorder inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Int64
+    (Op.Tensor_handle.type_ input_values)
 
 let sparseReshape
     (input_indices : [ `int64 ] t)
@@ -9153,7 +9792,9 @@ let sparseReshape
   ]
   in
   Op.create context Op_names.sparseReshape inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Int64
+    Type.Int64
 
 let sparseSegmentMean
     (data : ([< `float | `double ] as 't) t)
@@ -9167,7 +9808,8 @@ let sparseSegmentMean
   ]
   in
   Op.create context Op_names.sparseSegmentMean inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let sparseSegmentMeanGrad
     (grad : ([< `float | `double ] as 't) t)
@@ -9182,7 +9824,8 @@ let sparseSegmentMeanGrad
   ]
   in
   Op.create context Op_names.sparseSegmentMeanGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ grad)
 
 let sparseSegmentSqrtN
     (data : ([< `float | `double ] as 't) t)
@@ -9196,7 +9839,8 @@ let sparseSegmentSqrtN
   ]
   in
   Op.create context Op_names.sparseSegmentSqrtN inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let sparseSegmentSqrtNGrad
     (grad : ([< `float | `double ] as 't) t)
@@ -9211,7 +9855,8 @@ let sparseSegmentSqrtNGrad
   ]
   in
   Op.create context Op_names.sparseSegmentSqrtNGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ grad)
 
 let sparseSegmentSum
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -9225,7 +9870,8 @@ let sparseSegmentSum
   ]
   in
   Op.create context Op_names.sparseSegmentSum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let sparseSlice
     (indices : [ `int64 ] t)
@@ -9240,7 +9886,10 @@ let sparseSlice
   ]
   in
   Op.create context Op_names.sparseSlice inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    (Op.Tensor_handle.type_ values)
+    Type.Int64
 
 let sparseSoftmax
     (sp_indices : [ `int64 ] t)
@@ -9253,7 +9902,8 @@ let sparseSoftmax
   ]
   in
   Op.create context Op_names.sparseSoftmax inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ sp_values)
 
 let sparseSoftmaxCrossEntropyWithLogits
     (features : ([< `float | `double ] as 't) t)
@@ -9266,7 +9916,9 @@ let sparseSoftmaxCrossEntropyWithLogits
   ]
   in
   Op.create context Op_names.sparseSoftmaxCrossEntropyWithLogits inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ features)
+    (Op.Tensor_handle.type_ features)
 
 let sparseSparseMaximum
     (a_indices : [ `int64 ] t)
@@ -9282,7 +9934,9 @@ let sparseSparseMaximum
   ]
   in
   Op.create context Op_names.sparseSparseMaximum inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Int64
+    (Op.Tensor_handle.type_ a_values)
 
 let sparseSparseMinimum
     (a_indices : [ `int64 ] t)
@@ -9298,7 +9952,9 @@ let sparseSparseMinimum
   ]
   in
   Op.create context Op_names.sparseSparseMinimum inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Int64
+    (Op.Tensor_handle.type_ a_values)
 
 let sparseTensorDenseAdd
     (a_indices : ([< `int32 | `int64 ] as 'tindices) t)
@@ -9313,7 +9969,8 @@ let sparseTensorDenseAdd
   ]
   in
   Op.create context Op_names.sparseTensorDenseAdd inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ a_values)
 
 let sparseTensorDenseMatMul
     ?(adjoint_a=false)
@@ -9332,7 +9989,8 @@ let sparseTensorDenseMatMul
   ]
   in
   Op.create context Op_names.sparseTensorDenseMatMul inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ a_values)
 
 let sparseTensorSliceDataset
     (indices : [ `int64 ] t)
@@ -9345,7 +10003,8 @@ let sparseTensorSliceDataset
   ]
   in
   Op.create context Op_names.sparseTensorSliceDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let sparseToDense
     ?(validate_indices=true)
@@ -9362,7 +10021,8 @@ let sparseToDense
   ]
   in
   Op.create context Op_names.sparseToDense inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ sparse_values)
 
 let sparseToSparseSetOperation
     ~set_operation
@@ -9382,7 +10042,10 @@ let sparseToSparseSetOperation
   ]
   in
   Op.create context Op_names.sparseToSparseSetOperation inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    (Op.Tensor_handle.type_ set1_values)
+    Type.Int64
 
 let split
     ~num_split
@@ -9396,7 +10059,7 @@ let split
   ]
   in
   Op.create context Op_names.split inputs attrs
-  |> Op.execute ~output_len:num_split
+  |> fun op -> Op.execute op (failwith "TODO") ~output_len:num_split
 
 let splitV
     ~num_split
@@ -9412,7 +10075,7 @@ let splitV
   ]
   in
   Op.create context Op_names.splitV inputs attrs
-  |> Op.execute ~output_len:num_split
+  |> fun op -> Op.execute op (failwith "TODO") ~output_len:num_split
 
 let sqlDataset
     ~output_types
@@ -9428,7 +10091,8 @@ let sqlDataset
   ]
   in
   Op.create context Op_names.sqlDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let sqrt
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -9439,7 +10103,8 @@ let sqrt
   ]
   in
   Op.create context Op_names.sqrt inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let sqrtGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
@@ -9451,7 +10116,8 @@ let sqrtGrad
   ]
   in
   Op.create context Op_names.sqrtGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ y)
 
 let square
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -9462,7 +10128,8 @@ let square
   ]
   in
   Op.create context Op_names.square inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let squaredDifference
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -9474,7 +10141,8 @@ let squaredDifference
   ]
   in
   Op.create context Op_names.squaredDifference inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let squeeze
     ?(squeeze_dims=[])
@@ -9487,7 +10155,8 @@ let squeeze
   ]
   in
   Op.create context Op_names.squeeze inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let stack
     ?(stack_name="")
@@ -9499,7 +10168,8 @@ let stack
   ]
   in
   Op.create context Op_names.stack inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let stackClose
     (handle : [ `string ] t)
@@ -9509,7 +10179,7 @@ let stackClose
   ]
   in
   Op.create context Op_names.stackClose inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let stackCloseV2
     (handle : [ `resource ] t)
@@ -9519,7 +10189,7 @@ let stackCloseV2
   ]
   in
   Op.create context Op_names.stackCloseV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let stackPop
     ~type_elem_type
@@ -9531,7 +10201,8 @@ let stackPop
   ]
   in
   Op.create context Op_names.stackPop inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_elem_type
 
 let stackPopV2
     ~type_elem_type
@@ -9543,7 +10214,8 @@ let stackPopV2
   ]
   in
   Op.create context Op_names.stackPopV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_elem_type
 
 let stackPush
     ?(swap_memory=false)
@@ -9557,7 +10229,8 @@ let stackPush
   ]
   in
   Op.create context Op_names.stackPush inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ elem)
 
 let stackPushV2
     ?(swap_memory=false)
@@ -9571,7 +10244,8 @@ let stackPushV2
   ]
   in
   Op.create context Op_names.stackPushV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ elem)
 
 let stackV2
     ?(stack_name="")
@@ -9583,7 +10257,8 @@ let stackV2
   ]
   in
   Op.create context Op_names.stackV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let stageClear
     ?(capacity=0)
@@ -9603,7 +10278,7 @@ let stageClear
   ]
   in
   Op.create context Op_names.stageClear inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let stageSize
     ?(capacity=0)
@@ -9623,7 +10298,8 @@ let stageSize
   ]
   in
   Op.create context Op_names.stageSize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let statelessRandomNormal
     ~type_dtype
@@ -9637,7 +10313,8 @@ let statelessRandomNormal
   ]
   in
   Op.create context Op_names.statelessRandomNormal inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let statelessRandomUniform
     ~type_dtype
@@ -9651,7 +10328,8 @@ let statelessRandomUniform
   ]
   in
   Op.create context Op_names.statelessRandomUniform inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let statelessTruncatedNormal
     ~type_dtype
@@ -9665,7 +10343,8 @@ let statelessTruncatedNormal
   ]
   in
   Op.create context Op_names.statelessTruncatedNormal inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let stopGradient
     (input : 't t)
@@ -9676,7 +10355,8 @@ let stopGradient
   ]
   in
   Op.create context Op_names.stopGradient inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let stridedSlice
     ?(begin_mask=0)
@@ -9701,7 +10381,8 @@ let stridedSlice
   ]
   in
   Op.create context Op_names.stridedSlice inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let stridedSliceAssign
     ?(begin_mask=0)
@@ -9727,7 +10408,8 @@ let stridedSliceAssign
   ]
   in
   Op.create context Op_names.stridedSliceAssign inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ ref)
 
 let stridedSliceGrad
     ?(begin_mask=0)
@@ -9753,7 +10435,8 @@ let stridedSliceGrad
   ]
   in
   Op.create context Op_names.stridedSliceGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ dy)
 
 let stringJoin
     ?(separator="")
@@ -9766,7 +10449,8 @@ let stringJoin
   ]
   in
   Op.create context Op_names.stringJoin inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let stringSplit
     ?(skip_empty=true)
@@ -9779,7 +10463,10 @@ let stringSplit
   ]
   in
   Op.create context Op_names.stringSplit inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    Type.String
+    Type.Int64
 
 let stringToHashBucket
     ~num_buckets
@@ -9791,7 +10478,8 @@ let stringToHashBucket
   ]
   in
   Op.create context Op_names.stringToHashBucket inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let stringToHashBucketFast
     ~num_buckets
@@ -9803,7 +10491,8 @@ let stringToHashBucketFast
   ]
   in
   Op.create context Op_names.stringToHashBucketFast inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let stringToHashBucketStrong
     ~num_buckets
@@ -9817,7 +10506,8 @@ let stringToHashBucketStrong
   ]
   in
   Op.create context Op_names.stringToHashBucketStrong inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let stringToNumber
     ~type_out_type
@@ -9829,7 +10519,8 @@ let stringToNumber
   ]
   in
   Op.create context Op_names.stringToNumber inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_out_type
 
 let sub
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
@@ -9841,7 +10532,8 @@ let sub
   ]
   in
   Op.create context Op_names.sub inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let substr
     (input : [ `string ] t)
@@ -9854,7 +10546,8 @@ let substr
   ]
   in
   Op.create context Op_names.substr inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let sum
     ?(keep_dims=false)
@@ -9869,7 +10562,8 @@ let sum
   ]
   in
   Op.create context Op_names.sum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let svd
     ?(compute_uv=true)
@@ -9884,7 +10578,10 @@ let svd
   ]
   in
   Op.create context Op_names.svd inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ input)
+    (Op.Tensor_handle.type_ input)
+    (Op.Tensor_handle.type_ input)
 
 let switch
     (data : 't t)
@@ -9896,7 +10593,9 @@ let switch
   ]
   in
   Op.create context Op_names.switch inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ data)
+    (Op.Tensor_handle.type_ data)
 
 let tFRecordDataset
     (filenames : [ `string ] t)
@@ -9908,7 +10607,8 @@ let tFRecordDataset
   ]
   in
   Op.create context Op_names.tFRecordDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let tFRecordReader
     ?(container="")
@@ -9924,7 +10624,8 @@ let tFRecordReader
   ]
   in
   Op.create context Op_names.tFRecordReader inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let tFRecordReaderV2
     ?(container="")
@@ -9940,7 +10641,8 @@ let tFRecordReaderV2
   ]
   in
   Op.create context Op_names.tFRecordReaderV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let takeDataset
     ~output_types
@@ -9955,7 +10657,8 @@ let takeDataset
   ]
   in
   Op.create context Op_names.takeDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let takeManySparseFromTensorsMap
     ~type_dtype
@@ -9971,7 +10674,10 @@ let takeManySparseFromTensorsMap
   ]
   in
   Op.create context Op_names.takeManySparseFromTensorsMap inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    type_dtype
+    Type.Int64
 
 let tan
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -9982,7 +10688,8 @@ let tan
   ]
   in
   Op.create context Op_names.tan inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let tanh
     (x : ([< `float | `double | `complex64 ] as 't) t)
@@ -9993,7 +10700,8 @@ let tanh
   ]
   in
   Op.create context Op_names.tanh inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let tanhGrad
     (y : ([< `float | `double | `complex64 ] as 't) t)
@@ -10005,7 +10713,8 @@ let tanhGrad
   ]
   in
   Op.create context Op_names.tanhGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ y)
 
 let temporaryVariable
     ~type_dtype
@@ -10021,7 +10730,8 @@ let temporaryVariable
   ]
   in
   Op.create context Op_names.temporaryVariable inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let tensorArray
     ?(dynamic_size=false)
@@ -10039,7 +10749,8 @@ let tensorArray
   ]
   in
   Op.create context Op_names.tensorArray inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let tensorArrayClose
     (handle : [ `string ] t)
@@ -10049,7 +10760,7 @@ let tensorArrayClose
   ]
   in
   Op.create context Op_names.tensorArrayClose inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let tensorArrayCloseV2
     (handle : [ `string ] t)
@@ -10059,7 +10770,7 @@ let tensorArrayCloseV2
   ]
   in
   Op.create context Op_names.tensorArrayCloseV2 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let tensorArrayCloseV3
     (handle : [ `resource ] t)
@@ -10069,7 +10780,7 @@ let tensorArrayCloseV3
   ]
   in
   Op.create context Op_names.tensorArrayCloseV3 inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let tensorArrayConcat
     ~type_dtype
@@ -10084,7 +10795,9 @@ let tensorArrayConcat
   ]
   in
   Op.create context Op_names.tensorArrayConcat inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    type_dtype
+    Type.Int64
 
 let tensorArrayConcatV2
     ~type_dtype
@@ -10099,7 +10812,9 @@ let tensorArrayConcatV2
   ]
   in
   Op.create context Op_names.tensorArrayConcatV2 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    type_dtype
+    Type.Int64
 
 let tensorArrayConcatV3
     ~type_dtype
@@ -10114,7 +10829,9 @@ let tensorArrayConcatV3
   ]
   in
   Op.create context Op_names.tensorArrayConcatV3 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    type_dtype
+    Type.Int64
 
 let tensorArrayGather
     ~type_dtype
@@ -10130,7 +10847,8 @@ let tensorArrayGather
   ]
   in
   Op.create context Op_names.tensorArrayGather inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let tensorArrayGatherV2
     ~type_dtype
@@ -10146,7 +10864,8 @@ let tensorArrayGatherV2
   ]
   in
   Op.create context Op_names.tensorArrayGatherV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let tensorArrayGatherV3
     ~type_dtype
@@ -10162,7 +10881,8 @@ let tensorArrayGatherV3
   ]
   in
   Op.create context Op_names.tensorArrayGatherV3 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let tensorArrayGrad
     ~source
@@ -10175,7 +10895,8 @@ let tensorArrayGrad
   ]
   in
   Op.create context Op_names.tensorArrayGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let tensorArrayGradV2
     ~source
@@ -10188,7 +10909,8 @@ let tensorArrayGradV2
   ]
   in
   Op.create context Op_names.tensorArrayGradV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let tensorArrayGradV3
     ~source
@@ -10201,7 +10923,9 @@ let tensorArrayGradV3
   ]
   in
   Op.create context Op_names.tensorArrayGradV3 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Resource
+    Type.Float
 
 let tensorArrayPack
     ~type_dtype
@@ -10216,7 +10940,8 @@ let tensorArrayPack
   ]
   in
   Op.create context Op_names.tensorArrayPack inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let tensorArrayRead
     ~type_dtype
@@ -10230,7 +10955,8 @@ let tensorArrayRead
   ]
   in
   Op.create context Op_names.tensorArrayRead inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let tensorArrayReadV2
     ~type_dtype
@@ -10244,7 +10970,8 @@ let tensorArrayReadV2
   ]
   in
   Op.create context Op_names.tensorArrayReadV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let tensorArrayReadV3
     ~type_dtype
@@ -10258,7 +10985,8 @@ let tensorArrayReadV3
   ]
   in
   Op.create context Op_names.tensorArrayReadV3 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let tensorArrayScatter
     (handle : [ `string ] t)
@@ -10272,7 +11000,8 @@ let tensorArrayScatter
   ]
   in
   Op.create context Op_names.tensorArrayScatter inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorArrayScatterV2
     (handle : [ `string ] t)
@@ -10286,7 +11015,8 @@ let tensorArrayScatterV2
   ]
   in
   Op.create context Op_names.tensorArrayScatterV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorArrayScatterV3
     (handle : [ `resource ] t)
@@ -10300,7 +11030,8 @@ let tensorArrayScatterV3
   ]
   in
   Op.create context Op_names.tensorArrayScatterV3 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorArraySize
     (handle : [ `string ] t)
@@ -10311,7 +11042,8 @@ let tensorArraySize
   ]
   in
   Op.create context Op_names.tensorArraySize inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let tensorArraySizeV2
     (handle : [ `string ] t)
@@ -10322,7 +11054,8 @@ let tensorArraySizeV2
   ]
   in
   Op.create context Op_names.tensorArraySizeV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let tensorArraySizeV3
     (handle : [ `resource ] t)
@@ -10333,7 +11066,8 @@ let tensorArraySizeV3
   ]
   in
   Op.create context Op_names.tensorArraySizeV3 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int32
 
 let tensorArraySplit
     (handle : [ `string ] t)
@@ -10347,7 +11081,8 @@ let tensorArraySplit
   ]
   in
   Op.create context Op_names.tensorArraySplit inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorArraySplitV2
     (handle : [ `string ] t)
@@ -10361,7 +11096,8 @@ let tensorArraySplitV2
   ]
   in
   Op.create context Op_names.tensorArraySplitV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorArraySplitV3
     (handle : [ `resource ] t)
@@ -10375,7 +11111,8 @@ let tensorArraySplitV3
   ]
   in
   Op.create context Op_names.tensorArraySplitV3 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorArrayUnpack
     (handle : [ `string ] t)
@@ -10388,7 +11125,8 @@ let tensorArrayUnpack
   ]
   in
   Op.create context Op_names.tensorArrayUnpack inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorArrayV2
     ?(element_shape=[])
@@ -10406,7 +11144,8 @@ let tensorArrayV2
   ]
   in
   Op.create context Op_names.tensorArrayV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let tensorArrayV3
     ?(element_shape=[])
@@ -10424,7 +11163,9 @@ let tensorArrayV3
   ]
   in
   Op.create context Op_names.tensorArrayV3 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    Type.Resource
+    Type.Float
 
 let tensorArrayWrite
     (handle : [ `string ] t)
@@ -10438,7 +11179,8 @@ let tensorArrayWrite
   ]
   in
   Op.create context Op_names.tensorArrayWrite inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorArrayWriteV2
     (handle : [ `string ] t)
@@ -10452,7 +11194,8 @@ let tensorArrayWriteV2
   ]
   in
   Op.create context Op_names.tensorArrayWriteV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorArrayWriteV3
     (handle : [ `resource ] t)
@@ -10466,7 +11209,8 @@ let tensorArrayWriteV3
   ]
   in
   Op.create context Op_names.tensorArrayWriteV3 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Float
 
 let tensorSummary
     ?(description="")
@@ -10481,7 +11225,8 @@ let tensorSummary
   ]
   in
   Op.create context Op_names.tensorSummary inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let tensorSummaryV2
     (tag : [ `string ] t)
@@ -10494,7 +11239,8 @@ let tensorSummaryV2
   ]
   in
   Op.create context Op_names.tensorSummaryV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let textLineDataset
     (filenames : [ `string ] t)
@@ -10506,7 +11252,8 @@ let textLineDataset
   ]
   in
   Op.create context Op_names.textLineDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let textLineReader
     ?(skip_header_lines=0)
@@ -10522,7 +11269,8 @@ let textLineReader
   ]
   in
   Op.create context Op_names.textLineReader inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let textLineReaderV2
     ?(skip_header_lines=0)
@@ -10538,7 +11286,8 @@ let textLineReaderV2
   ]
   in
   Op.create context Op_names.textLineReaderV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let threadUnsafeUnigramCandidateSampler
     ~num_true
@@ -10560,7 +11309,10 @@ let threadUnsafeUnigramCandidateSampler
   ]
   in
   Op.create context Op_names.threadUnsafeUnigramCandidateSampler inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    Type.Float
+    Type.Float
 
 let tile
     (input : 't t)
@@ -10573,7 +11325,8 @@ let tile
   ]
   in
   Op.create context Op_names.tile inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let tileGrad
     (input : 't t)
@@ -10585,7 +11338,8 @@ let tileGrad
   ]
   in
   Op.create context Op_names.tileGrad inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
 
 let topK
     ~k
@@ -10600,7 +11354,9 @@ let topK
   ]
   in
   Op.create context Op_names.topK inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ input)
+    Type.Int32
 
 let topKV2
     ?(sorted=true)
@@ -10614,7 +11370,9 @@ let topKV2
   ]
   in
   Op.create context Op_names.topKV2 inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ input)
+    Type.Int32
 
 let transpose
     (x : 't t)
@@ -10627,7 +11385,8 @@ let transpose
   ]
   in
   Op.create context Op_names.transpose inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let truncateDiv
     (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 ] as 't) t)
@@ -10639,7 +11398,8 @@ let truncateDiv
   ]
   in
   Op.create context Op_names.truncateDiv inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let truncateMod
     (x : ([< `int32 | `int64 | `float | `double ] as 't) t)
@@ -10651,7 +11411,8 @@ let truncateMod
   ]
   in
   Op.create context Op_names.truncateMod inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let truncatedNormal
     ~type_dtype
@@ -10668,7 +11429,8 @@ let truncatedNormal
   ]
   in
   Op.create context Op_names.truncatedNormal inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let uniformCandidateSampler
     ~num_true
@@ -10690,7 +11452,10 @@ let uniformCandidateSampler
   ]
   in
   Op.create context Op_names.uniformCandidateSampler inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    Type.Float
+    Type.Float
 
 let unique
     ~type_out_idx
@@ -10703,7 +11468,9 @@ let unique
   ]
   in
   Op.create context Op_names.unique inputs attrs
-  |> Op.execute2
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ x)
+    type_out_idx
 
 let uniqueWithCounts
     ~type_out_idx
@@ -10716,7 +11483,10 @@ let uniqueWithCounts
   ]
   in
   Op.create context Op_names.uniqueWithCounts inputs attrs
-  |> Op.execute3
+  |> fun op -> Op.execute3 op
+    (Op.Tensor_handle.type_ x)
+    type_out_idx
+    type_out_idx
 
 let unpack
     ~num
@@ -10731,7 +11501,7 @@ let unpack
   ]
   in
   Op.create context Op_names.unpack inputs attrs
-  |> Op.execute ~output_len:num
+  |> fun op -> Op.execute op (failwith "TODO") ~output_len:num
 
 let unsortedSegmentMax
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -10745,7 +11515,8 @@ let unsortedSegmentMax
   ]
   in
   Op.create context Op_names.unsortedSegmentMax inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let unsortedSegmentSum
     (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -10759,7 +11530,8 @@ let unsortedSegmentSum
   ]
   in
   Op.create context Op_names.unsortedSegmentSum inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
 
 let variable
     ~type_dtype
@@ -10777,7 +11549,8 @@ let variable
   ]
   in
   Op.create context Op_names.variable inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let variableV2
     ~type_dtype
@@ -10795,7 +11568,8 @@ let variableV2
   ]
   in
   Op.create context Op_names.variableV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let where
     (input : [ `bool ] t)
@@ -10805,7 +11579,8 @@ let where
   ]
   in
   Op.create context Op_names.where inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Int64
 
 let wholeFileReader
     ?(container="")
@@ -10819,7 +11594,8 @@ let wholeFileReader
   ]
   in
   Op.create context Op_names.wholeFileReader inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let wholeFileReaderV2
     ?(container="")
@@ -10833,7 +11609,8 @@ let wholeFileReaderV2
   ]
   in
   Op.create context Op_names.wholeFileReaderV2 inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Resource
 
 let writeFile
     (filename : [ `string ] t)
@@ -10844,7 +11621,7 @@ let writeFile
   ]
   in
   Op.create context Op_names.writeFile inputs attrs
-  |> Op.execute0
+  |> fun op -> Op.execute0 op
 
 let zerosLike
     (x : 't t)
@@ -10855,7 +11632,8 @@ let zerosLike
   ]
   in
   Op.create context Op_names.zerosLike inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let zeta
     (x : ([< `float | `double ] as 't) t)
@@ -10867,7 +11645,8 @@ let zeta
   ]
   in
   Op.create context Op_names.zeta inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let zipDataset
     ~output_types
@@ -10882,5 +11661,6 @@ let zipDataset
   ]
   in
   Op.create context Op_names.zipDataset inputs attrs
-  |> Op.execute1
+  |> fun op -> Op.execute1 op
+    Type.Variant
 

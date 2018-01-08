@@ -27,35 +27,35 @@ open Tf_core
 
 let of_strings strings ~shape =
   Eager.Tensor_handle.of_strings_exn strings ~shape
-  |> Op.Tensor_handle.of_c
+  |> fun h -> Op.Tensor_handle.of_c h String
 
 let of_string str =
   Eager.Tensor_handle.of_string_exn str
-  |> Op.Tensor_handle.of_c
+  |> fun h -> Op.Tensor_handle.of_c h String
 
-let scalar_exn type_ value =
-  let tensor = Tensor.create type_ [||] in
+let scalar_exn tensor_type_ type_ value =
+  let tensor = Tensor.create tensor_type_ [||] in
   Tensor.set tensor [||] value;
   Eager.Tensor_handle.create_exn (Tensor.P tensor)
-  |> Op.Tensor_handle.of_c
+  |> fun h -> Op.Tensor_handle.of_c h type_
 
-let vec_exn type_ list =
-  let tensor = Tensor.create type_ [| List.length list |] in
+let vec_exn tensor_type_ type_ list =
+  let tensor = Tensor.create tensor_type_ [| List.length list |] in
   Tensor.copy_elt_list tensor list;
   Eager.Tensor_handle.create_exn (Tensor.P tensor)
-  |> Op.Tensor_handle.of_c
+  |> fun h -> Op.Tensor_handle.of_c h type_
 
-let i32 i = scalar_exn Int32 (Int32.of_int_exn i)
+let i32 i = scalar_exn Int32 Int32 (Int32.of_int_exn i)
 
-let f32 f = scalar_exn Float32 f
+let f32 f = scalar_exn Float32 Float f
 
-let f64 f = scalar_exn Float64 f
+let f64 f = scalar_exn Float64 Double f
 
-let vec_i32 i = vec_exn Int32 (List.map ~f:Int32.of_int_exn i)
+let vec_i32 i = vec_exn Int32 Int32 (List.map ~f:Int32.of_int_exn i)
 
-let vec_f32 f = vec_exn Float32 f
+let vec_f32 f = vec_exn Float32 Float f
 
-let vec_f64 f = vec_exn Float64 f
+let vec_f64 f = vec_exn Float64 Double f
 
 let to_float t =
   let output_tensor = Op.Tensor_handle.resolve t in

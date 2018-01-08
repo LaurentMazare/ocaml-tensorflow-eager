@@ -295,13 +295,21 @@ let same_input_and_output_type (op : Op.t) ~alpha =
 let type_variable ~alpha =
   Printf.sprintf "type_%s" (String.filter alpha ~f:(Char.(<>) '\''))
 
-let output_type_string op output_type =
+let output_data_type_string op output_type =
   match (output_type : Type.t) with
   | Fixed p -> "Type." ^ Op_type.to_string p
   | Polymorphic (alpha, _) ->
     match same_input_and_output_type op ~alpha with
     | Some input -> Printf.sprintf "(Op.Tensor_handle.data_type %s)" (Input.caml_comp_name input)
     | None -> Printf.sprintf "Operation.Type.(to_data_type (P %s))" (type_variable ~alpha)
+
+let output_type_string op output_type =
+  match (output_type : Type.t) with
+  | Fixed p -> "Type." ^ Op_type.to_string p
+  | Polymorphic (alpha, _) ->
+    match same_input_and_output_type op ~alpha with
+    | Some input -> Printf.sprintf "(Op.Tensor_handle.type_ %s)" (Input.caml_comp_name input)
+    | None -> type_variable ~alpha
 
 let needs_variable_for_output_type op output_type =
   match (output_type : Type.t) with
@@ -410,7 +418,7 @@ let handle_one_op (op : Op.t) out_channel =
   p "  let attrs = [";
   List.iter op.output_types ~f:(fun output_type ->
     Option.iter output_type.name ~f:(fun output_type_name ->
-      let output_type_string = output_type_string op output_type.type_ in
+      let output_type_string = output_data_type_string op output_type.type_ in
       if not (Hash_set.mem attr_names output_type_name)
       then begin
         Hash_set.add attr_names output_type_name;
@@ -435,8 +443,11 @@ let handle_one_op (op : Op.t) out_channel =
       let attr =
         List.find_exn op.attributes ~f:(fun attribute -> String.(=) attribute.name attr)
       in
-      p "  |> Op.execute ~output_len:%s" (Attribute.caml_eval_name attr)
-    | _ -> p "  |> Op.execute%d" (List.length op.output_types)
+      p "  |> fun op -> Op.execute op (failwith \"TODO\") ~output_len:%s" (Attribute.caml_eval_name attr)
+    | _ ->
+      p "  |> fun op -> Op.execute%d op" (List.length op.output_types);
+      List.iter op.output_types ~f:(fun output_type ->
+        p "    %s" (output_type_string op output_type.type_))
   end;
   p ""
 

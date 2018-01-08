@@ -26,7 +26,7 @@ module Context = struct
 end
 
 module Tensor_handle = struct
-  type _ t = Tfe_tensor_handle.t
+  type t = Tfe_tensor_handle.t
 
   let create tensor =
     let status = Status.create () in
@@ -66,9 +66,6 @@ module Tensor_handle = struct
   let type_ t =
     data_type t
     |> Operation.Type.of_data_type
-    (* TODO: this is a very nasty hack, we should properly store the type
-       information in t. *)
-    |> fun (Operation.Type.P type_) -> Obj.magic type_
 
   let of_strings strings ~shape =
     let status = Status.create () in
@@ -182,43 +179,3 @@ let execute op ~output_len =
 let execute_exn op ~output_len =
   execute op ~output_len
   |> Status.ok_exn
-
-let execute0_exn t =
-  match execute_exn t ~output_len:0 with
-  | [] -> ()
-  | _ -> assert false
-
-let execute1_exn t =
-  match execute_exn t ~output_len:1 with
-  | [handle] -> handle
-  | _ -> assert false
-
-let execute2_exn t =
-  match execute_exn t ~output_len:2 with
-  | [handle1; handle2] -> handle1, handle2
-  | _ -> assert false
-
-let execute3_exn t =
-  match execute_exn t ~output_len:3 with
-  | [handle1; handle2; handle3] -> handle1, handle2, handle3
-  | _ -> assert false
-
-let execute4_exn t =
-  match execute_exn t ~output_len:4 with
-  | [handle1; handle2; handle3; handle4] -> handle1, handle2, handle3, handle4
-  | _ -> assert false
-
-let execute5_exn t =
-  match execute_exn t ~output_len:5 with
-  | [h1; h2; h3; h4; h5] -> h1, h2, h3, h4, h5
-  | _ -> assert false
-
-let execute6_exn t =
-  match execute_exn t ~output_len:6 with
-  | [h1; h2; h3; h4; h5; h6] -> h1, h2, h3, h4, h5, h6
-  | _ -> assert false
-
-let execute7_exn t =
-  match execute_exn t ~output_len:7 with
-  | [h1; h2; h3; h4; h5; h6; h7] -> h1, h2, h3, h4, h5, h6, h7
-  | _ -> assert false

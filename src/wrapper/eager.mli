@@ -10,28 +10,28 @@ module Context : sig
 end
 
 module Tensor_handle : sig
-  type _ t
+  type t
 
   (* TODO: better shadow type handling when converting to/from a tensor. *)
-  val create : Tensor.p -> _ t Status.result
+  val create : Tensor.p -> t Status.result
 
-  val create_exn : Tensor.p -> _ t
+  val create_exn : Tensor.p -> t
 
-  val resolve : _ t -> Tensor.p Status.result
+  val resolve : t -> Tensor.p Status.result
 
-  val resolve_exn : _ t -> Tensor.p
+  val resolve_exn : t -> Tensor.p
 
-  val dims : _ t -> int list
+  val dims : t -> int list
 
-  val data_type : _ t -> Wrapper.data_type
+  val data_type : t -> Wrapper.data_type
 
-  val of_strings : string list -> shape:int list -> [ `string ] t Status.result
-  val of_strings_exn : string list -> shape:int list -> [ `string ] t
+  val of_strings : string list -> shape:int list -> t Status.result
+  val of_strings_exn : string list -> shape:int list -> t
 
-  val of_string : string -> [ `string ] t Status.result
-  val of_string_exn : string -> [ `string ] t
+  val of_string : string -> t Status.result
+  val of_string_exn : string -> t
 
-  val type_ : 'a t -> 'a Operation.Type.t
+  val type_ : t -> Operation.Type.p
 end
 
 module Op : sig
@@ -39,7 +39,7 @@ module Op : sig
 
   val create : Context.t -> string -> t Status.result
 
-  val add_input : t -> _ Tensor_handle.t -> unit Status.result
+  val add_input : t -> Tensor_handle.t -> unit Status.result
 
   val set_attr_type : t -> string -> Wrapper.data_type -> unit
   val set_attr_type_list : t -> string -> Wrapper.data_type list -> unit
@@ -53,14 +53,5 @@ module Op : sig
   val set_attr_shape_list : t -> string -> int list list -> unit Status.result
 end
 
-val execute : Op.t -> output_len:int -> _ Tensor_handle.t list Status.result
-val execute_exn : Op.t -> output_len:int -> _ Tensor_handle.t list
-
-val execute0_exn : Op.t -> unit
-val execute1_exn : Op.t -> _ Tensor_handle.t
-val execute2_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t
-val execute3_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
-val execute4_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
-val execute5_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
-val execute6_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
-val execute7_exn : Op.t -> _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t * _ Tensor_handle.t
+val execute : Op.t -> output_len:int -> Tensor_handle.t list Status.result
+val execute_exn : Op.t -> output_len:int -> Tensor_handle.t list
