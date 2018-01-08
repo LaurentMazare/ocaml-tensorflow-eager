@@ -2338,7 +2338,7 @@ let concatOffset
   ]
   in
   Op.create context Op_names.concatOffset inputs attrs
-  |> fun op -> Op.execute op (failwith "TODO") ~output_len:(List.length shape)
+  |> fun op -> Op.execute op Type.Int32 ~output_len:(List.length shape)
 
 let concatV2
     (values : 't t list)
@@ -3270,7 +3270,7 @@ let dynamicPartition
   ]
   in
   Op.create context Op_names.dynamicPartition inputs attrs
-  |> fun op -> Op.execute op (failwith "TODO") ~output_len:num_partitions
+  |> fun op -> Op.execute op (Op.Tensor_handle.type_ data) ~output_len:num_partitions
 
 let dynamicStitch
     (indices : [ `int32 ] t list)
@@ -8965,7 +8965,7 @@ let shapeN
   ]
   in
   Op.create context Op_names.shapeN inputs attrs
-  |> fun op -> Op.execute op (failwith "TODO") ~output_len:(List.length input)
+  |> fun op -> Op.execute op type_out_type ~output_len:(List.length input)
 
 let shardedFilename
     (basename : [ `string ] t)
@@ -10059,7 +10059,7 @@ let split
   ]
   in
   Op.create context Op_names.split inputs attrs
-  |> fun op -> Op.execute op (failwith "TODO") ~output_len:num_split
+  |> fun op -> Op.execute op (Op.Tensor_handle.type_ value) ~output_len:num_split
 
 let splitV
     ~num_split
@@ -10075,7 +10075,7 @@ let splitV
   ]
   in
   Op.create context Op_names.splitV inputs attrs
-  |> fun op -> Op.execute op (failwith "TODO") ~output_len:num_split
+  |> fun op -> Op.execute op (Op.Tensor_handle.type_ value) ~output_len:num_split
 
 let sqlDataset
     ~output_types
@@ -11501,7 +11501,7 @@ let unpack
   ]
   in
   Op.create context Op_names.unpack inputs attrs
-  |> fun op -> Op.execute op (failwith "TODO") ~output_len:num
+  |> fun op -> Op.execute op (Op.Tensor_handle.type_ value) ~output_len:num
 
 let unsortedSegmentMax
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)

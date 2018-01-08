@@ -439,11 +439,13 @@ let handle_one_op (op : Op.t) out_channel =
   p "  Op.create context Op_names.%s inputs attrs" (Op.caml_name op);
   begin
     match op.output_types with
-    | [ { number_attr = Some attr; _ } ] ->
+    | [ { number_attr = Some attr; type_; _ } ] ->
       let attr =
         List.find_exn op.attributes ~f:(fun attribute -> String.(=) attribute.name attr)
       in
-      p "  |> fun op -> Op.execute op (failwith \"TODO\") ~output_len:%s" (Attribute.caml_eval_name attr)
+      p "  |> fun op -> Op.execute op %s ~output_len:%s"
+        (output_type_string op type_)
+        (Attribute.caml_eval_name attr)
     | _ ->
       p "  |> fun op -> Op.execute%d op" (List.length op.output_types);
       List.iter op.output_types ~f:(fun output_type ->
