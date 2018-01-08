@@ -65,13 +65,6 @@ let aggregate_contributions_multi gradients =
   |> Map.of_alist_multi (module Int)
   |> Map.map ~f:aggregate_contributions
 
-let ones_like (type a) (th : a T.t) =
-    let shape_as v = T.P (Ops.fill (Ops.shape th ~type_out_type:Int32) v) in
-    match T.type_ th with
-    | Type.Float -> Ops.f32 1. |> shape_as
-    | Type.Double -> Ops.f64 1. |> shape_as
-    | _ -> assert false
-
 (* Compute the gradients of [th] with respect to leafs using backpropagation.
    This only works when [th] is a scalar. *)
 let compute th =
@@ -133,6 +126,8 @@ let compute th =
               | exn -> Exn.reraise exn (Op.Name.to_string op_name)
       end
   in
-  let one = ones_like th in
+  let one =
+    T.P Ops.(fill (shape th ~type_out_type:Int32) (float 1. (T.type_ th)))
+  in
   add_contribution (P th) ~gradient:(Some one);
   output_gradients

@@ -17,7 +17,6 @@ type attr =
   | `type_ of Tf_core.Wrapper.data_type
   ]
 
-
 module Tape_info : sig
   type _ t
   val create
@@ -29,6 +28,7 @@ module Tape_info : sig
   val op_name : _ t -> Name.t
   val inputs : 'a t -> 'a list
   val output_idx : 'a t -> int
+  val attrs : 'a t -> (string * attr) list
 end = struct
   type 'a t =
     { op_name : Name.t
@@ -43,6 +43,7 @@ end = struct
   let op_name t = t.op_name
   let inputs t = t.inputs
   let output_idx t = t.output_idx
+  let attrs t = t.attrs
 end
 
 module Tensor_handle = struct

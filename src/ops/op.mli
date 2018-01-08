@@ -5,12 +5,27 @@ module Name : Identifiable.S
 
 type t
 
+type attr =
+  [ `bool of bool
+  | `float of float
+  | `int of int
+  | `list_float of float list
+  | `list_int of int list
+  | `list_shape of int list list
+  | `list_type of Tf_core.Wrapper.data_type list
+  | `list_type_p of Operation.Type.p list
+  | `shape of int list
+  | `string of string
+  | `type_ of Tf_core.Wrapper.data_type
+  ]
+
 module Tape_info : sig
   type _ t
 
   val op_name : _ t -> Name.t
   val inputs : 'a t -> 'a list
   val output_idx : 'a t -> int
+  val attrs : 'a t -> (string * attr) list
 end
 
 module Tensor_handle : sig
@@ -42,20 +57,6 @@ end
 type context
 
 val default_context : unit -> context
-
-type attr =
-  [ `bool of bool
-  | `float of float
-  | `int of int
-  | `list_float of float list
-  | `list_int of int list
-  | `list_shape of int list list
-  | `list_type of Tf_core.Wrapper.data_type list
-  | `list_type_p of Operation.Type.p list
-  | `shape of int list
-  | `string of string
-  | `type_ of Tf_core.Wrapper.data_type
-  ]
 
 val create
   :  context
