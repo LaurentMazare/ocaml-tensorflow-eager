@@ -1,6 +1,6 @@
-open Tf_core
+type 'a t
 
-(* TODO: introduce a specific dependent type for variables rather than `dt_resource. *)
-val variable : 'a Ops.t -> [ `resource ] Ops.t
-val assign : [ `resource ] Ops.t -> 'a Ops.t -> unit
-val read : [ `resource ] Ops.t -> 'a Operation.Type.t -> 'a Ops.t
+val create : 'a Ops.t -> 'a t
+val assign : 'a t -> 'a Ops.t -> unit
+val read : 'a t -> 'a Ops.t
+val resource : 'a t -> [ `resource ] Ops.t
