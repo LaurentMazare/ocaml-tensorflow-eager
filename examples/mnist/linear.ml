@@ -10,17 +10,16 @@ let epochs = 300
 
 let () =
   let mnist_dataset = Helper.read_files () in
+  let test_images = Helper.test_images mnist_dataset in
+  let test_labels = Helper.test_labels mnist_dataset in
+
   let w = V.f32 [ image_dim; label_count ] 0. in
   let b = V.f32 [ label_count ] 0. in
-  O.print (V.read w);
-  O.print (V.read b);
   let model xs = O.(xs *^ V.read w + V.read b) |> O.softmax in
   for epoch = 1 to epochs do
     if epoch % 50 = 0 then begin
       let accuracy =
-        let ys_ = model (Helper.test_images mnist_dataset) in
-        let ys = Helper.test_labels mnist_dataset in
-        O.(equal (arg_max ys_) (arg_max ys))
+        O.(equal (arg_max (model test_images)) (arg_max test_labels))
         |> O.cast ~type_dstT:Float
         |> O.reduce_mean
         |> O.to_float
