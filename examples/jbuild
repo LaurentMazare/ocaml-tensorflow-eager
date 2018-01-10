@@ -1,5 +1,5 @@
 (jbuild_version 1)
 
 (executables
- ((names (hello_world gradients resnet50 vgg19))
+ ((names (hello_world gradients resnet50 variable vgg19))
   (libraries (base stdio tf_core tf_ops))))
