@@ -45,9 +45,6 @@ module Op_names = struct
   let asString = Op.Name.of_string "AsString"
   let asin = Op.Name.of_string "Asin"
   let asinh = Op.Name.of_string "Asinh"
-  let assign = Op.Name.of_string "Assign"
-  let assignAdd = Op.Name.of_string "AssignAdd"
-  let assignSub = Op.Name.of_string "AssignSub"
   let atan = Op.Name.of_string "Atan"
   let atan2 = Op.Name.of_string "Atan2"
   let atanh = Op.Name.of_string "Atanh"
@@ -688,8 +685,6 @@ module Op_names = struct
   let unpack = Op.Name.of_string "Unpack"
   let unsortedSegmentMax = Op.Name.of_string "UnsortedSegmentMax"
   let unsortedSegmentSum = Op.Name.of_string "UnsortedSegmentSum"
-  let variable = Op.Name.of_string "Variable"
-  let variableV2 = Op.Name.of_string "VariableV2"
   let where = Op.Name.of_string "Where"
   let wholeFileReader = Op.Name.of_string "WholeFileReader"
   let wholeFileReaderV2 = Op.Name.of_string "WholeFileReaderV2"
@@ -1314,53 +1309,6 @@ let asinh
   Op.create context Op_names.asinh inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ x)
-
-let assign
-    ?(validate_shape=true)
-    ?(use_locking=true)
-    (ref : 't t)
-    (value : 't t)
-  =
-  let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P value] in
-  let attrs = [
-    "T", `type_ (Op.Tensor_handle.data_type ref);
-    "validate_shape", `bool validate_shape;
-    "use_locking", `bool use_locking;
-  ]
-  in
-  Op.create context Op_names.assign inputs attrs
-  |> fun op -> Op.execute1 op
-    (Op.Tensor_handle.type_ ref)
-
-let assignAdd
-    ?(use_locking=false)
-    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-  =
-  let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P value] in
-  let attrs = [
-    "T", `type_ (Op.Tensor_handle.data_type ref);
-    "use_locking", `bool use_locking;
-  ]
-  in
-  Op.create context Op_names.assignAdd inputs attrs
-  |> fun op -> Op.execute1 op
-    (Op.Tensor_handle.type_ ref)
-
-let assignSub
-    ?(use_locking=false)
-    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-  =
-  let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P value] in
-  let attrs = [
-    "T", `type_ (Op.Tensor_handle.data_type ref);
-    "use_locking", `bool use_locking;
-  ]
-  in
-  Op.create context Op_names.assignSub inputs attrs
-  |> fun op -> Op.execute1 op
-    (Op.Tensor_handle.type_ ref)
 
 let atan
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -11532,44 +11480,6 @@ let unsortedSegmentSum
   Op.create context Op_names.unsortedSegmentSum inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ data)
-
-let variable
-    ~type_dtype
-    ~shape
-    ?(container="")
-    ?(shared_name="")
-    ()
-  =
-  let inputs = [] in
-  let attrs = [
-    "dtype", `type_ Operation.Type.(to_data_type (P type_dtype));
-    "shape", `shape shape;
-    "container", `string container;
-    "shared_name", `string shared_name;
-  ]
-  in
-  Op.create context Op_names.variable inputs attrs
-  |> fun op -> Op.execute1 op
-    type_dtype
-
-let variableV2
-    ~type_dtype
-    ~shape
-    ?(container="")
-    ?(shared_name="")
-    ()
-  =
-  let inputs = [] in
-  let attrs = [
-    "dtype", `type_ Operation.Type.(to_data_type (P type_dtype));
-    "shape", `shape shape;
-    "container", `string container;
-    "shared_name", `string shared_name;
-  ]
-  in
-  Op.create context Op_names.variableV2 inputs attrs
-  |> fun op -> Op.execute1 op
-    type_dtype
 
 let where
     (input : [ `bool ] t)

@@ -8,6 +8,11 @@ let output_file = "src/ops/generated"
 let do_not_generate_these_ops =
   Set.of_list (module String)
     [ "Const"
+    ; "Assign"
+    ; "AssignAdd"
+    ; "AssignSub"
+    ; "Variable"
+    ; "VariableV2"
     ]
 
 let p out_channel s =

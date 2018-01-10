@@ -45,9 +45,6 @@ module Op_names : sig
   val asString : Op.Name.t
   val asin : Op.Name.t
   val asinh : Op.Name.t
-  val assign : Op.Name.t
-  val assignAdd : Op.Name.t
-  val assignSub : Op.Name.t
   val atan : Op.Name.t
   val atan2 : Op.Name.t
   val atanh : Op.Name.t
@@ -688,8 +685,6 @@ module Op_names : sig
   val unpack : Op.Name.t
   val unsortedSegmentMax : Op.Name.t
   val unsortedSegmentSum : Op.Name.t
-  val variable : Op.Name.t
-  val variableV2 : Op.Name.t
   val where : Op.Name.t
   val wholeFileReader : Op.Name.t
   val wholeFileReaderV2 : Op.Name.t
@@ -1185,34 +1180,6 @@ val asin:
 val asinh:
   ([< `float | `double | `complex64 ] as 't) t ->
     ([< `float | `double | `complex64 ] as 't) t
-
-(* Update 'ref' by assigning 'value' to it. *)
-(* This operation outputs 'ref' after the assignment is done.
-This makes it easier to chain operations that need to use the reset value. *)
-val assign:
-  ?validate_shape:bool ->
-  ?use_locking:bool ->
-  't t ->
-  't t ->
-    't t
-
-(* Update 'ref' by adding 'value' to it. *)
-(* This operation outputs 'ref' after the update is done.
-This makes it easier to chain operations that need to use the reset value. *)
-val assignAdd:
-  ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
-
-(* Update 'ref' by subtracting 'value' from it. *)
-(* This operation outputs 'ref' after the update is done.
-This makes it easier to chain operations that need to use the reset value. *)
-val assignSub:
-  ?use_locking:bool ->
-  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
-  ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t ->
-    ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
 
 (* Computes atan of x element-wise. *)
 val atan:
@@ -10672,27 +10639,6 @@ val unsortedSegmentSum:
   ([< `int32 | `int64 ] as 'tindices) t ->
   [ `int32 ] t ->
     ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t
-
-(* Use VariableV2 instead. *)
-val variable:
-  type_dtype:'dtype Type.t ->
-  shape:int list ->
-  ?container:string ->
-  ?shared_name:string ->
-  unit ->
-    'dtype t
-
-(* Holds state in the form of a tensor that persists across steps. *)
-(* Outputs a ref to the tensor state so it may be read or modified.
-TODO(zhifengc/mrry): Adds a pointer to a more detail document
-about sharing states in tensorflow. *)
-val variableV2:
-  type_dtype:'dtype Type.t ->
-  shape:int list ->
-  ?container:string ->
-  ?shared_name:string ->
-  unit ->
-    'dtype t
 
 (* Returns locations of true values in a boolean tensor. *)
 (* This operation returns the coordinates of true elements in `input`. The
