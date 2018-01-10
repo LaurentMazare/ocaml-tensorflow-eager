@@ -1,0 +1,6 @@
+(jbuild_version 1)
+
+(executables
+ ((names (linear))
+  (libraries (base stdio tf_core tf_ops))))
+

@@ -15,12 +15,18 @@ val mm
   -> ([< `float | `double | `int32 | `complex64 ] as 't) t
   -> ([< `float | `double | `int32 | `complex64 ] as 't) t
 
-val i32 : int -> [ `int32 ] t
+(* Another alias for matmul. *)
+val ( *^)
+  :  ([< `float | `double | `int32 | `complex64 ] as 't) t
+  -> ([< `float | `double | `int32 | `complex64 ] as 't) t
+  -> ([< `float | `double | `int32 | `complex64 ] as 't) t
+
+val i32 : ?shape:int list -> int -> [ `int32 ] t
 val zero32 : [ `int32 ] t
 val one32 : [ `int32 ] t
-val f32 : float -> [ `float ] t
-val f64 : float -> [ `double ] t
-val float : float -> ([< `float | `double ] as 'a) Tf_core.Operation.Type.t -> 'a t
+val f32 : ?shape:int list -> float -> [ `float ] t
+val f64 : ?shape:int list -> float -> [ `double ] t
+val float : ?shape:int list -> float -> ([< `float | `double ] as 'a) Tf_core.Operation.Type.t -> 'a t
 
 val vec_i32 : int list -> [ `int32 ] t
 val vec_f32 : float list -> [ `float ] t
@@ -58,3 +64,14 @@ val reduce_all : ?dims:int list -> [ `bool ] t -> [ `bool ] t
 val reduce_any : ?dims:int list -> [ `bool ] t -> [ `bool ] t
 
 val irange : [ `int32 ] t -> [ `int32 ] t
+
+val cross_entropy
+  :  ?epsilon:float
+  -> ys:[ `float ] t
+  -> y_hats:[ `float ] t
+  -> [ `mean | `sum ]
+  -> [ `float ] t
+
+val arg_max
+  :  [< `complex64 | `double | `float | `int32 | `int64 | `uInt16 | `uInt8 ] t
+  -> [ `int32 ] t

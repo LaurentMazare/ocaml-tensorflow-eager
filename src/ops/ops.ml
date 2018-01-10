@@ -22,6 +22,7 @@ let print ?(summarize=20) ?(message = "") tensor_handle =
   |> Op.execute0
 
 let mm = matMul
+let ( *^) x y = matMul x y
 
 open Tf_core
 
@@ -33,9 +34,9 @@ let of_string str =
   Eager.Tensor_handle.of_string_exn str
   |> fun h -> Op.Tensor_handle.of_c h String
 
-let scalar_exn tensor_type_ type_ value =
-  let tensor = Tensor.create tensor_type_ [||] in
-  Tensor.set tensor [||] value;
+let scalar_exn ?(shape=[]) tensor_type_ type_ value =
+  let tensor = Tensor.create tensor_type_ (Array.of_list shape) in
+  Tensor.fill tensor value;
   Eager.Tensor_handle.create_exn (Tensor.P tensor)
   |> fun h -> Op.Tensor_handle.of_c h type_
 
@@ -45,18 +46,19 @@ let vec_exn tensor_type_ type_ list =
   Eager.Tensor_handle.create_exn (Tensor.P tensor)
   |> fun h -> Op.Tensor_handle.of_c h type_
 
-let i32 i = scalar_exn Int32 Int32 (Int32.of_int_exn i)
+let i32 ?shape i = scalar_exn ?shape Int32 Int32 (Int32.of_int_exn i)
 let one32 = i32 1
 let zero32 = i32 0
 
-let f32 f = scalar_exn Float32 Float f
+let f32 ?shape f = scalar_exn ?shape Float32 Float f
 
-let f64 f = scalar_exn Float64 Double f
+let f64 ?shape f = scalar_exn ?shape Float64 Double f
 
-let float : type a . float -> a Operation.Type.t -> a t = fun value type_ ->
+let float : type a . ?shape:int list -> float -> a Operation.Type.t -> a t =
+  fun ?shape value type_ ->
   match type_ with
-  | Type.Float -> f32 value
-  | Type.Double -> f64 value
+  | Type.Float -> f32 ?shape value
+  | Type.Double -> f64 ?shape value
   | _ -> assert false
 
 let vec_i32 i = vec_exn Int32 Int32 (List.map ~f:Int32.of_int_exn i)
@@ -114,3 +116,14 @@ let reduce_all ?dims node = reduce all ?dims node
 let reduce_any ?dims node = reduce any ?dims node
 
 let watch = Op.Tensor_handle.watch
+
+let cross_entropy ?(epsilon = 1e-7) ~ys ~y_hats sum_or_mean =
+  let type_ = Op.Tensor_handle.type_ ys in
+  let reduce =
+    match sum_or_mean with
+    | `sum -> reduce_sum
+    | `mean -> reduce_mean
+  in
+  neg (ys * log (y_hats + float epsilon type_)) |> reduce
+
+let arg_max th = argMax ~type_output_type:Int32 th one32
