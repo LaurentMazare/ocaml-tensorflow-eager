@@ -22,7 +22,7 @@ val train_batch
   :  t
   -> batch_size:int
   -> batch_idx:int
-  -> float32_tensor * float32_tensor
+  -> [ `float ] Ops.t * [ `float ] Ops.t
 
 val image_dim : int
 val label_count : int

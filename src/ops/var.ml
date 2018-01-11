@@ -48,6 +48,8 @@ let read t =
     [ "dtype", `type_ (Operation.Type.(to_data_type (P t.type_)))]
   |> fun op -> Op.execute1 op t.type_
 
+let read_and_watch t = read t |> Ops.watch
+
 let resource t = t.op
 
 let f32 shape f =

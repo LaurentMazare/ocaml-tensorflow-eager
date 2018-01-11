@@ -15,7 +15,7 @@ let () =
 
   let w = V.f32 [ image_dim; label_count ] 0. in
   let b = V.f32 [ label_count ] 0. in
-  let model xs = O.(xs *^ V.read w + V.read b) |> O.softmax in
+  let model xs = O.(xs *^ V.read_and_watch w + V.read_and_watch b) |> O.softmax in
   for epoch = 1 to epochs do
     if epoch % 50 = 0 then begin
       let accuracy =
@@ -26,7 +26,11 @@ let () =
       in
       Stdio.printf "epoch %d, accuracy %.2f%%\n%!" epoch (100. *. accuracy)
     end;
-    (* TODO: gradient descent.
-      let cross_entropy = O.cross_entropy ~ys:ys_node ~y_hats:ys_ `mean in
-     *)
+    let train_images, train_labels =
+      Helper.train_batch mnist_dataset ~batch_size:50_000 ~batch_idx:0
+    in
+    let ys = model train_images in
+    let cross_entropy = O.cross_entropy ~ys:train_labels ~y_hats:ys `mean in
+    (* TODO: gradient descent.  *)
+    ignore cross_entropy
   done

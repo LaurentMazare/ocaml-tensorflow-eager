@@ -87,12 +87,14 @@ let read_files
   ; test_labels = one_hot test_labels
   }
 
+let wrap_float th = Tf_ops.Op.Tensor_handle.create (Tensor.P th) Float
+
 let train_batch { train_images; train_labels; _ } ~batch_size ~batch_idx =
   let train_size = (Tensor.dims train_images).(0) in
   let start_batch = Int.(%) (batch_size * batch_idx) (train_size - batch_size) in
   let batch_images = Tensor.sub_left train_images start_batch batch_size in
   let batch_labels = Tensor.sub_left train_labels start_batch batch_size in
-  batch_images, batch_labels
+  wrap_float batch_images, wrap_float batch_labels
 
 let accuracy ys ys' =
   let ys = Bigarray.array2_of_genarray ys in
@@ -115,8 +117,5 @@ let accuracy ys ys' =
   done;
   Float.(!res / of_int nsamples)
 
-let test_images t =
-  Tf_ops.Op.Tensor_handle.create (Tensor.P t.test_images) Float
-
-let test_labels t =
-  Tf_ops.Op.Tensor_handle.create (Tensor.P t.test_labels) Float
+let test_images t = wrap_float t.test_images
+let test_labels t = wrap_float t.test_labels
