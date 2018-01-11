@@ -3,10 +3,15 @@ module O = Tf_ops.Ops
 module Th = Tf_ops.Op.Tensor_handle
 module V = Tf_ops.Var
 
+(* TODO: devise a proper API for optimizer to make this easier. *)
+let get_gradient gradients read =
+  Th.unpack_exn (Hashtbl.find_exn gradients (Th.id read)) Float
+
 (* This should reach ~92% accuracy. *)
 let image_dim = Helper.image_dim
 let label_count = Helper.label_count
-let epochs = 300
+let training_steps = 500
+let batch_size = 512
 
 let () =
   let mnist_dataset = Helper.read_files () in
@@ -15,22 +20,30 @@ let () =
 
   let w = V.f32 [ image_dim; label_count ] 0. in
   let b = V.f32 [ label_count ] 0. in
-  let model xs = O.(xs *^ V.read_and_watch w + V.read_and_watch b) |> O.softmax in
-  for epoch = 1 to epochs do
-    if epoch % 50 = 0 then begin
+  let learning_rate = O.f32 8. in
+  let model xs =
+    let w_read = V.read_and_watch w in
+    let b_read = V.read_and_watch b in
+    let ys = O.(xs *^ w_read + b_read) |> O.softmax in
+    ys, w_read, b_read
+  in
+  for step_index = 1 to training_steps do
+    if step_index % 50 = 0 then begin
       let accuracy =
-        O.(equal (arg_max (model test_images)) (arg_max test_labels))
+        let ys, _, _ = model test_images in
+        O.(equal (arg_max ys) (arg_max test_labels))
         |> O.cast ~type_dstT:Float
         |> O.reduce_mean
         |> O.to_float
       in
-      Stdio.printf "epoch %d, accuracy %.2f%%\n%!" epoch (100. *. accuracy)
+      Stdio.printf "step index %d, accuracy %.2f%%\n%!" step_index (100. *. accuracy)
     end;
     let train_images, train_labels =
-      Helper.train_batch mnist_dataset ~batch_size:50_000 ~batch_idx:0
+      Helper.train_batch mnist_dataset ~batch_size ~batch_idx:step_index
     in
-    let ys = model train_images in
+    let ys, w_read, b_read = model train_images in
     let cross_entropy = O.cross_entropy ~ys:train_labels ~y_hats:ys `mean in
-    (* TODO: gradient descent.  *)
-    ignore cross_entropy
+    let gradients = Tf_ops.Gradients.compute cross_entropy in
+    V.assign w O.(w_read - learning_rate * get_gradient gradients w_read);
+    V.assign b O.(b_read - learning_rate * get_gradient gradients b_read);
   done

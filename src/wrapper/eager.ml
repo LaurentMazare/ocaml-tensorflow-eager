@@ -145,6 +145,7 @@ module Op = struct
     let status_ptr = Status.to_ptr status in
     let num_dims = List.length value in
     let value = List.map Int64.of_int value in
+    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let value = CArray.(of_list int64_t value |> start) in
     Tfe_op.tfe_opsetattrshape
       t
@@ -165,6 +166,7 @@ module Op = struct
         let l = List.map Int64.of_int l in
         CArray.(of_list int64_t l |> start)) values
     in
+    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let values = CArray.(of_list (ptr int64_t) values |> start) in
     Tfe_op.tfe_opsetattrshapelist
       t
@@ -177,6 +179,7 @@ module Op = struct
 
   let set_attr_int_list t name values =
     let values_len = List.length values in
+    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let values = CArray.(of_list int64_t values |> start) in
     Tfe_op.tfe_opsetattrintlist
       t
@@ -186,6 +189,7 @@ module Op = struct
 
   let set_attr_float_list t name values =
     let values_len = List.length values in
+    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let values = CArray.(of_list float values |> start) in
     Tfe_op.tfe_opsetattrfloatlist
       t
@@ -196,6 +200,7 @@ module Op = struct
   let set_attr_type_list t name values =
     let values_len = List.length values in
     let values = List.map Wrapper.data_type_to_int values in
+    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let values = CArray.(of_list int values |> start) in
     Tfe_op.tfe_opsetattrtypelist
       t
