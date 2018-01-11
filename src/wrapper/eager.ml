@@ -94,17 +94,28 @@ module Op = struct
   let create context op_name =
     let status = Status.create () in
     let status_ptr = Status.to_ptr status in
-    let op = Tfe_op.tfe_newop context op_name status_ptr in
+    let op =
+      Tfe_op.tfe_newop
+        context
+        (Wrapper.ptr_of_string op_name)
+        status_ptr
+    in
     Gc.finalise
       (fun op -> Tfe_op.tfe_deleteop op)
       op;
     Status.result_or_error status op
 
   let set_attr_type t name data_type =
-    Tfe_op.tfe_opsetattrtype t name (Wrapper.data_type_to_int data_type)
+    Tfe_op.tfe_opsetattrtype
+      t
+      (Wrapper.ptr_of_string name)
+      (Wrapper.data_type_to_int data_type)
 
   let set_attr_string t name value =
-    Tfe_op.tfe_opsetattrstring t name value
+    Tfe_op.tfe_opsetattrstring
+      t
+      (Wrapper.ptr_of_string name)
+      (Wrapper.ptr_of_string value)
 
   let set_attr_bool t name value =
     let value =
@@ -112,13 +123,22 @@ module Op = struct
       then Unsigned.UChar.one
       else Unsigned.UChar.zero
     in
-    Tfe_op.tfe_opsetattrbool t name value
+    Tfe_op.tfe_opsetattrbool
+      t
+      (Wrapper.ptr_of_string name)
+      value
 
   let set_attr_int t name value =
-    Tfe_op.tfe_opsetattrint t name value
+    Tfe_op.tfe_opsetattrint
+      t
+      (Wrapper.ptr_of_string name)
+      value
 
   let set_attr_float t name value =
-    Tfe_op.tfe_opsetattrfloat t name value
+    Tfe_op.tfe_opsetattrfloat
+      t
+      (Wrapper.ptr_of_string name)
+      value
 
   let set_attr_shape t name value =
     let status = Status.create () in
@@ -126,7 +146,12 @@ module Op = struct
     let num_dims = List.length value in
     let value = List.map Int64.of_int value in
     let value = CArray.(of_list int64_t value |> start) in
-    Tfe_op.tfe_opsetattrshape t name value num_dims status_ptr;
+    Tfe_op.tfe_opsetattrshape
+      t
+      (Wrapper.ptr_of_string name)
+      value
+      num_dims
+      status_ptr;
     Status.result_or_error status ()
 
   let set_attr_shape_list t name values =
@@ -141,24 +166,42 @@ module Op = struct
         CArray.(of_list int64_t l |> start)) values
     in
     let values = CArray.(of_list (ptr int64_t) values |> start) in
-    Tfe_op.tfe_opsetattrshapelist t name values dims num_values status_ptr;
+    Tfe_op.tfe_opsetattrshapelist
+      t
+      (Wrapper.ptr_of_string name)
+      values
+      dims
+      num_values
+      status_ptr;
     Status.result_or_error status ()
 
   let set_attr_int_list t name values =
     let values_len = List.length values in
     let values = CArray.(of_list int64_t values |> start) in
-    Tfe_op.tfe_opsetattrintlist t name values values_len
+    Tfe_op.tfe_opsetattrintlist
+      t
+      (Wrapper.ptr_of_string name)
+      values
+      values_len
 
   let set_attr_float_list t name values =
     let values_len = List.length values in
     let values = CArray.(of_list float values |> start) in
-    Tfe_op.tfe_opsetattrfloatlist t name values values_len
+    Tfe_op.tfe_opsetattrfloatlist
+      t
+      (Wrapper.ptr_of_string name)
+      values
+      values_len
 
   let set_attr_type_list t name values =
     let values_len = List.length values in
     let values = List.map Wrapper.data_type_to_int values in
     let values = CArray.(of_list int values |> start) in
-    Tfe_op.tfe_opsetattrtypelist t name values values_len
+    Tfe_op.tfe_opsetattrtypelist
+      t
+      (Wrapper.ptr_of_string name)
+      values
+      values_len
 
   let add_input t tensor_handle =
     let status = Status.create () in

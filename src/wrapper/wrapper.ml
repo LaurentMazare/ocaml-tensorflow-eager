@@ -341,6 +341,23 @@ module Graph_import = struct
     Status.result_or_error status ()
 end
 
+(* TODO: collect these. *)
+let live_strings = Hashtbl.create 1024
+
+let ptr_of_string str =
+  let carray =
+    match Hashtbl.find_opt live_strings str with
+    | Some ptr -> ptr
+    | None ->
+      let len = String.length str in
+      let carray = CArray.make Ctypes.char (1 + len) in
+      Hashtbl.add live_strings str carray;
+      String.iteri (fun i char -> CArray.set carray i char) str;
+      CArray.set carray len '\x00';
+      carray
+  in
+  CArray.start carray
+
 module Graph = struct
   open C
   type t = Tf_graph.t
@@ -361,16 +378,6 @@ module Graph = struct
   type operation_description = Tf_graph.t * Tf_operationdescription.t
 
   type output = Tf_output.t structure
-
-  let live_strings = ref []
-
-  let ptr_of_string str =
-    let len = String.length str in
-    let carray = CArray.make Ctypes.char (1 + len) in
-    live_strings := carray :: !live_strings;
-    String.iteri (fun i char -> CArray.set carray i char) str;
-    CArray.set carray len '\x00';
-    CArray.start carray
 
   let create_output (_graph, op) ~index =
     let output = make Tf_output.t in

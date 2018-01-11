@@ -229,3 +229,5 @@ module Tensor : sig
   val tensor_of_c_tensor : C.Tf_tensor.t -> Tensor.p
   val c_tensor_of_strings : string list -> shape : int list -> C.Tf_tensor.t
 end
+
+val ptr_of_string : string -> char Ctypes.ptr

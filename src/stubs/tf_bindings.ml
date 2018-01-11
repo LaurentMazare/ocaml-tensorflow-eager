@@ -346,7 +346,7 @@ module C(F: Cstubs.FOREIGN) = struct
     let tfe_newop =
       foreign "TFE_NewOp"
         (Tfe_context.t
-        @-> string
+        @-> ptr char
         @-> Tf_status.t
         @-> returning t)
 
@@ -358,51 +358,51 @@ module C(F: Cstubs.FOREIGN) = struct
 
     let tfe_opsetattrstring =
       foreign "TFE_OpSetAttrString"
-        (t @-> string @-> string @-> returning void)
+        (t @-> ptr char @-> ptr char @-> returning void)
 
     let tfe_opsetattrint =
       foreign "TFE_OpSetAttrInt"
-        (t @-> string @-> int64_t @-> returning void)
+        (t @-> ptr char @-> int64_t @-> returning void)
 
     let tfe_opsetattrfloat =
       foreign "TFE_OpSetAttrFloat"
-        (t @-> string @-> float @-> returning void)
+        (t @-> ptr char @-> float @-> returning void)
 
     let tfe_opsetattrbool =
       foreign "TFE_OpSetAttrBool"
-        (t @-> string @-> uchar @-> returning void)
+        (t @-> ptr char @-> uchar @-> returning void)
 
     let tfe_opsetattrtype =
       foreign "TFE_OpSetAttrType"
-        (t @-> string @-> int @-> returning void)
+        (t @-> ptr char @-> int @-> returning void)
 
     let tfe_opsetattrshape =
       foreign "TFE_OpSetAttrShape"
-        (t @-> string @-> ptr int64_t @-> int @-> Tf_status.t @-> returning void)
+        (t @-> ptr char @-> ptr int64_t @-> int @-> Tf_status.t @-> returning void)
 
     let tfe_opsetattrstringlist =
       foreign "TFE_OpSetAttrStringList"
-        (t @-> string @-> ptr string @-> int @-> returning void)
+        (t @-> ptr char @-> ptr (ptr void) @-> int @-> returning void)
 
     let tfe_opsetattrintlist =
       foreign "TFE_OpSetAttrIntList"
-        (t @-> string @-> ptr int64_t @-> int @-> returning void)
+        (t @-> ptr char @-> ptr int64_t @-> int @-> returning void)
 
     let tfe_opsetattrfloatlist =
       foreign "TFE_OpSetAttrFloatList"
-        (t @-> string @-> ptr float @-> int @-> returning void)
+        (t @-> ptr char @-> ptr float @-> int @-> returning void)
 
     let tfe_opsetattrboollist =
       foreign "TFE_OpSetAttrBoolList"
-        (t @-> string @-> ptr uchar @-> int @-> returning void)
+        (t @-> ptr char @-> ptr uchar @-> int @-> returning void)
 
     let tfe_opsetattrtypelist =
       foreign "TFE_OpSetAttrTypeList"
-        (t @-> string @-> ptr int @-> int @-> returning void)
+        (t @-> ptr char @-> ptr int @-> int @-> returning void)
 
     let tfe_opsetattrshapelist =
       foreign "TFE_OpSetAttrShapeList"
-        (t @-> string @-> ptr (ptr int64_t) @-> ptr int @-> int @-> Tf_status.t @-> returning void)
+        (t @-> ptr char @-> ptr (ptr int64_t) @-> ptr int @-> int @-> Tf_status.t @-> returning void)
 
     let tfe_execute =
       foreign "TFE_Execute"
