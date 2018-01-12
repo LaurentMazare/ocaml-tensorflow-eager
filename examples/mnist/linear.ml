@@ -1,7 +1,6 @@
 open Base
-module O = Tf_ops.Ops
-module Th = Tf_ops.Op.Tensor_handle
-module V = Tf_ops.Var
+open Tf_ops
+module O = Ops
 
 (* This should reach ~92% accuracy. *)
 let image_dim = Helper.image_dim
@@ -14,18 +13,17 @@ let () =
   let test_images = Helper.test_images mnist_dataset in
   let test_labels = Helper.test_labels mnist_dataset in
 
-  let w = V.f32 [ image_dim; label_count ] 0. in
-  let b = V.f32 [ label_count ] 0. in
+  let w = Var.f32 [ image_dim; label_count ] 0. in
+  let b = Var.f32 [ label_count ] 0. in
   let model xs =
-    let w_read = V.read_and_watch w in
-    let b_read = V.read_and_watch b in
+    let w_read = Var.read_and_watch w in
+    let b_read = Var.read_and_watch b in
     O.(xs *^ w_read + b_read) |> O.softmax
   in
   for step_index = 1 to training_steps do
     if step_index % 50 = 0 then begin
       let accuracy =
-        let ys = model test_images in
-        O.(equal (arg_max ys) (arg_max test_labels))
+        O.(equal (arg_max (model test_images)) (arg_max test_labels))
         |> O.cast ~type_dstT:Float
         |> O.reduce_mean
         |> O.to_float
