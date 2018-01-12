@@ -3,10 +3,6 @@ module O = Tf_ops.Ops
 module Th = Tf_ops.Op.Tensor_handle
 module V = Tf_ops.Var
 
-(* TODO: devise a proper API for optimizer to make this easier. *)
-let get_gradient gradients read =
-  Th.unpack_exn (Hashtbl.find_exn gradients (Th.id read)) Float
-
 (* This should reach ~92% accuracy. *)
 let image_dim = Helper.image_dim
 let label_count = Helper.label_count
@@ -20,17 +16,15 @@ let () =
 
   let w = V.f32 [ image_dim; label_count ] 0. in
   let b = V.f32 [ label_count ] 0. in
-  let learning_rate = O.f32 8. in
   let model xs =
     let w_read = V.read_and_watch w in
     let b_read = V.read_and_watch b in
-    let ys = O.(xs *^ w_read + b_read) |> O.softmax in
-    ys, w_read, b_read
+    O.(xs *^ w_read + b_read) |> O.softmax
   in
   for step_index = 1 to training_steps do
     if step_index % 50 = 0 then begin
       let accuracy =
-        let ys, _, _ = model test_images in
+        let ys = model test_images in
         O.(equal (arg_max ys) (arg_max test_labels))
         |> O.cast ~type_dstT:Float
         |> O.reduce_mean
@@ -41,9 +35,8 @@ let () =
     let train_images, train_labels =
       Helper.train_batch mnist_dataset ~batch_size ~batch_idx:step_index
     in
-    let ys, w_read, b_read = model train_images in
+    let ys = model train_images in
     let cross_entropy = O.cross_entropy ~ys:train_labels ~y_hats:ys `mean in
     let gradients = Tf_ops.Gradients.compute cross_entropy in
-    V.assign w O.(w_read - learning_rate * get_gradient gradients w_read);
-    V.assign b O.(b_read - learning_rate * get_gradient gradients b_read);
+    Tf_ops.Gradients.apply_sgd_step gradients ~learning_rate:8.
   done

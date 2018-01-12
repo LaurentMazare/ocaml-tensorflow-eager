@@ -1,10 +1,10 @@
 open Base
 open Tf_core
+module Th = Op.Tensor_handle
 
-type 'a t =
-  { op : [ `resource ] Ops.t
-  ; type_ : 'a Operation.Type.t
-  }
+type 'a t = 'a Th.var
+
+let resource = Th.var_op
 
 let context = Op.default_context ()
 
@@ -32,28 +32,27 @@ let variable ~shape ?(container="") ?shared_name () =
 
 let assign t value =
   Op.create context (Op.Name.of_string "AssignVariableOp")
-    [Op.Tensor_handle.P t.op; Op.Tensor_handle.P value]
-    [ "dtype", `type_ (Op.Tensor_handle.data_type value) ]
+    [Th.P (resource t); Th.P value]
+    [ "dtype", `type_ (Th.data_type value) ]
   |> Op.execute0
 
 let create initial_value =
-  let op = variable ~shape:(Op.Tensor_handle.dims initial_value) () in
-  let t = { op; type_ = Op.Tensor_handle.type_ initial_value } in
+  let op = variable ~shape:(Th.dims initial_value) () in
+  let t = Th.var_create op (Th.type_ initial_value) in
   assign t initial_value;
   t
 
 let read t =
+  let var_type = Th.var_type t in
   Op.create context (Op.Name.of_string "ReadVariableOp")
-    [Op.Tensor_handle.P t.op]
-    [ "dtype", `type_ (Operation.Type.(to_data_type (P t.type_)))]
-  |> fun op -> Op.execute1 op t.type_
+    [Th.P (resource t)]
+    [ "dtype", `type_ (Operation.Type.(to_data_type (P var_type)))]
+  |> fun op -> Op.execute1 op var_type
 
-let read_and_watch t = read t |> Ops.watch
-
-let resource t = t.op
+let read_and_watch t = Th.watch (read t) (Some t)
 
 let f32 shape f =
   let op = variable ~shape () in
-  let t = { op; type_ = Float } in
+  let t = Th.var_create op Float in
   assign t (Ops.f32 ~shape f);
   t

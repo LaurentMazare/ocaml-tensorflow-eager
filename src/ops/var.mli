@@ -1,4 +1,4 @@
-type 'a t
+type 'a t = 'a Op.Tensor_handle.var
 
 val create : 'a Ops.t -> 'a t
 val assign : 'a t -> 'a Ops.t -> unit

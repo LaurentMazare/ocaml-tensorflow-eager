@@ -25,7 +25,7 @@ let uses_per_id th =
     else
       match T.tape_info th with
       | `none -> false
-      | `leaf ->
+      | `leaf _ ->
         Hashtbl.set uses_per_id ~key:id ~data:(1 + current_uses);
         true
       | `node tape_info ->
@@ -65,12 +65,18 @@ let aggregate_contributions_multi gradients =
   |> Map.of_alist_multi (module Int)
   |> Map.map ~f:aggregate_contributions
 
+type var_and_gradient =
+  | Float of [ `float ] T.var option * [ `float ] T.t
+  | Double of [ `double ] T.var option * [ `double ] T.t
+
+type t = (Op.Tensor_handle.Id.t, var_and_gradient) Hashtbl.t
+
 (* Compute the gradients of [th] with respect to leafs using backpropagation.
    This only works when [th] is a scalar. *)
 let compute th =
   let uses_per_id = uses_per_id (T.P th) in
   let contributions = Hashtbl.create (module T.Id) () in
-  let output_gradients = Hashtbl.create (module T.Id) () in
+  let t : (T.Id.t, var_and_gradient) Hashtbl.t = Hashtbl.create (module T.Id) () in
   let rec add_contribution (T.P th) ~gradient =
     let id = T.id th in
     match Hashtbl.find uses_per_id id with
@@ -80,7 +86,7 @@ let compute th =
       Option.iter gradient ~f:(fun gradient ->
         let output_idx =
           match T.tape_info th with
-          | `none | `leaf -> None
+          | `none | `leaf _ -> None
           | `node tape_info -> Some (Op.Tape_info.output_idx tape_info)
         in
         Hashtbl.add_multi contributions ~key:id ~data:(output_idx, gradient));
@@ -91,10 +97,15 @@ let compute th =
         let gradients = Hashtbl.find contributions id in
         match T.tape_info th with
         | `none -> ()
-        | `leaf ->
+        | `leaf maybe_var ->
           Option.iter gradients ~f:(fun gradients ->
-            let gradient = List.map gradients ~f:snd |> aggregate_contributions in
-            Hashtbl.add_exn output_gradients ~key:id ~data:gradient)
+            let T.P gradient = List.map gradients ~f:snd |> aggregate_contributions in
+            match T.type_ th, T.type_ gradient with
+            | Type.Float, Type.Float ->
+              Hashtbl.add_exn t ~key:id ~data:(Float (maybe_var, gradient))
+            | Type.Double, Type.Double ->
+              Hashtbl.add_exn t ~key:id ~data:(Double (maybe_var, gradient))
+            | _, _ -> assert false)
         | `node tape_info ->
           let op_name = Op.Tape_info.op_name tape_info in
           let inputs = Op.Tape_info.inputs tape_info in
@@ -130,4 +141,13 @@ let compute th =
     T.P Ops.(fill (shape th ~type_out_type:Int32) (float 1. (T.type_ th)))
   in
   add_contribution (P th) ~gradient:(Some one);
-  output_gradients
+  t
+
+let apply_sgd_step t ~learning_rate =
+  Hashtbl.iter t ~f:(function
+    | Float (Some var, gradient) ->
+      Var.assign var Ops.(Var.read var - f32 learning_rate * gradient)
+    | Double (Some var, gradient) ->
+      Var.assign var Ops.(Var.read var - f64 learning_rate * gradient)
+    | Float (None, _) | Double (None, _) -> ()
+  )

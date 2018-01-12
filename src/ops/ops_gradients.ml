@@ -65,12 +65,12 @@ module O = struct
 
   let inputs_exn th =
     match T.tape_info th with
-    | `none | `leaf -> assert false
+    | `none | `leaf _ -> assert false
     | `node tape_info -> Op.Tape_info.inputs tape_info
 
   let get_attrs th name =
     match T.tape_info th with
-    | `none | `leaf -> None
+    | `none | `leaf _ -> None
     | `node tape_info ->
       List.Assoc.find ~equal:String.equal (Op.Tape_info.attrs tape_info) name
 

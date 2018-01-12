@@ -31,6 +31,8 @@ end
 module Tensor_handle : sig
   module Id : Identifiable.S
   type _ t
+  type _ var
+
   type p = P : _ t -> p
 
   val of_c : Eager.Tensor_handle.t -> 'a Operation.Type.t -> 'a t
@@ -50,8 +52,14 @@ module Tensor_handle : sig
   val unpack_exn : p -> 'a Operation.Type.t -> 'a t
 
   (* Tape/gradient related operations. *)
-  val tape_info : 'a t -> [ `none | `leaf | `node of p Tape_info.t ]
-  val watch : 'a t -> 'a t
+  val tape_info
+    :  'a t
+    -> [ `none | `leaf of 'a var option | `node of p Tape_info.t ]
+  val watch : 'a t -> 'a var option -> 'a t
+
+  val var_create : [ `resource ] t -> 'a Operation.Type.t -> 'a var
+  val var_op : _ var -> [ `resource ] t
+  val var_type : 'a var -> 'a Operation.Type.t
 end
 
 type context

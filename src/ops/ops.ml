@@ -115,7 +115,7 @@ let reduce_prod ?dims node = reduce prod ?dims node
 let reduce_all ?dims node = reduce all ?dims node
 let reduce_any ?dims node = reduce any ?dims node
 
-let watch = Op.Tensor_handle.watch
+let watch t = Op.Tensor_handle.watch t None
 
 let cross_entropy ?(epsilon = 1e-7) ~ys ~y_hats sum_or_mean =
   let type_ = Op.Tensor_handle.type_ ys in

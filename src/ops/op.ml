@@ -63,9 +63,14 @@ module Tensor_handle = struct
     { id : Id.t
     ; handle : Eager.Tensor_handle.t
     ; type_ : 'a Operation.Type.t
-    ; tape_info : [ `none | `leaf | `node of p Tape_info.t ]
+    (* `leaf is a var option as handles that are not variables can be watched. *)
+    ; tape_info : [ `none | `leaf of 'a var option| `node of p Tape_info.t ]
     }
   and p = P : _ t -> p
+  and 'a var =
+    { op : [ `resource ] t
+    ; var_type : 'a Operation.Type.t
+    }
 
   let of_c handle type_ =
     { id = Id.create(); handle; tape_info = `none; type_ }
@@ -111,17 +116,21 @@ module Tensor_handle = struct
   let data_type t = Eager.Tensor_handle.data_type t.handle
   let data_type_p (P t) = Eager.Tensor_handle.data_type t.handle
 
-  let watch t =
+  let watch t var =
     { handle = t.handle
     ; id = Id.create ()
-    ; tape_info = `leaf
+    ; tape_info = `leaf var
     ; type_ = t.type_
     }
 
   let is_watched (P t) =
     match t.tape_info with
     | `none -> false
-    | `leaf | `node _ -> true
+    | `leaf _ | `node _ -> true
+
+  let var_create op var_type = { op; var_type }
+  let var_op var = var.op
+  let var_type var = var.var_type
 end
 
 type t =
