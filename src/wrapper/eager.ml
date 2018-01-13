@@ -31,13 +31,16 @@ module Tensor_handle = struct
   let create tensor =
     let status = Status.create () in
     let status_ptr = Status.to_ptr status in
+    let c_tensor = Wrapper.Tensor.c_tensor_of_tensor tensor in
     let tensor_handle =
       Tfe_tensor_handle.tfe_newtensorhandle
-        (Wrapper.Tensor.c_tensor_of_tensor tensor)
+        c_tensor
         status_ptr
     in
     Gc.finalise
-      (fun tensor_handle -> Tfe_tensor_handle.tfe_deletetensorhandle tensor_handle)
+      (fun tensor_handle ->
+        Tfe_tensor_handle.tfe_deletetensorhandle tensor_handle;
+        C.Tf_tensor.tf_deletetensor c_tensor)
       tensor_handle;
     Status.result_or_error status tensor_handle
 
@@ -208,6 +211,7 @@ module Op = struct
       values
       values_len
 
+  (* TODO: ensure that the tensor_handle lives long enough. *)
   let add_input t tensor_handle =
     let status = Status.create () in
     let status_ptr = Status.to_ptr status in
@@ -222,6 +226,12 @@ let execute op ~output_len =
   let output_len = allocate int output_len in
   Tfe_op.tfe_execute op (CArray.start output_handles) output_len status_ptr;
   let output_handles = CArray.to_list output_handles in
+  List.iter
+    (fun output_handle ->
+      Gc.finalise
+        (fun _ -> Tfe_tensor_handle.tfe_deletetensorhandle output_handle)
+        output_handle)
+    output_handles;
   Status.result_or_error status output_handles
 
 let execute_exn op ~output_len =

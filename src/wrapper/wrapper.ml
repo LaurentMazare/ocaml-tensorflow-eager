@@ -144,6 +144,13 @@ module Tensor = struct
     in
     let data_type = Tensor.kind tensor |> data_type_of_kind in
     let size = Array.fold_left ( * ) 1 dim_array * sizeof data_type in
+    if verbose
+    then begin
+      Printf.printf "%d live tensors: %d  live words: %d\n%!"
+        (Id.to_int id)
+        (Hashtbl.length live_tensors)
+        (Gc.stat ()).live_words;
+    end;
     Hashtbl.add live_tensors id (`tensor packed_tensor);
     let num_dims = Tensor.num_dims tensor in
     let start =
