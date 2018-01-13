@@ -3,7 +3,8 @@ ALL = examples/hello_world.exe \
       examples/vgg19.exe \
       examples/gradients.exe \
       examples/variable.exe \
-      examples/mnist/linear.exe
+      examples/mnist/linear.exe \
+      examples/mnist/mlp.exe
 
 .FORCE:
 
