@@ -228,9 +228,7 @@ let execute op ~output_len =
   let output_handles = CArray.to_list output_handles in
   List.iter
     (fun output_handle ->
-      Gc.finalise
-        (fun _ -> Tfe_tensor_handle.tfe_deletetensorhandle output_handle)
-        output_handle)
+      Gc.finalise Tfe_tensor_handle.tfe_deletetensorhandle output_handle)
     output_handles;
   Status.result_or_error status output_handles
 

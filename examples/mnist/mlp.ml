@@ -5,7 +5,7 @@ module O = Ops
 (* This should reach ~92% accuracy. *)
 let image_dim = Helper.image_dim
 let label_count = Helper.label_count
-let training_steps = 1000
+let training_steps = 5000
 let hidden_nodes = 128
 let batch_size = 512
 
