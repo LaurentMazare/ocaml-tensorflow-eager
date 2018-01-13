@@ -5,6 +5,10 @@ open C
 
 module Status = Wrapper.Status
 
+let keep_alive t =
+  if to_voidp t = null
+  then failwith "null pointer"
+
 module Context = struct
   type t = Tfe_context.t
 
@@ -92,7 +96,12 @@ module Tensor_handle = struct
 end
 
 module Op = struct
-  type t = Tfe_op.t
+  type anything = P : _ -> anything
+  type t =
+    { op: Tfe_op.t
+    (* List of things to keep around so that the GC does not collect them. *)
+    ; mutable to_keep : anything list
+    }
 
   let create context op_name =
     let status = Status.create () in
@@ -106,17 +115,18 @@ module Op = struct
     Gc.finalise
       (fun op -> Tfe_op.tfe_deleteop op)
       op;
-    Status.result_or_error status op
+    let t = { op; to_keep = [] } in
+    Status.result_or_error status t
 
   let set_attr_type t name data_type =
     Tfe_op.tfe_opsetattrtype
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       (Wrapper.data_type_to_int data_type)
 
   let set_attr_string t name value =
     Tfe_op.tfe_opsetattrstring
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       (Wrapper.ptr_of_string value)
 
@@ -127,19 +137,19 @@ module Op = struct
       else Unsigned.UChar.zero
     in
     Tfe_op.tfe_opsetattrbool
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       value
 
   let set_attr_int t name value =
     Tfe_op.tfe_opsetattrint
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       value
 
   let set_attr_float t name value =
     Tfe_op.tfe_opsetattrfloat
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       value
 
@@ -148,14 +158,15 @@ module Op = struct
     let status_ptr = Status.to_ptr status in
     let num_dims = List.length value in
     let value = List.map Int64.of_int value in
-    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let value = CArray.(of_list int64_t value |> start) in
+    t.to_keep <- (P value) :: t.to_keep;
     Tfe_op.tfe_opsetattrshape
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       value
       num_dims
       status_ptr;
+    keep_alive t.op;
     Status.result_or_error status ()
 
   let set_attr_shape_list t name values =
@@ -169,62 +180,68 @@ module Op = struct
         let l = List.map Int64.of_int l in
         CArray.(of_list int64_t l |> start)) values
     in
-    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let values = CArray.(of_list (ptr int64_t) values |> start) in
+    t.to_keep <- (P values) :: t.to_keep;
     Tfe_op.tfe_opsetattrshapelist
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       values
       dims
       num_values
       status_ptr;
+    keep_alive t.op;
     Status.result_or_error status ()
 
   let set_attr_int_list t name values =
     let values_len = List.length values in
-    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let values = CArray.(of_list int64_t values |> start) in
+    t.to_keep <- (P values) :: t.to_keep;
     Tfe_op.tfe_opsetattrintlist
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       values
-      values_len
+      values_len;
+    keep_alive t.op
 
   let set_attr_float_list t name values =
     let values_len = List.length values in
-    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let values = CArray.(of_list float values |> start) in
+    t.to_keep <- (P values) :: t.to_keep;
     Tfe_op.tfe_opsetattrfloatlist
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       values
-      values_len
+      values_len;
+    keep_alive t.op
 
   let set_attr_type_list t name values =
     let values_len = List.length values in
     let values = List.map Wrapper.data_type_to_int values in
-    (* TODO: ensure that this does not get deallocated, see github issue #1. *)
     let values = CArray.(of_list int values |> start) in
+    t.to_keep <- (P values) :: t.to_keep;
     Tfe_op.tfe_opsetattrtypelist
-      t
+      t.op
       (Wrapper.ptr_of_string name)
       values
-      values_len
+      values_len;
+    keep_alive t.op
 
-  (* TODO: ensure that the tensor_handle lives long enough. *)
   let add_input t tensor_handle =
     let status = Status.create () in
     let status_ptr = Status.to_ptr status in
-    Tfe_op.tfe_opaddinput t tensor_handle status_ptr;
+    t.to_keep <- (P tensor_handle) :: t.to_keep;
+    Tfe_op.tfe_opaddinput t.op tensor_handle status_ptr;
+    keep_alive t.op;
     Status.result_or_error status ()
 end
 
-let execute op ~output_len =
+let execute (op : Op.t) ~output_len =
   let status = Status.create () in
   let status_ptr = Status.to_ptr status in
   let output_handles = CArray.make Tfe_tensor_handle.t output_len in
   let output_len = allocate int output_len in
-  Tfe_op.tfe_execute op (CArray.start output_handles) output_len status_ptr;
+  Tfe_op.tfe_execute op.op (CArray.start output_handles) output_len status_ptr;
+  keep_alive op.op;
   let output_handles = CArray.to_list output_handles in
   List.iter
     (fun output_handle ->
