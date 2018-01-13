@@ -9,6 +9,7 @@ module Type = Operation.Type
 module Op_names = struct
   let abort = Op.Name.of_string "Abort"
   let abs = Op.Name.of_string "Abs"
+  let accumulateNV2 = Op.Name.of_string "AccumulateNV2"
   let accumulatorApplyGradient = Op.Name.of_string "AccumulatorApplyGradient"
   let accumulatorNumAccumulated = Op.Name.of_string "AccumulatorNumAccumulated"
   let accumulatorSetGlobalStep = Op.Name.of_string "AccumulatorSetGlobalStep"
@@ -19,6 +20,7 @@ module Op_names = struct
   let addManySparseToTensorsMap = Op.Name.of_string "AddManySparseToTensorsMap"
   let addN = Op.Name.of_string "AddN"
   let addSparseToTensorsMap = Op.Name.of_string "AddSparseToTensorsMap"
+  let addV2 = Op.Name.of_string "AddV2"
   let adjustContrast = Op.Name.of_string "AdjustContrast"
   let adjustContrastv2 = Op.Name.of_string "AdjustContrastv2"
   let adjustHue = Op.Name.of_string "AdjustHue"
@@ -31,11 +33,13 @@ module Op_names = struct
   let applyAdagrad = Op.Name.of_string "ApplyAdagrad"
   let applyAdagradDA = Op.Name.of_string "ApplyAdagradDA"
   let applyAdam = Op.Name.of_string "ApplyAdam"
+  let applyAddSign = Op.Name.of_string "ApplyAddSign"
   let applyCenteredRMSProp = Op.Name.of_string "ApplyCenteredRMSProp"
   let applyFtrl = Op.Name.of_string "ApplyFtrl"
   let applyFtrlV2 = Op.Name.of_string "ApplyFtrlV2"
   let applyGradientDescent = Op.Name.of_string "ApplyGradientDescent"
   let applyMomentum = Op.Name.of_string "ApplyMomentum"
+  let applyPowerSign = Op.Name.of_string "ApplyPowerSign"
   let applyProximalAdagrad = Op.Name.of_string "ApplyProximalAdagrad"
   let applyProximalGradientDescent = Op.Name.of_string "ApplyProximalGradientDescent"
   let applyRMSProp = Op.Name.of_string "ApplyRMSProp"
@@ -45,6 +49,9 @@ module Op_names = struct
   let asString = Op.Name.of_string "AsString"
   let asin = Op.Name.of_string "Asin"
   let asinh = Op.Name.of_string "Asinh"
+  let assignAddVariableOp = Op.Name.of_string "AssignAddVariableOp"
+  let assignSubVariableOp = Op.Name.of_string "AssignSubVariableOp"
+  let assignVariableOp = Op.Name.of_string "AssignVariableOp"
   let atan = Op.Name.of_string "Atan"
   let atan2 = Op.Name.of_string "Atan2"
   let atanh = Op.Name.of_string "Atanh"
@@ -98,6 +105,7 @@ module Op_names = struct
   let broadcastArgs = Op.Name.of_string "BroadcastArgs"
   let broadcastGradientArgs = Op.Name.of_string "BroadcastGradientArgs"
   let bucketize = Op.Name.of_string "Bucketize"
+  let bytesProducedStatsDataset = Op.Name.of_string "BytesProducedStatsDataset"
   let cTCGreedyDecoder = Op.Name.of_string "CTCGreedyDecoder"
   let cTCLoss = Op.Name.of_string "CTCLoss"
   let cacheDataset = Op.Name.of_string "CacheDataset"
@@ -116,6 +124,7 @@ module Op_names = struct
   let concatenateDataset = Op.Name.of_string "ConcatenateDataset"
   let conditionalAccumulator = Op.Name.of_string "ConditionalAccumulator"
   let conj = Op.Name.of_string "Conj"
+  let conjugateTranspose = Op.Name.of_string "ConjugateTranspose"
   let controlTrigger = Op.Name.of_string "ControlTrigger"
   let conv2D = Op.Name.of_string "Conv2D"
   let conv2DBackpropFilter = Op.Name.of_string "Conv2DBackpropFilter"
@@ -136,6 +145,8 @@ module Op_names = struct
   let cross = Op.Name.of_string "Cross"
   let cumprod = Op.Name.of_string "Cumprod"
   let cumsum = Op.Name.of_string "Cumsum"
+  let dataFormatDimMap = Op.Name.of_string "DataFormatDimMap"
+  let dataFormatVecPermute = Op.Name.of_string "DataFormatVecPermute"
   let debugGradientIdentity = Op.Name.of_string "DebugGradientIdentity"
   let debugIdentity = Op.Name.of_string "DebugIdentity"
   let debugNanCount = Op.Name.of_string "DebugNanCount"
@@ -158,7 +169,10 @@ module Op_names = struct
   let depthwiseConv2dNativeBackpropFilter = Op.Name.of_string "DepthwiseConv2dNativeBackpropFilter"
   let depthwiseConv2dNativeBackpropInput = Op.Name.of_string "DepthwiseConv2dNativeBackpropInput"
   let dequantize = Op.Name.of_string "Dequantize"
+  let deserializeIterator = Op.Name.of_string "DeserializeIterator"
   let deserializeManySparse = Op.Name.of_string "DeserializeManySparse"
+  let deserializeSparse = Op.Name.of_string "DeserializeSparse"
+  let destroyResourceOp = Op.Name.of_string "DestroyResourceOp"
   let destroyTemporaryVariable = Op.Name.of_string "DestroyTemporaryVariable"
   let diag = Op.Name.of_string "Diag"
   let diagPart = Op.Name.of_string "DiagPart"
@@ -228,9 +242,11 @@ module Op_names = struct
   let getSessionTensor = Op.Name.of_string "GetSessionTensor"
   let greater = Op.Name.of_string "Greater"
   let greaterEqual = Op.Name.of_string "GreaterEqual"
+  let guaranteeConst = Op.Name.of_string "GuaranteeConst"
   let hSVToRGB = Op.Name.of_string "HSVToRGB"
   let hashTable = Op.Name.of_string "HashTable"
   let hashTableV2 = Op.Name.of_string "HashTableV2"
+  let histogramFixedWidth = Op.Name.of_string "HistogramFixedWidth"
   let histogramSummary = Op.Name.of_string "HistogramSummary"
   let iFFT = Op.Name.of_string "IFFT"
   let iFFT2D = Op.Name.of_string "IFFT2D"
@@ -263,12 +279,15 @@ module Op_names = struct
   let isVariableInitialized = Op.Name.of_string "IsVariableInitialized"
   let iterator = Op.Name.of_string "Iterator"
   let iteratorFromStringHandle = Op.Name.of_string "IteratorFromStringHandle"
+  let iteratorSetStatsAggregator = Op.Name.of_string "IteratorSetStatsAggregator"
   let iteratorToStringHandle = Op.Name.of_string "IteratorToStringHandle"
   let l2Loss = Op.Name.of_string "L2Loss"
   let lMDBReader = Op.Name.of_string "LMDBReader"
   let lRN = Op.Name.of_string "LRN"
   let lRNGrad = Op.Name.of_string "LRNGrad"
+  let latencyStatsDataset = Op.Name.of_string "LatencyStatsDataset"
   let learnedUnigramCandidateSampler = Op.Name.of_string "LearnedUnigramCandidateSampler"
+  let leftShift = Op.Name.of_string "LeftShift"
   let less = Op.Name.of_string "Less"
   let lessEqual = Op.Name.of_string "LessEqual"
   let lgamma = Op.Name.of_string "Lgamma"
@@ -304,6 +323,7 @@ module Op_names = struct
   let matrixDeterminant = Op.Name.of_string "MatrixDeterminant"
   let matrixDiag = Op.Name.of_string "MatrixDiag"
   let matrixDiagPart = Op.Name.of_string "MatrixDiagPart"
+  let matrixExponential = Op.Name.of_string "MatrixExponential"
   let matrixInverse = Op.Name.of_string "MatrixInverse"
   let matrixSetDiag = Op.Name.of_string "MatrixSetDiag"
   let matrixSolve = Op.Name.of_string "MatrixSolve"
@@ -348,6 +368,7 @@ module Op_names = struct
   let nonMaxSuppression = Op.Name.of_string "NonMaxSuppression"
   let nonMaxSuppressionV2 = Op.Name.of_string "NonMaxSuppressionV2"
   let notEqual = Op.Name.of_string "NotEqual"
+  let nthElement = Op.Name.of_string "NthElement"
   let oneHot = Op.Name.of_string "OneHot"
   let oneShotIterator = Op.Name.of_string "OneShotIterator"
   let onesLike = Op.Name.of_string "OnesLike"
@@ -406,6 +427,7 @@ module Op_names = struct
   let rFFT3D = Op.Name.of_string "RFFT3D"
   let rGBToHSV = Op.Name.of_string "RGBToHSV"
   let randomCrop = Op.Name.of_string "RandomCrop"
+  let randomDataset = Op.Name.of_string "RandomDataset"
   let randomGamma = Op.Name.of_string "RandomGamma"
   let randomPoisson = Op.Name.of_string "RandomPoisson"
   let randomPoissonV2 = Op.Name.of_string "RandomPoissonV2"
@@ -419,6 +441,7 @@ module Op_names = struct
   let rangeDataset = Op.Name.of_string "RangeDataset"
   let rank = Op.Name.of_string "Rank"
   let readFile = Op.Name.of_string "ReadFile"
+  let readVariableOp = Op.Name.of_string "ReadVariableOp"
   let readerNumRecordsProduced = Op.Name.of_string "ReaderNumRecordsProduced"
   let readerNumRecordsProducedV2 = Op.Name.of_string "ReaderNumRecordsProducedV2"
   let readerNumWorkUnitsCompleted = Op.Name.of_string "ReaderNumWorkUnitsCompleted"
@@ -465,14 +488,21 @@ module Op_names = struct
   let resourceApplyAdagrad = Op.Name.of_string "ResourceApplyAdagrad"
   let resourceApplyAdagradDA = Op.Name.of_string "ResourceApplyAdagradDA"
   let resourceApplyAdam = Op.Name.of_string "ResourceApplyAdam"
+  let resourceApplyAddSign = Op.Name.of_string "ResourceApplyAddSign"
   let resourceApplyCenteredRMSProp = Op.Name.of_string "ResourceApplyCenteredRMSProp"
   let resourceApplyFtrl = Op.Name.of_string "ResourceApplyFtrl"
   let resourceApplyFtrlV2 = Op.Name.of_string "ResourceApplyFtrlV2"
   let resourceApplyGradientDescent = Op.Name.of_string "ResourceApplyGradientDescent"
   let resourceApplyMomentum = Op.Name.of_string "ResourceApplyMomentum"
+  let resourceApplyPowerSign = Op.Name.of_string "ResourceApplyPowerSign"
   let resourceApplyProximalAdagrad = Op.Name.of_string "ResourceApplyProximalAdagrad"
   let resourceApplyProximalGradientDescent = Op.Name.of_string "ResourceApplyProximalGradientDescent"
   let resourceApplyRMSProp = Op.Name.of_string "ResourceApplyRMSProp"
+  let resourceCountUpTo = Op.Name.of_string "ResourceCountUpTo"
+  let resourceGather = Op.Name.of_string "ResourceGather"
+  let resourceScatterAdd = Op.Name.of_string "ResourceScatterAdd"
+  let resourceScatterNdUpdate = Op.Name.of_string "ResourceScatterNdUpdate"
+  let resourceScatterUpdate = Op.Name.of_string "ResourceScatterUpdate"
   let resourceSparseApplyAdadelta = Op.Name.of_string "ResourceSparseApplyAdadelta"
   let resourceSparseApplyAdagrad = Op.Name.of_string "ResourceSparseApplyAdagrad"
   let resourceSparseApplyAdagradDA = Op.Name.of_string "ResourceSparseApplyAdagradDA"
@@ -485,16 +515,15 @@ module Op_names = struct
   let resourceSparseApplyRMSProp = Op.Name.of_string "ResourceSparseApplyRMSProp"
   let resourceStridedSliceAssign = Op.Name.of_string "ResourceStridedSliceAssign"
   let restore = Op.Name.of_string "Restore"
-  let restoreIterator = Op.Name.of_string "RestoreIterator"
   let restoreSlice = Op.Name.of_string "RestoreSlice"
   let reverse = Op.Name.of_string "Reverse"
   let reverseSequence = Op.Name.of_string "ReverseSequence"
   let reverseV2 = Op.Name.of_string "ReverseV2"
+  let rightShift = Op.Name.of_string "RightShift"
   let rint = Op.Name.of_string "Rint"
   let round = Op.Name.of_string "Round"
   let rsqrt = Op.Name.of_string "Rsqrt"
   let rsqrtGrad = Op.Name.of_string "RsqrtGrad"
-  let saveIterator = Op.Name.of_string "SaveIterator"
   let scalarSummary = Op.Name.of_string "ScalarSummary"
   let scatterAdd = Op.Name.of_string "ScatterAdd"
   let scatterDiv = Op.Name.of_string "ScatterDiv"
@@ -518,6 +547,7 @@ module Op_names = struct
   let selfAdjointEigV2 = Op.Name.of_string "SelfAdjointEigV2"
   let selu = Op.Name.of_string "Selu"
   let seluGrad = Op.Name.of_string "SeluGrad"
+  let serializeIterator = Op.Name.of_string "SerializeIterator"
   let serializeManySparse = Op.Name.of_string "SerializeManySparse"
   let serializeSparse = Op.Name.of_string "SerializeSparse"
   let serializeTensor = Op.Name.of_string "SerializeTensor"
@@ -536,6 +566,7 @@ module Op_names = struct
   let skipDataset = Op.Name.of_string "SkipDataset"
   let skipgram = Op.Name.of_string "Skipgram"
   let slice = Op.Name.of_string "Slice"
+  let snapshot = Op.Name.of_string "Snapshot"
   let softmax = Op.Name.of_string "Softmax"
   let softmaxCrossEntropyWithLogits = Op.Name.of_string "SoftmaxCrossEntropyWithLogits"
   let softplus = Op.Name.of_string "Softplus"
@@ -575,9 +606,12 @@ module Op_names = struct
   let sparseReshape = Op.Name.of_string "SparseReshape"
   let sparseSegmentMean = Op.Name.of_string "SparseSegmentMean"
   let sparseSegmentMeanGrad = Op.Name.of_string "SparseSegmentMeanGrad"
+  let sparseSegmentMeanWithNumSegments = Op.Name.of_string "SparseSegmentMeanWithNumSegments"
   let sparseSegmentSqrtN = Op.Name.of_string "SparseSegmentSqrtN"
   let sparseSegmentSqrtNGrad = Op.Name.of_string "SparseSegmentSqrtNGrad"
+  let sparseSegmentSqrtNWithNumSegments = Op.Name.of_string "SparseSegmentSqrtNWithNumSegments"
   let sparseSegmentSum = Op.Name.of_string "SparseSegmentSum"
+  let sparseSegmentSumWithNumSegments = Op.Name.of_string "SparseSegmentSumWithNumSegments"
   let sparseSlice = Op.Name.of_string "SparseSlice"
   let sparseSoftmax = Op.Name.of_string "SparseSoftmax"
   let sparseSoftmaxCrossEntropyWithLogits = Op.Name.of_string "SparseSoftmaxCrossEntropyWithLogits"
@@ -609,6 +643,8 @@ module Op_names = struct
   let statelessRandomNormal = Op.Name.of_string "StatelessRandomNormal"
   let statelessRandomUniform = Op.Name.of_string "StatelessRandomUniform"
   let statelessTruncatedNormal = Op.Name.of_string "StatelessTruncatedNormal"
+  let statsAggregatorHandle = Op.Name.of_string "StatsAggregatorHandle"
+  let statsAggregatorSummary = Op.Name.of_string "StatsAggregatorSummary"
   let stopGradient = Op.Name.of_string "StopGradient"
   let stridedSlice = Op.Name.of_string "StridedSlice"
   let stridedSliceAssign = Op.Name.of_string "StridedSliceAssign"
@@ -681,10 +717,14 @@ module Op_names = struct
   let truncatedNormal = Op.Name.of_string "TruncatedNormal"
   let uniformCandidateSampler = Op.Name.of_string "UniformCandidateSampler"
   let unique = Op.Name.of_string "Unique"
+  let uniqueV2 = Op.Name.of_string "UniqueV2"
   let uniqueWithCounts = Op.Name.of_string "UniqueWithCounts"
   let unpack = Op.Name.of_string "Unpack"
   let unsortedSegmentMax = Op.Name.of_string "UnsortedSegmentMax"
   let unsortedSegmentSum = Op.Name.of_string "UnsortedSegmentSum"
+  let varHandleOp = Op.Name.of_string "VarHandleOp"
+  let varIsInitializedOp = Op.Name.of_string "VarIsInitializedOp"
+  let variableShape = Op.Name.of_string "VariableShape"
   let where = Op.Name.of_string "Where"
   let wholeFileReader = Op.Name.of_string "WholeFileReader"
   let wholeFileReaderV2 = Op.Name.of_string "WholeFileReaderV2"
@@ -721,6 +761,21 @@ let abs
   Op.create context Op_names.abs inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ x)
+
+let accumulateNV2
+    ~shape
+    (inputs__ : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t list)
+  =
+  let inputs = List.map inputs__ ~f:(fun x -> Op.Tensor_handle.P x) in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type (List.hd_exn inputs__));
+    "N", `int (List.length inputs__);
+    "shape", `shape shape;
+  ]
+  in
+  Op.create context Op_names.accumulateNV2 inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ (List.hd_exn inputs__))
 
 let accumulatorApplyGradient
     (handle : [ `string ] t)
@@ -856,6 +911,19 @@ let addSparseToTensorsMap
   Op.create context Op_names.addSparseToTensorsMap inputs attrs
   |> fun op -> Op.execute1 op
     Type.Int64
+
+let addV2
+    (x : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 ] as 't) t)
+    (y : ([< `float | `double | `uInt8 | `int32 | `int64 | `complex64 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P y] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type x);
+  ]
+  in
+  Op.create context Op_names.addV2 inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let adjustContrast
     (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
@@ -1058,6 +1126,26 @@ let applyAdam
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ var)
 
+let applyAddSign
+    ?(use_locking=false)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (sign_decay : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P lr; Op.Tensor_handle.P alpha; Op.Tensor_handle.P sign_decay; Op.Tensor_handle.P beta; Op.Tensor_handle.P grad] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type var);
+    "use_locking", `bool use_locking;
+  ]
+  in
+  Op.create context Op_names.applyAddSign inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
+
 let applyCenteredRMSProp
     ?(use_locking=false)
     (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
@@ -1156,6 +1244,26 @@ let applyMomentum
   ]
   in
   Op.create context Op_names.applyMomentum inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ var)
+
+let applyPowerSign
+    ?(use_locking=false)
+    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (logbase : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (sign_decay : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P lr; Op.Tensor_handle.P logbase; Op.Tensor_handle.P sign_decay; Op.Tensor_handle.P beta; Op.Tensor_handle.P grad] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type var);
+    "use_locking", `bool use_locking;
+  ]
+  in
+  Op.create context Op_names.applyPowerSign inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ var)
 
@@ -1309,6 +1417,42 @@ let asinh
   Op.create context Op_names.asinh inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ x)
+
+let assignAddVariableOp
+    (resource : [ `resource ] t)
+    (value : 'dtype t)
+  =
+  let inputs = [Op.Tensor_handle.P resource; Op.Tensor_handle.P value] in
+  let attrs = [
+    "dtype", `type_ (Op.Tensor_handle.data_type value);
+  ]
+  in
+  Op.create context Op_names.assignAddVariableOp inputs attrs
+  |> fun op -> Op.execute0 op
+
+let assignSubVariableOp
+    (resource : [ `resource ] t)
+    (value : 'dtype t)
+  =
+  let inputs = [Op.Tensor_handle.P resource; Op.Tensor_handle.P value] in
+  let attrs = [
+    "dtype", `type_ (Op.Tensor_handle.data_type value);
+  ]
+  in
+  Op.create context Op_names.assignSubVariableOp inputs attrs
+  |> fun op -> Op.execute0 op
+
+let assignVariableOp
+    (resource : [ `resource ] t)
+    (value : 'dtype t)
+  =
+  let inputs = [Op.Tensor_handle.P resource; Op.Tensor_handle.P value] in
+  let attrs = [
+    "dtype", `type_ (Op.Tensor_handle.data_type value);
+  ]
+  in
+  Op.create context Op_names.assignVariableOp inputs attrs
+  |> fun op -> Op.execute0 op
 
 let atan
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
@@ -2081,6 +2225,22 @@ let bucketize
   |> fun op -> Op.execute1 op
     Type.Int32
 
+let bytesProducedStatsDataset
+    ~output_types
+    ~output_shapes
+    (input_dataset : [ `variant ] t)
+    (tag : [ `string ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input_dataset; Op.Tensor_handle.P tag] in
+  let attrs = [
+    "output_types", `list_type_p output_types;
+    "output_shapes", `list_shape output_shapes;
+  ]
+  in
+  Op.create context Op_names.bytesProducedStatsDataset inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
 let cTCGreedyDecoder
     ?(merge_repeated=false)
     (inputs__ : [ `float ] t)
@@ -2348,6 +2508,20 @@ let conj
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ input)
 
+let conjugateTranspose
+    (x : 't t)
+    (perm : ([< `int32 | `int64 ] as 'tperm) t)
+  =
+  let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P perm] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type x);
+    "Tperm", `type_ (Op.Tensor_handle.data_type perm);
+  ]
+  in
+  Op.create context Op_names.conjugateTranspose inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
+
 let controlTrigger
     ()
   =
@@ -2363,6 +2537,7 @@ let conv2D
     ?(use_cudnn_on_gpu=true)
     ~padding
     ?(data_format="NHWC")
+    ?(dilations=[1;1;1;1])
     (input : ([< `float ] as 't) t)
     (filter : ([< `float ] as 't) t)
   =
@@ -2373,6 +2548,7 @@ let conv2D
     "use_cudnn_on_gpu", `bool use_cudnn_on_gpu;
     "padding", `string padding;
     "data_format", `string data_format;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.conv2D inputs attrs
@@ -2384,6 +2560,7 @@ let conv2DBackpropFilter
     ?(use_cudnn_on_gpu=true)
     ~padding
     ?(data_format="NHWC")
+    ?(dilations=[1;1;1;1])
     (input : ([< `float ] as 't) t)
     (filter_sizes : [ `int32 ] t)
     (out_backprop : ([< `float ] as 't) t)
@@ -2395,6 +2572,7 @@ let conv2DBackpropFilter
     "use_cudnn_on_gpu", `bool use_cudnn_on_gpu;
     "padding", `string padding;
     "data_format", `string data_format;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.conv2DBackpropFilter inputs attrs
@@ -2406,6 +2584,7 @@ let conv2DBackpropInput
     ?(use_cudnn_on_gpu=true)
     ~padding
     ?(data_format="NHWC")
+    ?(dilations=[1;1;1;1])
     (input_sizes : [ `int32 ] t)
     (filter : ([< `float ] as 't) t)
     (out_backprop : ([< `float ] as 't) t)
@@ -2417,6 +2596,7 @@ let conv2DBackpropInput
     "use_cudnn_on_gpu", `bool use_cudnn_on_gpu;
     "padding", `string padding;
     "data_format", `string data_format;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.conv2DBackpropInput inputs attrs
@@ -2427,6 +2607,7 @@ let conv3D
     ~strides
     ~padding
     ?(data_format="NDHWC")
+    ?(dilations=[1;1;1;1;1])
     (input : ([< `float | `double ] as 't) t)
     (filter : ([< `float | `double ] as 't) t)
   =
@@ -2436,6 +2617,7 @@ let conv3D
     "strides", `list_int strides;
     "padding", `string padding;
     "data_format", `string data_format;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.conv3D inputs attrs
@@ -2464,6 +2646,7 @@ let conv3DBackpropFilterV2
     ~strides
     ~padding
     ?(data_format="NDHWC")
+    ?(dilations=[1;1;1;1;1])
     (input : ([< `float | `double ] as 't) t)
     (filter_sizes : [ `int32 ] t)
     (out_backprop : ([< `float | `double ] as 't) t)
@@ -2474,6 +2657,7 @@ let conv3DBackpropFilterV2
     "strides", `list_int strides;
     "padding", `string padding;
     "data_format", `string data_format;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.conv3DBackpropFilterV2 inputs attrs
@@ -2502,6 +2686,7 @@ let conv3DBackpropInputV2
     ~strides
     ~padding
     ?(data_format="NDHWC")
+    ?(dilations=[1;1;1;1;1])
     (input_sizes : [ `int32 ] t)
     (filter : ([< `float | `double ] as 't) t)
     (out_backprop : ([< `float | `double ] as 't) t)
@@ -2512,6 +2697,7 @@ let conv3DBackpropInputV2
     "strides", `list_int strides;
     "padding", `string padding;
     "data_format", `string data_format;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.conv3DBackpropInputV2 inputs attrs
@@ -2587,7 +2773,7 @@ let countUpTo
 let cropAndResize
     ?(method_="bilinear")
     ?(extrapolation_value=0.)
-    (image : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
+    (image : ([< `uInt8 | `uInt16 | `int32 | `int64 | `float | `double ] as 't) t)
     (boxes : [ `float ] t)
     (box_ind : [ `int32 ] t)
     (crop_size : [ `int32 ] t)
@@ -2606,7 +2792,7 @@ let cropAndResize
 let cropAndResizeGradBoxes
     ?(method_="bilinear")
     (grads : [ `float ] t)
-    (image : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
+    (image : ([< `uInt8 | `uInt16 | `int32 | `int64 | `float | `double ] as 't) t)
     (boxes : [ `float ] t)
     (box_ind : [ `int32 ] t)
   =
@@ -2684,6 +2870,38 @@ let cumsum
   ]
   in
   Op.create context Op_names.cumsum inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
+
+let dataFormatDimMap
+    ?(src_format="NHWC")
+    ?(dst_format="NCHW")
+    (x : ([< `int32 | `int64 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P x] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type x);
+    "src_format", `string src_format;
+    "dst_format", `string dst_format;
+  ]
+  in
+  Op.create context Op_names.dataFormatDimMap inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
+
+let dataFormatVecPermute
+    ?(src_format="NHWC")
+    ?(dst_format="NCHW")
+    (x : ([< `int32 | `int64 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P x] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type x);
+    "src_format", `string src_format;
+    "dst_format", `string dst_format;
+  ]
+  in
+  Op.create context Op_names.dataFormatVecPermute inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ x)
 
@@ -2985,6 +3203,7 @@ let depthwiseConv2dNative
     ~strides
     ~padding
     ?(data_format="NHWC")
+    ?(dilations=[1;1;1;1])
     (input : ([< `float | `double ] as 't) t)
     (filter : ([< `float | `double ] as 't) t)
   =
@@ -2994,6 +3213,7 @@ let depthwiseConv2dNative
     "strides", `list_int strides;
     "padding", `string padding;
     "data_format", `string data_format;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.depthwiseConv2dNative inputs attrs
@@ -3004,6 +3224,7 @@ let depthwiseConv2dNativeBackpropFilter
     ~strides
     ~padding
     ?(data_format="NHWC")
+    ?(dilations=[1;1;1;1])
     (input : ([< `float | `double ] as 't) t)
     (filter_sizes : [ `int32 ] t)
     (out_backprop : ([< `float | `double ] as 't) t)
@@ -3014,6 +3235,7 @@ let depthwiseConv2dNativeBackpropFilter
     "strides", `list_int strides;
     "padding", `string padding;
     "data_format", `string data_format;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.depthwiseConv2dNativeBackpropFilter inputs attrs
@@ -3024,6 +3246,7 @@ let depthwiseConv2dNativeBackpropInput
     ~strides
     ~padding
     ?(data_format="NHWC")
+    ?(dilations=[1;1;1;1])
     (input_sizes : [ `int32 ] t)
     (filter : ([< `float | `double ] as 't) t)
     (out_backprop : ([< `float | `double ] as 't) t)
@@ -3034,6 +3257,7 @@ let depthwiseConv2dNativeBackpropInput
     "strides", `list_int strides;
     "padding", `string padding;
     "data_format", `string data_format;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.depthwiseConv2dNativeBackpropInput inputs attrs
@@ -3056,6 +3280,17 @@ let dequantize
   |> fun op -> Op.execute1 op
     Type.Float
 
+let deserializeIterator
+    (resource_handle : [ `resource ] t)
+    (serialized : [ `variant ] t)
+  =
+  let inputs = [Op.Tensor_handle.P resource_handle; Op.Tensor_handle.P serialized] in
+  let attrs = [
+  ]
+  in
+  Op.create context Op_names.deserializeIterator inputs attrs
+  |> fun op -> Op.execute0 op
+
 let deserializeManySparse
     ~type_dtype
     (serialized_sparse : [ `string ] t)
@@ -3070,6 +3305,34 @@ let deserializeManySparse
     Type.Int64
     type_dtype
     Type.Int64
+
+let deserializeSparse
+    ~type_dtype
+    (serialized_sparse : ([< `string | `variant ] as 'tserialized) t)
+  =
+  let inputs = [Op.Tensor_handle.P serialized_sparse] in
+  let attrs = [
+    "dtype", `type_ Operation.Type.(to_data_type (P type_dtype));
+    "Tserialized", `type_ (Op.Tensor_handle.data_type serialized_sparse);
+  ]
+  in
+  Op.create context Op_names.deserializeSparse inputs attrs
+  |> fun op -> Op.execute3 op
+    Type.Int64
+    type_dtype
+    Type.Int64
+
+let destroyResourceOp
+    ?(ignore_lookup_error=true)
+    (resource : [ `resource ] t)
+  =
+  let inputs = [Op.Tensor_handle.P resource] in
+  let attrs = [
+    "ignore_lookup_error", `bool ignore_lookup_error;
+  ]
+  in
+  Op.create context Op_names.destroyResourceOp inputs attrs
+  |> fun op -> Op.execute0 op
 
 let destroyTemporaryVariable
     ~var_name
@@ -4149,6 +4412,7 @@ let gatherV2
 let generateVocabRemapping
     ~new_vocab_offset
     ~num_new_vocab
+    ?(old_vocab_size=(-1))
     (new_vocab_file : [ `string ] t)
     (old_vocab_file : [ `string ] t)
   =
@@ -4156,6 +4420,7 @@ let generateVocabRemapping
   let attrs = [
     "new_vocab_offset", `int new_vocab_offset;
     "num_new_vocab", `int num_new_vocab;
+    "old_vocab_size", `int old_vocab_size;
   ]
   in
   Op.create context Op_names.generateVocabRemapping inputs attrs
@@ -4226,6 +4491,18 @@ let greaterEqual
   |> fun op -> Op.execute1 op
     Type.Bool
 
+let guaranteeConst
+    (input : 't t)
+  =
+  let inputs = [Op.Tensor_handle.P input] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type input);
+  ]
+  in
+  Op.create context Op_names.guaranteeConst inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
+
 let hSVToRGB
     (images : ([< `float | `double ] as 't) t)
   =
@@ -4271,6 +4548,22 @@ let hashTableV2
   Op.create context Op_names.hashTableV2 inputs attrs
   |> fun op -> Op.execute1 op
     Type.Resource
+
+let histogramFixedWidth
+    ~type_dtype
+    (values : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (value_range : ([< `int32 | `int64 | `float | `double ] as 't) t)
+    (nbins : [ `int32 ] t)
+  =
+  let inputs = [Op.Tensor_handle.P values; Op.Tensor_handle.P value_range; Op.Tensor_handle.P nbins] in
+  let attrs = [
+    "dtype", `type_ Operation.Type.(to_data_type (P type_dtype));
+    "T", `type_ (Op.Tensor_handle.data_type values);
+  ]
+  in
+  Op.create context Op_names.histogramFixedWidth inputs attrs
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let histogramSummary
     (tag : [ `string ] t)
@@ -4709,6 +5002,17 @@ let iteratorFromStringHandle
   |> fun op -> Op.execute1 op
     Type.Resource
 
+let iteratorSetStatsAggregator
+    (iterator_handle : [ `resource ] t)
+    (stats_aggregator_handle : [ `resource ] t)
+  =
+  let inputs = [Op.Tensor_handle.P iterator_handle; Op.Tensor_handle.P stats_aggregator_handle] in
+  let attrs = [
+  ]
+  in
+  Op.create context Op_names.iteratorSetStatsAggregator inputs attrs
+  |> fun op -> Op.execute0 op
+
 let iteratorToStringHandle
     (resource_handle : [ `resource ] t)
   =
@@ -4789,6 +5093,22 @@ let lRNGrad
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ input_grads)
 
+let latencyStatsDataset
+    ~output_types
+    ~output_shapes
+    (input_dataset : [ `variant ] t)
+    (tag : [ `string ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input_dataset; Op.Tensor_handle.P tag] in
+  let attrs = [
+    "output_types", `list_type_p output_types;
+    "output_shapes", `list_shape output_shapes;
+  ]
+  in
+  Op.create context Op_names.latencyStatsDataset inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
 let learnedUnigramCandidateSampler
     ~num_true
     ~num_sampled
@@ -4813,6 +5133,19 @@ let learnedUnigramCandidateSampler
     Type.Int64
     Type.Float
     Type.Float
+
+let leftShift
+    (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (y : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P y] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type x);
+  ]
+  in
+  Op.create context Op_names.leftShift inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
 
 let less
     (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -5312,6 +5645,18 @@ let matrixDiagPart
   ]
   in
   Op.create context Op_names.matrixDiagPart inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
+
+let matrixExponential
+    (input : ([< `double | `float | `complex64 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P input] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type input);
+  ]
+  in
+  Op.create context Op_names.matrixExponential inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ input)
 
@@ -5832,6 +6177,7 @@ let mul
     (Op.Tensor_handle.type_ x)
 
 let multinomial
+    ~type_output_dtype
     ?(seed=0)
     ?(seed2=0)
     (logits : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
@@ -5839,6 +6185,7 @@ let multinomial
   =
   let inputs = [Op.Tensor_handle.P logits; Op.Tensor_handle.P num_samples] in
   let attrs = [
+    "output_dtype", `type_ Operation.Type.(to_data_type (P type_output_dtype));
     "T", `type_ (Op.Tensor_handle.data_type logits);
     "seed", `int seed;
     "seed2", `int seed2;
@@ -5846,7 +6193,7 @@ let multinomial
   in
   Op.create context Op_names.multinomial inputs attrs
   |> fun op -> Op.execute1 op
-    Type.Int64
+    type_output_dtype
 
 let mutableDenseHashTable
     ?(container="")
@@ -6062,6 +6409,21 @@ let notEqual
   |> fun op -> Op.execute1 op
     Type.Bool
 
+let nthElement
+    ?(reverse=false)
+    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (n : [ `int32 ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P n] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type input);
+    "reverse", `bool reverse;
+  ]
+  in
+  Op.create context Op_names.nthElement inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
+
 let oneHot
     ?(axis=(-1))
     (indices : ([< `uInt8 | `int32 | `int64 ] as 'tI) t)
@@ -6100,7 +6462,7 @@ let oneShotIterator
     Type.Resource
 
 let onesLike
-    (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `uInt8 | `uInt16 | `int32 | `int64 | `complex64 | `bool ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P x] in
   let attrs = [
@@ -6589,6 +6951,7 @@ let quantizeDownAndShrinkRange
 let quantizeV2
     ~type_t
     ?(mode="MIN_COMBINED")
+    ?(round_mode="HALF_AWAY_FROM_ZERO")
     (input : [ `float ] t)
     (min_range : [ `float ] t)
     (max_range : [ `float ] t)
@@ -6597,6 +6960,7 @@ let quantizeV2
   let attrs = [
     "T", `type_ Operation.Type.(to_data_type (P type_t));
     "mode", `string mode;
+    "round_mode", `string round_mode;
   ]
   in
   Op.create context Op_names.quantizeV2 inputs attrs
@@ -6727,6 +7091,7 @@ let quantizedConv2D
     ~type_out_type
     ~strides
     ~padding
+    ?(dilations=[1;1;1;1])
     (input : 'tinput t)
     (filter : 'tfilter t)
     (min_input : [ `float ] t)
@@ -6741,6 +7106,7 @@ let quantizedConv2D
     "Tfilter", `type_ (Op.Tensor_handle.data_type filter);
     "strides", `list_int strides;
     "padding", `string padding;
+    "dilations", `list_int dilations;
   ]
   in
   Op.create context Op_names.quantizedConv2D inputs attrs
@@ -7070,6 +7436,22 @@ let randomCrop
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ image)
 
+let randomDataset
+    ~output_types
+    ~output_shapes
+    (seed : [ `int64 ] t)
+    (seed2 : [ `int64 ] t)
+  =
+  let inputs = [Op.Tensor_handle.P seed; Op.Tensor_handle.P seed2] in
+  let attrs = [
+    "output_types", `list_type_p output_types;
+    "output_shapes", `list_shape output_shapes;
+  ]
+  in
+  Op.create context Op_names.randomDataset inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
 let randomGamma
     ?(seed=0)
     ?(seed2=0)
@@ -7304,6 +7686,19 @@ let readFile
   Op.create context Op_names.readFile inputs attrs
   |> fun op -> Op.execute1 op
     Type.String
+
+let readVariableOp
+    ~type_dtype
+    (resource : [ `resource ] t)
+  =
+  let inputs = [Op.Tensor_handle.P resource] in
+  let attrs = [
+    "dtype", `type_ Operation.Type.(to_data_type (P type_dtype));
+  ]
+  in
+  Op.create context Op_names.readVariableOp inputs attrs
+  |> fun op -> Op.execute1 op
+    type_dtype
 
 let readerNumRecordsProduced
     (reader_handle : [ `string ] t)
@@ -7771,7 +8166,7 @@ let reshape
 
 let resizeArea
     ?(align_corners=false)
-    (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
+    (images : ([< `uInt8 | `uInt16 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
   let inputs = [Op.Tensor_handle.P images; Op.Tensor_handle.P size] in
@@ -7786,7 +8181,7 @@ let resizeArea
 
 let resizeBicubic
     ?(align_corners=false)
-    (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
+    (images : ([< `uInt8 | `uInt16 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
   let inputs = [Op.Tensor_handle.P images; Op.Tensor_handle.P size] in
@@ -7816,7 +8211,7 @@ let resizeBicubicGrad
 
 let resizeBilinear
     ?(align_corners=false)
-    (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
+    (images : ([< `uInt8 | `uInt16 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
   let inputs = [Op.Tensor_handle.P images; Op.Tensor_handle.P size] in
@@ -7846,7 +8241,7 @@ let resizeBilinearGrad
 
 let resizeNearestNeighbor
     ?(align_corners=false)
-    (images : ([< `uInt8 | `int32 | `int64 | `float | `double ] as 't) t)
+    (images : ([< `uInt8 | `uInt16 | `int32 | `int64 | `float | `double ] as 't) t)
     (size : [ `int32 ] t)
   =
   let inputs = [Op.Tensor_handle.P images; Op.Tensor_handle.P size] in
@@ -7953,6 +8348,25 @@ let resourceApplyAdam
   Op.create context Op_names.resourceApplyAdam inputs attrs
   |> fun op -> Op.execute0 op
 
+let resourceApplyAddSign
+    ?(use_locking=false)
+    (var : [ `resource ] t)
+    (m : [ `resource ] t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (sign_decay : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P lr; Op.Tensor_handle.P alpha; Op.Tensor_handle.P sign_decay; Op.Tensor_handle.P beta; Op.Tensor_handle.P grad] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type lr);
+    "use_locking", `bool use_locking;
+  ]
+  in
+  Op.create context Op_names.resourceApplyAddSign inputs attrs
+  |> fun op -> Op.execute0 op
+
 let resourceApplyCenteredRMSProp
     ?(use_locking=false)
     (var : [ `resource ] t)
@@ -8049,6 +8463,25 @@ let resourceApplyMomentum
   Op.create context Op_names.resourceApplyMomentum inputs attrs
   |> fun op -> Op.execute0 op
 
+let resourceApplyPowerSign
+    ?(use_locking=false)
+    (var : [ `resource ] t)
+    (m : [ `resource ] t)
+    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (logbase : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (sign_decay : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P lr; Op.Tensor_handle.P logbase; Op.Tensor_handle.P sign_decay; Op.Tensor_handle.P beta; Op.Tensor_handle.P grad] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type lr);
+    "use_locking", `bool use_locking;
+  ]
+  in
+  Op.create context Op_names.resourceApplyPowerSign inputs attrs
+  |> fun op -> Op.execute0 op
+
 let resourceApplyProximalAdagrad
     ?(use_locking=false)
     (var : [ `resource ] t)
@@ -8102,6 +8535,82 @@ let resourceApplyRMSProp
   ]
   in
   Op.create context Op_names.resourceApplyRMSProp inputs attrs
+  |> fun op -> Op.execute0 op
+
+let resourceCountUpTo
+    ~type_t
+    ~limit
+    (resource : [ `resource ] t)
+  =
+  let inputs = [Op.Tensor_handle.P resource] in
+  let attrs = [
+    "T", `type_ Operation.Type.(to_data_type (P type_t));
+    "limit", `int limit;
+  ]
+  in
+  Op.create context Op_names.resourceCountUpTo inputs attrs
+  |> fun op -> Op.execute1 op
+    type_t
+
+let resourceGather
+    ~type_dtype
+    ?(validate_indices=true)
+    (resource : [ `resource ] t)
+    (indices : ([< `int32 | `int64 ] as 'tindices) t)
+  =
+  let inputs = [Op.Tensor_handle.P resource; Op.Tensor_handle.P indices] in
+  let attrs = [
+    "dtype", `type_ Operation.Type.(to_data_type (P type_dtype));
+    "Tindices", `type_ (Op.Tensor_handle.data_type indices);
+    "validate_indices", `bool validate_indices;
+  ]
+  in
+  Op.create context Op_names.resourceGather inputs attrs
+  |> fun op -> Op.execute1 op
+    type_dtype
+
+let resourceScatterAdd
+    (resource : [ `resource ] t)
+    (indices : ([< `int32 | `int64 ] as 'tindices) t)
+    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
+  =
+  let inputs = [Op.Tensor_handle.P resource; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
+  let attrs = [
+    "Tindices", `type_ (Op.Tensor_handle.data_type indices);
+    "dtype", `type_ (Op.Tensor_handle.data_type updates);
+  ]
+  in
+  Op.create context Op_names.resourceScatterAdd inputs attrs
+  |> fun op -> Op.execute0 op
+
+let resourceScatterNdUpdate
+    ?(use_locking=true)
+    (ref : [ `resource ] t)
+    (indices : ([< `int32 | `int64 ] as 'tindices) t)
+    (updates : 't t)
+  =
+  let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
+  let attrs = [
+    "Tindices", `type_ (Op.Tensor_handle.data_type indices);
+    "T", `type_ (Op.Tensor_handle.data_type updates);
+    "use_locking", `bool use_locking;
+  ]
+  in
+  Op.create context Op_names.resourceScatterNdUpdate inputs attrs
+  |> fun op -> Op.execute0 op
+
+let resourceScatterUpdate
+    (resource : [ `resource ] t)
+    (indices : ([< `int32 | `int64 ] as 'tindices) t)
+    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
+  =
+  let inputs = [Op.Tensor_handle.P resource; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
+  let attrs = [
+    "Tindices", `type_ (Op.Tensor_handle.data_type indices);
+    "dtype", `type_ (Op.Tensor_handle.data_type updates);
+  ]
+  in
+  Op.create context Op_names.resourceScatterUpdate inputs attrs
   |> fun op -> Op.execute0 op
 
 let resourceSparseApplyAdadelta
@@ -8357,17 +8866,6 @@ let restore
   |> fun op -> Op.execute1 op
     type_dt
 
-let restoreIterator
-    (iterator : [ `resource ] t)
-    (path : [ `string ] t)
-  =
-  let inputs = [Op.Tensor_handle.P iterator; Op.Tensor_handle.P path] in
-  let attrs = [
-  ]
-  in
-  Op.create context Op_names.restoreIterator inputs attrs
-  |> fun op -> Op.execute0 op
-
 let restoreSlice
     ~type_dt
     ?(preferred_shard=(-1))
@@ -8430,6 +8928,19 @@ let reverseV2
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ tensor)
 
+let rightShift
+    (x : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (y : ([< `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P y] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type x);
+  ]
+  in
+  Op.create context Op_names.rightShift inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ x)
+
 let rint
     (x : ([< `float | `double ] as 't) t)
   =
@@ -8478,17 +8989,6 @@ let rsqrtGrad
   Op.create context Op_names.rsqrtGrad inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ y)
-
-let saveIterator
-    (iterator : [ `resource ] t)
-    (path : [ `string ] t)
-  =
-  let inputs = [Op.Tensor_handle.P iterator; Op.Tensor_handle.P path] in
-  let attrs = [
-  ]
-  in
-  Op.create context Op_names.saveIterator inputs attrs
-  |> fun op -> Op.execute0 op
 
 let scalarSummary
     (tags : [ `string ] t)
@@ -8831,33 +9331,48 @@ let seluGrad
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ gradients)
 
+let serializeIterator
+    (resource_handle : [ `resource ] t)
+  =
+  let inputs = [Op.Tensor_handle.P resource_handle] in
+  let attrs = [
+  ]
+  in
+  Op.create context Op_names.serializeIterator inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
 let serializeManySparse
+    ~type_out_type
     (sparse_indices : [ `int64 ] t)
     (sparse_values : 't t)
     (sparse_shape : [ `int64 ] t)
   =
   let inputs = [Op.Tensor_handle.P sparse_indices; Op.Tensor_handle.P sparse_values; Op.Tensor_handle.P sparse_shape] in
   let attrs = [
+    "out_type", `type_ Operation.Type.(to_data_type (P type_out_type));
     "T", `type_ (Op.Tensor_handle.data_type sparse_values);
   ]
   in
   Op.create context Op_names.serializeManySparse inputs attrs
   |> fun op -> Op.execute1 op
-    Type.String
+    type_out_type
 
 let serializeSparse
+    ~type_out_type
     (sparse_indices : [ `int64 ] t)
     (sparse_values : 't t)
     (sparse_shape : [ `int64 ] t)
   =
   let inputs = [Op.Tensor_handle.P sparse_indices; Op.Tensor_handle.P sparse_values; Op.Tensor_handle.P sparse_shape] in
   let attrs = [
+    "out_type", `type_ Operation.Type.(to_data_type (P type_out_type));
     "T", `type_ (Op.Tensor_handle.data_type sparse_values);
   ]
   in
   Op.create context Op_names.serializeSparse inputs attrs
   |> fun op -> Op.execute1 op
-    Type.String
+    type_out_type
 
 let serializeTensor
     (tensor : 't t)
@@ -9090,6 +9605,18 @@ let slice
   ]
   in
   Op.create context Op_names.slice inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
+
+let snapshot
+    (input : 't t)
+  =
+  let inputs = [Op.Tensor_handle.P input] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type input);
+  ]
+  in
+  Op.create context Op_names.snapshot inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ input)
 
@@ -9775,6 +10302,23 @@ let sparseSegmentMeanGrad
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ grad)
 
+let sparseSegmentMeanWithNumSegments
+    (data : ([< `float | `double ] as 't) t)
+    (indices : ([< `int32 | `int64 ] as 'tidx) t)
+    (segment_ids : [ `int32 ] t)
+    (num_segments : ([< `int32 | `int64 ] as 'tnumsegments) t)
+  =
+  let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P indices; Op.Tensor_handle.P segment_ids; Op.Tensor_handle.P num_segments] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type data);
+    "Tidx", `type_ (Op.Tensor_handle.data_type indices);
+    "Tnumsegments", `type_ (Op.Tensor_handle.data_type num_segments);
+  ]
+  in
+  Op.create context Op_names.sparseSegmentMeanWithNumSegments inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
+
 let sparseSegmentSqrtN
     (data : ([< `float | `double ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tidx) t)
@@ -9806,6 +10350,23 @@ let sparseSegmentSqrtNGrad
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ grad)
 
+let sparseSegmentSqrtNWithNumSegments
+    (data : ([< `float | `double ] as 't) t)
+    (indices : ([< `int32 | `int64 ] as 'tidx) t)
+    (segment_ids : [ `int32 ] t)
+    (num_segments : ([< `int32 | `int64 ] as 'tnumsegments) t)
+  =
+  let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P indices; Op.Tensor_handle.P segment_ids; Op.Tensor_handle.P num_segments] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type data);
+    "Tidx", `type_ (Op.Tensor_handle.data_type indices);
+    "Tnumsegments", `type_ (Op.Tensor_handle.data_type num_segments);
+  ]
+  in
+  Op.create context Op_names.sparseSegmentSqrtNWithNumSegments inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
+
 let sparseSegmentSum
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tidx) t)
@@ -9818,6 +10379,23 @@ let sparseSegmentSum
   ]
   in
   Op.create context Op_names.sparseSegmentSum inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ data)
+
+let sparseSegmentSumWithNumSegments
+    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (indices : ([< `int32 | `int64 ] as 'tidx) t)
+    (segment_ids : [ `int32 ] t)
+    (num_segments : ([< `int32 | `int64 ] as 'tnumsegments) t)
+  =
+  let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P indices; Op.Tensor_handle.P segment_ids; Op.Tensor_handle.P num_segments] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type data);
+    "Tidx", `type_ (Op.Tensor_handle.data_type indices);
+    "Tnumsegments", `type_ (Op.Tensor_handle.data_type num_segments);
+  ]
+  in
+  Op.create context Op_names.sparseSegmentSumWithNumSegments inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ data)
 
@@ -10252,12 +10830,13 @@ let stageSize
 let statelessRandomNormal
     ~type_dtype
     (shape : ([< `int32 | `int64 ] as 't) t)
-    (seed : [ `int64 ] t)
+    (seed : ([< `int32 | `int64 ] as 'tseed) t)
   =
   let inputs = [Op.Tensor_handle.P shape; Op.Tensor_handle.P seed] in
   let attrs = [
     "dtype", `type_ Operation.Type.(to_data_type (P type_dtype));
     "T", `type_ (Op.Tensor_handle.data_type shape);
+    "Tseed", `type_ (Op.Tensor_handle.data_type seed);
   ]
   in
   Op.create context Op_names.statelessRandomNormal inputs attrs
@@ -10267,12 +10846,13 @@ let statelessRandomNormal
 let statelessRandomUniform
     ~type_dtype
     (shape : ([< `int32 | `int64 ] as 't) t)
-    (seed : [ `int64 ] t)
+    (seed : ([< `int32 | `int64 ] as 'tseed) t)
   =
   let inputs = [Op.Tensor_handle.P shape; Op.Tensor_handle.P seed] in
   let attrs = [
     "dtype", `type_ Operation.Type.(to_data_type (P type_dtype));
     "T", `type_ (Op.Tensor_handle.data_type shape);
+    "Tseed", `type_ (Op.Tensor_handle.data_type seed);
   ]
   in
   Op.create context Op_names.statelessRandomUniform inputs attrs
@@ -10282,17 +10862,44 @@ let statelessRandomUniform
 let statelessTruncatedNormal
     ~type_dtype
     (shape : ([< `int32 | `int64 ] as 't) t)
-    (seed : [ `int64 ] t)
+    (seed : ([< `int32 | `int64 ] as 'tseed) t)
   =
   let inputs = [Op.Tensor_handle.P shape; Op.Tensor_handle.P seed] in
   let attrs = [
     "dtype", `type_ Operation.Type.(to_data_type (P type_dtype));
     "T", `type_ (Op.Tensor_handle.data_type shape);
+    "Tseed", `type_ (Op.Tensor_handle.data_type seed);
   ]
   in
   Op.create context Op_names.statelessTruncatedNormal inputs attrs
   |> fun op -> Op.execute1 op
     type_dtype
+
+let statsAggregatorHandle
+    ?(container="")
+    ?(shared_name="")
+    ()
+  =
+  let inputs = [] in
+  let attrs = [
+    "container", `string container;
+    "shared_name", `string shared_name;
+  ]
+  in
+  Op.create context Op_names.statsAggregatorHandle inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Resource
+
+let statsAggregatorSummary
+    (iterator : [ `resource ] t)
+  =
+  let inputs = [Op.Tensor_handle.P iterator] in
+  let attrs = [
+  ]
+  in
+  Op.create context Op_names.statsAggregatorSummary inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let stopGradient
     (input : 't t)
@@ -11099,6 +11706,7 @@ let tensorArrayV3
     ?(element_shape=[])
     ?(dynamic_size=false)
     ?(clear_after_read=true)
+    ?(identical_element_shapes=false)
     ?(tensor_array_name="")
     (size : [ `int32 ] t)
   =
@@ -11107,6 +11715,7 @@ let tensorArrayV3
     "element_shape", `shape element_shape;
     "dynamic_size", `bool dynamic_size;
     "clear_after_read", `bool clear_after_read;
+    "identical_element_shapes", `bool identical_element_shapes;
     "tensor_array_name", `string tensor_array_name;
   ]
   in
@@ -11420,6 +12029,22 @@ let unique
     (Op.Tensor_handle.type_ x)
     type_out_idx
 
+let uniqueV2
+    ~type_out_idx
+    (x : 't t)
+    (axis : [ `int64 ] t)
+  =
+  let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P axis] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type x);
+    "out_idx", `type_ Operation.Type.(to_data_type (P type_out_idx));
+  ]
+  in
+  Op.create context Op_names.uniqueV2 inputs attrs
+  |> fun op -> Op.execute2 op
+    (Op.Tensor_handle.type_ x)
+    type_out_idx
+
 let uniqueWithCounts
     ~type_out_idx
     (x : 't t)
@@ -11454,12 +12079,13 @@ let unpack
 let unsortedSegmentMax
     (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
-    (num_segments : [ `int32 ] t)
+    (num_segments : ([< `int32 | `int64 ] as 'tnumsegments) t)
   =
   let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P segment_ids; Op.Tensor_handle.P num_segments] in
   let attrs = [
     "T", `type_ (Op.Tensor_handle.data_type data);
     "Tindices", `type_ (Op.Tensor_handle.data_type segment_ids);
+    "Tnumsegments", `type_ (Op.Tensor_handle.data_type num_segments);
   ]
   in
   Op.create context Op_names.unsortedSegmentMax inputs attrs
@@ -11469,23 +12095,66 @@ let unsortedSegmentMax
 let unsortedSegmentSum
     (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
-    (num_segments : [ `int32 ] t)
+    (num_segments : ([< `int32 | `int64 ] as 'tnumsegments) t)
   =
   let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P segment_ids; Op.Tensor_handle.P num_segments] in
   let attrs = [
     "T", `type_ (Op.Tensor_handle.data_type data);
     "Tindices", `type_ (Op.Tensor_handle.data_type segment_ids);
+    "Tnumsegments", `type_ (Op.Tensor_handle.data_type num_segments);
   ]
   in
   Op.create context Op_names.unsortedSegmentSum inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ data)
 
-let where
-    (input : [ `bool ] t)
+let varHandleOp
+    ?(container="")
+    ?(shared_name="")
+    ~shape
+    ()
+  =
+  let inputs = [] in
+  let attrs = [
+    "container", `string container;
+    "shared_name", `string shared_name;
+    "shape", `shape shape;
+  ]
+  in
+  Op.create context Op_names.varHandleOp inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Resource
+
+let varIsInitializedOp
+    (resource : [ `resource ] t)
+  =
+  let inputs = [Op.Tensor_handle.P resource] in
+  let attrs = [
+  ]
+  in
+  Op.create context Op_names.varIsInitializedOp inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Bool
+
+let variableShape
+    ~type_out_type
+    (input : [ `resource ] t)
   =
   let inputs = [Op.Tensor_handle.P input] in
   let attrs = [
+    "out_type", `type_ Operation.Type.(to_data_type (P type_out_type));
+  ]
+  in
+  Op.create context Op_names.variableShape inputs attrs
+  |> fun op -> Op.execute1 op
+    type_out_type
+
+let where
+    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 | `bool ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P input] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type input);
   ]
   in
   Op.create context Op_names.where inputs attrs

@@ -226,6 +226,8 @@ module Op = struct
     (* TODO: this is likely to be incorrect as a default value. *)
     | { shape = Some _; _ } -> "[]"
     | { list = Some { s = []; i = []; f = []; b = []; type_ = []; shape = []; tensor = []; func = [] } ; _ } -> "[]"
+    | { list = Some { s = []; i; f = []; b = []; type_ = []; shape = []; tensor = []; func = [] } ; _ } ->
+      Printf.sprintf "[%s]" (List.map i ~f:Int64.to_string |> String.concat ~sep:";")
     | _ -> raise (Not_supported "unsupported attr value")
 
   let get_attr (attr : Op_def_piqi.Op_def_attr_def.t) ~inputs =

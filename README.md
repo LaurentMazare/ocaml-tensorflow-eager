@@ -44,7 +44,7 @@ df/d2(x) = 5.000000
 
 ## Installation
 
-In order to build this on linux, download the [TensorFlow 1.4.0 binaries](https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.4.0.tar.gz). If this is unpacked at `TFPATH` compiling can be done via:
+In order to build this on linux, download the [TensorFlow 1.5.0-rc1 binaries](https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-1.5.0-rc1.tar.gz). If this is unpacked at `TFPATH` compiling can be done via:
 ```bash
 LD_LIBRARY_PATH=$TFPATH/lib:$LD_LIBRARY_PATH LIBRARY_PATH=$TFPATH/lib:$LIBRARY_PATH make all
 ```
