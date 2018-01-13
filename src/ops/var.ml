@@ -56,3 +56,9 @@ let f32 shape f =
   let t = Th.var_create op Float in
   assign t (Ops.f32 ~shape f);
   t
+
+let truncated_normal_f32 shape_ ~stdev =
+  let op = variable ~shape:shape_ () in
+  let t = Th.var_create op Float in
+  assign t Ops.(truncatedNormal ~type_dtype:Float (Ops.vec_i32 shape_) * f32 stdev);
+  t
