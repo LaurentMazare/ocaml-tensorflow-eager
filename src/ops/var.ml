@@ -36,8 +36,8 @@ let assign t value =
     [ "dtype", `type_ (Th.data_type value) ]
   |> Op.execute0
 
-let create initial_value =
-  let op = variable ~shape:(Th.dims initial_value) () in
+let create ?name initial_value =
+  let op = variable ?shared_name:name ~shape:(Th.dims initial_value) () in
   let t = Th.var_create op (Th.type_ initial_value) in
   assign t initial_value;
   t
@@ -51,14 +51,14 @@ let read t =
 
 let read_and_watch t = Th.watch (read t) (Some t)
 
-let f32 shape f =
-  let op = variable ~shape () in
+let f32 ?name shape f =
+  let op = variable ?shared_name:name ~shape () in
   let t = Th.var_create op Float in
   assign t (Ops.f32 ~shape f);
   t
 
-let truncated_normal_f32 shape_ ~stdev =
-  let op = variable ~shape:shape_ () in
+let truncated_normal_f32 ?name shape_ ~stdev =
+  let op = variable ?shared_name:name ~shape:shape_ () in
   let t = Th.var_create op Float in
   assign t Ops.(truncatedNormal ~type_dtype:Float (Ops.vec_i32 shape_) * f32 stdev);
   t

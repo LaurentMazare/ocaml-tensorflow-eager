@@ -127,3 +127,12 @@ let cross_entropy ?(epsilon = 1e-7) ~ys ~y_hats sum_or_mean =
   neg (ys * log (y_hats + float epsilon type_)) |> reduce
 
 let arg_max th = argMax ~type_output_type:Int32 th one32
+
+let flatten th =
+  let input_dim, output_dim =
+    match Op.Tensor_handle.dims th with
+    | batch_dim :: dims ->
+      batch_dim, List.fold dims ~init:1 ~f:Int.( * )
+    | [] -> failwith "empty tensor handle dimensions"
+  in
+  reshape th (vec_i32 [ input_dim; output_dim ])

@@ -4,7 +4,8 @@ ALL = examples/hello_world.exe \
       examples/gradients.exe \
       examples/variable.exe \
       examples/mnist/linear.exe \
-      examples/mnist/mlp.exe
+      examples/mnist/mlp.exe \
+      examples/mnist/convnet.exe
 
 .FORCE:
 

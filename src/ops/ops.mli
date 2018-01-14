@@ -123,3 +123,5 @@ val arg_max
 (** [watch t] is identical to [t] but can be used to compute gradients with respect to this
     handle. *)
 val watch : 'a t -> 'a t
+
+val flatten : 'a t -> 'a t
