@@ -15,7 +15,7 @@ let linear ~input_size ~output_size =
   fun inputs -> O.(inputs *^ (Var.read_and_watch w) + (Var.read_and_watch b))
 
 let () =
-  let mnist_dataset = Helper.read_files () in
+  let mnist_dataset = Helper.read_files "data" in
   let test_images = Helper.test_images mnist_dataset in
   let test_labels = Helper.test_labels mnist_dataset in
 

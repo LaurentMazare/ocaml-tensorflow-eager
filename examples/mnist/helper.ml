@@ -25,7 +25,8 @@ let read_int32_be in_channel =
   let b4 = Option.value_exn (In_channel.input_byte in_channel) in
   b4 + 256 * (b3 + 256 * (b2 + 256 * b1))
 
-let read_images filename =
+let read_images ~basedir filename =
+  let filename = Printf.sprintf "%s/%s" basedir filename in
   let in_channel = In_channel.create filename in
   let magic_number = read_int32_be in_channel in
   if magic_number <> 2051
@@ -45,7 +46,8 @@ let read_images filename =
   In_channel.close in_channel;
   data
 
-let read_labels filename =
+let read_labels ~basedir filename =
+  let filename = Printf.sprintf "%s/%s" basedir filename in
   let in_channel = In_channel.create filename in
   let magic_number = read_int32_be in_channel in
   if magic_number <> 2049
@@ -69,16 +71,16 @@ type t =
   }
 
 let read_files
-      ?(train_image_file = "data/train-images-idx3-ubyte")
-      ?(train_label_file = "data/train-labels-idx1-ubyte")
-      ?(test_image_file = "data/t10k-images-idx3-ubyte")
-      ?(test_label_file = "data/t10k-labels-idx1-ubyte")
-      ()
+      ?(train_image_file = "train-images-idx3-ubyte")
+      ?(train_label_file = "train-labels-idx1-ubyte")
+      ?(test_image_file = "t10k-images-idx3-ubyte")
+      ?(test_label_file = "t10k-labels-idx1-ubyte")
+      basedir
   =
-  let train_images = read_images train_image_file in
-  let train_labels = read_labels train_label_file in
-  let test_images = read_images test_image_file in
-  let test_labels = read_labels test_label_file in
+  let train_images = read_images ~basedir train_image_file in
+  let train_labels = read_labels ~basedir train_label_file in
+  let test_images = read_images ~basedir test_image_file in
+  let test_labels = read_labels ~basedir test_label_file in
   let train_images = Bigarray.genarray_of_array2 train_images in
   let test_images = Bigarray.genarray_of_array2 test_images in
   { train_images

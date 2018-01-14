@@ -15,7 +15,7 @@ val read_files
   -> ?train_label_file:string
   -> ?test_image_file:string
   -> ?test_label_file:string
-  -> unit
+  -> string (* basedir *)
   -> t
 
 val train_batch
