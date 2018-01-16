@@ -1,14 +1,6 @@
-open Tf_core
 open Tf_ops
 
-type float32_tensor = (float, Bigarray.float32_elt) Tensor.t
-
-type t =
-  { train_images : float32_tensor
-  ; train_labels : float32_tensor
-  ; test_images : float32_tensor
-  ; test_labels : float32_tensor
-  }
+type t
 
 val read_files
   :  ?train_image_file:string
@@ -26,11 +18,6 @@ val train_batch
 
 val image_dim : int
 val label_count : int
-
-val accuracy
-  :  float32_tensor
-  -> float32_tensor
-  -> float
 
 val test_images : t -> [ `float ] Ops.t
 val test_labels : t -> [ `float ] Ops.t

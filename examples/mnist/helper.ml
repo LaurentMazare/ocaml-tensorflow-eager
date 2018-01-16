@@ -98,26 +98,5 @@ let train_batch { train_images; train_labels; _ } ~batch_size ~batch_idx =
   let batch_labels = Tensor.sub_left train_labels start_batch batch_size in
   wrap_float batch_images, wrap_float batch_labels
 
-let accuracy ys ys' =
-  let ys = Bigarray.array2_of_genarray ys in
-  let ys' = Bigarray.array2_of_genarray ys' in
-  let nsamples = Bigarray.Array2.dim1 ys in
-  let res = ref 0. in
-  let find_best_idx ys n =
-    let best_idx = ref 0 in
-    for l = 1 to label_count - 1 do
-      let v = Bigarray.Array2.get ys n !best_idx in
-      let v' = Bigarray.Array2.get ys n l in
-      if Float.(>) v' v then best_idx := l
-    done;
-    !best_idx
-  in
-  for n = 0 to nsamples - 1 do
-    let idx = find_best_idx ys n in
-    let idx' = find_best_idx ys' n in
-    res := Float.(+) !res (if idx = idx' then 1. else 0.)
-  done;
-  Float.(!res / of_int nsamples)
-
 let test_images t = wrap_float t.test_images
 let test_labels t = wrap_float t.test_labels

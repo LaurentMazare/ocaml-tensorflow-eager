@@ -7,7 +7,7 @@ module Th =Op.Tensor_handle
 
 (* This should reach ~92% accuracy. *)
 let label_count = Helper.label_count
-let training_steps = 5000
+let training_steps = 100
 let batch_size = 512
 
 let linear xs ~name ~output_dim =
@@ -51,6 +51,8 @@ let () =
   let test_images = Helper.test_images mnist_dataset in
   let test_labels = Helper.test_labels mnist_dataset in
   for step_index = 1 to training_steps do
+    (* Regularly trigger the GC to avoid running out of memory. *)
+    Caml.Gc.full_major ();
     if step_index % 50 = 0 then begin
       let accuracy =
         O.(equal (arg_max (model test_images)) (arg_max test_labels))
