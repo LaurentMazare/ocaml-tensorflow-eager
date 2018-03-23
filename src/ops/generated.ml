@@ -125,6 +125,7 @@ module Op_names = struct
   let conditionalAccumulator = Op.Name.of_string "ConditionalAccumulator"
   let conj = Op.Name.of_string "Conj"
   let conjugateTranspose = Op.Name.of_string "ConjugateTranspose"
+  let consumeMutexLock = Op.Name.of_string "ConsumeMutexLock"
   let controlTrigger = Op.Name.of_string "ControlTrigger"
   let conv2D = Op.Name.of_string "Conv2D"
   let conv2DBackpropFilter = Op.Name.of_string "Conv2DBackpropFilter"
@@ -148,12 +149,14 @@ module Op_names = struct
   let dataFormatDimMap = Op.Name.of_string "DataFormatDimMap"
   let dataFormatVecPermute = Op.Name.of_string "DataFormatVecPermute"
   let debugGradientIdentity = Op.Name.of_string "DebugGradientIdentity"
+  let debugGradientRefIdentity = Op.Name.of_string "DebugGradientRefIdentity"
   let debugIdentity = Op.Name.of_string "DebugIdentity"
   let debugNanCount = Op.Name.of_string "DebugNanCount"
   let debugNumericSummary = Op.Name.of_string "DebugNumericSummary"
   let decodeAndCropJpeg = Op.Name.of_string "DecodeAndCropJpeg"
   let decodeBase64 = Op.Name.of_string "DecodeBase64"
   let decodeBmp = Op.Name.of_string "DecodeBmp"
+  let decodeCompressed = Op.Name.of_string "DecodeCompressed"
   let decodeGif = Op.Name.of_string "DecodeGif"
   let decodeJSONExample = Op.Name.of_string "DecodeJSONExample"
   let decodeJpeg = Op.Name.of_string "DecodeJpeg"
@@ -187,6 +190,7 @@ module Op_names = struct
   let editDistance = Op.Name.of_string "EditDistance"
   let elu = Op.Name.of_string "Elu"
   let eluGrad = Op.Name.of_string "EluGrad"
+  let emptyTensorList = Op.Name.of_string "EmptyTensorList"
   let encodeBase64 = Op.Name.of_string "EncodeBase64"
   let encodeJpeg = Op.Name.of_string "EncodeJpeg"
   let encodePng = Op.Name.of_string "EncodePng"
@@ -259,7 +263,6 @@ module Op_names = struct
   let identityReaderV2 = Op.Name.of_string "IdentityReaderV2"
   let igamma = Op.Name.of_string "Igamma"
   let igammac = Op.Name.of_string "Igammac"
-  let ignoreErrorsDataset = Op.Name.of_string "IgnoreErrorsDataset"
   let imag = Op.Name.of_string "Imag"
   let imageSummary = Op.Name.of_string "ImageSummary"
   let immutableConst = Op.Name.of_string "ImmutableConst"
@@ -325,6 +328,7 @@ module Op_names = struct
   let matrixDiagPart = Op.Name.of_string "MatrixDiagPart"
   let matrixExponential = Op.Name.of_string "MatrixExponential"
   let matrixInverse = Op.Name.of_string "MatrixInverse"
+  let matrixLogarithm = Op.Name.of_string "MatrixLogarithm"
   let matrixSetDiag = Op.Name.of_string "MatrixSetDiag"
   let matrixSolve = Op.Name.of_string "MatrixSolve"
   let matrixSolveLs = Op.Name.of_string "MatrixSolveLs"
@@ -361,6 +365,8 @@ module Op_names = struct
   let mutableHashTableOfTensors = Op.Name.of_string "MutableHashTableOfTensors"
   let mutableHashTableOfTensorsV2 = Op.Name.of_string "MutableHashTableOfTensorsV2"
   let mutableHashTableV2 = Op.Name.of_string "MutableHashTableV2"
+  let mutexLock = Op.Name.of_string "MutexLock"
+  let mutexV2 = Op.Name.of_string "MutexV2"
   let neg = Op.Name.of_string "Neg"
   let negTrain = Op.Name.of_string "NegTrain"
   let nextIteration = Op.Name.of_string "NextIteration"
@@ -469,6 +475,7 @@ module Op_names = struct
   let refNextIteration = Op.Name.of_string "RefNextIteration"
   let refSelect = Op.Name.of_string "RefSelect"
   let refSwitch = Op.Name.of_string "RefSwitch"
+  let regexReplace = Op.Name.of_string "RegexReplace"
   let relu = Op.Name.of_string "Relu"
   let relu6 = Op.Name.of_string "Relu6"
   let relu6Grad = Op.Name.of_string "Relu6Grad"
@@ -521,6 +528,7 @@ module Op_names = struct
   let reverseV2 = Op.Name.of_string "ReverseV2"
   let rightShift = Op.Name.of_string "RightShift"
   let rint = Op.Name.of_string "Rint"
+  let roll = Op.Name.of_string "Roll"
   let round = Op.Name.of_string "Round"
   let rsqrt = Op.Name.of_string "Rsqrt"
   let rsqrtGrad = Op.Name.of_string "RsqrtGrad"
@@ -556,6 +564,7 @@ module Op_names = struct
   let shapeN = Op.Name.of_string "ShapeN"
   let shardedFilename = Op.Name.of_string "ShardedFilename"
   let shardedFilespec = Op.Name.of_string "ShardedFilespec"
+  let shuffleAndRepeatDataset = Op.Name.of_string "ShuffleAndRepeatDataset"
   let shuffleDataset = Op.Name.of_string "ShuffleDataset"
   let sigmoid = Op.Name.of_string "Sigmoid"
   let sigmoidGrad = Op.Name.of_string "SigmoidGrad"
@@ -701,6 +710,15 @@ module Op_names = struct
   let tensorArrayWrite = Op.Name.of_string "TensorArrayWrite"
   let tensorArrayWriteV2 = Op.Name.of_string "TensorArrayWriteV2"
   let tensorArrayWriteV3 = Op.Name.of_string "TensorArrayWriteV3"
+  let tensorListElementShape = Op.Name.of_string "TensorListElementShape"
+  let tensorListFromTensor = Op.Name.of_string "TensorListFromTensor"
+  let tensorListGetItem = Op.Name.of_string "TensorListGetItem"
+  let tensorListLength = Op.Name.of_string "TensorListLength"
+  let tensorListPopBack = Op.Name.of_string "TensorListPopBack"
+  let tensorListPushBack = Op.Name.of_string "TensorListPushBack"
+  let tensorListReserve = Op.Name.of_string "TensorListReserve"
+  let tensorListSetItem = Op.Name.of_string "TensorListSetItem"
+  let tensorListStack = Op.Name.of_string "TensorListStack"
   let tensorSummary = Op.Name.of_string "TensorSummary"
   let tensorSummaryV2 = Op.Name.of_string "TensorSummaryV2"
   let textLineDataset = Op.Name.of_string "TextLineDataset"
@@ -709,17 +727,21 @@ module Op_names = struct
   let threadUnsafeUnigramCandidateSampler = Op.Name.of_string "ThreadUnsafeUnigramCandidateSampler"
   let tile = Op.Name.of_string "Tile"
   let tileGrad = Op.Name.of_string "TileGrad"
+  let timestamp = Op.Name.of_string "Timestamp"
   let topK = Op.Name.of_string "TopK"
   let topKV2 = Op.Name.of_string "TopKV2"
   let transpose = Op.Name.of_string "Transpose"
   let truncateDiv = Op.Name.of_string "TruncateDiv"
   let truncateMod = Op.Name.of_string "TruncateMod"
   let truncatedNormal = Op.Name.of_string "TruncatedNormal"
+  let unbatch = Op.Name.of_string "Unbatch"
+  let unbatchGrad = Op.Name.of_string "UnbatchGrad"
   let uniformCandidateSampler = Op.Name.of_string "UniformCandidateSampler"
   let unique = Op.Name.of_string "Unique"
   let uniqueV2 = Op.Name.of_string "UniqueV2"
   let uniqueWithCounts = Op.Name.of_string "UniqueWithCounts"
   let unpack = Op.Name.of_string "Unpack"
+  let unravelIndex = Op.Name.of_string "UnravelIndex"
   let unsortedSegmentMax = Op.Name.of_string "UnsortedSegmentMax"
   let unsortedSegmentSum = Op.Name.of_string "UnsortedSegmentSum"
   let varHandleOp = Op.Name.of_string "VarHandleOp"
@@ -764,7 +786,7 @@ let abs
 
 let accumulateNV2
     ~shape
-    (inputs__ : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t list)
+    (inputs__ : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t list)
   =
   let inputs = List.map inputs__ ~f:(fun x -> Op.Tensor_handle.P x) in
   let attrs = [
@@ -780,7 +802,7 @@ let accumulateNV2
 let accumulatorApplyGradient
     (handle : [ `string ] t)
     (local_step : [ `int64 ] t)
-    (gradient : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
+    (gradient : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 'dtype) t)
   =
   let inputs = [Op.Tensor_handle.P handle; Op.Tensor_handle.P local_step; Op.Tensor_handle.P gradient] in
   let attrs = [
@@ -882,7 +904,7 @@ let addManySparseToTensorsMap
     Type.Int64
 
 let addN
-    (inputs__ : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 | `variant ] as 't) t list)
+    (inputs__ : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 | `variant ] as 't) t list)
   =
   let inputs = List.map inputs__ ~f:(fun x -> Op.Tensor_handle.P x) in
   let attrs = [
@@ -1045,13 +1067,13 @@ let any
 
 let applyAdadelta
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum_update : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum_update : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P accum_update; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -1065,10 +1087,10 @@ let applyAdadelta
 
 let applyAdagrad
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -1082,13 +1104,13 @@ let applyAdagrad
 
 let applyAdagradDA
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (gradient_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (gradient_squared_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (gradient_accumulator : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (gradient_squared_accumulator : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P gradient_accumulator; Op.Tensor_handle.P gradient_squared_accumulator; Op.Tensor_handle.P grad; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P global_step] in
@@ -1104,16 +1126,16 @@ let applyAdagradDA
 let applyAdam
     ?(use_locking=false)
     ?(use_nesterov=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (v : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta1_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta2_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (m : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (v : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta1_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta2_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P v; Op.Tensor_handle.P beta1_power; Op.Tensor_handle.P beta2_power; Op.Tensor_handle.P lr; Op.Tensor_handle.P beta1; Op.Tensor_handle.P beta2; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -1128,13 +1150,13 @@ let applyAdam
 
 let applyAddSign
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (sign_decay : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (m : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (alpha : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (sign_decay : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P lr; Op.Tensor_handle.P alpha; Op.Tensor_handle.P sign_decay; Op.Tensor_handle.P beta; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -1148,15 +1170,15 @@ let applyAddSign
 
 let applyCenteredRMSProp
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (mg : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (mg : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (ms : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (mom : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P mg; Op.Tensor_handle.P ms; Op.Tensor_handle.P mom; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P momentum; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -1170,14 +1192,14 @@ let applyCenteredRMSProp
 
 let applyFtrl
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (linear : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P linear; Op.Tensor_handle.P grad; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P lr_power] in
   let attrs = [
@@ -1191,15 +1213,15 @@ let applyFtrl
 
 let applyFtrlV2
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (linear : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2_shrinkage : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P linear; Op.Tensor_handle.P grad; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P l2_shrinkage; Op.Tensor_handle.P lr_power] in
   let attrs = [
@@ -1213,9 +1235,9 @@ let applyFtrlV2
 
 let applyGradientDescent
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (alpha : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (delta : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P alpha; Op.Tensor_handle.P delta] in
   let attrs = [
@@ -1230,11 +1252,11 @@ let applyGradientDescent
 let applyMomentum
     ?(use_locking=false)
     ?(use_nesterov=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P grad; Op.Tensor_handle.P momentum] in
   let attrs = [
@@ -1249,13 +1271,13 @@ let applyMomentum
 
 let applyPowerSign
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (logbase : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (sign_decay : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (m : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (logbase : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (sign_decay : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P lr; Op.Tensor_handle.P logbase; Op.Tensor_handle.P sign_decay; Op.Tensor_handle.P beta; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -1269,12 +1291,12 @@ let applyPowerSign
 
 let applyProximalAdagrad
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -1288,11 +1310,11 @@ let applyProximalAdagrad
 
 let applyProximalGradientDescent
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (alpha : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (delta : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P alpha; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P delta] in
   let attrs = [
@@ -1306,14 +1328,14 @@ let applyProximalGradientDescent
 
 let applyRMSProp
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (ms : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (mom : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P ms; Op.Tensor_handle.P mom; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P momentum; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -1327,8 +1349,8 @@ let applyRMSProp
 
 let approximateEqual
     ?(tolerance=9.9999997473787516e-06)
-    (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (y : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (y : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P y] in
   let attrs = [
@@ -1342,7 +1364,7 @@ let approximateEqual
 
 let argMax
     ~type_output_type
-    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (dimension : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P dimension] in
@@ -1358,7 +1380,7 @@ let argMax
 
 let argMin
     ~type_output_type
-    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (dimension : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P dimension] in
@@ -1943,11 +1965,11 @@ let batchMatrixTriangularSolve
 let batchNormWithGlobalNormalization
     ~variance_epsilon
     ~scale_after_normalization
-    (t : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (v : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (gamma : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (t : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (m : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (v : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (gamma : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P t; Op.Tensor_handle.P m; Op.Tensor_handle.P v; Op.Tensor_handle.P beta; Op.Tensor_handle.P gamma] in
   let attrs = [
@@ -1963,11 +1985,11 @@ let batchNormWithGlobalNormalization
 let batchNormWithGlobalNormalizationGrad
     ~variance_epsilon
     ~scale_after_normalization
-    (t : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (m : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (v : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (gamma : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (backprop : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (t : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (m : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (v : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (gamma : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (backprop : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P t; Op.Tensor_handle.P m; Op.Tensor_handle.P v; Op.Tensor_handle.P gamma; Op.Tensor_handle.P backprop] in
   let attrs = [
@@ -2077,8 +2099,8 @@ let betainc
 
 let biasAdd
     ?(data_format="NHWC")
-    (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (bias : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (value : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (bias : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P value; Op.Tensor_handle.P bias] in
   let attrs = [
@@ -2092,7 +2114,7 @@ let biasAdd
 
 let biasAddGrad
     ?(data_format="NHWC")
-    (out_backprop : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (out_backprop : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P out_backprop] in
   let attrs = [
@@ -2105,8 +2127,8 @@ let biasAddGrad
     (Op.Tensor_handle.type_ out_backprop)
 
 let biasAddV1
-    (value : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (bias : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (value : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (bias : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P value; Op.Tensor_handle.P bias] in
   let attrs = [
@@ -2522,6 +2544,16 @@ let conjugateTranspose
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ x)
 
+let consumeMutexLock
+    (mutex_lock : [ `variant ] t)
+  =
+  let inputs = [Op.Tensor_handle.P mutex_lock] in
+  let attrs = [
+  ]
+  in
+  Op.create context Op_names.consumeMutexLock inputs attrs
+  |> fun op -> Op.execute0 op
+
 let controlTrigger
     ()
   =
@@ -2825,8 +2857,8 @@ let cropAndResizeGradImage
     type_t
 
 let cross
-    (a : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (b : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (a : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (b : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P a; Op.Tensor_handle.P b] in
   let attrs = [
@@ -2840,7 +2872,7 @@ let cross
 let cumprod
     ?(exclusive=false)
     ?(reverse=false)
-    (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P axis] in
@@ -2858,7 +2890,7 @@ let cumprod
 let cumsum
     ?(exclusive=false)
     ?(reverse=false)
-    (x : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (axis : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P axis] in
@@ -2914,6 +2946,18 @@ let debugGradientIdentity
   ]
   in
   Op.create context Op_names.debugGradientIdentity inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
+
+let debugGradientRefIdentity
+    (input : 't t)
+  =
+  let inputs = [Op.Tensor_handle.P input] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type input);
+  ]
+  in
+  Op.create context Op_names.debugGradientRefIdentity inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ input)
 
@@ -3024,6 +3068,19 @@ let decodeBmp
   Op.create context Op_names.decodeBmp inputs attrs
   |> fun op -> Op.execute1 op
     Type.UInt8
+
+let decodeCompressed
+    ?(compression_type="")
+    (bytes : [ `string ] t)
+  =
+  let inputs = [Op.Tensor_handle.P bytes] in
+  let attrs = [
+    "compression_type", `string compression_type;
+  ]
+  in
+  Op.create context Op_names.decodeCompressed inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.String
 
 let decodeGif
     (contents : [ `string ] t)
@@ -3388,8 +3445,8 @@ let dilation2D
     ~strides
     ~rates
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (filter : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (filter : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P filter] in
   let attrs = [
@@ -3407,9 +3464,9 @@ let dilation2DBackpropFilter
     ~strides
     ~rates
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (filter : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (out_backprop : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (filter : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (out_backprop : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P filter; Op.Tensor_handle.P out_backprop] in
   let attrs = [
@@ -3427,9 +3484,9 @@ let dilation2DBackpropInput
     ~strides
     ~rates
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (filter : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (out_backprop : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (filter : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (out_backprop : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P filter; Op.Tensor_handle.P out_backprop] in
   let attrs = [
@@ -3540,6 +3597,18 @@ let eluGrad
   Op.create context Op_names.eluGrad inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ gradients)
+
+let emptyTensorList
+    (element_shape : ([< `int32 | `int64 ] as 'shape_type) t)
+  =
+  let inputs = [Op.Tensor_handle.P element_shape] in
+  let attrs = [
+    "shape_type", `type_ (Op.Tensor_handle.data_type element_shape);
+  ]
+  in
+  Op.create context Op_names.emptyTensorList inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
 
 let encodeBase64
     ?(pad=false)
@@ -3738,7 +3807,7 @@ let extractImagePatches
     ~strides
     ~rates
     ~padding
-    (images : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (images : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P images] in
   let attrs = [
@@ -3977,12 +4046,13 @@ let fakeQueue
     Type.String
 
 let fill
-    (dims : [ `int32 ] t)
+    (dims : ([< `int32 | `int64 ] as 'index_type) t)
     (value : 't t)
   =
   let inputs = [Op.Tensor_handle.P dims; Op.Tensor_handle.P value] in
   let attrs = [
     "T", `type_ (Op.Tensor_handle.data_type value);
+    "index_type", `type_ (Op.Tensor_handle.data_type dims);
   ]
   in
   Op.create context Op_names.fill inputs attrs
@@ -4466,8 +4536,8 @@ let getSessionTensor
     type_dtype
 
 let greater
-    (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (y : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P y] in
   let attrs = [
@@ -4479,8 +4549,8 @@ let greater
     Type.Bool
 
 let greaterEqual
-    (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (y : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P y] in
   let attrs = [
@@ -4567,7 +4637,7 @@ let histogramFixedWidth
 
 let histogramSummary
     (tag : [ `string ] t)
-    (values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (values : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P tag; Op.Tensor_handle.P values] in
   let attrs = [
@@ -4714,21 +4784,6 @@ let igammac
   Op.create context Op_names.igammac inputs attrs
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ a)
-
-let ignoreErrorsDataset
-    ~output_types
-    ~output_shapes
-    (input_dataset : [ `variant ] t)
-  =
-  let inputs = [Op.Tensor_handle.P input_dataset] in
-  let attrs = [
-    "output_types", `list_type_p output_types;
-    "output_shapes", `list_shape output_shapes;
-  ]
-  in
-  Op.create context Op_names.ignoreErrorsDataset inputs attrs
-  |> fun op -> Op.execute1 op
-    Type.Variant
 
 let imag
     ~type_tout
@@ -5148,8 +5203,8 @@ let leftShift
     (Op.Tensor_handle.type_ x)
 
 let less
-    (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (y : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P y] in
   let attrs = [
@@ -5161,8 +5216,8 @@ let less
     Type.Bool
 
 let lessEqual
-    (x : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (y : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (x : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (y : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P y] in
   let attrs = [
@@ -5600,12 +5655,13 @@ let matchingFiles
 
 let matrixBandPart
     (input : 't t)
-    (num_lower : [ `int64 ] t)
-    (num_upper : [ `int64 ] t)
+    (num_lower : ([< `int32 | `int64 ] as 'tindex) t)
+    (num_upper : ([< `int32 | `int64 ] as 'tindex) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P num_lower; Op.Tensor_handle.P num_upper] in
   let attrs = [
     "T", `type_ (Op.Tensor_handle.data_type input);
+    "Tindex", `type_ (Op.Tensor_handle.data_type num_lower);
   ]
   in
   Op.create context Op_names.matrixBandPart inputs attrs
@@ -5674,6 +5730,18 @@ let matrixInverse
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ input)
 
+let matrixLogarithm
+    (input : ([< `complex64 ] as 't) t)
+  =
+  let inputs = [Op.Tensor_handle.P input] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type input);
+  ]
+  in
+  Op.create context Op_names.matrixLogarithm inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
+
 let matrixSetDiag
     (input : 't t)
     (diagonal : 't t)
@@ -5737,7 +5805,7 @@ let matrixTriangularSolve
 
 let max
     ?(keep_dims=false)
-    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P reduction_indices] in
@@ -5841,9 +5909,9 @@ let maxPoolGrad
     ~strides
     ~padding
     ?(data_format="NHWC")
-    (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (orig_input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (orig_output : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P orig_input; Op.Tensor_handle.P orig_output; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -5863,9 +5931,9 @@ let maxPoolGradGrad
     ~strides
     ~padding
     ?(data_format="NHWC")
-    (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (orig_input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (orig_output : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P orig_input; Op.Tensor_handle.P orig_output; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -5883,9 +5951,9 @@ let maxPoolGradGrad
 let maxPoolGradGradV2
     ~padding
     ?(data_format="NHWC")
-    (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (orig_input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (orig_output : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (ksize : [ `int32 ] t)
     (strides : [ `int32 ] t)
   =
@@ -5904,8 +5972,8 @@ let maxPoolGradGradWithArgmax
     ~ksize
     ~strides
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (argmax : ([< `int32 | `int64 ] as 'targmax) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P grad; Op.Tensor_handle.P argmax] in
@@ -5924,9 +5992,9 @@ let maxPoolGradGradWithArgmax
 let maxPoolGradV2
     ~padding
     ?(data_format="NHWC")
-    (orig_input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (orig_output : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (orig_input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (orig_output : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (ksize : [ `int32 ] t)
     (strides : [ `int32 ] t)
   =
@@ -5945,8 +6013,8 @@ let maxPoolGradWithArgmax
     ~ksize
     ~strides
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (grad : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (argmax : ([< `int32 | `int64 ] as 'targmax) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P grad; Op.Tensor_handle.P argmax] in
@@ -5985,7 +6053,7 @@ let maxPoolWithArgmax
     ~ksize
     ~strides
     ~padding
-    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P input] in
   let attrs = [
@@ -6016,7 +6084,7 @@ let maximum
 
 let mean
     ?(keep_dims=false)
-    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P reduction_indices] in
@@ -6091,7 +6159,7 @@ let mfcc
 
 let min
     ?(keep_dims=false)
-    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P reduction_indices] in
@@ -6180,7 +6248,7 @@ let multinomial
     ~type_output_dtype
     ?(seed=0)
     ?(seed2=0)
-    (logits : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (logits : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (num_samples : [ `int32 ] t)
   =
   let inputs = [Op.Tensor_handle.P logits; Op.Tensor_handle.P num_samples] in
@@ -6315,6 +6383,32 @@ let mutableHashTableV2
   |> fun op -> Op.execute1 op
     Type.Resource
 
+let mutexLock
+    (mutex : [ `resource ] t)
+  =
+  let inputs = [Op.Tensor_handle.P mutex] in
+  let attrs = [
+  ]
+  in
+  Op.create context Op_names.mutexLock inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
+let mutexV2
+    ?(container="")
+    ?(shared_name="")
+    ()
+  =
+  let inputs = [] in
+  let attrs = [
+    "container", `string container;
+    "shared_name", `string shared_name;
+  ]
+  in
+  Op.create context Op_names.mutexV2 inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Resource
+
 let neg
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
@@ -6411,7 +6505,7 @@ let notEqual
 
 let nthElement
     ?(reverse=false)
-    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (n : [ `int32 ] t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P n] in
@@ -6840,7 +6934,7 @@ let priorityQueueV2
 
 let prod
     ?(keep_dims=false)
-    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P reduction_indices] in
@@ -7921,6 +8015,7 @@ let recordInput
     ?(file_buffer_size=10000)
     ?(file_parallelism=16)
     ?(batch_size=32)
+    ?(compression_type="")
     ()
   =
   let inputs = [] in
@@ -7931,6 +8026,7 @@ let recordInput
     "file_buffer_size", `int file_buffer_size;
     "file_parallelism", `int file_parallelism;
     "batch_size", `int batch_size;
+    "compression_type", `string compression_type;
   ]
   in
   Op.create context Op_names.recordInput inputs attrs
@@ -8049,8 +8145,23 @@ let refSwitch
     (Op.Tensor_handle.type_ data)
     (Op.Tensor_handle.type_ data)
 
+let regexReplace
+    ?(replace_global=true)
+    (input : [ `string ] t)
+    (pattern : [ `string ] t)
+    (rewrite : [ `string ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P pattern; Op.Tensor_handle.P rewrite] in
+  let attrs = [
+    "replace_global", `bool replace_global;
+  ]
+  in
+  Op.create context Op_names.regexReplace inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.String
+
 let relu
-    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P features] in
   let attrs = [
@@ -8062,7 +8173,7 @@ let relu
     (Op.Tensor_handle.type_ features)
 
 let relu6
-    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P features] in
   let attrs = [
@@ -8074,8 +8185,8 @@ let relu6
     (Op.Tensor_handle.type_ features)
 
 let relu6Grad
-    (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (gradients : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P gradients; Op.Tensor_handle.P features] in
   let attrs = [
@@ -8087,8 +8198,8 @@ let relu6Grad
     (Op.Tensor_handle.type_ gradients)
 
 let reluGrad
-    (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (gradients : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P gradients; Op.Tensor_handle.P features] in
   let attrs = [
@@ -8274,10 +8385,10 @@ let resourceApplyAdadelta
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (accum_update : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P accum_update; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -8292,8 +8403,8 @@ let resourceApplyAdagrad
     ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -8309,10 +8420,10 @@ let resourceApplyAdagradDA
     (var : [ `resource ] t)
     (gradient_accumulator : [ `resource ] t)
     (gradient_squared_accumulator : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P gradient_accumulator; Op.Tensor_handle.P gradient_squared_accumulator; Op.Tensor_handle.P grad; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P global_step] in
@@ -8330,13 +8441,13 @@ let resourceApplyAdam
     (var : [ `resource ] t)
     (m : [ `resource ] t)
     (v : [ `resource ] t)
-    (beta1_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta2_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (beta1_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta2_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P v; Op.Tensor_handle.P beta1_power; Op.Tensor_handle.P beta2_power; Op.Tensor_handle.P lr; Op.Tensor_handle.P beta1; Op.Tensor_handle.P beta2; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -8352,11 +8463,11 @@ let resourceApplyAddSign
     ?(use_locking=false)
     (var : [ `resource ] t)
     (m : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (sign_decay : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (alpha : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (sign_decay : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P lr; Op.Tensor_handle.P alpha; Op.Tensor_handle.P sign_decay; Op.Tensor_handle.P beta; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -8373,11 +8484,11 @@ let resourceApplyCenteredRMSProp
     (mg : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P mg; Op.Tensor_handle.P ms; Op.Tensor_handle.P mom; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P momentum; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -8393,11 +8504,11 @@ let resourceApplyFtrl
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P linear; Op.Tensor_handle.P grad; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P lr_power] in
   let attrs = [
@@ -8413,12 +8524,12 @@ let resourceApplyFtrlV2
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2_shrinkage : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P linear; Op.Tensor_handle.P grad; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P l2_shrinkage; Op.Tensor_handle.P lr_power] in
   let attrs = [
@@ -8432,8 +8543,8 @@ let resourceApplyFtrlV2
 let resourceApplyGradientDescent
     ?(use_locking=false)
     (var : [ `resource ] t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (delta : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P alpha; Op.Tensor_handle.P delta] in
   let attrs = [
@@ -8449,9 +8560,9 @@ let resourceApplyMomentum
     ?(use_nesterov=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P grad; Op.Tensor_handle.P momentum] in
   let attrs = [
@@ -8467,11 +8578,11 @@ let resourceApplyPowerSign
     ?(use_locking=false)
     (var : [ `resource ] t)
     (m : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (logbase : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (sign_decay : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (beta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (logbase : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (sign_decay : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (beta : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P m; Op.Tensor_handle.P lr; Op.Tensor_handle.P logbase; Op.Tensor_handle.P sign_decay; Op.Tensor_handle.P beta; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -8486,10 +8597,10 @@ let resourceApplyProximalAdagrad
     ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -8503,10 +8614,10 @@ let resourceApplyProximalAdagrad
 let resourceApplyProximalGradientDescent
     ?(use_locking=false)
     (var : [ `resource ] t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (delta : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (delta : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P alpha; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P delta] in
   let attrs = [
@@ -8522,11 +8633,11 @@ let resourceApplyRMSProp
     (var : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P ms; Op.Tensor_handle.P mom; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P momentum; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad] in
   let attrs = [
@@ -8572,7 +8683,7 @@ let resourceGather
 let resourceScatterAdd
     (resource : [ `resource ] t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
+    (updates : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 'dtype) t)
   =
   let inputs = [Op.Tensor_handle.P resource; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
   let attrs = [
@@ -8602,7 +8713,7 @@ let resourceScatterNdUpdate
 let resourceScatterUpdate
     (resource : [ `resource ] t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
+    (updates : 'dtype t)
   =
   let inputs = [Op.Tensor_handle.P resource; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
   let attrs = [
@@ -8618,10 +8729,10 @@ let resourceSparseApplyAdadelta
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (accum_update : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P accum_update; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -8638,8 +8749,8 @@ let resourceSparseApplyAdagrad
     ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -8657,11 +8768,11 @@ let resourceSparseApplyAdagradDA
     (var : [ `resource ] t)
     (gradient_accumulator : [ `resource ] t)
     (gradient_squared_accumulator : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P gradient_accumulator; Op.Tensor_handle.P gradient_squared_accumulator; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P global_step] in
@@ -8680,11 +8791,11 @@ let resourceSparseApplyCenteredRMSProp
     (mg : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P mg; Op.Tensor_handle.P ms; Op.Tensor_handle.P mom; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P momentum; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -8702,12 +8813,12 @@ let resourceSparseApplyFtrl
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P linear; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P lr_power] in
   let attrs = [
@@ -8724,13 +8835,13 @@ let resourceSparseApplyFtrlV2
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
     (linear : [ `resource ] t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2_shrinkage : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P linear; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P l2_shrinkage; Op.Tensor_handle.P lr_power] in
   let attrs = [
@@ -8747,10 +8858,10 @@ let resourceSparseApplyMomentum
     ?(use_nesterov=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices; Op.Tensor_handle.P momentum] in
   let attrs = [
@@ -8767,10 +8878,10 @@ let resourceSparseApplyProximalAdagrad
     ?(use_locking=false)
     (var : [ `resource ] t)
     (accum : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -8786,10 +8897,10 @@ let resourceSparseApplyProximalAdagrad
 let resourceSparseApplyProximalGradientDescent
     ?(use_locking=false)
     (var : [ `resource ] t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (alpha : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P alpha; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -8807,11 +8918,11 @@ let resourceSparseApplyRMSProp
     (var : [ `resource ] t)
     (ms : [ `resource ] t)
     (mom : [ `resource ] t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P ms; Op.Tensor_handle.P mom; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P momentum; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -8953,6 +9064,22 @@ let rint
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ x)
 
+let roll
+    (input : 't t)
+    (shift : ([< `int32 | `int64 ] as 'tshift) t)
+    (axis : ([< `int32 | `int64 ] as 'taxis) t)
+  =
+  let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P shift; Op.Tensor_handle.P axis] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type input);
+    "Tshift", `type_ (Op.Tensor_handle.data_type shift);
+    "Taxis", `type_ (Op.Tensor_handle.data_type axis);
+  ]
+  in
+  Op.create context Op_names.roll inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ input)
+
 let round
     (x : ([< `float | `double | `int32 | `int64 | `complex64 ] as 't) t)
   =
@@ -8992,7 +9119,7 @@ let rsqrtGrad
 
 let scalarSummary
     (tags : [ `string ] t)
-    (values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (values : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P tags; Op.Tensor_handle.P values] in
   let attrs = [
@@ -9005,9 +9132,9 @@ let scalarSummary
 
 let scatterAdd
     ?(use_locking=false)
-    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
   let attrs = [
@@ -9022,9 +9149,9 @@ let scatterAdd
 
 let scatterDiv
     ?(use_locking=false)
-    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
   let attrs = [
@@ -9039,9 +9166,9 @@ let scatterDiv
 
 let scatterMul
     ?(use_locking=false)
-    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
   let attrs = [
@@ -9071,9 +9198,9 @@ let scatterNd
 
 let scatterNdAdd
     ?(use_locking=false)
-    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
   let attrs = [
@@ -9087,9 +9214,9 @@ let scatterNdAdd
     (Op.Tensor_handle.type_ ref)
 
 let scatterNdNonAliasingAdd
-    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
   let attrs = [
@@ -9103,9 +9230,9 @@ let scatterNdNonAliasingAdd
 
 let scatterNdSub
     ?(use_locking=false)
-    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
   let attrs = [
@@ -9137,9 +9264,9 @@ let scatterNdUpdate
 
 let scatterSub
     ?(use_locking=false)
-    (ref : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (ref : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (updates : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (updates : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P ref; Op.Tensor_handle.P indices; Op.Tensor_handle.P updates] in
   let attrs = [
@@ -9196,7 +9323,7 @@ let sdcaShrinkL1
   |> fun op -> Op.execute0 op
 
 let segmentMax
-    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P segment_ids] in
@@ -9210,7 +9337,7 @@ let segmentMax
     (Op.Tensor_handle.type_ data)
 
 let segmentMean
-    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P segment_ids] in
@@ -9224,7 +9351,7 @@ let segmentMean
     (Op.Tensor_handle.type_ data)
 
 let segmentMin
-    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P segment_ids] in
@@ -9238,7 +9365,7 @@ let segmentMin
     (Op.Tensor_handle.type_ data)
 
 let segmentProd
-    (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P segment_ids] in
@@ -9252,7 +9379,7 @@ let segmentProd
     (Op.Tensor_handle.type_ data)
 
 let segmentSum
-    (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P data; Op.Tensor_handle.P segment_ids] in
@@ -9455,6 +9582,25 @@ let shardedFilespec
   |> fun op -> Op.execute1 op
     Type.String
 
+let shuffleAndRepeatDataset
+    ~output_types
+    ~output_shapes
+    (input_dataset : [ `variant ] t)
+    (buffer_size : [ `int64 ] t)
+    (seed : [ `int64 ] t)
+    (seed2 : [ `int64 ] t)
+    (count : [ `int64 ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input_dataset; Op.Tensor_handle.P buffer_size; Op.Tensor_handle.P seed; Op.Tensor_handle.P seed2; Op.Tensor_handle.P count] in
+  let attrs = [
+    "output_types", `list_type_p output_types;
+    "output_shapes", `list_shape output_shapes;
+  ]
+  in
+  Op.create context Op_names.shuffleAndRepeatDataset inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
 let shuffleDataset
     ?(reshuffle_each_iteration=true)
     ~output_types
@@ -9647,7 +9793,7 @@ let softmaxCrossEntropyWithLogits
     (Op.Tensor_handle.type_ features)
 
 let softplus
-    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P features] in
   let attrs = [
@@ -9659,8 +9805,8 @@ let softplus
     (Op.Tensor_handle.type_ features)
 
 let softplusGrad
-    (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (gradients : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P gradients; Op.Tensor_handle.P features] in
   let attrs = [
@@ -9672,7 +9818,7 @@ let softplusGrad
     (Op.Tensor_handle.type_ gradients)
 
 let softsign
-    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P features] in
   let attrs = [
@@ -9684,8 +9830,8 @@ let softsign
     (Op.Tensor_handle.type_ features)
 
 let softsignGrad
-    (gradients : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
-    (features : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (gradients : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
+    (features : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P gradients; Op.Tensor_handle.P features] in
   let attrs = [
@@ -9749,7 +9895,7 @@ let sparseAccumulatorApplyGradient
     (handle : [ `string ] t)
     (local_step : [ `int64 ] t)
     (gradient_indices : [ `int64 ] t)
-    (gradient_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 'dtype) t)
+    (gradient_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 'dtype) t)
     (gradient_shape : [ `int64 ] t)
   =
   let inputs = [Op.Tensor_handle.P handle; Op.Tensor_handle.P local_step; Op.Tensor_handle.P gradient_indices; Op.Tensor_handle.P gradient_values; Op.Tensor_handle.P gradient_shape] in
@@ -9779,12 +9925,12 @@ let sparseAccumulatorTakeGradient
 
 let sparseAdd
     (a_indices : [ `int64 ] t)
-    (a_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (a_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (a_shape : [ `int64 ] t)
     (b_indices : [ `int64 ] t)
-    (b_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (b_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (b_shape : [ `int64 ] t)
-    (thresh : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 'treal) t)
+    (thresh : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 'treal) t)
   =
   let inputs = [Op.Tensor_handle.P a_indices; Op.Tensor_handle.P a_values; Op.Tensor_handle.P a_shape; Op.Tensor_handle.P b_indices; Op.Tensor_handle.P b_values; Op.Tensor_handle.P b_shape; Op.Tensor_handle.P thresh] in
   let attrs = [
@@ -9799,7 +9945,7 @@ let sparseAdd
     Type.Int64
 
 let sparseAddGrad
-    (backprop_val_grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (backprop_val_grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (a_indices : [ `int64 ] t)
     (b_indices : [ `int64 ] t)
     (sum_indices : [ `int64 ] t)
@@ -9816,13 +9962,13 @@ let sparseAddGrad
 
 let sparseApplyAdadelta
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum_update : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum_update : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P accum_update; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -9838,10 +9984,10 @@ let sparseApplyAdadelta
 
 let sparseApplyAdagrad
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -9857,14 +10003,14 @@ let sparseApplyAdagrad
 
 let sparseApplyAdagradDA
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (gradient_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (gradient_squared_accumulator : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (gradient_accumulator : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (gradient_squared_accumulator : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (global_step : [ `int64 ] t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P gradient_accumulator; Op.Tensor_handle.P gradient_squared_accumulator; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P global_step] in
@@ -9880,15 +10026,15 @@ let sparseApplyAdagradDA
 
 let sparseApplyCenteredRMSProp
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (mg : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (mg : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (ms : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (mom : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P mg; Op.Tensor_handle.P ms; Op.Tensor_handle.P mom; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P momentum; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -9904,15 +10050,15 @@ let sparseApplyCenteredRMSProp
 
 let sparseApplyFtrl
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (linear : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P linear; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P lr_power] in
   let attrs = [
@@ -9927,16 +10073,16 @@ let sparseApplyFtrl
 
 let sparseApplyFtrlV2
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (linear : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (linear : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2_shrinkage : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr_power : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2_shrinkage : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr_power : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P linear; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P l2_shrinkage; Op.Tensor_handle.P lr_power] in
   let attrs = [
@@ -9952,12 +10098,12 @@ let sparseApplyFtrlV2
 let sparseApplyMomentum
     ?(use_locking=false)
     ?(use_nesterov=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices; Op.Tensor_handle.P momentum] in
   let attrs = [
@@ -9973,12 +10119,12 @@ let sparseApplyMomentum
 
 let sparseApplyProximalAdagrad
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (accum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (accum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P accum; Op.Tensor_handle.P lr; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -9994,11 +10140,11 @@ let sparseApplyProximalAdagrad
 
 let sparseApplyProximalGradientDescent
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (alpha : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l1 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (l2 : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (alpha : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l1 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (l2 : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P alpha; Op.Tensor_handle.P l1; Op.Tensor_handle.P l2; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -10014,14 +10160,14 @@ let sparseApplyProximalGradientDescent
 
 let sparseApplyRMSProp
     ?(use_locking=false)
-    (var : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (ms : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (mom : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (lr : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (rho : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (momentum : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (epsilon : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
-    (grad : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (var : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (ms : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (mom : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (lr : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (rho : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (momentum : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (epsilon : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
+    (grad : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tindices) t)
   =
   let inputs = [Op.Tensor_handle.P var; Op.Tensor_handle.P ms; Op.Tensor_handle.P mom; Op.Tensor_handle.P lr; Op.Tensor_handle.P rho; Op.Tensor_handle.P momentum; Op.Tensor_handle.P epsilon; Op.Tensor_handle.P grad; Op.Tensor_handle.P indices] in
@@ -10073,9 +10219,9 @@ let sparseConditionalAccumulator
 
 let sparseDenseCwiseAdd
     (sp_indices : [ `int64 ] t)
-    (sp_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (sp_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (sp_shape : [ `int64 ] t)
-    (dense : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (dense : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P sp_indices; Op.Tensor_handle.P sp_values; Op.Tensor_handle.P sp_shape; Op.Tensor_handle.P dense] in
   let attrs = [
@@ -10088,9 +10234,9 @@ let sparseDenseCwiseAdd
 
 let sparseDenseCwiseDiv
     (sp_indices : [ `int64 ] t)
-    (sp_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (sp_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (sp_shape : [ `int64 ] t)
-    (dense : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (dense : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P sp_indices; Op.Tensor_handle.P sp_values; Op.Tensor_handle.P sp_shape; Op.Tensor_handle.P dense] in
   let attrs = [
@@ -10103,9 +10249,9 @@ let sparseDenseCwiseDiv
 
 let sparseDenseCwiseMul
     (sp_indices : [ `int64 ] t)
-    (sp_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (sp_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (sp_shape : [ `int64 ] t)
-    (dense : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (dense : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P sp_indices; Op.Tensor_handle.P sp_values; Op.Tensor_handle.P sp_shape; Op.Tensor_handle.P dense] in
   let attrs = [
@@ -10173,7 +10319,7 @@ let sparseMatMul
 let sparseReduceMax
     ?(keep_dims=false)
     (input_indices : [ `int64 ] t)
-    (input_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input_values : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
@@ -10190,7 +10336,7 @@ let sparseReduceMax
 let sparseReduceMaxSparse
     ?(keep_dims=false)
     (input_indices : [ `int64 ] t)
-    (input_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input_values : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
@@ -10209,7 +10355,7 @@ let sparseReduceMaxSparse
 let sparseReduceSum
     ?(keep_dims=false)
     (input_indices : [ `int64 ] t)
-    (input_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
@@ -10226,7 +10372,7 @@ let sparseReduceSum
 let sparseReduceSumSparse
     ?(keep_dims=false)
     (input_indices : [ `int64 ] t)
-    (input_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (input_shape : [ `int64 ] t)
     (reduction_axes : [ `int32 ] t)
   =
@@ -10368,7 +10514,7 @@ let sparseSegmentSqrtNWithNumSegments
     (Op.Tensor_handle.type_ data)
 
 let sparseSegmentSum
-    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tidx) t)
     (segment_ids : [ `int32 ] t)
   =
@@ -10383,7 +10529,7 @@ let sparseSegmentSum
     (Op.Tensor_handle.type_ data)
 
 let sparseSegmentSumWithNumSegments
-    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (indices : ([< `int32 | `int64 ] as 'tidx) t)
     (segment_ids : [ `int32 ] t)
     (num_segments : ([< `int32 | `int64 ] as 'tnumsegments) t)
@@ -10448,10 +10594,10 @@ let sparseSoftmaxCrossEntropyWithLogits
 
 let sparseSparseMaximum
     (a_indices : [ `int64 ] t)
-    (a_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (a_values : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (a_shape : [ `int64 ] t)
     (b_indices : [ `int64 ] t)
-    (b_values : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (b_values : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (b_shape : [ `int64 ] t)
   =
   let inputs = [Op.Tensor_handle.P a_indices; Op.Tensor_handle.P a_values; Op.Tensor_handle.P a_shape; Op.Tensor_handle.P b_indices; Op.Tensor_handle.P b_values; Op.Tensor_handle.P b_shape] in
@@ -10466,10 +10612,10 @@ let sparseSparseMaximum
 
 let sparseSparseMinimum
     (a_indices : [ `int64 ] t)
-    (a_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (a_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (a_shape : [ `int64 ] t)
     (b_indices : [ `int64 ] t)
-    (b_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (b_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (b_shape : [ `int64 ] t)
   =
   let inputs = [Op.Tensor_handle.P a_indices; Op.Tensor_handle.P a_values; Op.Tensor_handle.P a_shape; Op.Tensor_handle.P b_indices; Op.Tensor_handle.P b_values; Op.Tensor_handle.P b_shape] in
@@ -10484,9 +10630,9 @@ let sparseSparseMinimum
 
 let sparseTensorDenseAdd
     (a_indices : ([< `int32 | `int64 ] as 'tindices) t)
-    (a_values : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (a_values : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (a_shape : ([< `int32 | `int64 ] as 'tindices) t)
-    (b : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (b : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P a_indices; Op.Tensor_handle.P a_values; Op.Tensor_handle.P a_shape; Op.Tensor_handle.P b] in
   let attrs = [
@@ -11106,7 +11252,7 @@ let substr
 
 let sum
     ?(keep_dims=false)
-    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (reduction_indices : ([< `int32 | `int64 ] as 'tidx) t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P reduction_indices] in
@@ -11769,6 +11915,127 @@ let tensorArrayWriteV3
   |> fun op -> Op.execute1 op
     Type.Float
 
+let tensorListElementShape
+    ~type_shape_type
+    (input_handle : [ `variant ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input_handle] in
+  let attrs = [
+    "shape_type", `type_ Operation.Type.(to_data_type (P type_shape_type));
+  ]
+  in
+  Op.create context Op_names.tensorListElementShape inputs attrs
+  |> fun op -> Op.execute1 op
+    type_shape_type
+
+let tensorListFromTensor
+    (tensor : 'element_dtype t)
+    (element_shape : ([< `int32 | `int64 ] as 'shape_type) t)
+  =
+  let inputs = [Op.Tensor_handle.P tensor; Op.Tensor_handle.P element_shape] in
+  let attrs = [
+    "element_dtype", `type_ (Op.Tensor_handle.data_type tensor);
+    "shape_type", `type_ (Op.Tensor_handle.data_type element_shape);
+  ]
+  in
+  Op.create context Op_names.tensorListFromTensor inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
+let tensorListGetItem
+    ~type_element_dtype
+    (input_handle : [ `variant ] t)
+    (index : [ `int32 ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input_handle; Op.Tensor_handle.P index] in
+  let attrs = [
+    "element_dtype", `type_ Operation.Type.(to_data_type (P type_element_dtype));
+  ]
+  in
+  Op.create context Op_names.tensorListGetItem inputs attrs
+  |> fun op -> Op.execute1 op
+    type_element_dtype
+
+let tensorListLength
+    (input_handle : [ `variant ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input_handle] in
+  let attrs = [
+  ]
+  in
+  Op.create context Op_names.tensorListLength inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Int32
+
+let tensorListPopBack
+    ~type_element_dtype
+    (input_handle : [ `variant ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input_handle] in
+  let attrs = [
+    "element_dtype", `type_ Operation.Type.(to_data_type (P type_element_dtype));
+  ]
+  in
+  Op.create context Op_names.tensorListPopBack inputs attrs
+  |> fun op -> Op.execute2 op
+    Type.Variant
+    type_element_dtype
+
+let tensorListPushBack
+    (input_handle : [ `variant ] t)
+    (tensor : 'element_dtype t)
+  =
+  let inputs = [Op.Tensor_handle.P input_handle; Op.Tensor_handle.P tensor] in
+  let attrs = [
+    "element_dtype", `type_ (Op.Tensor_handle.data_type tensor);
+  ]
+  in
+  Op.create context Op_names.tensorListPushBack inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
+let tensorListReserve
+    (element_shape : ([< `int32 | `int64 ] as 'shape_type) t)
+    (num_elements : [ `int32 ] t)
+  =
+  let inputs = [Op.Tensor_handle.P element_shape; Op.Tensor_handle.P num_elements] in
+  let attrs = [
+    "shape_type", `type_ (Op.Tensor_handle.data_type element_shape);
+  ]
+  in
+  Op.create context Op_names.tensorListReserve inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
+let tensorListSetItem
+    (input_handle : [ `variant ] t)
+    (index : [ `int32 ] t)
+    (item : 'element_dtype t)
+  =
+  let inputs = [Op.Tensor_handle.P input_handle; Op.Tensor_handle.P index; Op.Tensor_handle.P item] in
+  let attrs = [
+    "element_dtype", `type_ (Op.Tensor_handle.data_type item);
+  ]
+  in
+  Op.create context Op_names.tensorListSetItem inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Variant
+
+let tensorListStack
+    ~type_element_dtype
+    ?(num_elements=(-1))
+    (input_handle : [ `variant ] t)
+  =
+  let inputs = [Op.Tensor_handle.P input_handle] in
+  let attrs = [
+    "element_dtype", `type_ Operation.Type.(to_data_type (P type_element_dtype));
+    "num_elements", `int num_elements;
+  ]
+  in
+  Op.create context Op_names.tensorListStack inputs attrs
+  |> fun op -> Op.execute1 op
+    type_element_dtype
+
 let tensorSummary
     ?(description="")
     ?(display_name="")
@@ -11898,10 +12165,21 @@ let tileGrad
   |> fun op -> Op.execute1 op
     (Op.Tensor_handle.type_ input)
 
+let timestamp
+    ()
+  =
+  let inputs = [] in
+  let attrs = [
+  ]
+  in
+  Op.create context Op_names.timestamp inputs attrs
+  |> fun op -> Op.execute1 op
+    Type.Double
+
 let topK
     ~k
     ?(sorted=true)
-    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P input] in
   let attrs = [
@@ -11917,7 +12195,7 @@ let topK
 
 let topKV2
     ?(sorted=true)
-    (input : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (k : [ `int32 ] t)
   =
   let inputs = [Op.Tensor_handle.P input; Op.Tensor_handle.P k] in
@@ -11989,6 +12267,45 @@ let truncatedNormal
   |> fun op -> Op.execute1 op
     type_dtype
 
+let unbatch
+    ~timeout_micros
+    ?(container="")
+    ?(shared_name="")
+    (batched_tensor : 't t)
+    (batch_index : [ `int64 ] t)
+    (id : [ `int64 ] t)
+  =
+  let inputs = [Op.Tensor_handle.P batched_tensor; Op.Tensor_handle.P batch_index; Op.Tensor_handle.P id] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type batched_tensor);
+    "timeout_micros", `int timeout_micros;
+    "container", `string container;
+    "shared_name", `string shared_name;
+  ]
+  in
+  Op.create context Op_names.unbatch inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ batched_tensor)
+
+let unbatchGrad
+    ?(container="")
+    ?(shared_name="")
+    (original_input : 't t)
+    (batch_index : [ `int64 ] t)
+    (grad : 't t)
+    (id : [ `int64 ] t)
+  =
+  let inputs = [Op.Tensor_handle.P original_input; Op.Tensor_handle.P batch_index; Op.Tensor_handle.P grad; Op.Tensor_handle.P id] in
+  let attrs = [
+    "T", `type_ (Op.Tensor_handle.data_type original_input);
+    "container", `string container;
+    "shared_name", `string shared_name;
+  ]
+  in
+  Op.create context Op_names.unbatchGrad inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ original_input)
+
 let uniformCandidateSampler
     ~num_true
     ~num_sampled
@@ -12032,12 +12349,13 @@ let unique
 let uniqueV2
     ~type_out_idx
     (x : 't t)
-    (axis : [ `int64 ] t)
+    (axis : ([< `int32 | `int64 ] as 'taxis) t)
   =
   let inputs = [Op.Tensor_handle.P x; Op.Tensor_handle.P axis] in
   let attrs = [
     "T", `type_ (Op.Tensor_handle.data_type x);
     "out_idx", `type_ Operation.Type.(to_data_type (P type_out_idx));
+    "Taxis", `type_ (Op.Tensor_handle.data_type axis);
   ]
   in
   Op.create context Op_names.uniqueV2 inputs attrs
@@ -12076,8 +12394,21 @@ let unpack
   Op.create context Op_names.unpack inputs attrs
   |> fun op -> Op.execute op (Op.Tensor_handle.type_ value) ~output_len:num
 
+let unravelIndex
+    (indices : ([< `int32 | `int64 ] as 'tidx) t)
+    (dims : ([< `int32 | `int64 ] as 'tidx) t)
+  =
+  let inputs = [Op.Tensor_handle.P indices; Op.Tensor_handle.P dims] in
+  let attrs = [
+    "Tidx", `type_ (Op.Tensor_handle.data_type indices);
+  ]
+  in
+  Op.create context Op_names.unravelIndex inputs attrs
+  |> fun op -> Op.execute1 op
+    (Op.Tensor_handle.type_ indices)
+
 let unsortedSegmentMax
-    (data : ([< `float | `double | `int32 | `int64 | `uInt8 | `uInt16 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `uInt8 | `int64 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
     (num_segments : ([< `int32 | `int64 ] as 'tnumsegments) t)
   =
@@ -12093,7 +12424,7 @@ let unsortedSegmentMax
     (Op.Tensor_handle.type_ data)
 
 let unsortedSegmentSum
-    (data : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 ] as 't) t)
+    (data : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 ] as 't) t)
     (segment_ids : ([< `int32 | `int64 ] as 'tindices) t)
     (num_segments : ([< `int32 | `int64 ] as 'tnumsegments) t)
   =
@@ -12150,7 +12481,7 @@ let variableShape
     type_out_type
 
 let where
-    (input : ([< `float | `double | `int64 | `int32 | `uInt8 | `uInt16 | `complex64 | `bool ] as 't) t)
+    (input : ([< `float | `double | `int32 | `uInt8 | `complex64 | `int64 | `uInt16 | `bool ] as 't) t)
   =
   let inputs = [Op.Tensor_handle.P input] in
   let attrs = [

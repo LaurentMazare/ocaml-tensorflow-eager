@@ -327,10 +327,10 @@ module C(F: Cstubs.FOREIGN) = struct
       foreign "TFE_DeleteTensorHandle" (t @-> returning void)
 
     let tfe_tensorhandlenumdims =
-      foreign "TFE_TensorHandleNumDims" (t @-> returning int)
+      foreign "TFE_TensorHandleNumDims" (t @-> Tf_status.t @-> returning int)
 
     let tfe_tensorhandledim =
-      foreign "TFE_TensorHandleDim" (t @-> int @-> returning int)
+      foreign "TFE_TensorHandleDim" (t @-> int @-> Tf_status.t @-> returning int)
 
     let tfe_tensorhandleresolve =
       foreign "TFE_TensorHandleResolve" (t @-> Tf_status.t @-> returning Tf_tensor.t)

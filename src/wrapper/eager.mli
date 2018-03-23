@@ -20,7 +20,8 @@ module Tensor_handle : sig
 
   val resolve_exn : t -> Tensor.p
 
-  val dims : t -> int list
+  val dims : t -> int list Status.result
+  val dims_exn : t -> int list
 
   val data_type : t -> Wrapper.data_type
 

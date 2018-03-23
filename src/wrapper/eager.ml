@@ -62,9 +62,30 @@ module Tensor_handle = struct
   let resolve_exn t =
     resolve t |> Status.ok_exn
 
+  exception Cannot_get_dimension of Status.t
+
   let dims t =
-    let num_dims = Tfe_tensor_handle.tfe_tensorhandlenumdims t in
-    List.init num_dims (fun i -> Tfe_tensor_handle.tfe_tensorhandledim t i)
+    let status = Status.create () in
+    let status_ptr = Status.to_ptr status in
+    let num_dims = Tfe_tensor_handle.tfe_tensorhandlenumdims t status_ptr in
+    match Status.code status with
+    | TF_OK -> begin
+      try
+        Status.Ok
+          (List.init num_dims (fun i ->
+            let status = Status.create () in
+            let status_ptr = Status.to_ptr status in
+            let dim = Tfe_tensor_handle.tfe_tensorhandledim t i status_ptr in
+            match Status.code status with
+            | TF_OK -> dim
+            | _ -> raise (Cannot_get_dimension status)))
+      with Cannot_get_dimension status -> Status.Error status
+    end
+    | _ -> Status.Error status
+
+
+  let dims_exn t =
+    dims t |> Status.ok_exn
 
   let data_type t =
     Tfe_tensor_handle.tfe_tensorhandledatatype t

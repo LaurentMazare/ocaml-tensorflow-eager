@@ -112,7 +112,7 @@ module Tensor_handle = struct
     |> of_c
 
   let resolve t = Eager.Tensor_handle.resolve_exn t.handle
-  let dims t = Eager.Tensor_handle.dims t.handle
+  let dims t = Eager.Tensor_handle.dims_exn t.handle
   let data_type t = Eager.Tensor_handle.data_type t.handle
   let data_type_p (P t) = Eager.Tensor_handle.data_type t.handle
 
