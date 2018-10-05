@@ -1,5 +1,9 @@
 Experimental [OCaml](http://ocaml.org) bindings for [TensorFlow](http://tensorflow.org) [Eager execution](https://github.com/tensorflow/tensorflow/tree/r1.5/tensorflow/contrib/eager).
 
+These bindings are pretty much out of date. Some bindings for [PyTorch](https://pytorch.org)
+can be found in the [ocaml-torch repo](https://github.com/LaurentMazare/ocaml-torch).
+
+
 When using TensorFlow Eager execution, operations are executed immediately in the
 same way as [PyTorch](http://pytorch.org/). The computation graph is dynamic.
 
